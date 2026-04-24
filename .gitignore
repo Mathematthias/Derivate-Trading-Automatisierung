@@ -1,0 +1,61 @@
+# Journal-Dateien — niemals ins Repo
+Trading_Journal_*.xlsx
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+
+# Krypto-Exporte
+bison_*.csv
+kraken_*.csv
+
+# PDFs (Statements, Broker-Exports)
+*.pdf
+
+# Claude Chat-Uploads (falls lokal kopiert)
+uploaded_*.png
+uploaded_*.jpg
+uploaded_*.jpeg
+
+# Archive (Skill-/Repo-Updates entstehen oft als ZIP)
+*.zip
+
+# Claude Code lokale Daten
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Betriebssystem
+Thumbs.db
+desktop.ini
+
+# Temporär / Output-Verzeichnis
+/tmp/
+/output/
+*.tmp
+*.bak
+*.log
+*~
+*.orig
+*.rej
+
+# Sensitive — never commit
+.env*
+secrets.yml
+credentials.json
