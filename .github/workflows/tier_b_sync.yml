@@ -33,8 +33,8 @@ jobs:
         working-directory: marketdata-pipeline/marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
-          # Workspace Shared Drive: Trading-Pipeline
-          STATE_DOC_ID: 1e6kiE8hUolUILYeX6O3WVsDLV_dS78jK
+          # Workspace Shared Drive: Trading-Pipeline (STATE = echtes Google Doc)
+          STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
           BRIEFING_FOLDER_ID: 1dWKwPUuK122glrr6ny6f4_SQi0Qrtlkh
           MODE: tier_b
           CONFIG_DIR: ./config
