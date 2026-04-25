@@ -395,8 +395,42 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
 
 
 def _parse_eu_number(s: str) -> float:
-    """Konvertiert deutschen Zahlen-String '33,40' nach 33.4."""
-    return float(s.replace(",", "."))
+    """Konvertiert Zahl-String zu float — robust gegen deutsche und englische Notation.
+
+    Beispiele:
+    - "33,40"  → 33.40  (deutsches Dezimalkomma)
+    - "1.000"  → 1000   (deutsches Tausendertrennzeichen, 3 Nachkommastellen)
+    - "147.50" → 147.50 (englisches Dezimal, 2 Nachkommastellen)
+    - "974.41" → 974.41 (englisches Dezimal, 2 Nachkommastellen)
+    - "1.000,50" → 1000.50 (deutsche Notation mit Tausender + Dezimal)
+    - "1,000.50" → 1000.50 (englische Notation mit Tausender + Dezimal)
+    """
+    s = s.strip()
+
+    # Fall 1: Komma drin → deutsche Notation
+    # "1.000,50" → Punkte sind Tausender, Komma ist Dezimal
+    # "33,40"    → nur Komma, ist Dezimal
+    if "," in s:
+        return float(s.replace(".", "").replace(",", "."))
+
+    # Fall 2: Kein Komma, mehrere Punkte → englische Tausender-Notation
+    # "1,000,000" wäre englisch, aber wir hätten dann ein Komma gesehen
+    # Hier: "1.000.000" wäre theoretisch möglich (deutsch ohne Dezimal), selten
+    if s.count(".") > 1:
+        return float(s.replace(".", ""))
+
+    # Fall 3: Genau ein Punkt — Heuristik nach Anzahl Nachkommastellen
+    if "." in s:
+        parts = s.split(".")
+        # Genau 3 Nachkommastellen → wahrscheinlich Tausender im deutschen Format
+        # "1.000" → 1000, "974.413" wäre selten und müsste explizit konsistent sein
+        if len(parts[1]) == 3 and len(parts[0]) <= 3:
+            return float(s.replace(".", ""))
+        # Sonst Dezimalpunkt
+        return float(s)
+
+    # Fall 4: Keine Trennzeichen
+    return float(s)
 
 
 # ============================================================

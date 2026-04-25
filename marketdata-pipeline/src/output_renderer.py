@@ -100,8 +100,15 @@ def render_candidates(
     universe_matches: list[CandidateMatch],
     overrides: list[FilterOverride],
     timestamp: datetime,
+    snapshots: Optional[dict] = None,
 ) -> str:
-    """Render die Stufe-1 + Stufe-2-Ergebnisse als Markdown."""
+    """Render die Stufe-1 + Stufe-2-Ergebnisse als Markdown.
+
+    Args:
+        snapshots: Optional dict {symbol: TickerSnapshot} für Override-Werte,
+            die weder in Stufe 1 noch Stufe 2 erscheinen aber im STATE als
+            priority_long/priority_short markiert sind.
+    """
     lines: list[str] = []
     lines.append(f"# CANDIDATES — {timestamp.strftime('%Y-%m-%d %H:%M %Z')}")
     lines.append("")
@@ -282,13 +289,55 @@ def render_candidates(
                 lines.append(f"- {m.summary}")
             lines.append("")
 
-    # === ACTIVE OVERRIDES ===
+    # === OVERRIDE-WERTE mit Snapshot-Daten ===
+    # Werte die priority_long/priority_short Override haben, aber NICHT in der
+    # Watchlist sind und keinen Universe-Match haben — z.B. BTC-EUR (Position
+    # Override). Damit man sie nicht aus Versehen vergisst.
     today_str = timestamp.strftime("%Y-%m-%d")
     active_overrides = [
         ov for ov in overrides
         if ov.valid_until is None
         or ov.valid_until.isoformat() >= today_str
     ]
+
+    if snapshots is not None:
+        watchlist_symbols = {r.entry.symbol for r in watchlist_results}
+        universe_match_symbols = {m.symbol for m in universe_matches}
+
+        # Welche Override-Werte sind nicht in Stufe 1 oder 2?
+        override_priority = [
+            ov for ov in active_overrides
+            if ov.override_type in ("priority_long", "priority_short")
+            and ov.symbol not in watchlist_symbols
+            and ov.symbol not in universe_match_symbols
+            and ov.symbol in snapshots
+        ]
+
+        if override_priority:
+            lines.append("---")
+            lines.append("")
+            lines.append("## Override-Werte (priority_long / priority_short)")
+            lines.append("")
+            for ov in override_priority:
+                snap = snapshots[ov.symbol]
+                direction = "↑" if ov.override_type == "priority_long" else "↓"
+                ema_str = ""
+                if snap.ema20 is not None:
+                    ema_str = f" EMA20={_fmt_price(snap.ema20)}"
+                rsi_str = ""
+                if snap.rsi14 is not None:
+                    rsi_str = f" RSI={snap.rsi14:.0f}"
+                move_str = ""
+                if snap.move_30d_pct is not None:
+                    move_str = f" 30d={snap.move_30d_pct:+.1f}%"
+                lines.append(
+                    f"- **{ov.symbol}** ({direction}) — Kurs {_fmt_price(snap.price)} "
+                    f"({_fmt_pct(snap.change_pct)}){ema_str}{rsi_str}{move_str}"
+                )
+                lines.append(f"  - _Grund: {ov.reason}_")
+            lines.append("")
+
+    # === ACTIVE OVERRIDES (übersicht aller noch gültigen) ===
     if active_overrides:
         lines.append("---")
         lines.append("")

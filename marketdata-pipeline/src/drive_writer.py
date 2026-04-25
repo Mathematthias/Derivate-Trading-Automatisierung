@@ -102,6 +102,9 @@ def cleanup_old_files(
         orderBy="createdTime desc",
         fields="files(id,name,createdTime)",
         pageSize=100,
+        supportsAllDrives=True,
+        includeItemsFromAllDrives=True,
+        corpora="allDrives",
     ).execute()
     files = results.get("files", [])
     if len(files) <= keep_count:
@@ -111,7 +114,10 @@ def cleanup_old_files(
     deleted = 0
     for f in to_delete:
         try:
-            drive_service.files().delete(fileId=f["id"]).execute()
+            drive_service.files().delete(
+                fileId=f["id"],
+                supportsAllDrives=True,
+            ).execute()
             deleted += 1
         except Exception as e:
             logger.warning(f"  Failed to delete {f['name']}: {e}")

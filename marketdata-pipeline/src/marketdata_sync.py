@@ -130,6 +130,18 @@ def main():
 
     logger.info(f"Total symbols to fetch: {len(all_symbols)}")
 
+    # === KATEGORIEN-AUSSCHLUSS für Universe-Setup-Filter ===
+    # Indizes/Forex/Krypto/Positionen sind Makro-Kontext, keine Trade-Kandidaten.
+    # Sie werden ge-pulled (für Watchlist-Status, Override-Reporting), aber
+    # nicht im Setup-Bucket-Filter (Stufe 2) ausgewertet.
+    excluded_category_symbols: set[str] = set()
+    if mode == "tier_a":
+        for category in ["indizes", "rohstoffe_forex", "krypto", "positionen"]:
+            section = ticker_config.get(category, {}) or {}
+            for sym in section.values():
+                if sym:
+                    excluded_category_symbols.add(sym)
+
     # === YFINANCE PULL ===
     snapshots = fetch_ticker_data(sorted(all_symbols))
 
@@ -146,6 +158,7 @@ def main():
         )
 
         # Universe-Filter: nur über Werte die NICHT in der Watchlist sind
+        # UND nicht in Makro-Kategorien (Indizes/Forex/Krypto/Positionen)
         watchlist_symbols_set = {e.symbol for e in watchlist_entries}
         universe_matches = evaluate_universe(
             snapshots,
@@ -153,6 +166,7 @@ def main():
             config=filter_config,
             overrides=overrides,
             today=today,
+            excluded_category_symbols=excluded_category_symbols,
         )
 
         logger.info(
@@ -182,6 +196,7 @@ def main():
     md_content = render_marketdata_full(snapshots, timestamp)
     cand_content = render_candidates(
         watchlist_results, universe_matches, overrides, timestamp,
+        snapshots=snapshots,
     )
 
     # === DRIVE SCHREIBEN ===

@@ -24,13 +24,13 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        working-directory: marketdata-pipeline/marketdata-pipeline
+        working-directory: marketdata-pipeline
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run pipeline
-        working-directory: marketdata-pipeline/marketdata-pipeline
+        working-directory: marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
           # Workspace Shared Drive: Trading-Pipeline (STATE = echtes Google Doc)

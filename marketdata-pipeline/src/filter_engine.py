@@ -341,9 +341,19 @@ def evaluate_universe(
     config: dict,
     overrides: list[FilterOverride],
     today: date,
+    excluded_category_symbols: Optional[set[str]] = None,
 ) -> list[CandidateMatch]:
-    """Prüft alle Snapshots (außer excluded) gegen Setup-Buckets."""
+    """Prüft alle Snapshots (außer excluded) gegen Setup-Buckets.
+
+    Args:
+        snapshots: alle gepullten Snapshots
+        excluded_symbols: Watchlist-Symbole (sollen Stufe 1, nicht Stufe 2)
+        excluded_category_symbols: Indizes/Forex/Krypto/Positionen — sind
+            Makro-Kontext, keine Trade-Kandidaten. Default leer.
+    """
     matches: list[CandidateMatch] = []
+    if excluded_category_symbols is None:
+        excluded_category_symbols = set()
 
     override_symbols_disqualified = {
         ov.symbol for ov in overrides
@@ -358,6 +368,9 @@ def evaluate_universe(
 
     for symbol, snap in snapshots.items():
         if symbol in excluded_symbols:
+            continue
+        if symbol in excluded_category_symbols:
+            # Indizes/Forex/Krypto sind Makro-Kontext, kein Setup-Kandidat
             continue
         if symbol in override_symbols_disqualified:
             continue
@@ -428,6 +441,9 @@ def _check_bucket(
             return None
         if snap.ema20 is None:
             return None
+        # 30d-Move muss positiv sein für echten Long-Trend
+        if snap.move_30d_pct is None or snap.move_30d_pct <= 0:
+            return None
         ema_dist = (snap.price - snap.ema20) / snap.ema20 * 100
         if not (cfg["ema_distance_min_pct"] <= ema_dist <= cfg["ema_distance_max_pct"]):
             return None
@@ -454,6 +470,9 @@ def _check_bucket(
         if cfg.get("require_bearish_ema_stack") and not snap.has_bearish_stack:
             return None
         if snap.ema20 is None:
+            return None
+        # 30d-Move muss negativ sein für echten Short-Trend
+        if snap.move_30d_pct is None or snap.move_30d_pct >= 0:
             return None
         ema_dist = (snap.price - snap.ema20) / snap.ema20 * 100
         if not (cfg["ema_distance_min_pct"] <= ema_dist <= cfg["ema_distance_max_pct"]):
