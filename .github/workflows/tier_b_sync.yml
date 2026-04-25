@@ -1,8 +1,7 @@
 name: Marketdata Sync Tier B (Gamechanger-Hunt)
 
 # Sync-Schedule für Tier B (TecDAX/Biotech/NASDAQ-Growth/AI-Quantum):
-#   - 1× täglich Mo-Fr 07:30 CET (= 05:30 UTC im Winter, 06:30 UTC im Sommer)
-#   - 06:30 UTC ist Sommerzeit-konform (CEST)
+#   - 1× täglich Mo-Fr 07:30 CET (= 06:30 UTC im Sommer, CEST-konform)
 
 on:
   schedule:
@@ -34,8 +33,9 @@ jobs:
         working-directory: marketdata-pipeline/marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
-          STATE_DOC_ID: 17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks
-          BRIEFING_FOLDER_ID: 1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA
+          # Workspace Shared Drive: Trading-Pipeline
+          STATE_DOC_ID: 1e6kiE8hUolUILYeX6O3WVsDLV_dS78jK
+          BRIEFING_FOLDER_ID: 1dWKwPUuK122glrr6ny6f4_SQi0Qrtlkh
           MODE: tier_b
           CONFIG_DIR: ./config
           PYTHONPATH: ./src
