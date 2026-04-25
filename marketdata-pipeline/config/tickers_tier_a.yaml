@@ -1,0 +1,108 @@
+# tickers_tier_a.yaml — Kern-Universum für regulären Pipeline-Sync
+# Stand: 2026-04-25, V0.1 (Phase 0a)
+#
+# Wird gelesen von marketdata_sync.py.
+# Sync-Frequenz: alle 30 Min Mo–Fr 08:00–22:00 CET, Sa 10:00.
+#
+# Format pro Eintrag: friendly_name: yahoo_symbol
+# Yahoo-Symbol bei Bedarf hier verifizieren: https://finance.yahoo.com/lookup
+#
+# Phase 0b (später): DAX 40 + MDAX 50 + SDAX 70 + NASDAQ Top 100 als
+# automatischer Import aus Wikipedia-Listen, ergänzt diese Datei.
+
+# ============================================================
+# INDIZES & VOLATILITÄT
+# ============================================================
+indizes:
+  DAX:        "^GDAXI"
+  MDAX:       "^MDAXI"
+  SDAX:       "^SDAXI"
+  TecDAX:     "^TECDAX"
+  STOXX50E:   "^STOXX50E"
+  SPX:        "^GSPC"
+  NDX:        "^IXIC"
+  DJI:        "^DJI"
+  RUT:        "^RUT"
+  Nikkei:     "^N225"
+  HSI:        "^HSI"
+  FTSE:       "^FTSE"
+  VIX:        "^VIX"
+
+# ============================================================
+# ROHSTOFFE & FOREX
+# ============================================================
+rohstoffe_forex:
+  Brent:      "BZ=F"
+  WTI:        "CL=F"
+  Gold:       "GC=F"
+  Silber:     "SI=F"
+  Kupfer:     "HG=F"
+  NatGas:     "NG=F"
+  EURUSD:     "EURUSD=X"
+  USDJPY:     "USDJPY=X"
+  EURGBP:     "EURGBP=X"
+
+# ============================================================
+# KRYPTO (Bison/Kraken-Referenz)
+# ============================================================
+krypto:
+  BTC-EUR:    "BTC-EUR"
+  ETH-EUR:    "ETH-EUR"
+  SOL-EUR:    "SOL-EUR"
+  BNB-EUR:    "BNB-EUR"
+  BAT-EUR:    "BAT-EUR"      # ggf. dünn auf Yahoo, fallback BAT-USD beobachten
+
+# ============================================================
+# OFFENE POSITIONEN — Underlying-Ticker
+# ============================================================
+positionen:
+  ATOSS:        "AOF.DE"     # Trade #53 KO Long
+  CTS_Eventim:  "EVD.DE"     # Trade #48 KO Long
+  Xetra_Gold:   "4GLD.DE"    # Trade #39 ETC Long (verifiziert)
+  # JPM-Rest: ergänzen wenn Underlying-Ticker bestätigt
+
+# ============================================================
+# WATCHLIST DEUTSCHLAND
+# ============================================================
+watchlist_deutschland:
+  Commerzbank:      "CBK.DE"      # Trigger A 33,40-33,60 Long
+  Draegerwerk:      "DRW3.DE"     # Pullback nach Vollzahlen 30.04 Long
+  Heidelberg_Druck: "HDD.DE"      # ONBERG Long — niedriges Volumen ~1,6M EUR/Tag, Override nötig
+  Jenoptik:         "JEN.DE"      # Long
+  AIXTRON:          "AIXA.DE"     # Long
+  Eurofins:         "ERF.PA"      # Long — Paris-Listing primär (EUR), Frankfurt-Fallback ESF0.F
+  TUI:              "TUI1.DE"     # Long
+  Adidas:           "ADS.DE"      # Long
+  Symrise:          "SY1.DE"      # Long (verifiziert)
+  Junghein_VZ:      "JUN3.DE"     # Long (verifiziert)
+  SAP:              "SAP.DE"      # Long
+  Salzgitter:       "SZG.DE"      # SHORT
+  Lufthansa:        "LHA.DE"      # SHORT
+  Fraport:          "FRA.DE"      # Long/Short je Setup
+  KION:             "KGX.DE"      # SHORT-Beobachtung
+
+# ============================================================
+# WATCHLIST USA
+# ============================================================
+watchlist_us:
+  Intel:            "INTC"        # invalidated nach +25% Gap, beobachten
+  Procter_Gamble:   "PG"
+  ServiceNow:       "NOW"
+  Salesforce:       "CRM"
+  United_Rent:      "URI"
+  Netflix:          "NFLX"
+  Southwest:        "LUV"
+  JPMorgan:         "JPM"
+  Apple:            "AAPL"
+  Tesla:            "TSLA"
+  NVIDIA:           "NVDA"
+  Microsoft:        "MSFT"
+  Crowdstrike:      "CRWD"
+
+# ============================================================
+# ETHIK-AUSSCHLUSS — niemals in Output, nur informativ
+# ============================================================
+ethik_excluded:
+  - "RHM.DE"     # Rheinmetall — Offensiv-Rüstung Core
+  - "BA.L"       # BAE Systems — dito
+  # KNDS nicht börsennotiert

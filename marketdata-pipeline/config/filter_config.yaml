@@ -1,0 +1,151 @@
+# filter_config.yaml — Setup-Klassifikations-Schwellwerte
+# Stand: 2026-04-25, V0.1
+#
+# Diese Datei definiert die NUMERISCHEN GRENZWERTE der Filter-Engine.
+# Änderungen hier brauchen KEINEN Code-Push, nur Repo-Push und nächster
+# GitHub-Action-Lauf zieht sie.
+#
+# Bei Tuning: kleine Schritte (z.B. ema_distance_max von 1.0 auf 1.5),
+# 1 Woche beobachten, dann nächste Stellschraube.
+
+# ============================================================
+# UNIVERSELLE DISQUALIFIER (gelten für ALLE Setups)
+# ============================================================
+universal_disqualifier:
+  # Liquidität: minimales 20-Tages-Durchschnittsvolumen × Schlusskurs in EUR
+  # Empirie 2026-04-25: 2M EUR war zu hoch — Heidelberg Druck (1,62M EUR/Tag)
+  # fiel raus trotz ONBERG-Watchlist-Status. 1M EUR lässt SDAX-Werte mit
+  # niedrigem Kurs (<5€) durch, ohne Pennystock-Bereiche zu öffnen.
+  # KO-Spreads bei 1M EUR/Tag sind erfahrungsgemäß noch akzeptabel.
+  min_avg_volume_eur: 1_000_000
+
+  # Earnings-Risk: Tage bis zur nächsten Quartalszahl
+  # Trades zu nah an Earnings = unkalkulierbares Gap-Risiko
+  earnings_blackout_days: 7
+
+  # 30d-Move-Limit (Lektion 8): wenn schon zu weit gelaufen, Late Entry
+  # Long: >+15% in 30 Tagen disqualifiziert für neuen Long-Einstieg
+  # Short: <-15% in 30 Tagen disqualifiziert für neuen Short-Einstieg
+  thirty_day_move_max_pct: 15.0
+
+# ============================================================
+# LONG-TREND-PULLBACK (höchste Häufigkeit deiner Trades)
+# Setup: Aufwärtstrend intakt, Kurs zieht zur EMA20/50, Bounce-Bereich
+# ============================================================
+long_trend_pullback:
+  # EMA-Stack (Daily): EMA20 > EMA50 > EMA200 (Bullish-Stack)
+  require_bullish_ema_stack: true
+
+  # Distanz Kurs zu EMA20 (oder EMA50 als Sekundär-Trigger)
+  ema_distance_min_pct: -1.0     # Kurs darf 1% unter EMA20 stehen (Touch)
+  ema_distance_max_pct: 2.5      # Kurs darf bis 2.5% über EMA20 stehen
+
+  # Welche EMA als Trigger-Level: erst EMA20 prüfen, dann EMA50
+  trigger_ema_priority: ["EMA20", "EMA50"]
+
+  # RSI-Daily: nicht überkauft (sonst kein Bounce-Potenzial)
+  rsi_max: 65
+
+  # Mindestabstand vom 52W-Hoch (sonst ATH-Falle)
+  min_distance_from_52w_high_pct: 2.0
+
+# ============================================================
+# SHORT-TREND-PULLBACK / Bounce-Test (Spiegel zu Long)
+# Setup: Abwärtstrend intakt, Kurs bouncet zur EMA20/50 von unten
+# ============================================================
+short_trend_pullback:
+  require_bearish_ema_stack: true   # EMA20 < EMA50 < EMA200
+
+  ema_distance_min_pct: -2.5     # Kurs darf 2.5% unter EMA20 stehen
+  ema_distance_max_pct: 1.0      # Kurs darf 1% über EMA20 stehen (Touch)
+
+  trigger_ema_priority: ["EMA20", "EMA50"]
+
+  rsi_min: 35                    # Nicht überverkauft
+
+  min_distance_from_52w_low_pct: 2.0  # Mindestabstand vom 52W-Tief
+
+  # Short-spezifische Disqualifier (zusätzlich zu Universal)
+  disqualifier_active_buyback: true   # Bei aktivem Buyback NIEMALS shorten
+  disqualifier_dividend_within_days: 14  # Vor Ex-Tag großer Div nicht shorten
+
+# ============================================================
+# BREAKOUT (Long) / BREAKDOWN (Short)
+# Setup: Kurs durchbricht 20d-Hoch (Long) bzw. 20d-Tief (Short) mit Volumen
+# ============================================================
+breakout_long:
+  # Distanz zum 20d-Hoch: sehr nah dran (knapp drüber oder knapp drunter mit Vol)
+  distance_to_20d_high_pct: 1.0  # innerhalb 1% vom 20d-Hoch
+  volume_multiplier_min: 1.5     # heute mindestens 1.5× avg-Volumen
+
+  # Trend-Kontext: nicht rein zufällig, sondern aus Aufwärtstrend
+  require_bullish_ema_stack: true
+  rsi_max: 70
+
+breakdown_short:
+  distance_to_20d_low_pct: 1.0   # innerhalb 1% vom 20d-Tief
+  volume_multiplier_min: 1.5
+  require_bearish_ema_stack: true
+  rsi_min: 30
+
+# ============================================================
+# REVERSAL (selten, hohe Aufmerksamkeit)
+# Long: 52W-Tief + RSI<30, Short: 52W-Hoch + RSI>70 + Distribution-Zeichen
+# ============================================================
+reversal_long:
+  distance_from_52w_low_pct: 5.0   # innerhalb 5% vom 52W-Tief
+  rsi_max: 30                       # überverkauft
+  # Bullish-Divergenz-Erkennung: Kurs LL aber RSI HL
+  # Implementierung in Phase 2c (komplex), erstmal nur 52W-Tief+RSI
+
+reversal_short:
+  distance_from_52w_high_pct: 5.0  # innerhalb 5% vom 52W-Hoch
+  rsi_min: 70                       # überkauft
+  # Distribution: Volumen steigt bei roten Tagen, fällt bei grünen
+  # Implementierung in Phase 2c
+
+# ============================================================
+# GAMECHANGER (nur für Tier B)
+# Detektiert harte Catalysts ohne Setup-Klassifikation
+# ============================================================
+gamechanger:
+  # Pre-Market-Mover (US): Pre-Market-Bewegung in % vs. gestern Close
+  pre_market_move_min_pct: 5.0    # Achtung: Yahoo Pre-Market 15-20 Min delayed
+
+  # Intraday-Volumen-Explosion
+  volume_multiplier_extreme: 5.0  # 5× durchschnittliches Tagesvolumen
+
+  # Gap-Open: Gap zwischen Vortags-Close und heutigem Open
+  gap_open_min_pct: 3.0
+
+  # 52W-Extrem: ganz frisch (innerhalb 2 Tagen) gemacht
+  fresh_52w_extreme_days: 2
+
+# ============================================================
+# OUTPUT-FORMATIERUNG
+# ============================================================
+output:
+  # Maximale Kandidaten-Anzahl pro Setup-Bucket (sortiert nach Setup-Stärke)
+  max_candidates_per_bucket: 5
+
+  # Reihenfolge der Buckets im Output
+  bucket_order:
+    - "long_trend_pullback"
+    - "breakout_long"
+    - "reversal_long"
+    - "short_trend_pullback"
+    - "breakdown_short"
+    - "reversal_short"
+
+  # Liquiditäts-Filter weicher anwenden bei diesen Kategorien?
+  # Indizes/Rohstoffe/Krypto: niemals Liquiditätsfilter (kein Sinn)
+  # positionen: offene Positionen IMMER tracken, egal wie illiquide
+  # filter_override_active: Werte mit priority_long/priority_short Override
+  #   im STATE-Doc bekommen den Liquiditätsfilter-Bypass automatisch
+  #   (z.B. Heidelberg Druck als ONBERG-Watchlist-Wert)
+  bypass_liquidity_for_categories:
+    - "indizes"
+    - "rohstoffe_forex"
+    - "krypto"
+    - "positionen"
+    - "filter_override_active"
