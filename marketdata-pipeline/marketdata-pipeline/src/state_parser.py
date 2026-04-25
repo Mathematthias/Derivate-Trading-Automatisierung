@@ -107,21 +107,27 @@ def fetch_state_doc(drive_service: Resource, state_doc_id: str) -> str:
             supportsAllDrives=True,
         )
 
-    content = request.execute()
-    if isinstance(content, bytes):
+    # Content holen — nur EINMAL execute() rufen, dann auf bytes-Ebene weiterarbeiten
+    content_bytes = request.execute()
+    if not isinstance(content_bytes, bytes):
+        # Drive-API hat schon string zurückgegeben (sollte selten passieren)
+        return content_bytes
+
+    # Encoding-Strategie: erst UTF-8 (Standard), dann cp1252 (Windows-Editoren),
+    # dann UTF-8 mit replace als letzter Ausweg
+    for encoding in ("utf-8", "cp1252"):
         try:
-            content = content.decode("utf-8")
-        except UnicodeDecodeError as e:
-            # Fallback: STATE-Datei wurde nicht als UTF-8 gespeichert
-            # (z.B. Windows-1252 / cp1252 bei manchen Editoren).
-            # 'replace' ersetzt ungültige Bytes durch  — der Rest bleibt lesbar.
-            import logging
-            logging.warning(
-                f"STATE-Doc nicht UTF-8 ({e}). Fallback auf UTF-8 mit "
-                f"errors='replace' — bitte STATE-Doc auf UTF-8 umstellen."
-            )
-            content = request.execute().decode("utf-8", errors="replace")
-    return content
+            return content_bytes.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+
+    # Letzter Fallback: UTF-8 mit replace
+    import logging
+    logging.warning(
+        "STATE-Doc weder UTF-8 noch cp1252. Fallback auf UTF-8 mit "
+        "errors='replace' — bitte STATE-Doc auf UTF-8 umstellen."
+    )
+    return content_bytes.decode("utf-8", errors="replace")
 
 
 # ============================================================
