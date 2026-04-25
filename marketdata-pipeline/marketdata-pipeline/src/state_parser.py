@@ -109,7 +109,18 @@ def fetch_state_doc(drive_service: Resource, state_doc_id: str) -> str:
 
     content = request.execute()
     if isinstance(content, bytes):
-        content = content.decode("utf-8")
+        try:
+            content = content.decode("utf-8")
+        except UnicodeDecodeError as e:
+            # Fallback: STATE-Datei wurde nicht als UTF-8 gespeichert
+            # (z.B. Windows-1252 / cp1252 bei manchen Editoren).
+            # 'replace' ersetzt ungültige Bytes durch  — der Rest bleibt lesbar.
+            import logging
+            logging.warning(
+                f"STATE-Doc nicht UTF-8 ({e}). Fallback auf UTF-8 mit "
+                f"errors='replace' — bitte STATE-Doc auf UTF-8 umstellen."
+            )
+            content = request.execute().decode("utf-8", errors="replace")
     return content
 
 
