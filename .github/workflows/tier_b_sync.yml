@@ -25,13 +25,13 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        working-directory: marketdata-pipeline
+        working-directory: marketdata-pipeline/marketdata-pipeline
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run pipeline
-        working-directory: marketdata-pipeline
+        working-directory: marketdata-pipeline/marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
           STATE_DOC_ID: 17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks
