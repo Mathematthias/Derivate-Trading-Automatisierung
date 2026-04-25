@@ -114,20 +114,22 @@ def fetch_state_doc(drive_service: Resource, state_doc_id: str) -> str:
         return content_bytes
 
     # Encoding-Strategie: erst UTF-8 (Standard), dann cp1252 (Windows-Editoren),
-    # dann UTF-8 mit replace als letzter Ausweg
+    # dann latin-1 (kann ALLE 256 Byte-Werte decoden, garantiert kein Crash).
+    # latin-1 ist eine Verlustfreie-Decoding-Strategie, falls ungewöhnliche
+    # Encodings im STATE-File stecken.
+    import logging
     for encoding in ("utf-8", "cp1252"):
         try:
             return content_bytes.decode(encoding)
         except UnicodeDecodeError:
             continue
 
-    # Letzter Fallback: UTF-8 mit replace
-    import logging
+    # latin-1 als letzter Ausweg — kann nie fehlschlagen
     logging.warning(
-        "STATE-Doc weder UTF-8 noch cp1252. Fallback auf UTF-8 mit "
-        "errors='replace' — bitte STATE-Doc auf UTF-8 umstellen."
+        "STATE-Doc weder UTF-8 noch cp1252. Fallback auf latin-1. "
+        "Bitte STATE-Doc auf UTF-8 umstellen für korrekte Sonderzeichen-Anzeige."
     )
-    return content_bytes.decode("utf-8", errors="replace")
+    return content_bytes.decode("latin-1")
 
 
 # ============================================================
@@ -167,16 +169,34 @@ def parse_watchlist(state_text: str) -> list[WatchlistEntry]:
     """Extrahiert die Watchlist-Tabelle aus dem STATE-Markdown."""
     state_text = _strip_markdown_escapes(state_text)
     # Sektion suchen: '## Watchlist-Trigger (aktive Einträge)'
+    # Mehrere Varianten probieren, weil Encoding/Whitespace-Variationen vorkommen
     section_pattern = re.compile(
         r"##\s*Watchlist-Trigger\s*\(aktive\s*Einträge\)",
         re.IGNORECASE,
     )
     match = section_pattern.search(state_text)
     if not match:
-        # Fallback: '## Watchlist-Trigger' ohne Suffix
+        # Fallback 1: ohne Suffix '(aktive Einträge)'
         match = re.search(r"##\s*Watchlist-Trigger", state_text, re.IGNORECASE)
     if not match:
-        raise ValueError("Watchlist-Trigger-Sektion nicht im STATE gefunden")
+        # Fallback 2: nur 'Watchlist' alleinstehend
+        match = re.search(
+            r"##\s*Watchlist[\s\-]",
+            state_text,
+            re.IGNORECASE,
+        )
+    if not match:
+        # Diagnose-Info ins Error-Logging schreiben
+        import logging
+        all_h2 = re.findall(r"^##\s+.+$", state_text, re.MULTILINE)
+        logging.error(
+            f"Watchlist-Trigger-Sektion nicht gefunden. "
+            f"Gefundene H2-Header im STATE: {all_h2[:10]}"
+        )
+        raise ValueError(
+            "Watchlist-Trigger-Sektion nicht im STATE gefunden — "
+            f"siehe Logs für Liste der erkannten Header"
+        )
 
     # Ab Sektionsanfang bis nächste H2-Überschrift suchen
     section_start = match.end()
