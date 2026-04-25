@@ -1,23 +1,18 @@
-name: Marketdata Sync Tier A
+name: Marketdata Sync Tier B (Gamechanger-Hunt)
 
-# Sync-Schedule für Tier A (Indizes/Rohstoffe/Krypto/Positionen/Watchlist):
-#   - Alle 30 Min während Xetra-Handelszeit Mo-Fr (08:00-22:00 CET)
-#   - Cron läuft in UTC, nicht in CET — Mo-Fr 06:00-20:00 UTC = Mo-Fr 08:00-22:00 CET
-#   - Sa 10:00 CET = Sa 09:00 UTC (für Wochenend-Snapshot)
+# Sync-Schedule für Tier B (TecDAX/Biotech/NASDAQ-Growth/AI-Quantum):
+#   - 1× täglich Mo-Fr 07:30 CET (= 05:30 UTC im Winter, 06:30 UTC im Sommer)
+#   - 06:30 UTC ist Sommerzeit-konform (CEST)
 
 on:
   schedule:
-    # Mo-Fr alle 30 Min zwischen 06:00 und 20:00 UTC
-    - cron: '0,30 6-20 * * 1-5'
-    # Sa 09:00 UTC
-    - cron: '0 9 * * 6'
-  # Manueller Trigger zum Testen
+    - cron: '30 6 * * 1-5'
   workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repo
@@ -41,7 +36,7 @@ jobs:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
           STATE_DOC_ID: 17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks
           BRIEFING_FOLDER_ID: 1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA
-          MODE: tier_a
+          MODE: tier_b
           CONFIG_DIR: ./config
           PYTHONPATH: ./src
         run: |
