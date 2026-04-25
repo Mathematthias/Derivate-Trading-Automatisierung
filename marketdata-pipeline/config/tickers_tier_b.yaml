@@ -1,5 +1,5 @@
 # tickers_tier_b.yaml — Gamechanger-Hunt-Universum
-# Stand: 2026-04-25, V0.1 (Phase 0c)
+# Stand: 2026-04-25, V0.2 (Phase 0 Rebuild — keine inhaltlichen Änderungen)
 #
 # Wird gelesen von marketdata_sync.py mit --mode=gamechanger.
 # Sync-Frequenz: 1× täglich Mo–Fr 07:30 CET (vor Morning-Check).
@@ -13,10 +13,10 @@
 # Output: GAMECHANGER-HUNT-{date}.md
 
 # ============================================================
-# TECDAX KOMPONENTEN (volle Liste, Phase 0b ergänzt automatisch)
+# TECDAX KOMPONENTEN
 # ============================================================
 tecdax_kern:
-  AIXTRON:          "AIXA.DE"     # auch in Tier A
+  AIXTRON:          "AIXA.DE"     # auch in STATE-Watchlist
   Sartorius_VZ:     "SRT3.DE"
   Nordex:           "NDX1.DE"
   Verbio:           "VBK.DE"
@@ -28,8 +28,9 @@ tecdax_kern:
   TeamViewer:       "TMV.DE"
 
 # ============================================================
-# BIOTECH-SPEZIALWERTE — Phase-3-Studien-Trigger-Kandidaten
-# Liquidität in KO-Zertifikaten oft dünn — pro Trigger prüfen!
+# BIOTECH-SPEZIALWERTE
+# Phase-3-Studien-Trigger-Kandidaten — Liquidität in KO-Zertifikaten
+# oft dünn, pro Trigger prüfen!
 # ============================================================
 biotech_de:
   BioNTech:         "BNTX"        # ADR auf NASDAQ, am liquidesten
@@ -41,7 +42,8 @@ biotech_de:
   Merck_KGaA:       "MRK.DE"      # auch DAX
   Sartorius:        "SRT.DE"
   Qiagen:           "QGEN"        # ADR
-  HelloFresh:       "HFG.DE"      # nicht Biotech aber Spezial-Wachstum
+  HelloFresh:       "HFG.DE"
+  Eckert_Ziegler:   "EUZ.DE"      # in STATE-Watchlist, hohe Vola
 
 # ============================================================
 # US TECH/GROWTH — NASDAQ Top 30 (über S&P 500 hinaus)
@@ -75,8 +77,6 @@ nasdaq_growth:
 # Liste regelmäßig kuratieren, max 10 Einträge sinnvoll
 # ============================================================
 ma_hot_list: {}
-  # Beispiel-Format:
-  # ImTec_Beispiel: "XYZ.DE"
 
 # ============================================================
 # QUANTUM/AI-SPEKULATIVE (kleinere US-Werte mit hoher Vola)
@@ -84,7 +84,7 @@ ma_hot_list: {}
 # ============================================================
 ai_quantum:
   IonQ:             "IONQ"
-  D_Wave:           "QBTS"
+  D_Wave:            "QBTS"
   Rigetti:          "RGTI"
   Plug_Power:       "PLUG"        # Wasserstoff-Spec
   Beam_Therapeutics: "BEAM"
