@@ -1,0 +1,97 @@
+# tickers_tier_b.yaml — Gamechanger-Hunt-Universum
+# Stand: 2026-04-25, V0.2 (Phase 0 Rebuild — keine inhaltlichen Änderungen)
+#
+# Wird gelesen von marketdata_sync.py mit --mode=gamechanger.
+# Sync-Frequenz: 1× täglich Mo–Fr 07:30 CET (vor Morning-Check).
+#
+# Filter-Logik anders als Tier A: erkennt nur HARTE CATALYSTS
+#   - News-Driven Movements (Pre-Market Mover >10%, Volumen-Explosion >5×)
+#   - Insider-Cluster-Buys (BaFin Directors Dealings, separate Quelle)
+#   - 52W-Hoch/Tief mit Reversal-Signal
+#   - M&A-Spekulationen (manuell pflegbar)
+#
+# Output: GAMECHANGER-HUNT-{date}.md
+
+# ============================================================
+# TECDAX KOMPONENTEN
+# ============================================================
+tecdax_kern:
+  AIXTRON:          "AIXA.DE"     # auch in STATE-Watchlist
+  Sartorius_VZ:     "SRT3.DE"
+  Nordex:           "NDX1.DE"
+  Verbio:           "VBK.DE"
+  Carl_Zeiss:       "AFX.DE"
+  SUSE:             "SUSE.DE"
+  Nemetschek:       "NEM.DE"
+  Cancom:           "COK.DE"
+  Bechtle:          "BC8.DE"
+  TeamViewer:       "TMV.DE"
+
+# ============================================================
+# BIOTECH-SPEZIALWERTE
+# Phase-3-Studien-Trigger-Kandidaten — Liquidität in KO-Zertifikaten
+# oft dünn, pro Trigger prüfen!
+# ============================================================
+biotech_de:
+  BioNTech:         "BNTX"        # ADR auf NASDAQ, am liquidesten
+  Evotec:           "EVT.DE"
+  MorphoSys:        "MOR.DE"
+  Formycon:         "FYB.DE"
+  Curevac:          "CVAC"        # ADR
+  Bayer:            "BAYN.DE"     # auch DAX
+  Merck_KGaA:       "MRK.DE"      # auch DAX
+  Sartorius:        "SRT.DE"
+  Qiagen:           "QGEN"        # ADR
+  HelloFresh:       "HFG.DE"
+  Eckert_Ziegler:   "EUZ.DE"      # in STATE-Watchlist, hohe Vola
+
+# ============================================================
+# US TECH/GROWTH — NASDAQ Top 30 (über S&P 500 hinaus)
+# ============================================================
+nasdaq_growth:
+  AMD:              "AMD"
+  Broadcom:         "AVGO"
+  Adobe:            "ADBE"
+  Palantir:         "PLTR"
+  AppLovin:         "APP"
+  ARM:              "ARM"
+  Mongodb:          "MDB"
+  Snowflake:        "SNOW"
+  Datadog:          "DDOG"
+  Cloudflare:       "NET"
+  Block:            "XYZ"
+  Palo_Alto:        "PANW"
+  Zscaler:          "ZS"
+  Okta:             "OKTA"
+  Roblox:           "RBLX"
+  AirBnb:           "ABNB"
+  DoorDash:         "DASH"
+  Uber:             "UBER"
+  Lyft:             "LYFT"
+  Robinhood:        "HOOD"
+  Coinbase:         "COIN"
+
+# ============================================================
+# M&A-HOT-LIST (manuell pflegbar)
+# Werte mit aktuellen Übernahme-Spekulationen
+# Liste regelmäßig kuratieren, max 10 Einträge sinnvoll
+# ============================================================
+ma_hot_list: {}
+
+# ============================================================
+# QUANTUM/AI-SPEKULATIVE (kleinere US-Werte mit hoher Vola)
+# Klassische Gamechanger-Kandidaten bei Pre-Market-Spikes
+# ============================================================
+ai_quantum:
+  IonQ:             "IONQ"
+  D_Wave:            "QBTS"
+  Rigetti:          "RGTI"
+  Plug_Power:       "PLUG"        # Wasserstoff-Spec
+  Beam_Therapeutics: "BEAM"
+
+# ============================================================
+# STRUKTURELL EXCLUDED (gleiche wie Tier A)
+# ============================================================
+ethik_excluded:
+  - "RHM.DE"
+  - "BA.L"
