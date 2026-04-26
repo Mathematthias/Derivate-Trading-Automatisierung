@@ -107,7 +107,7 @@ mit Status pro Trigger A und B.
 ## Stufe 2 — Universe-Setup-Filter (für neue Kandidaten)
 
 **Input:** Tier-A-Universe minus Watchlist-Werte.
-Aktuell ~30 Ticker (Phase 0a), später ~150 (Phase 0b mit Index-Komponenten).
+Aktuell ~30 Ticker, später ~150 (geplante Erweiterung um Index-Komponenten).
 
 **Pro Ticker werden geprüft:**
 
@@ -205,8 +205,8 @@ und nächster Action-Lauf zieht Änderungen.
 Ehrlich für Erwartungsmanagement:
 
 - **Pre-Market-US-Live-Kurse** — yfinance verzögert 15-20 Min
-- **Optionen-Chain / IV** — andere Datenquelle nötig (Phase 3+)
-- **Insider-Käufe DE** — yfinance lückenhaft, BaFin-Scrape geplant Phase 6
+- **Optionen-Chain / IV** — andere Datenquelle nötig (kein Roadmap-Slot definiert)
+- **Insider-Käufe DE** — yfinance lückenhaft, BaFin-Scrape geplant für Build-Schritt 1.6
 - **News-Sentiment** — bleibt Aufgabe der Routinen via web_search
 - **Chart-Pattern-Erkennung** — Pipeline rechnet Indikatoren, erkennt aber
   keine Wedge/Flagge/Double-Top. Das bleibt deine Chart-Disziplin.
