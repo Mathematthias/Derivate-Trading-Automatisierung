@@ -187,16 +187,19 @@ def main():
 
     # === OUTPUT RENDERN ===
     timestamp_str = timestamp.strftime("%Y-%m-%d-%H%M")
-    marketdata_filename = f"MARKETDATA-FULL-{timestamp_str}.md"
+    universe_tag = "STD" if mode == "tier_a" else "GC"
+    marketdata_filename = f"MARKETDATA-FULL-{universe_tag}-{timestamp_str}.md"
     candidates_filename = (
         f"CANDIDATES-{timestamp_str}.md" if mode == "tier_a"
         else f"GAMECHANGER-HUNT-{timestamp_str}.md"
     )
+    candidates_header = "CANDIDATES" if mode == "tier_a" else "GAMECHANGER-HUNT"
 
     md_content = render_marketdata_full(snapshots, timestamp)
     cand_content = render_candidates(
         watchlist_results, universe_matches, overrides, timestamp,
         snapshots=snapshots,
+        header_title=candidates_header,
     )
 
     # === DRIVE SCHREIBEN ===
@@ -205,9 +208,12 @@ def main():
     write_markdown_file(drive_service, briefing_folder_id, candidates_filename, cand_content)
 
     # === CLEANUP ALTE FILES ===
-    cleanup_old_files(drive_service, briefing_folder_id, "MARKETDATA-FULL-", keep_count=20)
-    cleanup_old_files(drive_service, briefing_folder_id, "CANDIDATES-", keep_count=20)
-    if mode == "tier_b":
+    # Cleanup pro Universum getrennt — sonst löscht ein häufig laufender Tier
+    # die Files des anderen Tiers raus.
+    cleanup_old_files(drive_service, briefing_folder_id, f"MARKETDATA-FULL-{universe_tag}-", keep_count=20)
+    if mode == "tier_a":
+        cleanup_old_files(drive_service, briefing_folder_id, "CANDIDATES-", keep_count=20)
+    else:
         cleanup_old_files(drive_service, briefing_folder_id, "GAMECHANGER-HUNT-", keep_count=10)
 
     logger.info("Pipeline done.")

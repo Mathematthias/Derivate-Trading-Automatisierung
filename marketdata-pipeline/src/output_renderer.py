@@ -101,6 +101,7 @@ def render_candidates(
     overrides: list[FilterOverride],
     timestamp: datetime,
     snapshots: Optional[dict] = None,
+    header_title: str = "CANDIDATES",
 ) -> str:
     """Render die Stufe-1 + Stufe-2-Ergebnisse als Markdown.
 
@@ -108,9 +109,13 @@ def render_candidates(
         snapshots: Optional dict {symbol: TickerSnapshot} für Override-Werte,
             die weder in Stufe 1 noch Stufe 2 erscheinen aber im STATE als
             priority_long/priority_short markiert sind.
+        header_title: Header-Titel der Markdown-Datei. Default "CANDIDATES"
+            (Tier-A-Watchlist), für Tier-B-Gamechanger-Lauf "GAMECHANGER-HUNT"
+            übergeben — sonst gibt's den Header-Bug, dass GAMECHANGER-HUNT.md
+            mit `# CANDIDATES` startet.
     """
     lines: list[str] = []
-    lines.append(f"# CANDIDATES — {timestamp.strftime('%Y-%m-%d %H:%M %Z')}")
+    lines.append(f"# {header_title} — {timestamp.strftime('%Y-%m-%d %H:%M %Z')}")
     lines.append("")
 
     # === STUFE 1: WATCHLIST-STATUS ===
