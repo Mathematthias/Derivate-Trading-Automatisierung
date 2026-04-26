@@ -156,16 +156,21 @@
 
 ## PIPELINE-STATUS
 
-### Aktuelle Phase
-- **Aktueller Stand:** Phase 0 V2 (zweistufige Architektur)
-- **Nächste Phase:** Phase 1 — Drive-Service-Account
-- **Geplant scharf:** kommende Woche
+### Aktueller Stand
+- **Roadmap-Phase:** 1 — Pipeline-Foundation (Build seit 2026-04-24)
+- **Build-Schritte 1.0–1.5:** ✅ am 2026-04-26
+- **Offen:** Build-Schritt 1.6 (Earnings + BaFin-Insider)
+- **Geplant scharf:** Mo 2026-04-27 08:45 CET — erster Live-Lauf
 
-### Phase-Übersicht
-- [x] **Phase 0:** Configs (tickers_a/b.yaml, filter_config.yaml, STATE-Watchlist mit Symbolen)
-- [ ] **Phase 1:** Drive-Auth (Service Account)
-- [ ] **Phase 2:** marketdata_sync.py (yfinance + zweistufige Filter-Engine)
-- [ ] **Phase 3:** GitHub Actions (2× Workflows: tier-a + tier-b)
-- [ ] **Phase 4:** V1.6-Routinen (lesen MARKETDATA + CANDIDATES)
-- [ ] **Phase 5:** Chat-Custom-Instruction (Auto-Load bei Session-Start)
-- [ ] **Phase 6:** Earnings-Kalender-Sync (separate wöchentliche Action)
+### Build-Schritte (innerhalb Roadmap-Phase 1)
+- [x] **Build 1.0:** Configs (tickers_a/b.yaml, filter_config.yaml, STATE-Watchlist mit Symbolen)
+- [x] **Build 1.1:** Drive-Auth (Service Account)
+- [x] **Build 1.2:** marketdata_sync.py (yfinance + zweistufige Filter-Engine)
+- [x] **Build 1.3:** GitHub Actions (2× Workflows: tier-a + tier-b)
+- [x] **Build 1.4:** V1.6-Routinen lesen Pipeline-Files (im Skill „Phase 4")
+- [x] **Build 1.5:** Auto-Load bei Session-Start (im Skill „Phase 5")
+- [ ] **Build 1.6:** Earnings-Kalender-Sync + BaFin-Insider-Scrape (separate wöchentliche Action)
+
+### Roadmap-Folgephasen
+- **Phase 2:** Push-Mail via Resend bei Gamechanger-Kriterien (~4–6 Wochen nach Phase-1-Stabilität)
+- **Phase 3:** Krypto-Briefing-Integration mit `krypto-grid-trading` + `krypto-portfolio` Skills
