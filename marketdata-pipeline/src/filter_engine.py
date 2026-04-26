@@ -409,7 +409,7 @@ def evaluate_universe(
 
 
 def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
-    """Prüft Liquidität + 30d-Move (Earnings-Check folgt in Phase 6)."""
+    """Prüft Liquidität + 30d-Move (Earnings-Check folgt in Build-Schritt 1.6)."""
     cfg = config["universal_disqualifier"]
 
     # Liquidität
