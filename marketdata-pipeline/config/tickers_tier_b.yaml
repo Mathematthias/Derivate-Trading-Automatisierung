@@ -76,7 +76,13 @@ nasdaq_growth:
 # Werte mit aktuellen Übernahme-Spekulationen
 # Liste regelmäßig kuratieren, max 10 Einträge sinnvoll
 # ============================================================
-ma_hot_list: {}
+ma_hot_list:
+  Commerzbank:      "CBK.DE"      # UniCredit-Stake 26,77%, schon auf Watchlist
+  Aumovio:          "AUM.DE"      # Continental-Spinoff, JPM-MDAX-Aufstieg-Erwartung
+  ProSieben:        "PSM.DE"      # MFE-MediaForEurope-Übernahme läuft
+  ThyssenKrupp:     "TKA.DE"      # Stahl/Marine-Spinoff-Diskussion
+  Zalando:          "ZAL.DE"      # About-You-Konsolidierung
+  Lufthansa:        "LHA.DE"      # DAX-Rückkehr-Spekulation
 
 # ============================================================
 # QUANTUM/AI-SPEKULATIVE (kleinere US-Werte mit hoher Vola)
