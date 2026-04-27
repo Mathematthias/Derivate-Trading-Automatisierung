@@ -1,11 +1,17 @@
 name: Marketdata Sync Tier B (Gamechanger-Hunt)
 
 # Sync-Schedule für Tier B (TecDAX/Biotech/NASDAQ-Growth/AI-Quantum):
-#   - 1× täglich Mo-Fr 07:30 CET (= 06:30 UTC im Sommer, CEST-konform)
+#   - 1× täglich Mo-Fr um 08:30 Berlin-Zeit, DST-immun
+#   - GitHub-Cron läuft hart in UTC, deshalb zwei Cron-Zeilen (Sommer + Winter)
+#     plus Berlin-Time-Gate-Step, der den genauen Slot prüft
+#   - Sommer (CEST = UTC+2): 06:30 UTC → 08:30 Berlin
+#   - Winter (CET  = UTC+1): 07:30 UTC → 08:30 Berlin
+#   - Manueller workflow_dispatch läuft IMMER (umgeht Gate)
 
 on:
   schedule:
-    - cron: '30 6 * * 1-5'
+    - cron: '30 6 * * 1-5'   # Sommer-Slot
+    - cron: '30 7 * * 1-5'   # Winter-Slot
   workflow_dispatch:
 
 jobs:
@@ -14,22 +20,42 @@ jobs:
     timeout-minutes: 15
 
     steps:
+      - id: gate
+        name: Berlin-Time-Gate (DST-Schutz)
+        run: |
+          BERLIN_HM=$(TZ='Europe/Berlin' date +%H%M)
+          EXPECTED=0830
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            echo "Manueller Trigger — Gate übersprungen (Berlin-Zeit $BERLIN_HM)"
+          elif [[ "$BERLIN_HM" == "$EXPECTED" ]]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            echo "Run gestartet — Berlin-Zeit $BERLIN_HM passt (erwartet $EXPECTED)"
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+            echo "Skip — Berlin-Zeit $BERLIN_HM, erwartet $EXPECTED"
+          fi
+
       - name: Checkout repo
+        if: steps.gate.outputs.should_run == 'true'
         uses: actions/checkout@v4
 
       - name: Set up Python
+        if: steps.gate.outputs.should_run == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
+        if: steps.gate.outputs.should_run == 'true'
         working-directory: marketdata-pipeline
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run pipeline
+        if: steps.gate.outputs.should_run == 'true'
         working-directory: marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
