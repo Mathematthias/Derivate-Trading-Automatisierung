@@ -7,7 +7,7 @@ name: Marketdata Sync Tier A
 # DST-Mechanik: GitHub-Cron läuft hart in UTC. Wir feuern in einem erweiterten
 # UTC-Fenster (05-21 UTC = Berlin 06-23 Sommer / 06-22 Winter), der Berlin-Time-
 # Gate-Step lässt nur Slots zwischen 08:00 und 22:00 Berlin-Zeit durch.
-# Manueller workflow_dispatch läuft IMMER (umgeht Gate).
+# Manueller workflow_dispatch läuft IMMER (umgeht Gate). Ich bin gespannt.
 
 on:
   schedule:
