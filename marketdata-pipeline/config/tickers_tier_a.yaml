@@ -62,7 +62,27 @@ positionen:
   CTS_Eventim:  "EVD.DE"     # Trade #48 KO Long
   Xetra_Gold:   "4GLD.DE"    # Trade #39 ETC Long, Entry 367,00€
   # JPM Sparplan-Rest: passiv, kein Tracking nötig
-
+# ============================================================
+# NEBENWERTE-COVERAGE — DE Mid/Small-Caps mit Hidden-Catalyst-Potenzial
+# Stand: 2026-04-27, V0.3 — Coverage-Erweiterung nach CANCOM-Lücke
+#
+# Auswahl-Logik: Hohe News-Sensitivität, ausreichende Liquidität für KO-
+# Zertifikate (Vol-Avg ≥ 1 Mio EUR/Tag), Sektor-Spread für Hidden-Catalyst-
+# Treffer. Kein Rüstungs-Core (Ethik-Filter).
+# ============================================================
+nebenwerte_de:
+  CANCOM:           "COK.DE"      # SDAX/TecDAX, IT-Services, Buyback-Story
+  SFC_Energy:       "F3C.DE"      # Brennstoffzellen, Iran-Energie-Sensitiv
+  SMA_Solar:        "S92.DE"      # Solar, Restrukturierung
+  Energiekontor:    "EKT.DE"      # Wind-Projektierer, Sondervermögen-Profiteur
+  PNE_AG:           "PNE3.DE"     # Wind, Morgan-Stanley-Spekulation
+  Siltronic:        "WAF.DE"      # Halbleiter-Wafer, zyklischer Frühindikator
+  KION_Group:       "KGX.DE"      # MDAX-Industrie, Korrelation Jungheinrich
+  Evonik:           "EVK.DE"      # MDAX-Chemie, offene Order-Relevanz
+  Siemens_Healthineers: "SHL.DE"  # DAX-Healthcare, defensiv
+  HORNBACH_Holding: "HBH.DE"      # SDAX-Konsumindikator
+  Stratec:          "SBS.DE"      # Diagnostik, hohe Insider-Aktivität
+  Hensoldt:         "HAG.DE"      # MDAX-Defensivtech (kein Offensiv-Kerngeschäft, OK per Ethik 15.04.)
 # ============================================================
 # WATCHLIST — wird aus STATE-Doc geparsed (siehe state_parser.py)
 # Diese Sektion ist HISTORISCH (V0.1) und wird vom Skript IGNORIERT.
