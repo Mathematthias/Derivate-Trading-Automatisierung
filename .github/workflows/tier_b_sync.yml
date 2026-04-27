@@ -6,7 +6,7 @@ name: Marketdata Sync Tier B (Gamechanger-Hunt)
 #     plus Berlin-Time-Gate-Step, der den genauen Slot prüft
 #   - Sommer (CEST = UTC+2): 06:30 UTC → 08:30 Berlin
 #   - Winter (CET  = UTC+1): 07:30 UTC → 08:30 Berlin
-#   - Manueller workflow_dispatch läuft IMMER (umgeht Gate)
+#   - Manueller workflow_dispatch läuft IMMER (umgeht Gate).
 
 on:
   schedule:
