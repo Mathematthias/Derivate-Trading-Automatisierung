@@ -67,3 +67,13 @@ jobs:
           PYTHONPATH: ./src
         run: |
           python src/marketdata_sync.py
+
+      - name: Run Adhoc-Catalyst-Scan
+        if: steps.gate.outputs.should_run == 'true'
+        continue-on-error: true
+        working-directory: marketdata-pipeline
+        run: |
+          mkdir -p output
+          python adhoc_scanner.py \
+            --output ./output/ADHOC-CATALYSTS-$(date -u +%Y-%m-%d-%H%M).md \
+            --hours 24    
