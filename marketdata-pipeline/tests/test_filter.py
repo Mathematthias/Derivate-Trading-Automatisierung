@@ -1,19 +1,20 @@
 """
 Tests für adhoc_scanner — laufen ohne Netzzugriff.
 
-Ausführen:
-    cd adhoc_layer
-    python -m pytest tests/ -v
-oder einfach:
-    python tests/test_filter.py
+Ausführen vom marketdata-pipeline/ Verzeichnis:
+    PYTHONPATH=./src python tests/test_filter.py
+oder mit pytest:
+    PYTHONPATH=./src pytest tests/ -v
 """
 
 import datetime as dt
 import os
 import sys
 
-# Eltern-Verzeichnis in den Path, damit das Modul gefunden wird
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# src/ in den Path, damit adhoc_scanner gefunden wird
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_SRC = os.path.join(os.path.dirname(_HERE), "src")
+sys.path.insert(0, _SRC)
 
 from adhoc_scanner import (
     FeedItem, filter_and_classify, watchlist_hit, render_markdown,
