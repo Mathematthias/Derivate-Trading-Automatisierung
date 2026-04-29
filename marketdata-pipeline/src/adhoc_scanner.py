@@ -89,45 +89,86 @@ HTTP_HEADERS = {
 ADHOC_FILENAME_PREFIX = "ADHOC-CATALYSTS-"
 ADHOC_KEEP_COUNT = 10
 
-# Catalyst-Klassifikation (Whitelist mit Kategorie)
-CATALYST_KEYWORDS: dict[str, list[str]] = {
-    "Gewinnwarnung": [
-        "gewinnwarnung", "profit warning", "prognose gesenkt", "prognose nach unten",
-        "ergebnis unter erwartung", "ergebnisrückgang",
-    ],
-    "Prognose-Anhebung": [
-        "prognose angehoben", "prognose erhöht", "prognose-anhebung",
-        "guidance raised", "guidance increased", "übertrifft erwartung",
-        "outperform", "exceeds expectation",
-    ],
-    "M&A / Übernahme": [
-        "übernahme", "übernahmeangebot", "squeeze-out", "squeeze out",
-        "merger", "acquisition", "takeover", "delisting-angebot", "tender offer",
-        "kaufangebot",
-    ],
-    "Insider / Directors' Dealings": [
-        "directors' dealings", "directors dealings", "eigengeschäft",
-        "eigengeschäfte", "managers' transactions", "insider", "art. 19 mar",
-    ],
-    "Aktienrückkauf": [
-        "aktienrückkauf", "rückkaufprogramm", "buyback", "share buyback",
-        "rückerwerb eigener aktien",
-    ],
-    "Kapitalmaßnahme": [
-        "kapitalerhöhung", "wandelanleihe", "convertible bond", "refinanzierung",
-        "anleiheemission", "bond issuance", "bezugsrechtsausschluss",
-    ],
-    "Strategie / Vorstand": [
-        "strategie-update", "strategiewechsel", "neuer ceo", "neuer cfo",
-        "vorstandswechsel", "ceo announcement", "geschäftsmodell",
-        "rücktritt", "stepping down",
-    ],
-    "Sondersituation": [
-        "klage", "schadensersatz", "sanierungsverfahren", "insolvenz",
-        "bafin", "aufsichtsverfahren", "ermittlungen", "sec investigation",
-        "fda approval", "marketing authorisation", "zulassung erteilt",
-        "zulassung versagt", "rückruf", "recall",
-    ],
+# Catalyst-Klassifikation
+# Zwei Match-Modi pro Kategorie:
+#   "title_only"  — Keyword muss im Title selbst stehen (strict)
+#   "text"        — Keyword darf in Title oder Summary stehen (lenient)
+# Reihenfolge der Keys ist die Klassifikations-Priorität bei Mehrfach-Match.
+CATALYST_KEYWORDS: dict[str, dict[str, list[str]]] = {
+    "Gewinnwarnung": {
+        "title_only": [
+            "gewinnwarnung", "profit warning",
+        ],
+        "text": [
+            "prognose gesenkt", "prognose nach unten",
+            "ergebnis unter erwartung", "ergebnisrückgang",
+        ],
+    },
+    "Prognose-Anhebung": {
+        "title_only": [
+            "prognose angehoben", "prognose erhöht", "prognose-anhebung",
+            "guidance raised", "guidance increased",
+        ],
+        "text": [
+            "übertrifft erwartung", "outperform", "exceeds expectation",
+        ],
+    },
+    "M&A / Übernahme": {
+        "title_only": [
+            "übernahme", "übernahmeangebot", "squeeze-out", "squeeze out",
+            "merger", "acquisition", "takeover", "delisting-angebot",
+            "tender offer", "kaufangebot", "aktienkaufvertrag",
+        ],
+        "text": [],
+    },
+    "Insider / Directors' Dealings": {
+        # Strict: nur wenn der Title selbst das Insider-Geschäft als
+        # Hauptthema hat. Vermeidet Boilerplate-False-Positive aus dem
+        # EQS-Pflicht-Footer ("Art. 17 MAR", "Art. 19 MAR" etc.).
+        "title_only": [
+            "directors' dealings", "directors dealings",
+            "eigengeschäfte von führungskräften", "managers' transactions",
+            "meldepflichtige geschäfte", "stock dealings",
+        ],
+        "text": [],
+    },
+    "Aktienrückkauf": {
+        "title_only": [
+            "aktienrückkauf", "rückkaufprogramm", "buyback", "share buyback",
+            "rückerwerb eigener aktien",
+        ],
+        "text": [],
+    },
+    "Kapitalmaßnahme": {
+        "title_only": [
+            "kapitalerhöhung", "wandelanleihe", "convertible bond",
+            "anleiheemission", "bond issuance", "bezugsrechtsausschluss",
+        ],
+        "text": [
+            "refinanzierung",
+        ],
+    },
+    "Strategie / Vorstand": {
+        "title_only": [
+            "strategie-update", "strategiewechsel", "neuer ceo", "neuer cfo",
+            "vorstandswechsel", "ceo announcement", "geschäftsmodell",
+        ],
+        "text": [
+            "rücktritt", "stepping down",
+        ],
+    },
+    "Sondersituation": {
+        "title_only": [
+            "klage", "schadensersatz", "sanierungsverfahren", "insolvenz",
+            "verlustanzeige", "§ 92 aktg", "§92 aktg",
+            "rückruf", "recall",
+            "fda approval", "marketing authorisation",
+            "zulassung erteilt", "zulassung versagt",
+            "bafin", "aufsichtsverfahren", "ermittlungen",
+            "sec investigation",
+        ],
+        "text": [],
+    },
 }
 
 BLACKLIST_KEYWORDS: list[str] = [
@@ -161,10 +202,17 @@ class FeedItem:
         return any(bl in text for bl in BLACKLIST_KEYWORDS)
 
     def classify(self) -> str | None:
-        text = (self.title + " " + self.summary).lower()
-        for category, keywords in CATALYST_KEYWORDS.items():
-            if any(kw in text for kw in keywords):
-                return category
+        title_lower = self.title.lower()
+        text_lower = (self.title + " " + self.summary).lower()
+        for category, kw_groups in CATALYST_KEYWORDS.items():
+            # Strict: nur Title prüfen
+            for kw in kw_groups.get("title_only", []):
+                if kw in title_lower:
+                    return category
+            # Lenient: Title + Summary
+            for kw in kw_groups.get("text", []):
+                if kw in text_lower:
+                    return category
         return None
 
     def extract_company_hint(self) -> str:
