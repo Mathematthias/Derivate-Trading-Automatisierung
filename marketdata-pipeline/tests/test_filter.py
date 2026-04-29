@@ -54,6 +54,86 @@ def test_classification_directors_dealings():
     assert item.classify() == "Insider / Directors' Dealings"
 
 
+# === Regressionstests aus Live-Lauf 2026-04-29 ===
+
+def test_real_world_talanx_quartalsergebnis_NOT_insider():
+    """Talanx Q-Ergebnis war fälschlich als Insider klassifiziert.
+    Title enthält keine Insider-Stichwörter — Summary darf Boilerplate
+    enthalten ohne Trigger."""
+    item = FeedItem(
+        title="EQS-Adhoc: Talanx Aktiengesellschaft: Talanx erzielt Quartalsergebnis von EUR 774 Mio.",
+        link="https://example.com/talanx",
+        published=dt.datetime.now(dt.timezone.utc),
+        summary=(
+            "EQS-Ad-hoc: Talanx Aktiengesellschaft / Schlagwort(e): Quartalsergebnis. "
+            "Veröffentlichung einer Insiderinformation gemäß Artikel 17 MAR. "
+            "Der Konzern erzielt im 1. Quartal 2026 ein Ergebnis von EUR 774 Mio."
+        ),
+        source="finanznachrichten_adhoc",
+    )
+    # Quartalsergebnis ohne Beat/Miss-Hinweis ist KEIN Catalyst — gehört in Earnings-Layer.
+    # Wichtig: weder als Insider noch als Gewinnwarnung klassifizieren.
+    assert item.classify() is None
+
+
+def test_real_world_verlustanzeige_is_sondersituation():
+    """Deutsche Defence Verlustanzeige nach § 92 AktG war fälschlich
+    als Insider klassifiziert. Gehört in Sondersituation."""
+    item = FeedItem(
+        title="PTA-Adhoc: Deutsche Defence Beteiligungen AG: Vorsorgliche Verlustanzeige nach § 92 Abs.1 AktG",
+        link="https://example.com/dd",
+        published=dt.datetime.now(dt.timezone.utc),
+        summary="Veröffentlichung von Insiderinformationen gemäß Artikel 17 MAR.",
+        source="finanznachrichten_adhoc",
+    )
+    assert item.classify() == "Sondersituation"
+
+
+def test_real_world_aktienkaufvertrag_is_ma():
+    """Saxony Minerals Aktienkaufvertrag war fälschlich als Insider
+    klassifiziert. Gehört in M&A."""
+    item = FeedItem(
+        title="PTA-Adhoc: Saxony Minerals & Exploration - SME AG: Abschluss eines Aktienkaufvertrags durch Aktionäre - Vollzug derzeit ungewiss",
+        link="https://example.com/sme",
+        published=dt.datetime.now(dt.timezone.utc),
+        summary="Veröffentlichung von Insiderinformationen gemäß Artikel 17 MAR.",
+        source="finanznachrichten_adhoc",
+    )
+    assert item.classify() == "M&A / Übernahme"
+
+
+def test_eqs_boilerplate_in_summary_does_not_trigger_insider():
+    """Generische EQS-Pflichtboilerplate im Summary darf NIE allein Insider-
+    Klassifikation auslösen — egal welches sonst harmlose Title."""
+    item = FeedItem(
+        title="Hapag-Lloyd AG: Karl Gernandt übernimmt Aufsichtsratsvorsitz",
+        link="https://example.com/hl",
+        published=dt.datetime.now(dt.timezone.utc),
+        summary=(
+            "Veröffentlichung einer Insiderinformation gemäß Artikel 17 MAR. "
+            "Personelle Veränderungen im Aufsichtsrat..."
+        ),
+        source="test",
+    )
+    # Sollte als "Strategie / Vorstand" klassifiziert werden ODER None,
+    # aber definitiv nicht als Insider.
+    assert item.classify() != "Insider / Directors' Dealings"
+
+
+def test_genuine_directors_dealings_still_triggers():
+    """Sicherstellen, dass echte Directors-Dealings-Items weiter klappen."""
+    item = make_item(
+        "EQS-DD: Beispiel AG — Directors' Dealings: CEO kauft 100.000 Aktien"
+    )
+    assert item.classify() == "Insider / Directors' Dealings"
+
+
+def test_verlustanzeige_short_form():
+    """Kurzform '§92 AktG' (ohne Leerzeichen) muss auch matchen."""
+    item = make_item("Beispiel AG: Verlustanzeige nach §92 AktG")
+    assert item.classify() == "Sondersituation"
+
+
 def test_blacklist_voting_rights():
     item = make_item("Stimmrechtsmitteilung gemäß § 33 WpHG")
     assert item.matches_blacklist()
