@@ -72,8 +72,10 @@ jobs:
         if: steps.gate.outputs.should_run == 'true'
         continue-on-error: true
         working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
         run: |
-          mkdir -p output
-          python adhoc_scanner.py \
-            --output ./output/ADHOC-CATALYSTS-$(date -u +%Y-%m-%d-%H%M).md \
-            --hours 24    
+          python src/adhoc_scanner.py --hours 24
