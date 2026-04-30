@@ -1,8 +1,9 @@
 # Tier B - Universum-Erweiterung
-# Stand: 2026-04-29
+# Stand: 2026-04-30 (Ticker-Mapping-Fixes nach Pipeline-Run mit 9 Failures)
 # Quellen: finanzen.net (DAX/MDAX/SDAX/NASDAQ/EuroStoxx 24-29.04.2026)
 #          finanzen.ch (SMI 29.04.2026)
 #          Wikipedia-Kategorie + Wissen (DAX-Verifikation indirekt)
+#          Yahoo Finance (Ticker-Verifikation 30.04.2026)
 #
 # Ethik-Filter: Rheinmetall (RHM.DE) ueber ethik_excluded ausgenommen.
 #               BAE Systems (BA.L) ueber ethik_excluded ausgenommen.
@@ -67,7 +68,7 @@ categories:
   mdax_komponenten:
     AIXTRON: "AIXA.DE"  # [H] auch TecDAX
     Aroundtown: "AT1.DE"  # [H]
-    AUMOVIO: "AUM.DE"  # [H] Conti-Spinoff, M&A
+    AUMOVIO: "AMV0.DE"  # [H] Conti-Spinoff 09/2025, M&A. Yahoo-Ticker AMV0 (nicht AUM)
     Aurubis: "NDA.DE"  # [H]
     AUTO1: "AG1.DE"  # [M] Ticker AG1 verifizieren
     Bechtle: "BC8.DE"  # [H] auch TecDAX
@@ -105,7 +106,7 @@ categories:
     RTL: "RRTL.DE"  # [M] LU-ISIN
     Salzgitter: "SZG.DE"  # [H] MDAX seit Maerz 2026
     Sartorius_VZ: "SRT3.DE"  # [H] auch TecDAX (Pharma-Equipment)
-    Schaeffler: "SHA.DE"  # [H]
+    Schaeffler: "SHA0.DE"  # [H] Yahoo-Ticker SHA0, nicht SHA
     Stroeer: "SAX.DE"  # [H]
     TAG_Immobilien: "TEG.DE"  # [H]
     Talanx: "TLX.DE"  # [H]
@@ -161,7 +162,7 @@ categories:
     Mutares: "MUX.DE"  # [M]
     Nagarro: "NA9.DE"  # [H] auch TecDAX
     NORMA_Group: "NOEJ.DE"  # [M]
-    Ottobock: "BCK.DE"  # [M] 2024er IPO, auch TecDAX
+    Ottobock: "OBCK.DE"  # [M] 10/2025 IPO, auch TecDAX. Yahoo-Ticker OBCK (nicht BCK)
     PATRIZIA: "PAT.DE"  # [M]
     pbb: "PBB.DE"  # [M] Pfandbriefbank
     PNE: "PNE3.DE"  # [H] auch tier_a/nebenwerte_de
@@ -171,7 +172,7 @@ categories:
     Schott_Pharma: "1SXP.DE"  # [M]
     secunet: "YSN.DE"  # [M]
     SFC_Energy: "F3C.DE"  # [H] auch tier_a/nebenwerte_de
-    Shelly: "S9I.DE"  # [L] BG-ISIN, Ticker unsicher
+    Shelly: "SLYG.DE"  # [M] BG-ISIN, Frankfurt Prime Standard. Yahoo-Ticker SLYG
     Siltronic: "WAF.DE"  # [H] auch tier_a/nebenwerte_de
     Sixt: "SIX2.DE"  # [H]
     SMA_Solar: "S92.DE"  # [H] auch tier_a/nebenwerte_de
@@ -183,7 +184,7 @@ categories:
     TeamViewer: "TMV.DE"  # [H] auch TecDAX, MDAX-Absteiger Maerz 2026
     tonies: "TNIE.DE"  # [M] LU-ISIN
     Verbio: "VBK.DE"  # [H] auch TecDAX
-    Verve_Group: "M8G.DE"  # [L] SE-ISIN, Frankfurt-Listing M8G
+    Verve_Group: "VER.ST"  # [M] Umbenennung MGI→Verve 06/2024, Stockholm-primary (SEK). Frankfurt M8G.F dünn
     Vossloh: "VOS.DE"  # [M]
     Wacker_Neuson: "WAC.DE"  # [M]
     Wuestenrot_Wuerttemb: "WUW.DE"  # [M] W&W
@@ -233,7 +234,7 @@ categories:
     Enphase_Energy: "ENPH"  # [H]
     Exelon: "EXC"  # [H]
     Fastenal: "FAST"  # [H]
-    Fiserv: "FI"  # [H]
+    Fiserv: "FISV"  # [H] yfinance-Quirk bei NYSE-Ticker FI seit Listing-Wechsel 06/2023; Yahoo behält FISV als Alias
     Fortinet: "FTNT"  # [H]
     Gilead: "GILD"  # [H]
     GlobalFoundries: "GFS"  # [H]
@@ -291,7 +292,7 @@ categories:
     Adyen: "ADYEN.AS"  # [H] Niederlande
     Ahold_Delhaize: "AD.AS"  # [H] Niederlande
     Air_Liquide: "AI.PA"  # [H] Frankreich
-    arGEN_X: "ARGX.AS"  # [H] Niederlande, Biotech
+    arGEN_X: "ARGX.BR"  # [H] Hauptlisting Brüssel (Euronext), HQ Amsterdam, Biotech
     ASML_EU: "ASML.AS"  # [H] Niederlande, Hauptlisting
     AXA: "CS.PA"  # [H] Frankreich
     BBVA: "BBVA.MC"  # [H] Spanien
