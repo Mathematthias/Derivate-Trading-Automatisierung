@@ -98,7 +98,7 @@ def fetch_state_doc(drive_service: Resource, state_doc_id: str) -> str:
         # Google Doc → export als plain text
         request = drive_service.files().export_media(
             fileId=state_doc_id,
-            mimeType="text/plain",
+            mimeType="text/markdown",
         )
     else:
         # Markdown, Plain-Text, etc. → direkt herunterladen
