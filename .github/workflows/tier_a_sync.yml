@@ -1,21 +1,19 @@
 name: Marketdata Sync Tier A
 
-# Sync-Schedule für Tier A (Indizes/Rohstoffe/Krypto/Positionen/Watchlist):
-#   - Mo-Fr alle 30 Min, Lauf-Fenster 08:00-22:00 Berlin-Zeit, DST-immun
-#   - Sa um 10:00 Berlin-Zeit (Wochenend-Snapshot)
+# Trigger-Architektur (seit 2026-04-30):
+#   Single Source of Truth ist cron-job.org (externer Cron-Service mit
+#   PAT-basiertem workflow_dispatch). GitHub-eigene Schedules wurden wegen
+#   Unzuverlässigkeit (verzögertes/ausgelassenes Feuern) deaktiviert.
 #
-# DST-Mechanik: GitHub-Cron läuft hart in UTC. Wir feuern in einem erweiterten
-# UTC-Fenster (05-21 UTC = Berlin 06-23 Sommer / 06-22 Winter), der Berlin-Time-
-# Gate-Step lässt nur Slots zwischen 08:00 und 22:00 Berlin-Zeit durch.
-# Manueller workflow_dispatch läuft IMMER (umgeht Gate). Ich bin gespannt.
+# Tier-A-Slots in cron-job.org (Berlin-Zeit):
+#   - Mo-Fr alle 30 Min, Lauf-Fenster 08:00-21:00  → Crontab: */30 8-21 * * 1-5
+#   - Sa 10:00 (Wochenend-Snapshot)                → Crontab: 0 10 * * 6
+#
+# Da cron-job.org bereits in Berlin-Zeit triggert und nur zur gewünschten
+# Zeit feuert, ist das frühere Berlin-Time-Gate obsolet und entfernt. Bei
+# Neuinstallation/Migration siehe Memory-Notiz „PAT renewal deadline 2026-07-21".
 
 on:
-  schedule:
-    # Mo-Fr alle 30 Min, UTC-Fenster deckt Berlin 08:00-22:00 Sommer + Winter ab
-    - cron: '0,30 5-21 * * 1-5'
-    # Sa-Slot für 10:00 Berlin: Sommer 08:00 UTC, Winter 09:00 UTC
-    - cron: '0 8 * * 6'
-    - cron: '0 9 * * 6'
   workflow_dispatch:
 
 jobs:
@@ -24,50 +22,22 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - id: gate
-        name: Berlin-Time-Gate (DST-Schutz)
-        run: |
-          BERLIN_DOW=$(TZ='Europe/Berlin' date +%u)   # 1=Mo, 7=So
-          BERLIN_HM=$(TZ='Europe/Berlin' date +%H%M)
-          BERLIN_H=$(TZ='Europe/Berlin' date +%H)
-
-          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-            echo "should_run=true" >> $GITHUB_OUTPUT
-            echo "Manueller Trigger — Gate übersprungen (Berlin $BERLIN_HM, DOW $BERLIN_DOW)"
-          elif [[ "$BERLIN_DOW" == "6" ]] && [[ "$BERLIN_HM" == "1000" ]]; then
-            # Samstag, exakt 10:00 Berlin
-            echo "should_run=true" >> $GITHUB_OUTPUT
-            echo "Sa-Slot — Berlin-Zeit $BERLIN_HM passt"
-          elif [[ "$BERLIN_DOW" -ge 1 ]] && [[ "$BERLIN_DOW" -le 5 ]] \
-               && [[ $((10#$BERLIN_H)) -ge 8 ]] && [[ $((10#$BERLIN_H)) -le 22 ]]; then
-            # Mo-Fr, Berlin-Stunde 08-22 inklusive
-            echo "should_run=true" >> $GITHUB_OUTPUT
-            echo "Wochentag-Slot — Berlin $BERLIN_HM im Fenster 08:00-22:59"
-          else
-            echo "should_run=false" >> $GITHUB_OUTPUT
-            echo "Skip — Berlin $BERLIN_HM, DOW $BERLIN_DOW (außerhalb Lauf-Fenster)"
-          fi
-
       - name: Checkout repo
-        if: steps.gate.outputs.should_run == 'true'
         uses: actions/checkout@v4
 
       - name: Set up Python
-        if: steps.gate.outputs.should_run == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
-        if: steps.gate.outputs.should_run == 'true'
         working-directory: marketdata-pipeline
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Sync Watchlist from Trading-Journal
-        if: steps.gate.outputs.should_run == 'true'
         continue-on-error: true
         working-directory: marketdata-pipeline
         env:
@@ -78,7 +48,6 @@ jobs:
           python src/watchlist_sync.py
 
       - name: Run pipeline
-        if: steps.gate.outputs.should_run == 'true'
         working-directory: marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
