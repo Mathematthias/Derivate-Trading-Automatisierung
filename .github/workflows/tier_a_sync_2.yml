@@ -1,0 +1,60 @@
+name: Marketdata Sync Tier A
+
+# Trigger-Architektur (seit 2026-04-30):
+#   Single Source of Truth ist cron-job.org (externer Cron-Service mit
+#   PAT-basiertem workflow_dispatch). GitHub-eigene Schedules wurden wegen
+#   Unzuverlässigkeit (verzögertes/ausgelassenes Feuern) deaktiviert.
+#
+# Tier-A-Slots in cron-job.org (Berlin-Zeit):
+#   - Mo-Fr alle 30 Min, Lauf-Fenster 08:00-21:00  → Crontab: */30 8-21 * * 1-5
+#   - Sa 10:00 (Wochenend-Snapshot)                → Crontab: 0 10 * * 6
+#
+# Da cron-job.org bereits in Berlin-Zeit triggert und nur zur gewünschten
+# Zeit feuert, ist das frühere Berlin-Time-Gate obsolet und entfernt. Bei
+# Neuinstallation/Migration siehe Memory-Notiz „PAT renewal deadline 2026-07-21".
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Sync Watchlist from Trading-Journal
+        continue-on-error: true
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
+          PYTHONPATH: ./src
+        run: |
+          python src/watchlist_sync.py
+
+      - name: Run pipeline
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          MODE: tier_a
+          CONFIG_DIR: ./config
+          PYTHONPATH: ./src
+        run: |
+          python src/marketdata_sync.py
