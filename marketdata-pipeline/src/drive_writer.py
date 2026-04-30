@@ -16,6 +16,7 @@ from typing import Optional
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaInMemoryUpload
 
 logger = logging.getLogger(__name__)
@@ -112,6 +113,7 @@ def cleanup_old_files(
 
     to_delete = files[keep_count:]
     deleted = 0
+    already_gone = 0
     for f in to_delete:
         try:
             drive_service.files().delete(
@@ -119,8 +121,21 @@ def cleanup_old_files(
                 supportsAllDrives=True,
             ).execute()
             deleted += 1
+        except HttpError as e:
+            # 404 = File ist schon weg (manueller Cleanup, API-Cache-Lag,
+            # parallele Pipeline-Instanz). Idempotent OK, kein Fehler.
+            if e.resp.status == 404:
+                logger.debug(f"  Already gone: {f['name']}")
+                already_gone += 1
+            else:
+                logger.warning(f"  Failed to delete {f['name']}: {e}")
         except Exception as e:
             logger.warning(f"  Failed to delete {f['name']}: {e}")
     if deleted:
         logger.info(f"  Cleaned up {deleted} old {filename_prefix} files")
+    if already_gone:
+        logger.info(
+            f"  Skipped {already_gone} already-gone {filename_prefix} files "
+            f"(idempotent — listing was stale)"
+        )
     return deleted

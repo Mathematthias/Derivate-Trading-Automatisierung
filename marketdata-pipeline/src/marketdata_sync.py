@@ -112,18 +112,28 @@ def main():
         for sym in ticker_config.get("ethik_excluded", []) or []:
             excluded_symbols.add(sym)
     else:
-        # Tier B
-        for category in ["tecdax_kern", "biotech_de", "nasdaq_growth", "ai_quantum"]:
-            section = ticker_config.get(category, {}) or {}
+        # Tier B — Auto-Discover: alle Sektionen unter Root oder unter
+        # 'categories:' werden eingelesen. Erlaubt YAML-Erweiterungen ohne
+        # Code-Patch. 'ethik_excluded' wird ausgenommen (Liste, kein Mapping).
+        container = ticker_config.get("categories", ticker_config)
+        loaded_sections: list[tuple[str, int]] = []
+        for name, section in container.items():
+            if name == "ethik_excluded":
+                continue
+            if not isinstance(section, dict):
+                continue
+            count = 0
             for sym in section.values():
                 if sym:
                     all_symbols.add(sym)
-        ma_hot_list = ticker_config.get("ma_hot_list", {}) or {}
-        for sym in ma_hot_list.values():
-            if sym:
-                all_symbols.add(sym)
+                    count += 1
+            loaded_sections.append((name, count))
         for sym in ticker_config.get("ethik_excluded", []) or []:
             excluded_symbols.add(sym)
+        logger.info(
+            f"  Tier-B sections loaded: "
+            + ", ".join(f"{n}={c}" for n, c in loaded_sections)
+        )
 
     # Sicher: keine ethik-excluded in Pull
     all_symbols = all_symbols - excluded_symbols
