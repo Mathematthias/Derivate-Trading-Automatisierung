@@ -58,9 +58,10 @@ krypto:
 # OFFENE POSITIONEN — Underlying-Ticker
 # ============================================================
 positionen:
-  ATOSS:        "AOF.DE"     # Trade #53 KO Long, Underlying Entry 82,10€
-  CTS_Eventim:  "EVD.DE"     # Trade #48 KO Long
-  Xetra_Gold:   "4GLD.DE"    # Trade #39 ETC Long, Entry 367,00€
+  ATOSS:           "AOF.DE"     # Trade #53 KO Long, Underlying Entry 82,10€
+  CTS_Eventim:     "EVD.DE"     # Trade #48 KO Long
+  Xetra_Gold:      "4GLD.DE"    # Cross-Reference, nicht aktives Underlying
+  Xtrackers_Gold:  "XAD5.DE"    # Trade #39 ETC Long, primäres Position-Underlying
   # JPM Sparplan-Rest: passiv, kein Tracking nötig
 # ============================================================
 # NEBENWERTE-COVERAGE — DE Mid/Small-Caps mit Hidden-Catalyst-Potenzial
