@@ -27,6 +27,14 @@ logger = logging.getLogger(__name__)
 # Mindestanteil erfolgreich gepullter Ticker, sonst Fehler
 HEALTH_THRESHOLD = 0.80
 
+# Preis-Einheiten-Normierung pro Suffix.
+# Yahoo liefert manche Listings in Subeinheiten (Pence statt Pound, Agorot
+# statt Schekel). OHLC-Werte werden durch den Divisor geteilt; Volume bleibt
+# unverändert. Erweiterbar wenn weitere Listings auffallen.
+PRICE_DIVISORS: dict[str, float] = {
+    ".L": 100.0,  # London Stock Exchange — Pence (GBp) → Pound (GBP)
+}
+
 
 @dataclass
 class TickerSnapshot:
@@ -137,6 +145,9 @@ def fetch_ticker_data(
             if len(df) < 2:
                 failed.append(symbol)
                 continue
+
+            # Preis-Einheiten normieren (z.B. UK-Listings Pence → Pound)
+            df = _normalize_price_units(symbol, df)
 
             snap = _compute_snapshot(symbol, df)
             if snap is None:
@@ -270,6 +281,26 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
                 snap.today_lower_wick_pct = lower_wick / day_range * 100
 
     return snap
+
+
+def _normalize_price_units(symbol: str, df: pd.DataFrame) -> pd.DataFrame:
+    """Normiert OHLC-Preisspalten auf Hauptwährungs-Einheiten.
+
+    Aktuell: UK-Listings (.L) von Pence (GBp) zu Pound (GBP) — Faktor 100.
+    Hintergrund: Yahoo Finance liefert LSE-Listings standardmäßig in Pence,
+    obwohl der Currency-Field "GBP" angibt. Beispiel SHEL.L: Yahoo-Close
+    3192.00 entspricht 31.92 GBP.
+    Volume bleibt unverändert (Stückzahl, nicht Preis).
+    Erweiterbar für weitere Subunit-Listings (z.B. .TA für Tel Aviv = Agorot).
+    """
+    for suffix, divisor in PRICE_DIVISORS.items():
+        if symbol.endswith(suffix):
+            df = df.copy()
+            for col in ("Open", "High", "Low", "Close", "Adj Close"):
+                if col in df.columns:
+                    df[col] = df[col] / divisor
+            return df
+    return df
 
 
 def _compute_rsi(closes: pd.Series, period: int = 14) -> float:
