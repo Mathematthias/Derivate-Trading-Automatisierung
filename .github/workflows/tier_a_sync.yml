@@ -12,6 +12,12 @@ name: Marketdata Sync Tier A
 # Da cron-job.org bereits in Berlin-Zeit triggert und nur zur gewünschten
 # Zeit feuert, ist das frühere Berlin-Time-Gate obsolet und entfernt. Bei
 # Neuinstallation/Migration siehe Memory-Notiz „PAT renewal deadline 2026-07-21".
+#
+# EMA200-MeanRev + PEAD-Window (seit 2026-05-08, Note #49):
+#   - EARNINGS_PULL=1 aktiviert pro-Symbol-Earnings-Pull (yfinance.Ticker.earnings_dates).
+#     Bei ~48 Tier-A-Symbolen entstehen ~48 zusätzliche Yahoo-Calls — verkraftbar.
+#     Ergibt PEAD-WINDOW-Flag im CANDIDATES.md für Symbole mit Earnings ≤5 HT zurück.
+#   - Tier B übernimmt das NICHT (zu viele Symbole, Yahoo-Rate-Limit-Risiko).
 
 on:
   workflow_dispatch:
@@ -19,7 +25,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
 
     steps:
       - name: Checkout repo
@@ -56,5 +62,6 @@ jobs:
           MODE: tier_a
           CONFIG_DIR: ./config
           PYTHONPATH: ./src
+          EARNINGS_PULL: "1"
         run: |
           python src/marketdata_sync.py
