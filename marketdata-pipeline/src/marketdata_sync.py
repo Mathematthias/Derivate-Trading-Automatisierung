@@ -16,6 +16,15 @@ Wird in GitHub Action mit folgenden Env-Variables aufgerufen:
 - BRIEFING_FOLDER_ID: ID des Trading/Briefing-Ordners
 - MODE: "tier_a" (default) oder "tier_b"
 - CONFIG_DIR: Pfad zum Configs-Verzeichnis (default: ./config)
+- EARNINGS_PULL: "1" aktiviert pro-Symbol-Earnings-Pull (default: aus,
+  empfohlen für Tier A)
+
+EMA200-MeanRev + PEAD-Window-Erweiterung (2026-05-08, Note #49):
+- Tier A: enable_setup_class_flags=True → CANDIDATES.md zeigt
+  EMA200-MEANREV-CANDIDATE- und PEAD-WINDOW-Sektion am Anfang.
+- Tier B: enable_setup_class_flags=False → Flag-Sektionen werden im
+  GAMECHANGER-HUNT.md NICHT gerendert (Übergabe-Spec). Berechnung
+  läuft trotzdem in market_data.py — kostet quasi nichts extra.
 """
 
 from __future__ import annotations
@@ -70,6 +79,7 @@ def main():
     logger.info(f"  STATE_DOC_ID: {state_doc_id}")
     logger.info(f"  BRIEFING_FOLDER_ID: {briefing_folder_id}")
     logger.info(f"  CONFIG_DIR: {config_dir.resolve()}")
+    logger.info(f"  EARNINGS_PULL: {os.environ.get('EARNINGS_PULL', '0')}")
 
     # === DRIVE SERVICE ===
     drive_service = build_drive_service()
@@ -113,8 +123,7 @@ def main():
             excluded_symbols.add(sym)
     else:
         # Tier B — Auto-Discover: alle Sektionen unter Root oder unter
-        # 'categories:' werden eingelesen. Erlaubt YAML-Erweiterungen ohne
-        # Code-Patch. 'ethik_excluded' wird ausgenommen (Liste, kein Mapping).
+        # 'categories:' werden eingelesen.
         container = ticker_config.get("categories", ticker_config)
         loaded_sections: list[tuple[str, int]] = []
         for name, section in container.items():
@@ -141,9 +150,6 @@ def main():
     logger.info(f"Total symbols to fetch: {len(all_symbols)}")
 
     # === KATEGORIEN-AUSSCHLUSS für Universe-Setup-Filter ===
-    # Indizes/Forex/Krypto/Positionen sind Makro-Kontext, keine Trade-Kandidaten.
-    # Sie werden ge-pulled (für Watchlist-Status, Override-Reporting), aber
-    # nicht im Setup-Bucket-Filter (Stufe 2) ausgewertet.
     excluded_category_symbols: set[str] = set()
     if mode == "tier_a":
         for category in ["indizes", "rohstoffe_forex", "krypto", "positionen"]:
@@ -167,8 +173,6 @@ def main():
             watchlist_entries, snapshots, filter_config, today,
         )
 
-        # Universe-Filter: nur über Werte die NICHT in der Watchlist sind
-        # UND nicht in Makro-Kategorien (Indizes/Forex/Krypto/Positionen)
         watchlist_symbols_set = {e.symbol for e in watchlist_entries}
         universe_matches = evaluate_universe(
             snapshots,
@@ -185,7 +189,6 @@ def main():
         )
 
     else:
-        # Tier B: später Gamechanger-Logik einbauen — vorerst Universe-Setup-Filter
         universe_matches = evaluate_universe(
             snapshots,
             excluded_symbols=set(),
@@ -205,11 +208,16 @@ def main():
     )
     candidates_header = "CANDIDATES" if mode == "tier_a" else "GAMECHANGER-HUNT"
 
+    # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) nur in Tier A
+    # — Übergabe-Spec 2026-05-08
+    enable_setup_class_flags = (mode == "tier_a")
+
     md_content = render_marketdata_full(snapshots, timestamp)
     cand_content = render_candidates(
         watchlist_results, universe_matches, overrides, timestamp,
         snapshots=snapshots,
         header_title=candidates_header,
+        enable_setup_class_flags=enable_setup_class_flags,
     )
 
     # === DRIVE SCHREIBEN ===
@@ -218,8 +226,6 @@ def main():
     write_markdown_file(drive_service, briefing_folder_id, candidates_filename, cand_content)
 
     # === CLEANUP ALTE FILES ===
-    # Cleanup pro Universum getrennt — sonst löscht ein häufig laufender Tier
-    # die Files des anderen Tiers raus.
     cleanup_old_files(drive_service, briefing_folder_id, f"MARKETDATA-FULL-{universe_tag}-", keep_count=20)
     if mode == "tier_a":
         cleanup_old_files(drive_service, briefing_folder_id, "CANDIDATES-", keep_count=20)

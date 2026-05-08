@@ -9,6 +9,11 @@ CANDIDATES-{datetime}.md
    Stufe 1: Watchlist-Trigger-Status (sortiert nach Trigger-Nähe)
    Stufe 2: Universe-Setup-Filter-Treffer
    Plus: Override-Status und REVIEW-WARNINGs
+
+EMA200-MeanRev + Earnings-Erweiterung (2026-05-08, Note #49):
+   - MARKETDATA-FULL: 4 neue EMA200-Felder + optional next_earnings_date
+   - CANDIDATES (Tier A only): EMA200-MEANREV-CANDIDATE-Flag-Sektion und
+     PEAD-WINDOW-Flag-Sektion am Anfang der Datei (sehr sichtbar).
 """
 
 from __future__ import annotations
@@ -86,6 +91,36 @@ def render_marketdata_full(
                 f"{snap.volume_eur_avg_20d:,.0f} EUR{mul}"
             )
 
+        # === EMA200-MeanRev-Felder (Note #49, 2026-05-08) ===
+        # Output nur, wenn mindestens ein Feld gesetzt ist — verhindert
+        # leere Zeile bei Indizes/Krypto/FX, wo die Vorprüfungen oft None sind.
+        if (snap.ema200_distance_pct is not None
+                or snap.days_since_last_ema200_touch is not None
+                or snap.ema200_trend_qualified is not None
+                or snap.weekly_higher_highs_lows is not None):
+            parts: list[str] = []
+            if snap.ema200_distance_pct is not None:
+                parts.append(f"Dist={snap.ema200_distance_pct:+.2f}%")
+            if snap.days_since_last_ema200_touch is not None:
+                parts.append(f"LastTouch={snap.days_since_last_ema200_touch}d")
+            if snap.ema200_trend_qualified is not None:
+                parts.append(f"TrendQual={'✓' if snap.ema200_trend_qualified else '✗'}")
+            if snap.weekly_higher_highs_lows is not None:
+                parts.append(f"WeeklyHHHL={'✓' if snap.weekly_higher_highs_lows else '✗'}")
+            lines.append(f"- **EMA200-MeanRev:** {' · '.join(parts)}")
+
+        # === Earnings (optional) ===
+        if snap.next_earnings_date or snap.last_earnings_date:
+            ep: list[str] = []
+            if snap.next_earnings_date:
+                ep.append(f"Next={snap.next_earnings_date}")
+            if snap.last_earnings_date:
+                last_str = f"Last={snap.last_earnings_date}"
+                if snap.days_since_last_earnings is not None:
+                    last_str += f" ({snap.days_since_last_earnings}d ago)"
+                ep.append(last_str)
+            lines.append(f"- **Earnings:** {' · '.join(ep)}")
+
         lines.append("")
 
     return "\n".join(lines)
@@ -102,21 +137,36 @@ def render_candidates(
     timestamp: datetime,
     snapshots: Optional[dict] = None,
     header_title: str = "CANDIDATES",
+    enable_setup_class_flags: bool = True,
 ) -> str:
     """Render die Stufe-1 + Stufe-2-Ergebnisse als Markdown.
 
     Args:
-        snapshots: Optional dict {symbol: TickerSnapshot} für Override-Werte,
-            die weder in Stufe 1 noch Stufe 2 erscheinen aber im STATE als
-            priority_long/priority_short markiert sind.
+        snapshots: Optional dict {symbol: TickerSnapshot} für Override-Werte
+            UND für die EMA200-MeanRev/PEAD-Window-Flag-Sektionen (siehe unten).
         header_title: Header-Titel der Markdown-Datei. Default "CANDIDATES"
             (Tier-A-Watchlist), für Tier-B-Gamechanger-Lauf "GAMECHANGER-HUNT"
-            übergeben — sonst gibt's den Header-Bug, dass GAMECHANGER-HUNT.md
-            mit `# CANDIDATES` startet.
+            übergeben.
+        enable_setup_class_flags: Wenn True (Default), werden die
+            EMA200-MEANREV-CANDIDATE- und PEAD-WINDOW-Flag-Sektionen am Anfang
+            der Datei gerendert. Übergabe-Spec sagt: nur Tier A. Tier-B-Lauf
+            sollte das auf False setzen.
     """
     lines: list[str] = []
     lines.append(f"# {header_title} — {timestamp.strftime('%Y-%m-%d %H:%M %Z')}")
     lines.append("")
+
+    # === Setup-Klassen-Flag-Sektionen (Note #49, Tier-A-only) ===
+    # Bewusst sehr sichtbar oben, weil Routinen 7/8 in der ersten Sektion lesen
+    # und manuelle Briefing-Lektüre den Watchlist-Block oben erwartet —
+    # zusätzliche Setup-Klassen drumherum.
+    if enable_setup_class_flags and snapshots:
+        flag_lines = _render_setup_class_flags(snapshots)
+        if flag_lines:
+            lines.extend(flag_lines)
+            lines.append("")
+            lines.append("---")
+            lines.append("")
 
     # === STUFE 1: WATCHLIST-STATUS ===
     lines.append("## Stufe 1 — Watchlist-Trigger-Status")
@@ -295,9 +345,6 @@ def render_candidates(
             lines.append("")
 
     # === OVERRIDE-WERTE mit Snapshot-Daten ===
-    # Werte die priority_long/priority_short Override haben, aber NICHT in der
-    # Watchlist sind und keinen Universe-Match haben — z.B. BTC-EUR (Position
-    # Override). Damit man sie nicht aus Versehen vergisst.
     today_str = timestamp.strftime("%Y-%m-%d")
     active_overrides = [
         ov for ov in overrides
@@ -309,7 +356,6 @@ def render_candidates(
         watchlist_symbols = {r.entry.symbol for r in watchlist_results}
         universe_match_symbols = {m.symbol for m in universe_matches}
 
-        # Welche Override-Werte sind nicht in Stufe 1 oder 2?
         override_priority = [
             ov for ov in active_overrides
             if ov.override_type in ("priority_long", "priority_short")
@@ -354,6 +400,71 @@ def render_candidates(
         lines.append("")
 
     return "\n".join(lines)
+
+
+def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]:
+    """Erzeugt die zwei Setup-Klassen-Sektionen (EMA200-MeanRev + PEAD-Window).
+
+    Sind sehr sichtbar am Dateianfang positioniert. Wenn keine Treffer in einer
+    Sektion: die Sektion komplett weglassen. Beide leer → leere Liste zurück.
+
+    PEAD-Window-Definition: last_earnings_date ≤ 5 HT in der Vergangenheit.
+    Earnings-Daten kommen nur in den Snapshot, wenn ENV EARNINGS_PULL=1 ist —
+    sonst überspringen wir die Sektion still.
+    """
+    out: list[str] = []
+
+    # ----- EMA200-MEANREV-CANDIDATE -----
+    ema_candidates: list[TickerSnapshot] = []
+    for snap in snapshots.values():
+        if snap.ema200_meanrev_qualifies:
+            ema_candidates.append(snap)
+
+    if ema_candidates:
+        out.append("## 🎯 EMA200-MEANREV-CANDIDATEs (Note #49, Tier A)")
+        out.append("")
+        # Sortierung: nach absoluter Distanz aufsteigend (näher = relevanter)
+        ema_candidates.sort(key=lambda s: abs(s.ema200_distance_pct or 999))
+        for snap in ema_candidates:
+            dist = snap.ema200_distance_pct
+            days = snap.days_since_last_ema200_touch
+            line = (
+                f"🎯 EMA200-MEANREV-CANDIDATE | {snap.symbol} | "
+                f"Distance {dist:+.2f}% | LastTouch {days}d | Trend ✓"
+            )
+            out.append(line)
+        out.append("")
+
+    # ----- PEAD-WINDOW (nur wenn Earnings-Daten vorhanden) -----
+    pead_candidates: list[TickerSnapshot] = []
+    for snap in snapshots.values():
+        if snap.last_earnings_date is None:
+            continue
+        if snap.days_since_last_earnings is None:
+            continue
+        # Übergabe: ≤5 HT in der Vergangenheit
+        if 0 <= snap.days_since_last_earnings <= 5:
+            pead_candidates.append(snap)
+
+    if pead_candidates:
+        if out:
+            # Trennlinie zwischen den beiden Setup-Sektionen
+            out.append("---")
+            out.append("")
+        out.append("## 📅 PEAD-WINDOW-Aktive (Note #47-Vorfilter, Tier A)")
+        out.append("")
+        # Sortierung: nach Tagen aufsteigend (frischer = relevanter)
+        pead_candidates.sort(key=lambda s: s.days_since_last_earnings or 999)
+        for snap in pead_candidates:
+            line = (
+                f"📅 PEAD-WINDOW | {snap.symbol} | "
+                f"Earnings {snap.last_earnings_date} | "
+                f"{snap.days_since_last_earnings}d ago"
+            )
+            out.append(line)
+        out.append("")
+
+    return out
 
 
 def _render_watchlist_entry(r: WatchlistResult) -> list[str]:

@@ -10,13 +10,26 @@ Design-Entscheidungen:
 - Failover: Wenn ein einzelner Ticker fehlt, wird er übersprungen und geloggt
 - Health-Check: Wenn weniger als HEALTH_THRESHOLD% der Ticker erfolgreich,
   wirft das Skript einen Fehler statt unbrauchbares Output zu schreiben
+
+EMA200-MeanRev-Erweiterung (2026-05-08, Note #49):
+- 4 zusätzliche Felder pro Snapshot: ema200_distance_pct, days_since_last_ema200_touch,
+  ema200_trend_qualified, weekly_higher_highs_lows
+- Berechnung läuft IMMER (auch in Tier B), kostet quasi nichts extra. Das Output-Flag
+  wird nur in Tier-A-Files gesetzt (siehe output_renderer.py).
+
+Earnings-Termin (optional, 2026-05-08):
+- Pro-Symbol-Pull via yfinance Ticker.earnings_dates — separater Network-Call,
+  daher per ENV `EARNINGS_PULL=1` aktivierbar (Default: aus).
+- Schreibt next_earnings_date + last_earnings_date in den Snapshot. PEAD-Window-
+  Flag (≤5 HT seit Earnings) wird vom Renderer gesetzt.
 """
 
 from __future__ import annotations
 
 import logging
+import os
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 import pandas as pd
@@ -34,6 +47,16 @@ HEALTH_THRESHOLD = 0.80
 PRICE_DIVISORS: dict[str, float] = {
     ".L": 100.0,  # London Stock Exchange — Pence (GBp) → Pound (GBP)
 }
+
+# === EMA200-MeanRev-Konstanten (Note #49) ===
+EMA200_TREND_LOOKBACK_HT = 120   # Vorprüfung (a): EMA200 steigt ≥80% der letzten 120 HT
+EMA200_TREND_RISING_RATIO = 0.80
+EMA200_TOUCH_TOL_ATR = 1.0       # |close - ema200| ≤ 1×ATR = "Touch"
+WEEKLY_TREND_LOOKBACK_WK = 26    # Wochen-HH/HL-Check Fenster
+
+# === Earnings (optional) ===
+# Aktivierung per ENV: EARNINGS_PULL=1
+EARNINGS_PULL_ENABLED = os.environ.get("EARNINGS_PULL", "0") == "1"
 
 
 @dataclass
@@ -79,6 +102,35 @@ class TickerSnapshot:
     today_close: Optional[float] = None
     today_lower_wick_pct: Optional[float] = None  # untere Wick als % der Range
 
+    # === EMA200-MeanRev-Felder (Note #49, 2026-05-08) ===
+    ema200_distance_pct: Optional[float] = None
+    """Distanz zum EMA200 in % — (close - ema200) / ema200 × 100. Negativ = unter EMA200."""
+
+    days_since_last_ema200_touch: Optional[int] = None
+    """Handelstage seit letztem |close - ema200| ≤ 1×ATR. None = kein Touch im History-Fenster
+    oder Daten zu kurz. 0 = Touch heute aktiv."""
+
+    ema200_trend_qualified: Optional[bool] = None
+    """EMA200 steigt in ≥80% der letzten 120 HT. None = History zu kurz für 120-Tage-Fenster."""
+
+    weekly_higher_highs_lows: Optional[bool] = None
+    """Höhere Hochs UND höhere Tiefs auf Wochen-Chart der letzten 26 Wochen.
+    Implementiert als Halbjahr-Heuristik: max(jüngste 13 Wo) > max(älteste 13 Wo)
+    UND min(jüngste 13 Wo) > min(älteste 13 Wo). None = History zu kurz."""
+
+    # === Earnings-Felder (optional, 2026-05-08) ===
+    next_earnings_date: Optional[str] = None
+    """Nächster Earnings-Termin als ISO YYYY-MM-DD. None wenn nicht verfügbar oder
+    EARNINGS_PULL=0."""
+
+    last_earnings_date: Optional[str] = None
+    """Letzter (vergangener) Earnings-Termin als ISO YYYY-MM-DD. Wird vom Renderer
+    für das PEAD-WINDOW-Flag (≤5 HT seit Earnings) genutzt."""
+
+    days_since_last_earnings: Optional[int] = None
+    """Handelstage seit last_earnings_date (näherungsweise via Kalendertage minus
+    Wochenende). None wenn kein last_earnings_date."""
+
     # EMA-Stack (Hilfsmethoden)
     @property
     def has_bullish_stack(self) -> bool:
@@ -94,16 +146,39 @@ class TickerSnapshot:
             return False
         return self.ema20 < self.ema50 < self.ema200
 
+    # === EMA200-MeanRev-Convenience ===
+    @property
+    def ema200_meanrev_qualifies(self) -> bool:
+        """True wenn alle 4 Vorprüfungs-Bedingungen erfüllt sind (Note #49 + Übergabe).
+
+        Trigger-Definition aus Übergabe:
+        - abs(ema200_distance_pct) ≤ 2.0
+        - days_since_last_ema200_touch ≥ 120
+        - ema200_trend_qualified == True
+        - weekly_higher_highs_lows == True
+        """
+        if self.ema200_distance_pct is None or abs(self.ema200_distance_pct) > 2.0:
+            return False
+        if self.days_since_last_ema200_touch is None or self.days_since_last_ema200_touch < 120:
+            return False
+        if not self.ema200_trend_qualified:
+            return False
+        if not self.weekly_higher_highs_lows:
+            return False
+        return True
+
 
 def fetch_ticker_data(
     symbols: list[str],
-    period: str = "1y",
+    period: str = "2y",
 ) -> dict[str, TickerSnapshot]:
     """Holt für alle Symbole History und berechnet Indikatoren.
 
     Args:
         symbols: Liste von Yahoo-Symbolen
-        period: yfinance period string (1y reicht für 200d-EMA + Buffer)
+        period: yfinance period string. 2y (statt früher 1y) ab 2026-05-08, weil
+                der EMA200-Touch-Lookback bis zu 120 HT zurückblickt und der
+                Wochen-HH/HL-Check 26 Wochen braucht — beides bei 1y zu knapp.
 
     Returns:
         dict {symbol: TickerSnapshot}, fehlende Ticker fehlen im dict
@@ -111,7 +186,7 @@ def fetch_ticker_data(
     if not symbols:
         return {}
 
-    logger.info(f"Pulling {len(symbols)} tickers via yfinance batch")
+    logger.info(f"Pulling {len(symbols)} tickers via yfinance batch (period={period})")
 
     # Batch-Pull: ein Aufruf für alle Ticker
     # group_by='ticker' macht nested DataFrame (level 0 = Symbol)
@@ -158,6 +233,12 @@ def fetch_ticker_data(
         except (KeyError, ValueError, TypeError) as e:
             logger.warning(f"  Failed {symbol}: {type(e).__name__}: {e}")
             failed.append(symbol)
+
+    # Optional: Earnings-Termine pro Symbol nachziehen (separater Loop, weil
+    # Pro-Symbol-Network-Call). Nur wenn ENV gesetzt — schützt Tier B vor
+    # 300+ extra Calls.
+    if EARNINGS_PULL_ENABLED and snapshots:
+        _enrich_with_earnings(snapshots)
 
     success_rate = len(snapshots) / len(symbols)
     logger.info(
@@ -280,7 +361,158 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
                 lower_wick = body_low - snap.today_low
                 snap.today_lower_wick_pct = lower_wick / day_range * 100
 
+    # === EMA200-MeanRev-Felder (Note #49) ===
+    # Brauchen: ema200, atr; History ≥ EMA200_TREND_LOOKBACK_HT = 120 HT
+    _compute_ema200_meanrev_fields(snap, df)
+
+    # === Wochen-Trend (höhere Hochs + höhere Tiefs auf 26-Wochen-Fenster) ===
+    _compute_weekly_trend_field(snap, df)
+
     return snap
+
+
+def _compute_ema200_meanrev_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
+    """Berechnet ema200_distance_pct, days_since_last_ema200_touch und
+    ema200_trend_qualified — modifiziert snap in-place.
+
+    Stille Defaults bei zu kurzer History: alle drei bleiben None. Filter-Engine
+    behandelt None korrekt (keine Qualifikation, kein Flag).
+    """
+    closes = df["Close"]
+
+    # 1) ema200_distance_pct
+    if snap.ema200 is not None and snap.ema200 > 0:
+        snap.ema200_distance_pct = (snap.price - snap.ema200) / snap.ema200 * 100
+
+    # 2) days_since_last_ema200_touch
+    # Touch = |close - ema200_jenes_tages| ≤ 1 × atr_jenes_tages
+    # Wir brauchen ema200- und ATR-Series, nicht nur den letzten Wert.
+    if len(closes) >= 200 and "High" in df.columns and "Low" in df.columns:
+        ema200_series = closes.ewm(span=200, adjust=False).mean()
+        atr_series = _compute_atr_series(df, period=14)
+
+        # Distanz pro Tag, dann Touch-Bool
+        # Aligned auf gleichen Index; alte Zeilen mit NaN-ATR (erste 14 HT)
+        # zählen als kein Touch.
+        diff_abs = (closes - ema200_series).abs()
+        touch_bool = (diff_abs <= atr_series * EMA200_TOUCH_TOL_ATR) & atr_series.notna()
+
+        # Letzten True-Index suchen (jüngster Touch)
+        if touch_bool.any():
+            last_touch_idx = touch_bool[touch_bool].index[-1]
+            today_idx = closes.index[-1]
+            # Anzahl Trading-Tage zwischen den beiden Indizes
+            # (df ist auf Daily-Trading-Tage indexiert, also: positionsbasiert)
+            try:
+                last_touch_pos = df.index.get_loc(last_touch_idx)
+                today_pos = df.index.get_loc(today_idx)
+                snap.days_since_last_ema200_touch = int(today_pos - last_touch_pos)
+            except (KeyError, TypeError):
+                # Falls Index-Lookup fehlschlägt, lassen wir das Feld None.
+                pass
+        # Wenn KEIN Touch in der 2y-History gefunden wurde:
+        #   → Setup ist im Zweifel sehr gut qualifiziert (langer ungebrochener Lauf).
+        #   Wir setzen auf len(df) - 1 als untere Schranke. Das genügt der
+        #   ≥120-HT-Bedingung sicher.
+        else:
+            snap.days_since_last_ema200_touch = len(df) - 1
+
+    # 3) ema200_trend_qualified
+    # EMA200 steigt in ≥80% der letzten 120 HT
+    if len(closes) >= 200 + EMA200_TREND_LOOKBACK_HT:
+        ema200_series = closes.ewm(span=200, adjust=False).mean()
+        recent = ema200_series.tail(EMA200_TREND_LOOKBACK_HT)
+        diffs = recent.diff().dropna()
+        if len(diffs) > 0:
+            rising_share = (diffs > 0).mean()
+            snap.ema200_trend_qualified = bool(rising_share >= EMA200_TREND_RISING_RATIO)
+    elif len(closes) >= 200:
+        # History reicht für EMA200 selbst, aber nicht für das volle 120-Tage-
+        # Trend-Fenster. Mit dem, was da ist, abschätzen — aber nur wenn
+        # mind. 60 HT verfügbar sind, sonst zu unsicher.
+        ema200_series = closes.ewm(span=200, adjust=False).mean()
+        # tail(EMA200_TREND_LOOKBACK_HT) ist gleichbedeutend mit "die letzten N",
+        # auch wenn N > Länge — pandas gibt einfach alles.
+        recent = ema200_series.tail(EMA200_TREND_LOOKBACK_HT)
+        diffs = recent.diff().dropna()
+        if len(diffs) >= 60:
+            rising_share = (diffs > 0).mean()
+            snap.ema200_trend_qualified = bool(rising_share >= EMA200_TREND_RISING_RATIO)
+
+
+def _compute_weekly_trend_field(snap: TickerSnapshot, df: pd.DataFrame) -> None:
+    """Setzt weekly_higher_highs_lows.
+
+    Pragmatische Halbjahr-Heuristik: Resampling Daily → Weekly (W-FRI für
+    Wochen-Schluss-Konvention), dann letzte 26 Wochen in zwei Hälften teilen
+    und Hoch/Tief vergleichen.
+
+    True wenn: max(jüngste 13 Wo) > max(älteste 13 Wo)
+            UND min(jüngste 13 Wo) > min(älteste 13 Wo)
+
+    Bewusst robust statt streng: Pivot-für-Pivot-HHHL ist vom Pivot-Algorithmus
+    abhängig und falsch-positiv-empfindlich. Halbjahr-Vergleich ist klar
+    definiert und liefert das, was Note #49 in der Sache will: ein intakter
+    mehrmonatiger Wochen-Aufwärtstrend.
+    """
+    if "High" not in df.columns or "Low" not in df.columns:
+        return
+
+    # Wochenbalken bauen — High = Max, Low = Min innerhalb der Woche
+    weekly = df.resample("W-FRI").agg({"High": "max", "Low": "min"}).dropna()
+    if len(weekly) < WEEKLY_TREND_LOOKBACK_WK:
+        return
+
+    last26 = weekly.tail(WEEKLY_TREND_LOOKBACK_WK)
+    half = WEEKLY_TREND_LOOKBACK_WK // 2  # 13
+    older = last26.iloc[:half]
+    newer = last26.iloc[half:]
+
+    higher_high = float(newer["High"].max()) > float(older["High"].max())
+    higher_low = float(newer["Low"].min()) > float(older["Low"].min())
+    snap.weekly_higher_highs_lows = bool(higher_high and higher_low)
+
+
+def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
+    """Holt next_earnings_date + last_earnings_date pro Symbol via yfinance.
+
+    Pro-Symbol-Network-Call (kein Batch in yfinance). Try/Except pro Symbol —
+    Fehler bei Indizes/FX/Krypto sind erwartet und werden silent geschluckt.
+
+    Aktivierung: ENV `EARNINGS_PULL=1`. Default: aus.
+    """
+    today = date.today()
+    for symbol, snap in snapshots.items():
+        try:
+            tk = yf.Ticker(symbol)
+            ed = tk.earnings_dates
+        except Exception as e:
+            logger.debug(f"earnings_dates failed for {symbol}: {e}")
+            continue
+
+        if ed is None or len(ed) == 0:
+            continue
+
+        try:
+            # Index ist Timestamp; in Date konvertieren
+            dates = pd.to_datetime(ed.index).date
+
+            future_dates = [d for d in dates if d > today]
+            past_dates = [d for d in dates if d <= today]
+
+            if future_dates:
+                snap.next_earnings_date = min(future_dates).isoformat()
+
+            if past_dates:
+                last = max(past_dates)
+                snap.last_earnings_date = last.isoformat()
+                # Handelstage-Approximation: Kalendertage minus volle Wochenenden
+                cal_days = (today - last).days
+                full_weekends = cal_days // 7 * 2
+                snap.days_since_last_earnings = max(0, cal_days - full_weekends)
+        except Exception as e:
+            logger.debug(f"earnings parse failed for {symbol}: {e}")
+            continue
 
 
 def _normalize_price_units(symbol: str, df: pd.DataFrame) -> pd.DataFrame:
@@ -316,7 +548,12 @@ def _compute_rsi(closes: pd.Series, period: int = 14) -> float:
 
 
 def _compute_atr(df: pd.DataFrame, period: int = 14) -> float:
-    """ATR nach Wilder's Smoothing-Methode."""
+    """ATR nach Wilder's Smoothing-Methode (letzter Wert)."""
+    return float(_compute_atr_series(df, period=period).iloc[-1])
+
+
+def _compute_atr_series(df: pd.DataFrame, period: int = 14) -> pd.Series:
+    """ATR-Series (für Touch-Detection brauchen wir die volle Reihe, nicht nur den letzten Wert)."""
     high = df["High"]
     low = df["Low"]
     close = df["Close"]
@@ -326,4 +563,4 @@ def _compute_atr(df: pd.DataFrame, period: int = 14) -> float:
     tr3 = (low - prev_close).abs()
     tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
     atr = tr.ewm(alpha=1 / period, adjust=False).mean()
-    return float(atr.iloc[-1])
+    return atr
