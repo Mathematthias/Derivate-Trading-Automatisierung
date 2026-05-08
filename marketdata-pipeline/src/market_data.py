@@ -37,6 +37,13 @@ import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
+# yfinance loggt "No earnings dates found" pro Symbol als ERROR — auch bei
+# Indizes/Krypto/FX/Futures, wo das kein Fehler ist. Wir filtern Equity-only
+# (siehe _is_equity_symbol), aber zur Sicherheit den yfinance-Logger auf
+# WARNING heben, damit künftige Edge-Cases (kleine Werte ohne Earnings-History)
+# nicht das Pipeline-Log fluten.
+logging.getLogger("yfinance").setLevel(logging.WARNING)
+
 # Mindestanteil erfolgreich gepullter Ticker, sonst Fehler
 HEALTH_THRESHOLD = 0.80
 
@@ -473,16 +480,53 @@ def _compute_weekly_trend_field(snap: TickerSnapshot, df: pd.DataFrame) -> None:
     snap.weekly_higher_highs_lows = bool(higher_high and higher_low)
 
 
+def _is_equity_symbol(symbol: str) -> bool:
+    """Heuristik: Hat das Symbol potenziell Earnings-Dates?
+
+    Erkennt Equity-Symbole anhand von Yahoo-Finance-Konventionen:
+    - Indizes beginnen mit `^`            (^GDAXI, ^GSPC, ...)
+    - FX-Paare enden mit `=X`             (EURUSD=X, USDJPY=X, ...)
+    - Futures enden mit `=F`              (GC=F, CL=F, ...)
+    - Krypto enthält `-EUR`/`-USD`/`-USDT` (BTC-EUR, ETH-USD, ...)
+
+    Hardcoded-Skipliste für ETCs/ETFs ohne Earnings, die wie Aktien aussehen.
+    """
+    if not symbol:
+        return False
+    if symbol.startswith("^"):
+        return False
+    if symbol.endswith("=X") or symbol.endswith("=F"):
+        return False
+    if "-EUR" in symbol or "-USD" in symbol or "-USDT" in symbol:
+        return False
+    if symbol in NON_EQUITY_HARDCODE_SKIP:
+        return False
+    return True
+
+
+# ETCs/ETFs ohne Earnings, die nach Equity-Symbol aussehen.
+# Erweiterbar wenn weitere Symbole im Pipeline-Log auffallen.
+NON_EQUITY_HARDCODE_SKIP: frozenset[str] = frozenset({
+    "4GLD.DE",   # Xetra-Gold ETC
+    "XAD5.DE",   # Xtrackers Physical Gold ETC
+})
+
+
 def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
     """Holt next_earnings_date + last_earnings_date pro Symbol via yfinance.
 
-    Pro-Symbol-Network-Call (kein Batch in yfinance). Try/Except pro Symbol —
-    Fehler bei Indizes/FX/Krypto sind erwartet und werden silent geschluckt.
+    Pro-Symbol-Network-Call (kein Batch in yfinance). Pre-Filter via
+    _is_equity_symbol → Indizes/FX/Futures/Krypto/bekannte ETCs werden
+    übersprungen. Try/Except pro Symbol für unerwartete Edge-Cases.
 
     Aktivierung: ENV `EARNINGS_PULL=1`. Default: aus.
     """
     today = date.today()
+    skipped = 0
     for symbol, snap in snapshots.items():
+        if not _is_equity_symbol(symbol):
+            skipped += 1
+            continue
         try:
             tk = yf.Ticker(symbol)
             ed = tk.earnings_dates
@@ -513,6 +557,9 @@ def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
         except Exception as e:
             logger.debug(f"earnings parse failed for {symbol}: {e}")
             continue
+
+    if skipped:
+        logger.info(f"earnings_pull: skipped {skipped} non-equity symbols (indices/FX/futures/crypto/ETCs)")
 
 
 def _normalize_price_units(symbol: str, df: pd.DataFrame) -> pd.DataFrame:
