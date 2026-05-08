@@ -10,10 +10,11 @@ CANDIDATES-{datetime}.md
    Stufe 2: Universe-Setup-Filter-Treffer
    Plus: Override-Status und REVIEW-WARNINGs
 
-EMA200-MeanRev + Earnings-Erweiterung (2026-05-08, Note #49):
+EMA200-MeanRev + Earnings-Erweiterung (2026-05-08, Note #47/#49):
    - MARKETDATA-FULL: 4 neue EMA200-Felder + optional next_earnings_date
-   - CANDIDATES (Tier A only): EMA200-MEANREV-CANDIDATE-Flag-Sektion und
-     PEAD-WINDOW-Flag-Sektion am Anfang der Datei (sehr sichtbar).
+   - CANDIDATES + GAMECHANGER-HUNT: EMA200-MEANREV-CANDIDATE-Flag-Sektion und
+     PEAD-WINDOW-Flag-Sektion am Anfang der Datei (sehr sichtbar). Beide
+     Tiers seit 2026-05-08 — Tier B liefert die echte PEAD-Suche.
 """
 
 from __future__ import annotations
@@ -149,14 +150,15 @@ def render_candidates(
             übergeben.
         enable_setup_class_flags: Wenn True (Default), werden die
             EMA200-MEANREV-CANDIDATE- und PEAD-WINDOW-Flag-Sektionen am Anfang
-            der Datei gerendert. Übergabe-Spec sagt: nur Tier A. Tier-B-Lauf
-            sollte das auf False setzen.
+            der Datei gerendert. Seit 2026-05-08 in beiden Tiers aktiv — auf
+            False nur setzen, wenn die Sektionen explizit unterdrückt werden
+            sollen.
     """
     lines: list[str] = []
     lines.append(f"# {header_title} — {timestamp.strftime('%Y-%m-%d %H:%M %Z')}")
     lines.append("")
 
-    # === Setup-Klassen-Flag-Sektionen (Note #49, Tier-A-only) ===
+    # === Setup-Klassen-Flag-Sektionen (Note #47/#49, beide Tiers) ===
     # Bewusst sehr sichtbar oben, weil Routinen 7/8 in der ersten Sektion lesen
     # und manuelle Briefing-Lektüre den Watchlist-Block oben erwartet —
     # zusätzliche Setup-Klassen drumherum.
@@ -421,7 +423,7 @@ def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]
             ema_candidates.append(snap)
 
     if ema_candidates:
-        out.append("## 🎯 EMA200-MEANREV-CANDIDATEs (Note #49, Tier A)")
+        out.append("## 🎯 EMA200-MEANREV-CANDIDATEs (Note #49)")
         out.append("")
         # Sortierung: nach absoluter Distanz aufsteigend (näher = relevanter)
         ema_candidates.sort(key=lambda s: abs(s.ema200_distance_pct or 999))
@@ -451,7 +453,7 @@ def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]
             # Trennlinie zwischen den beiden Setup-Sektionen
             out.append("---")
             out.append("")
-        out.append("## 📅 PEAD-WINDOW-Aktive (Note #47-Vorfilter, Tier A)")
+        out.append("## 📅 PEAD-WINDOW-Aktive (Note #47-Vorfilter)")
         out.append("")
         # Sortierung: nach Tagen aufsteigend (frischer = relevanter)
         pead_candidates.sort(key=lambda s: s.days_since_last_earnings or 999)

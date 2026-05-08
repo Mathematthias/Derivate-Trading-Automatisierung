@@ -19,12 +19,12 @@ Wird in GitHub Action mit folgenden Env-Variables aufgerufen:
 - EARNINGS_PULL: "1" aktiviert pro-Symbol-Earnings-Pull (default: aus,
   empfohlen für Tier A)
 
-EMA200-MeanRev + PEAD-Window-Erweiterung (2026-05-08, Note #49):
-- Tier A: enable_setup_class_flags=True → CANDIDATES.md zeigt
-  EMA200-MEANREV-CANDIDATE- und PEAD-WINDOW-Sektion am Anfang.
-- Tier B: enable_setup_class_flags=False → Flag-Sektionen werden im
-  GAMECHANGER-HUNT.md NICHT gerendert (Übergabe-Spec). Berechnung
-  läuft trotzdem in market_data.py — kostet quasi nichts extra.
+EMA200-MeanRev + PEAD-Window-Erweiterung (2026-05-08, Note #47/#49):
+- Setup-Class-Flags (EMA200-MEANREV-CANDIDATE + PEAD-WINDOW-Aktive) werden
+  in BEIDEN Tiers gerendert — am Anfang von CANDIDATES.md (Tier A) bzw.
+  GAMECHANGER-HUNT.md (Tier B). Tier A trifft auf ~30 Watchlist-Symbole,
+  Tier B auf ~280 Equities aus dem Universe — daher liefert Tier B die
+  echte PEAD-Kandidatensuche, Tier A die Watchlist-Vorfilter-Sicht.
 """
 
 from __future__ import annotations
@@ -208,9 +208,10 @@ def main():
     )
     candidates_header = "CANDIDATES" if mode == "tier_a" else "GAMECHANGER-HUNT"
 
-    # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) nur in Tier A
-    # — Übergabe-Spec 2026-05-08
-    enable_setup_class_flags = (mode == "tier_a")
+    # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) in BEIDEN Tiers aktiv
+    # (seit 2026-05-08, Note #47/#49). Tier B liefert die echte PEAD-Suche
+    # über ~280 Equities; Tier A bleibt Watchlist-Vorfilter über ~30 Symbole.
+    enable_setup_class_flags = True
 
     md_content = render_marketdata_full(snapshots, timestamp)
     cand_content = render_candidates(
