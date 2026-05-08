@@ -520,9 +520,16 @@ def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
     übersprungen. Try/Except pro Symbol für unerwartete Edge-Cases.
 
     Aktivierung: ENV `EARNINGS_PULL=1`. Default: aus.
+
+    DIAGNOSE-MODUS (temporär, 2026-05-08): Für die ersten 3 Equity-Symbole
+    wird auf WARNING-Level geloggt, was `tk.earnings_dates` zurückgibt.
+    Nach Diagnose wieder entfernen.
     """
     today = date.today()
     skipped = 0
+    diag_logged = 0
+    DIAG_MAX = 3
+
     for symbol, snap in snapshots.items():
         if not _is_equity_symbol(symbol):
             skipped += 1
@@ -531,8 +538,28 @@ def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
             tk = yf.Ticker(symbol)
             ed = tk.earnings_dates
         except Exception as e:
-            logger.debug(f"earnings_dates failed for {symbol}: {e}")
+            if diag_logged < DIAG_MAX:
+                logger.warning(f"[DIAG] {symbol}: earnings_dates call raised {type(e).__name__}: {e}")
+                diag_logged += 1
+            else:
+                logger.debug(f"earnings_dates failed for {symbol}: {e}")
             continue
+
+        # === DIAGNOSE: was kommt zurück? ===
+        if diag_logged < DIAG_MAX:
+            try:
+                ed_type = type(ed).__name__
+                ed_len = len(ed) if ed is not None else "None"
+                ed_tz = getattr(getattr(ed, "index", None), "tz", "n/a") if ed is not None else "n/a"
+                ed_cols = list(ed.columns) if hasattr(ed, "columns") else "n/a"
+                ed_head = ed.head(2).to_dict() if hasattr(ed, "head") and len(ed) > 0 else "empty"
+                logger.warning(
+                    f"[DIAG] {symbol}: type={ed_type} · len={ed_len} · "
+                    f"index.tz={ed_tz} · cols={ed_cols} · head={ed_head}"
+                )
+            except Exception as e:
+                logger.warning(f"[DIAG] {symbol}: introspection failed — {type(e).__name__}: {e}")
+            diag_logged += 1
 
         if ed is None or len(ed) == 0:
             continue
@@ -555,7 +582,11 @@ def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
                 full_weekends = cal_days // 7 * 2
                 snap.days_since_last_earnings = max(0, cal_days - full_weekends)
         except Exception as e:
-            logger.debug(f"earnings parse failed for {symbol}: {e}")
+            # Während Diagnose: erste Parse-Fehler auch auf WARNING
+            if diag_logged <= DIAG_MAX:
+                logger.warning(f"[DIAG] {symbol}: earnings parse failed — {type(e).__name__}: {e}")
+            else:
+                logger.debug(f"earnings parse failed for {symbol}: {e}")
             continue
 
     if skipped:
