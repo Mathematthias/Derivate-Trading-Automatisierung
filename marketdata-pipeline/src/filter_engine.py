@@ -49,7 +49,8 @@ class TriggerStatus:
     proximity: str  # "in_zone" | "very_close" | "close" | "watching" | "far"
     distance_pct: float  # signed: negativ = drunter, positiv = drüber
     conditions_met: list[str] = field(default_factory=list)  # erfüllte Sub-Bedingungen
-    conditions_missing: list[str] = field(default_factory=list)  # fehlende
+    conditions_missing: list[str] = field(default_factory=list)  # fehlende (hart durchgefallen)
+    conditions_pending: list[str] = field(default_factory=list)  # noch offen (Tagesvolumen, etc.)
     summary: str = ""  # Kurzfassung für Output
 
 
@@ -94,12 +95,56 @@ def _has_bounce(snap: TickerSnapshot, cfg: dict) -> bool:
     return True
 
 
-def _has_volume_validation(snap: TickerSnapshot, cfg: dict) -> bool:
-    """Prüft ob heutiges Volumen über Schwelle ist."""
-    vol_cfg = cfg["watchlist_trigger_parsing"]["volume_validation"]
+def _has_volume_validation(snap: TickerSnapshot, cfg: dict, vol_multiplier: Optional[float] = None) -> bool:
+    """Prüft ob heutiges Volumen über Schwelle ist.
+
+    Args:
+        vol_multiplier: Falls der Trigger einen expliziten Multiplier mitbringt
+            (z.B. "Vol ≥ 1,2× Avg-20d"), dieser überschreibt den Config-Default.
+    """
     if snap.volume_multiplier_today is None:
         return False
-    return snap.volume_multiplier_today >= vol_cfg["require_multiplier"]
+    threshold = vol_multiplier if vol_multiplier is not None else cfg["watchlist_trigger_parsing"]["volume_validation"]["require_multiplier"]
+    return snap.volume_multiplier_today >= threshold
+
+
+def _get_vol_status(
+    snap: TickerSnapshot,
+    cfg: dict,
+    vol_multiplier: Optional[float],
+    now_utc_hour: Optional[int],
+) -> str:
+    """Bewertet die Volumen-Bedingung mit 4 Stati.
+
+    Returns:
+        'met'     — Tagesvolumen erreicht (oder bereits über) die Schwelle.
+        'failed'  — Volumen unter Schwelle UND wir sind nach der Hard-Evaluation-Stunde
+                    (= Tagesvolumen ist defacto final).
+        'pending' — Volumen unter Schwelle, aber vor der Hard-Evaluation-Stunde
+                    (= Tagesvolumen kann sich noch füllen).
+        'unknown' — Keine Volumen-Daten verfügbar.
+
+    Hintergrund: Wenn die Pipeline tagsüber läuft (z.B. 14:30 CEST), ist das
+    Tagesvolumen noch nicht endgültig. Eine harte "Vol fehlt"-Ablehnung
+    blockiert dann unnötig den BEREIT-Bucket, obwohl das Volumen bis Tagesende
+    noch ankommen kann. Erst nach `hard_evaluation_utc_hour` (Default 20 UTC
+    = 21/22 CEST nach US-Close) wird "fehlend" zu "failed".
+    """
+    if snap.volume_multiplier_today is None:
+        return "unknown"
+
+    threshold = vol_multiplier if vol_multiplier is not None else cfg["watchlist_trigger_parsing"]["volume_validation"]["require_multiplier"]
+    if snap.volume_multiplier_today >= threshold:
+        return "met"
+
+    # Unter Schwelle — pending oder failed je nach Uhrzeit
+    hard_hour = cfg["watchlist_trigger_parsing"].get("hard_evaluation_utc_hour", 20)
+    if now_utc_hour is None:
+        # Kein Zeit-Kontext vorhanden → konservativer Default: failed (alter Verhalten)
+        return "failed"
+    if now_utc_hour >= hard_hour:
+        return "failed"
+    return "pending"
 
 
 def _classify_proximity(distance_pct: float, cfg: dict) -> str:
@@ -126,12 +171,20 @@ def evaluate_watchlist(
     snapshots: dict[str, TickerSnapshot],
     config: dict,
     today: date,
+    now_utc_hour: Optional[int] = None,
 ) -> list[WatchlistResult]:
-    """Wertet jeden Watchlist-Eintrag gegen aktuelle Daten aus."""
+    """Wertet jeden Watchlist-Eintrag gegen aktuelle Daten aus.
+
+    Args:
+        now_utc_hour: Aktuelle Stunde in UTC (0–23). Wird gebraucht, um
+            "Vol noch nicht gefüllt"-Fälle als pending (nicht failed) zu
+            klassifizieren. Optional für Backward-Compat: None → konservativer
+            Modus (Vol fehlend = failed wie vor dem Patch).
+    """
     results: list[WatchlistResult] = []
     for entry in entries:
         snap = snapshots.get(entry.symbol)
-        result = _evaluate_single_entry(entry, snap, config, today)
+        result = _evaluate_single_entry(entry, snap, config, today, now_utc_hour)
         results.append(result)
     return results
 
@@ -141,6 +194,7 @@ def _evaluate_single_entry(
     snap: Optional[TickerSnapshot],
     config: dict,
     today: date,
+    now_utc_hour: Optional[int] = None,
 ) -> WatchlistResult:
     """Wertet einen einzelnen Watchlist-Eintrag aus."""
     # Status 'paused' aus STATE direkt durchreichen
@@ -174,7 +228,7 @@ def _evaluate_single_entry(
     # Trigger einzeln bewerten
     trigger_results: list[TriggerStatus] = []
     for trigger in entry.triggers:
-        ts = _evaluate_trigger(trigger, snap, entry.direction, config)
+        ts = _evaluate_trigger(trigger, snap, entry.direction, config, now_utc_hour)
         trigger_results.append(ts)
 
     return WatchlistResult(
@@ -190,6 +244,7 @@ def _evaluate_trigger(
     snap: TickerSnapshot,
     direction: str,
     config: dict,
+    now_utc_hour: Optional[int] = None,
 ) -> TriggerStatus:
     """Bewertet einen einzelnen Trigger gegen aktuelle Daten."""
     # Edge case: leerer Trigger ohne Preis-Op und ohne Modifier
@@ -210,12 +265,14 @@ def _evaluate_trigger(
             distance_pct=0.0,
             conditions_met=[],
             conditions_missing=["kein konkreter Trigger im STATE definiert"],
+            conditions_pending=[],
             summary="ohne konkreten Trigger — Setup im STATE ergänzen",
         )
 
     distance_pct = 0.0
     conditions_met: list[str] = []
     conditions_missing: list[str] = []
+    conditions_pending: list[str] = []
 
     # === PREIS-DISTANZ ===
     price = snap.price
@@ -236,30 +293,41 @@ def _evaluate_trigger(
             )
 
     elif trigger.price_op == ">":
-        # Trigger erfüllt wenn Kurs > Schwelle
-        distance_pct = (price - trigger.price_single) / trigger.price_single * 100
+        # Trigger erfüllt wenn Kurs > Schwelle. Distance dann 0 (analog in_range
+        # IN-Zone) — "drüber" ist nicht weiter weg, sondern erfüllt.
         if price > trigger.price_single:
+            distance_pct = 0.0
             conditions_met.append(f"Preis {price:.2f} > {trigger.price_single:.2f}")
         else:
+            distance_pct = (price - trigger.price_single) / trigger.price_single * 100
             conditions_missing.append(
                 f"Preis {price:.2f} ≤ {trigger.price_single:.2f} ({distance_pct:+.2f}%)"
             )
 
     elif trigger.price_op == "<":
-        distance_pct = (price - trigger.price_single) / trigger.price_single * 100
+        # Spiegel zu ">": erfüllt wenn Kurs < Schwelle.
         if price < trigger.price_single:
+            distance_pct = 0.0
             conditions_met.append(f"Preis {price:.2f} < {trigger.price_single:.2f}")
         else:
+            distance_pct = (price - trigger.price_single) / trigger.price_single * 100
             conditions_missing.append(
                 f"Preis {price:.2f} ≥ {trigger.price_single:.2f} ({distance_pct:+.2f}%)"
             )
 
     elif trigger.price_op == "approx":
-        # Approx: ±2% Toleranz um den Approx-Preis
-        distance_pct = (price - trigger.price_single) / trigger.price_single * 100
-        if abs(distance_pct) <= 2.0:
-            conditions_met.append(f"Preis {price:.2f} ≈ {trigger.price_single:.2f} ({distance_pct:+.2f}%)")
+        # Approx: ±2% Toleranz um den Approx-Preis (für is_touch enger ginge,
+        # aber 2% deckt Touch-Praxis sauber ab und hält die Bucket-Logik einfach).
+        raw_distance = (price - trigger.price_single) / trigger.price_single * 100
+        if abs(raw_distance) <= 2.0:
+            # Erfüllt → distance auf 0 (analog ">"/"in_range"-IN-Zone)
+            distance_pct = 0.0
+            touch_label = " (Touch)" if trigger.is_touch else ""
+            conditions_met.append(
+                f"Preis {price:.2f} ≈ {trigger.price_single:.2f} ({raw_distance:+.2f}%){touch_label}"
+            )
         else:
+            distance_pct = raw_distance
             conditions_missing.append(
                 f"Preis {price:.2f} ≠ {trigger.price_single:.2f} ({distance_pct:+.2f}%)"
             )
@@ -274,12 +342,24 @@ def _evaluate_trigger(
             conditions_missing.append(f"keine Bounce-Kerze (Wick {wick_str}, Close>Open: {snap.today_close > snap.today_open if snap.today_close and snap.today_open else 'n/a'})")
 
     if trigger.require_volume:
-        if _has_volume_validation(snap, config):
-            conditions_met.append(f"Vol {snap.volume_multiplier_today:.2f}× avg ✓")
-        else:
-            mul = snap.volume_multiplier_today
-            mul_str = f"{mul:.2f}×" if mul is not None else "n/a"
-            conditions_missing.append(f"Vol {mul_str} unter Schwelle")
+        vol_status = _get_vol_status(snap, config, trigger.vol_multiplier, now_utc_hour)
+        mul = snap.volume_multiplier_today
+        mul_str = f"{mul:.2f}×" if mul is not None else "n/a"
+        threshold = (
+            trigger.vol_multiplier
+            if trigger.vol_multiplier is not None
+            else config["watchlist_trigger_parsing"]["volume_validation"]["require_multiplier"]
+        )
+        if vol_status == "met":
+            conditions_met.append(f"Vol {mul_str} ≥ {threshold:.2f}× ✓")
+        elif vol_status == "pending":
+            conditions_pending.append(
+                f"Vol {mul_str} (Schwelle {threshold:.2f}×) — Tagesvolumen noch offen"
+            )
+        elif vol_status == "failed":
+            conditions_missing.append(f"Vol {mul_str} < {threshold:.2f}×")
+        else:  # unknown
+            conditions_missing.append("Vol n/a — keine Volumen-Daten")
 
     if trigger.require_hammer:
         # Vereinfachter Hammer-Check: Lower-Wick > 50% UND Close oben in Range
@@ -311,9 +391,11 @@ def _evaluate_trigger(
 
     proximity = _classify_proximity(distance_pct, config)
 
-    # Summary kurz formulieren
-    if proximity == "in_zone" and not conditions_missing:
+    # Summary kurz formulieren — BEREIT* differenziert "alles okay, nur Vol pending"
+    if proximity == "in_zone" and not conditions_missing and not conditions_pending:
         summary = "🎯 BEREIT — alle Bedingungen erfüllt"
+    elif proximity == "in_zone" and not conditions_missing and conditions_pending:
+        summary = f"🎯 BEREIT* — Preis & harte Conditions ok, offen: {', '.join(conditions_pending)}"
     elif proximity == "in_zone":
         summary = f"⚠️ in Zone, aber Bedingungen offen: {', '.join(conditions_missing)}"
     elif proximity in ("very_close", "close"):
@@ -327,6 +409,7 @@ def _evaluate_trigger(
         distance_pct=distance_pct,
         conditions_met=conditions_met,
         conditions_missing=conditions_missing,
+        conditions_pending=conditions_pending,
         summary=summary,
     )
 

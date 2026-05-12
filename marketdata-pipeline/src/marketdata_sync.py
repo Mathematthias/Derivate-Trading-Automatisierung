@@ -164,13 +164,16 @@ def main():
     # === FILTER-EVALUATION ===
     timestamp = datetime.now(ZoneInfo("Europe/Berlin"))
     today = timestamp.date()
+    # Für Vol-pending-Klassifikation: aktuelle UTC-Stunde (vor hard_evaluation_utc_hour
+    # bleibt "Vol unter Schwelle" als pending, danach failed).
+    now_utc_hour = timestamp.astimezone(ZoneInfo("UTC")).hour
 
     watchlist_results = []
     universe_matches = []
 
     if mode == "tier_a":
         watchlist_results = evaluate_watchlist(
-            watchlist_entries, snapshots, filter_config, today,
+            watchlist_entries, snapshots, filter_config, today, now_utc_hour,
         )
 
         watchlist_symbols_set = {e.symbol for e in watchlist_entries}

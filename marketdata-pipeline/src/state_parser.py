@@ -61,8 +61,10 @@ class ParsedTrigger:
 
     # Modifikatoren
     require_bounce: bool = False  # "+ Bounce" oder "+ Reversal"
-    require_volume: bool = False  # "Vol ≥30D-Ø"
-    require_hammer: bool = False  # "Hammer"
+    require_volume: bool = False  # "Vol ≥30D-Ø", "Vol >Avg-20d", "Vol ≥ 1,2× Avg" etc.
+    vol_multiplier: Optional[float] = None  # bei "1,2× Avg" → 1.2; bei "≥30D-Ø" → None (= 1.0)
+    require_hammer: bool = False  # "Hammer" / "Reverse-Close"
+    is_touch: bool = False  # "Daily-Touch ...", "Touch EMA50 ..." — Punkt-Touch-Logik
     rsi_max: Optional[float] = None  # "RSI<60"
     rsi_min: Optional[float] = None
 
@@ -301,49 +303,132 @@ def _parse_earliest_date(trigger_raw: str) -> Optional[date]:
         return None
 
 
+def _strip_sl_tp(text: str) -> str:
+    """Entfernt SL/TP/R:R/ATR-Hinweise aus einem Trigger-Chunk, damit sie
+    nicht als Preis-Operator missgedeutet werden.
+
+    Beispiele:
+    - "Daily-Close >380$. SL <370$. TP1 392$, TP2 404$. R:R 1,2 / 2,4"
+      → "Daily-Close >380$.  .  ,  . "
+    - "→ SL <51,50$ (unter 52W-Tief), TP1 56,13$ (R:R ~2,5)"
+      → "→  (unter 52W-Tief),  ( ~2,5)"  (R:R-Anker weg, "~2,5" ohne € unschädlich)
+    """
+    # SL <X€ / SL X€ / SL ≤X% etc. — \b verhindert Treffer mitten in Wörtern
+    text = re.sub(
+        r"\bSL\s*[<>≤≥]?\s*-?\d+(?:[.,]\d+)?\s*[€$%]?",
+        "",
+        text,
+    )
+    # TP1 X€, TP X€, TP2 X$ etc.
+    text = re.sub(
+        r"\bTP\d*\s*[<>≤≥]?\s*-?\d+(?:[.,]\d+)?\s*[€$%]?",
+        "",
+        text,
+    )
+    # R:R 1,2 / 2,4  oder  R:R ~2,5  oder  R:R primär 1,8
+    text = re.sub(
+        r"\bR:R\b(?:\s+\w+)?\s*[~≈]?\s*\d+(?:[.,]\d+)?(?:\s*/\s*\d+(?:[.,]\d+)?)?",
+        "",
+        text,
+    )
+    # ATR-Hinweise wie "(-1,2ATR)" oder "-1.2ATR"
+    text = re.sub(r"-?\d+[.,]\d+\s*ATR\b", "", text)
+    return text
+
+
+def _split_into_triggers(trigger_raw: str) -> list[tuple[str, str]]:
+    """Splittet einen Trigger-Text in [(label, content), ...].
+
+    Erkennt Label-Marker (A:, A), Trigger A:, Trigger A)) und den alten
+    ·-Separator. Vermeidet false Matches auf Phrasen wie "Trigger A (Pullback"
+    (kein `:` oder `)` direkt hinter dem Buchstaben).
+
+    Whitelist auf A–E, damit "R:R", "Q4", etc. nicht als Label getriggert werden.
+    """
+    # Label-Marker: optional "Trigger ", dann A–E, dann ) oder :, dann Whitespace.
+    # Vorne ein Anker (Wortgrenze, Whitespace, Doppelpunkt oder Zeilenstart).
+    label_pattern = re.compile(
+        r"(?:^|[\s\.:])(?:Trigger\s+)?([A-E])[\)\:]\s+"
+    )
+    matches = list(label_pattern.finditer(trigger_raw))
+
+    if matches:
+        result: list[tuple[str, str]] = []
+        for i, m in enumerate(matches):
+            label = m.group(1)
+            start = m.end()
+            end = matches[i + 1].start() if i + 1 < len(matches) else len(trigger_raw)
+            chunk = trigger_raw[start:end].strip().rstrip(".,;: ")
+            if chunk:
+                result.append((label, chunk))
+        return result
+
+    # Kein Label-Marker: alter ·-Separator als Fallback
+    parts = re.split(r"\s+·\s+", trigger_raw)
+    return [("", p.strip()) for p in parts if p.strip()]
+
+
 def _parse_triggers(trigger_raw: str) -> list[ParsedTrigger]:
     """Splittet einen Trigger-Text in einzelne Trigger A, B, ...
 
     Format-Beispiele die wir abdecken:
     - "A: Touch EMA50 Daily 33,40–33,60€ + Bounce · B: Daily-Close >35,10€ auf Vol ≥30D-Ø"
+    - "A) Reverse-Kerze (Hammer) ~240€ + RSI 1D <35 + Volumen ≥ 0,9× Avg"
+    - "Trigger A: 4h-Bearish-Engulfing ODER Reverse-Close in Zone ..."
     - "Pullback ~59$ + 4h-Reversal (nach Gap +28.9%)"
     - "Reverse-Close ≥25,70€ ODER Hammer TH ≥25,70€"
-    - "ONBERG-Story (Defense/Drohnenabwehr) — Setup ergänzen wenn relevant"
     """
-    # Erst nach Trigger-Labels splitten ("A:", "B:")
-    labeled = re.split(r"·\s*", trigger_raw)
+    chunks = _split_into_triggers(trigger_raw)
     triggers: list[ParsedTrigger] = []
-    for chunk in labeled:
-        chunk = chunk.strip()
-        if not chunk:
-            continue
-        # Label am Anfang: "A: ..." oder "B: ..."
-        label_match = re.match(r"^([A-Z]):\s*", chunk)
-        if label_match:
-            label = label_match.group(1)
-            content = chunk[label_match.end():].strip()
-        else:
-            label = ""
-            content = chunk
-
+    for label, content in chunks:
         triggers.append(_parse_single_trigger(label, content))
-
     return triggers
 
 
 def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
-    """Parst einen einzelnen Trigger-Text in ParsedTrigger."""
+    """Parst einen einzelnen Trigger-Text in ParsedTrigger.
+
+    `content` enthält den vollen Trigger inkl. SL/TP/R:R/ATR-Hinweisen.
+    Die Preis-Heuristiken arbeiten auf einer SL/TP-bereinigten Variante,
+    damit z.B. "Daily-Close >380$. SL <370$" nicht "<370$" als price_op fängt.
+    Modifikator-Erkennung (Bounce, Vol, Hammer, RSI, EMA) läuft weiter auf
+    dem rohen content, weil dort nichts kollidiert.
+    """
     pt = ParsedTrigger(label=label, raw=content)
 
-    # Modifikatoren erkennen (Reihenfolge: spezifisch zuerst)
+    # === Modifikatoren auf RAW content (kollidieren nicht mit SL/TP) ===
+
     if re.search(r"\+\s*(Bounce|Reversal|Stabilisierung)\b", content, re.IGNORECASE):
         pt.require_bounce = True
-    if re.search(r"Vol\s*[≥>]\s*30D[-\s]?Ø", content):
+
+    # Vol-Erkennung — breit gefasst:
+    #   "Vol ≥30D-Ø", "auf Vol ≥30D-Ø"           (alt)
+    #   "Vol >Avg-30d", "Volumen >Avg-20d"       (Avg-Nd)
+    #   "Volumen ≥ 1,2× Avg-20d"                 (Multiplier + Avg)
+    #   "Volumen ≥ 0,9× Avg"                     (Multiplier ohne -Nd)
+    vol_match = re.search(
+        r"Vol(?:umen)?\s*[≥>=]+\s*"
+        r"(?:(\d+(?:[.,]\d+)?)\s*[×x]\s*)?"          # optionaler Multiplier
+        r"(?:30D|Avg|Average|Ø)",
+        content,
+    )
+    if vol_match:
         pt.require_volume = True
-    if re.search(r"\bHammer\b", content, re.IGNORECASE):
+        if vol_match.group(1):
+            try:
+                pt.vol_multiplier = _parse_eu_number(vol_match.group(1))
+            except ValueError:
+                pt.vol_multiplier = None
+
+    if re.search(r"\b(Hammer|Reverse-Close)\b", content, re.IGNORECASE):
         pt.require_hammer = True
 
-    # RSI-Bedingungen
+    # Touch-Operator: "Daily-Touch", "Touch EMA50", "Touch ...€"
+    # Wird unten beim Preis-Parsing als is_touch markiert, wenn ein Preis
+    # ohne expliziten Operator auftaucht.
+    has_touch_word = bool(re.search(r"\bTouch\b", content, re.IGNORECASE))
+
+    # RSI
     rsi_max_match = re.search(r"RSI[^<>]*<\s*(\d+)", content)
     if rsi_max_match:
         pt.rsi_max = float(rsi_max_match.group(1))
@@ -356,10 +441,13 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
     if ema_match:
         pt.ema_ref = f"EMA{ema_match.group(1)}"
 
+    # === Preis-Heuristiken auf SL/TP-bereinigter Variante ===
+    price_text = _strip_sl_tp(content)
+
     # Preis-Korridor: "33,40–33,60€" oder "147,50-149,00$"
     range_match = re.search(
         r"(\d+(?:[.,]\d+)?)\s*[–-]\s*(\d+(?:[.,]\d+)?)\s*[€$]",
-        content,
+        price_text,
     )
     if range_match:
         pt.price_low = _parse_eu_number(range_match.group(1))
@@ -367,10 +455,10 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
         pt.price_op = "in_range"
         return pt
 
-    # Single-Preis mit Operator: ">35,10€", "<36,85$", "≥25,70€"
+    # Single-Preis mit Operator: ">35,10€", "<36,85$", "≥25,70€", "≤60€"
     single_op_match = re.search(
         r"([<>≥≤])\s*(\d+(?:[.,]\d+)?)\s*[€$]",
-        content,
+        price_text,
     )
     if single_op_match:
         op = single_op_match.group(1)
@@ -381,15 +469,31 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
         pt.price_single = _parse_eu_number(single_op_match.group(2))
         return pt
 
-    # Approx-Preis: "~167€", "~5,17€"
+    # Approx-Preis: "~167€", "~5,17€" — mit oder ohne Klammer
     approx_match = re.search(
         r"~\s*(\d+(?:[.,]\d+)?)\s*[€$]",
-        content,
+        price_text,
     )
     if approx_match:
         pt.price_single = _parse_eu_number(approx_match.group(1))
         pt.price_op = "approx"
+        if has_touch_word:
+            pt.is_touch = True
         return pt
+
+    # Touch-Punkt ohne Operator und ohne ~: "Daily-Touch 52,33$" oder
+    # "Touch EMA50 1D 33,40€". Wenn das Touch-Wort drinsteht und ein Preis
+    # mit Währung auftaucht, behandeln wir den als Touch-Approx.
+    if has_touch_word:
+        touch_match = re.search(
+            r"(\d+(?:[.,]\d+)?)\s*[€$]",
+            price_text,
+        )
+        if touch_match:
+            pt.price_single = _parse_eu_number(touch_match.group(1))
+            pt.price_op = "approx"
+            pt.is_touch = True
+            return pt
 
     return pt
 

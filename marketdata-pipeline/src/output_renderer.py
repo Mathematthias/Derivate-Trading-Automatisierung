@@ -485,6 +485,8 @@ def _render_watchlist_entry(r: WatchlistResult) -> list[str]:
         lines.append(f"  - {label_str}{ts.summary}")
         for c in ts.conditions_met:
             lines.append(f"    ✓ {c}")
+        for c in ts.conditions_pending:
+            lines.append(f"    ⏳ {c}")
         for c in ts.conditions_missing:
             lines.append(f"    ✗ {c}")
 
