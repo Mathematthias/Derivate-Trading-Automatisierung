@@ -123,6 +123,11 @@ watchlist_trigger_parsing:
   volume_validation:
     require_multiplier: 1.0   # mindestens 30D-Durchschnitts-Volumen heute
 
+  # Hard-Evaluation-Stunde (UTC): Bis zu dieser Stunde ist Vol "pending"
+  # (Tagesvolumen kann sich noch füllen), danach "failed".
+  # 20 UTC = 21 CEST (Winterzeit) / 22 CEST (Sommerzeit) — nach US-Close.
+  hard_evaluation_utc_hour: 20
+
   # Bounce-Erkennung wenn Trigger "+ Bounce" oder "+ Reversal" enthält
   bounce_detection:
     require_lower_wick_pct: 30   # Daily-Kerze: untere Wick mind. 30% der Range
