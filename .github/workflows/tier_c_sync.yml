@@ -1,4 +1,4 @@
-name: Marketdata Sync Tier A
+name: Marketdata Sync Tier C (US-Universum)
 
 # Trigger-Architektur (seit 2026-04-30):
 #   Single Source of Truth ist cron-job.org (externer Cron-Service mit
@@ -7,19 +7,18 @@ name: Marketdata Sync Tier A
 #   Seit 2026-05-13 zusätzlich Hygiene-Bestätigung: KEIN `on: schedule` —
 #   bei öffentlichem Repo zudem unzuverlässig.
 #
-# Tier-A-Slots in cron-job.org (Berlin-Zeit):
-#   - Mo-Fr alle 30 Min, Lauf-Fenster 08:00-21:00  → Crontab: */30 8-21 * * 1-5
-#   - Sa 10:00 (Wochenend-Snapshot)                → Crontab: 0 10 * * 6
+# Tier C entstand 2026-05-13 als Variante-A-Split: Tier B war mit ~308
+# Symbolen zu unrobust, isolierte SSL-Crashes beim Drive-Upload. Aufteilung:
+#   - Tier B = EU-Universum (DAX + MDAX + SDAX + EuroStoxx + SMI, ~211)
+#   - Tier C = US-Universum (NASDAQ-100, ~96)
+# Beide Tiers laufen jetzt mit identischer Architektur, nur unterschiedlichen
+# Ticker-YAMLs und Output-Tags ("EU" bzw. "US").
 #
-# Da cron-job.org bereits in Berlin-Zeit triggert und nur zur gewünschten
-# Zeit feuert, ist das frühere Berlin-Time-Gate obsolet und entfernt. Bei
-# Neuinstallation/Migration siehe Memory-Notiz „PAT renewal deadline 2026-07-21".
+# Tier-C-Slots in cron-job.org (Berlin-Zeit) — Empfehlung 2×/Tag:
+#   - Mo-Fr 14:30 (vor US-Open 15:30 CEST)  → Crontab: 30 14 * * 1-5
+#   - Mo-Fr 21:30 (nach US-Close 22:00 CEST)→ Crontab: 30 21 * * 1-5
 #
-# EMA200-MeanRev + PEAD-Window (seit 2026-05-08, Note #49):
-#   - EARNINGS_PULL=1 aktiviert pro-Symbol-Earnings-Pull (yfinance.Ticker.earnings_dates).
-#     Bei ~48 Tier-A-Symbolen entstehen ~48 zusätzliche Yahoo-Calls — verkraftbar.
-#     Ergibt PEAD-WINDOW-Flag im CANDIDATES.md für Symbole mit Earnings ≤5 HT zurück.
-#   - Tier B übernimmt das NICHT (zu viele Symbole, Yahoo-Rate-Limit-Risiko).
+# PAT-Renewal-Deadline: 2026-07-21 (siehe Memory-Notiz).
 
 on:
   workflow_dispatch:
@@ -27,7 +26,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repo
@@ -45,25 +44,29 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Sync Watchlist from Trading-Journal
+      - name: Run pipeline
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          # Workspace Shared Drive: Trading-Pipeline (STATE = echtes Google Doc)
+          STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          MODE: tier_c
+          CONFIG_DIR: ./config
+          PYTHONPATH: ./src
+          # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) auch in Tier C aktiv —
+          # ~96 Symbole, Earnings-Pull-Last verkraftbar.
+          EARNINGS_PULL: "1"
+        run: |
+          python src/marketdata_sync.py
+
+      - name: Run Adhoc-Catalyst-Scan
         continue-on-error: true
         working-directory: marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
           STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
-          PYTHONPATH: ./src
-        run: |
-          python src/watchlist_sync.py
-
-      - name: Run pipeline
-        working-directory: marketdata-pipeline
-        env:
-          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
-          STATE_DOC_ID: 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg
           BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
-          MODE: tier_a
-          CONFIG_DIR: ./config
           PYTHONPATH: ./src
-          EARNINGS_PULL: "1"
         run: |
-          python src/marketdata_sync.py
+          python src/adhoc_scanner.py --hours 24
