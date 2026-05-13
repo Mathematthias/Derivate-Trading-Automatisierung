@@ -249,7 +249,14 @@ def fetch_feed(source: dict[str, str]) -> list[FeedItem]:
         resp = requests.get(url, headers=HTTP_HEADERS, timeout=HTTP_TIMEOUT)
         resp.raise_for_status()
     except requests.RequestException as e:
-        logger.warning("Feed %s nicht erreichbar: %s", name, e)
+        logger.warning("Feed %s nicht erreichbar (RequestException): %s", name, e)
+        return []
+    except (OSError, Exception) as e:
+        # urllib3 lässt manche TLS-Fehler (ssl.SSLEOFError ist OSError-Subklasse,
+        # in alten urllib3-Versionen nicht zuverlässig in requests.SSLError
+        # gewrapped) durchschlagen. Adhoc-Scanner ist nicht kritisch — Pipeline
+        # darf nicht wegen eines RSS-Feed-Fehlers sterben.
+        logger.warning("Feed %s Verbindungsfehler (%s): %s", name, type(e).__name__, e)
         return []
 
     if HAS_FEEDPARSER:

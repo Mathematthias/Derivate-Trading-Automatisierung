@@ -14,10 +14,16 @@ Wird in GitHub Action mit folgenden Env-Variables aufgerufen:
 - GDRIVE_SA_KEY: Service-Account-JSON als String
 - STATE_DOC_ID: ID des STATE-Doc in Drive
 - BRIEFING_FOLDER_ID: ID des Trading/Briefing-Ordners
-- MODE: "tier_a" (default) oder "tier_b"
+- MODE: "tier_a" (default), "tier_b" (EU) oder "tier_c" (US)
 - CONFIG_DIR: Pfad zum Configs-Verzeichnis (default: ./config)
 - EARNINGS_PULL: "1" aktiviert pro-Symbol-Earnings-Pull (default: aus,
-  empfohlen für Tier A)
+  empfohlen für Tier A; in Tier B/C laut Architektur ebenfalls aktiv für
+  PEAD-Filter v0.1 — die paar Yahoo-Calls sind im Pull-Volumen verkraftbar)
+
+Universe-Tag-Konvention (siehe Tag-Map weiter unten):
+- tier_a → MARKETDATA-FULL-STD-...  + CANDIDATES-...
+- tier_b → MARKETDATA-FULL-EU-...   + GAMECHANGER-HUNT-EU-...
+- tier_c → MARKETDATA-FULL-US-...   + GAMECHANGER-HUNT-US-...
 
 EMA200-MeanRev + PEAD-Window-Erweiterung (2026-05-08, Note #47/#49):
 - Setup-Class-Flags (EMA200-MEANREV-CANDIDATE + PEAD-WINDOW-Aktive) werden
@@ -85,7 +91,25 @@ def main():
     drive_service = build_drive_service()
 
     # === CONFIGS LADEN ===
-    tickers_file = "tickers_tier_a.yaml" if mode == "tier_a" else "tickers_tier_b.yaml"
+    # Tag-Map: bestimmt sowohl welches Ticker-YAML geladen wird als auch
+    # welcher Universe-Tag in den Output-Filenamen kommt.
+    #   tier_a  → tickers_tier_a.yaml  → MARKETDATA-FULL-STD-..., CANDIDATES-...
+    #   tier_b  → tickers_tier_b.yaml  → MARKETDATA-FULL-EU-...,  GAMECHANGER-HUNT-EU-...
+    #   tier_c  → tickers_tier_c.yaml  → MARKETDATA-FULL-US-...,  GAMECHANGER-HUNT-US-...
+    # Vor 2026-05-13 lief Tier B mit dem ganzen ~308-Symbol-Universum unter
+    # Tag "GC". Nach Variante-A-Split (siehe MIGRATION_NOTES) heißt Tier B "EU"
+    # und Tier C "US". Konsequenz auf der Skill-Seite: pipeline_utils.py muss
+    # die neuen Tags kennen.
+    tickers_file_map = {
+        "tier_a": "tickers_tier_a.yaml",
+        "tier_b": "tickers_tier_b.yaml",
+        "tier_c": "tickers_tier_c.yaml",
+    }
+    if mode not in tickers_file_map:
+        raise RuntimeError(
+            f"Unknown MODE='{mode}'. Expected one of: {list(tickers_file_map)}"
+        )
+    tickers_file = tickers_file_map[mode]
     with open(config_dir / tickers_file, "r", encoding="utf-8") as f:
         ticker_config = yaml.safe_load(f)
     with open(config_dir / "filter_config.yaml", "r", encoding="utf-8") as f:
@@ -122,8 +146,9 @@ def main():
         for sym in ticker_config.get("ethik_excluded", []) or []:
             excluded_symbols.add(sym)
     else:
-        # Tier B — Auto-Discover: alle Sektionen unter Root oder unter
-        # 'categories:' werden eingelesen.
+        # Tier B / Tier C — Auto-Discover: alle Sektionen unter Root oder
+        # unter 'categories:' werden eingelesen. Tier B = EU-Universum,
+        # Tier C = US-Universum. Code-Pfad identisch.
         container = ticker_config.get("categories", ticker_config)
         loaded_sections: list[tuple[str, int]] = []
         for name, section in container.items():
@@ -140,7 +165,7 @@ def main():
         for sym in ticker_config.get("ethik_excluded", []) or []:
             excluded_symbols.add(sym)
         logger.info(
-            f"  Tier-B sections loaded: "
+            f"  {mode.upper()} sections loaded: "
             + ", ".join(f"{n}={c}" for n, c in loaded_sections)
         )
 
@@ -199,17 +224,24 @@ def main():
             overrides=overrides,
             today=today,
         )
-        logger.info(f"Tier-B Universe matches: {len(universe_matches)}")
+        logger.info(f"{mode.upper()} Universe matches: {len(universe_matches)}")
 
     # === OUTPUT RENDERN ===
     timestamp_str = timestamp.strftime("%Y-%m-%d-%H%M")
-    universe_tag = "STD" if mode == "tier_a" else "GC"
+
+    # Universe-Tag pro Mode (siehe Header-Kommentar):
+    universe_tag_map = {"tier_a": "STD", "tier_b": "EU", "tier_c": "US"}
+    universe_tag = universe_tag_map[mode]
+
     marketdata_filename = f"MARKETDATA-FULL-{universe_tag}-{timestamp_str}.md"
-    candidates_filename = (
-        f"CANDIDATES-{timestamp_str}.md" if mode == "tier_a"
-        else f"GAMECHANGER-HUNT-{timestamp_str}.md"
-    )
-    candidates_header = "CANDIDATES" if mode == "tier_a" else "GAMECHANGER-HUNT"
+
+    if mode == "tier_a":
+        candidates_filename = f"CANDIDATES-{timestamp_str}.md"
+        candidates_header = "CANDIDATES"
+    else:
+        # Tier B und Tier C nutzen GAMECHANGER-HUNT mit Universe-Suffix.
+        candidates_filename = f"GAMECHANGER-HUNT-{universe_tag}-{timestamp_str}.md"
+        candidates_header = "GAMECHANGER-HUNT"
 
     # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) in BEIDEN Tiers aktiv
     # (seit 2026-05-08, Note #47/#49). Tier B liefert die echte PEAD-Suche
@@ -234,7 +266,10 @@ def main():
     if mode == "tier_a":
         cleanup_old_files(drive_service, briefing_folder_id, "CANDIDATES-", keep_count=20)
     else:
-        cleanup_old_files(drive_service, briefing_folder_id, "GAMECHANGER-HUNT-", keep_count=10)
+        cleanup_old_files(
+            drive_service, briefing_folder_id,
+            f"GAMECHANGER-HUNT-{universe_tag}-", keep_count=10,
+        )
 
     logger.info("Pipeline done.")
 

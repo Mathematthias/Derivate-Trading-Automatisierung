@@ -5,6 +5,14 @@ Nutzt Service-Account-Credentials aus Environment-Variable GDRIVE_SA_KEY.
 Schreibt als text/markdown mit disableConversionToGoogleType=true (das ist
 in den V1.5-Routinen erprobt — verhindert Stream-Idle-Timeouts bei
 Google-Doc-Konvertierung).
+
+Robustheit (seit 2026-05-13): Drive-API-Calls laufen durch `_with_retry`,
+das transiente TLS/HTTP-Fehler (SSLEOFError, ConnectionError, HttpError 5xx,
+HttpError 429) mit exponentiellem Backoff wiederholt. Hintergrund:
+Pipeline-Crash 2026-05-13 mit `ssl.SSLEOFError: EOF occurred in violation
+of protocol` beim `files().create().execute()` — die Gegenseite hatte den
+TLS-Stream ohne close_notify gekappt, vermutlich Google-Side-Load-Balancer.
+yfinance-Pull war erfolgreich (305/306), Crash erst beim Drive-Upload.
 """
 
 from __future__ import annotations
@@ -12,7 +20,11 @@ from __future__ import annotations
 import json
 import logging
 import os
-from typing import Optional
+import random
+import socket
+import ssl
+import time
+from typing import Callable, Optional, TypeVar
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -23,6 +35,80 @@ logger = logging.getLogger(__name__)
 
 # Drive-API Scopes
 SCOPES = ["https://www.googleapis.com/auth/drive"]
+
+# Retry-Konfiguration
+RETRY_MAX_ATTEMPTS = 4         # 1 Initial + 3 Retries
+RETRY_BASE_SECONDS = 1.5       # Exponential-Backoff Basis (1.5, 3, 6, 12 ...)
+RETRY_JITTER_SECONDS = 0.5     # Plus Random-Jitter, vermeidet Stampede
+
+# Welche Exceptions retry-würdig sind. SSLEOFError ist eine OSError-Subklasse
+# aus dem stdlib `ssl`-Modul. ConnectionError fängt z.B. ConnectionReset.
+# socket.timeout ist Timeout-Klasse. HttpError unten gesondert auf Status-Codes.
+_RETRYABLE_EXCEPTIONS = (
+    ssl.SSLEOFError,
+    ssl.SSLError,
+    ConnectionError,        # umfasst ConnectionResetError, ConnectionAbortedError, etc.
+    socket.timeout,
+    TimeoutError,
+    OSError,                # Catch-all für Low-Level-Netzwerk
+)
+
+T = TypeVar("T")
+
+
+def _with_retry(operation_name: str, fn: Callable[[], T]) -> T:
+    """Führt einen Drive-API-Call mit Exponential-Backoff-Retry aus.
+
+    Retry-würdig sind:
+      - TLS-Probleme (SSLEOFError, SSLError)
+      - Connection-Probleme (ConnectionError, OSError, timeout)
+      - HttpError 5xx (Server-Side-Issue)
+      - HttpError 429 (Rate-Limit)
+
+    Nicht-retry: 4xx außer 429 (echte API-Fehler — fehlende Berechtigung,
+    falscher Folder, etc.), JSON-Decode-Fehler, etc.
+    """
+    last_exc: Optional[BaseException] = None
+    for attempt in range(1, RETRY_MAX_ATTEMPTS + 1):
+        try:
+            return fn()
+        except _RETRYABLE_EXCEPTIONS as e:
+            last_exc = e
+            if attempt == RETRY_MAX_ATTEMPTS:
+                logger.error(
+                    f"{operation_name}: final retry failed after {attempt} attempts "
+                    f"({type(e).__name__}: {e})"
+                )
+                raise
+            wait = RETRY_BASE_SECONDS ** attempt + random.uniform(0, RETRY_JITTER_SECONDS)
+            logger.warning(
+                f"{operation_name}: attempt {attempt}/{RETRY_MAX_ATTEMPTS} failed "
+                f"({type(e).__name__}: {e}) — retrying in {wait:.1f}s"
+            )
+            time.sleep(wait)
+        except HttpError as e:
+            last_exc = e
+            status = getattr(getattr(e, "resp", None), "status", None)
+            if status in (429,) or (isinstance(status, int) and 500 <= status < 600):
+                if attempt == RETRY_MAX_ATTEMPTS:
+                    logger.error(
+                        f"{operation_name}: final retry failed after {attempt} attempts "
+                        f"(HTTP {status})"
+                    )
+                    raise
+                wait = RETRY_BASE_SECONDS ** attempt + random.uniform(0, RETRY_JITTER_SECONDS)
+                logger.warning(
+                    f"{operation_name}: attempt {attempt}/{RETRY_MAX_ATTEMPTS} failed "
+                    f"(HTTP {status}) — retrying in {wait:.1f}s"
+                )
+                time.sleep(wait)
+            else:
+                # 4xx ≠ 429: nicht retry-würdig
+                raise
+    # Defensive: sollte nicht erreicht werden
+    if last_exc is not None:
+        raise last_exc
+    raise RuntimeError(f"{operation_name}: retry loop ended without result or exception")
 
 
 def build_drive_service():
@@ -70,12 +156,15 @@ def write_markdown_file(
         resumable=False,
     )
 
-    result = drive_service.files().create(
-        body=body,
-        media_body=media,
-        fields="id,name,parents",
-        supportsAllDrives=True,
-    ).execute()
+    result = _with_retry(
+        f"write_markdown_file({filename})",
+        lambda: drive_service.files().create(
+            body=body,
+            media_body=media,
+            fields="id,name,parents",
+            supportsAllDrives=True,
+        ).execute(),
+    )
 
     file_id = result["id"]
     logger.info(f"  Wrote {filename} → file_id {file_id}")
@@ -98,15 +187,18 @@ def cleanup_old_files(
         f"and name contains '{filename_prefix}' "
         f"and trashed = false"
     )
-    results = drive_service.files().list(
-        q=query,
-        orderBy="createdTime desc",
-        fields="files(id,name,createdTime)",
-        pageSize=100,
-        supportsAllDrives=True,
-        includeItemsFromAllDrives=True,
-        corpora="allDrives",
-    ).execute()
+    results = _with_retry(
+        f"cleanup_old_files.list({filename_prefix})",
+        lambda: drive_service.files().list(
+            q=query,
+            orderBy="createdTime desc",
+            fields="files(id,name,createdTime)",
+            pageSize=100,
+            supportsAllDrives=True,
+            includeItemsFromAllDrives=True,
+            corpora="allDrives",
+        ).execute(),
+    )
     files = results.get("files", [])
     if len(files) <= keep_count:
         return 0
@@ -116,10 +208,14 @@ def cleanup_old_files(
     already_gone = 0
     for f in to_delete:
         try:
-            drive_service.files().delete(
-                fileId=f["id"],
-                supportsAllDrives=True,
-            ).execute()
+            _with_retry(
+                f"cleanup_old_files.delete({f['name']})",
+                # default-arg bindet f früh — kein late-binding-Problem in der Schleife
+                lambda f=f: drive_service.files().delete(
+                    fileId=f["id"],
+                    supportsAllDrives=True,
+                ).execute(),
+            )
             deleted += 1
         except HttpError as e:
             # 404 = File ist schon weg (manueller Cleanup, API-Cache-Lag,

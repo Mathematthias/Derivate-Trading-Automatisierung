@@ -1,8 +1,76 @@
-# Migration Notes - Universe-Erweiterung
+# Migration Notes - Pipeline-Architektur
 
-**Stand:** 2026-04-29
+## 2026-05-13 — Variante-A-Split (Tier B → B + C)
 
-## Was diese Aenderung bewirkt
+### Anlass
+
+Tier B lief seit 2026-04-30 mit ~308 Symbolen in einem Pull. Ergebnis:
+- 06.-08.05.: Schedule 4×/Tag, lief sauber durch
+- 09.-11.05.: nur 1×/Tag gestartet, einige Runs gescheitert
+- 12.05. 12:07: letzter erfolgreicher Run
+- 13.05. 14:07 CEST: SSL-Crash beim Drive-Upload (`ssl.SSLEOFError: EOF
+  occurred in violation of protocol`). yfinance-Pull war ok (305/306),
+  Drive-Side hat den TLS-Stream gekappt, vermutlich Load-Balancer-side.
+
+Tier A mit ~48 Symbolen alle 30 Min blieb stabil — der Größenfaktor war
+der entscheidende Stressor.
+
+### Was geändert wurde
+
+**Universum-Split nach Geographie:**
+- `tickers_tier_b.yaml` enthält jetzt nur das EU-Universum (~211 Symbole)
+- `tickers_tier_c.yaml` neu, enthält das US-Universum NASDAQ-100 (~96 Symbole)
+
+**Output-Tag-Konvention:**
+- `MARKETDATA-FULL-STD-...` + `CANDIDATES-...`        — Tier A (unverändert)
+- `MARKETDATA-FULL-EU-...`  + `GAMECHANGER-HUNT-EU-...` — Tier B (war: `-GC-`)
+- `MARKETDATA-FULL-US-...`  + `GAMECHANGER-HUNT-US-...` — Tier C (neu)
+
+**Workflow:**
+- `tier_b_sync.yml` Header: EU-Scope dokumentiert, Schedule-Empfehlung 2×/Tag
+- `tier_c_sync.yml` neu, identische Struktur
+
+**Robustheit (alle drei Tiers):**
+- `drive_writer.py`: `_with_retry()` wrappt jeden Drive-API-`.execute()`,
+  fängt SSLEOFError + Connection-Errors + HTTP 5xx/429 mit Exponential-Backoff.
+- `watchlist_sync.py`: gleiche Retry-Logik für STATE-Doc und Journal-Download
+- `market_data.py`: `_yf_download_with_retry()` als Defensiv-Wrapper für
+  yfinance; plus Logger-Silence für `_enrich_with_earnings` (Log-Hygiene gegen
+  "No earnings dates found"-ERROR-Flut bei Werten ohne Earnings-History).
+- `adhoc_scanner.py`: Catch erweitert um OSError/SSL-Fehler (Pipeline darf
+  nicht wegen RSS-Hick-up sterben).
+
+### Folge-TODOs (Skill-Side, NICHT in diesem Repo)
+
+- `pipeline_utils.py` (im Skill `/mnt/skills/user/derivate-trading/`) muss
+  die neuen Tags `EU` / `US` kennen — bisher kannte `select_latest_marketdata`
+  nur `standard` und `gamechanger`. Suche-Queries auf den Drive müssen
+  `GAMECHANGER-HUNT-EU-` und `GAMECHANGER-HUNT-US-` finden, nicht nur
+  `GAMECHANGER-HUNT-`.
+- Skill-`references/pipeline-integration.md` Tag-Tabelle anpassen.
+- Briefing-Routinen (`scan_morning`/`scan_afternoon`/`scan_evening`) bei
+  Bedarf um getrennte EU-/US-Frische-Checks erweitern.
+
+### Erweiterungs-Roadmap (post-Stabilisierung)
+
+Erst wenn 1-2 Wochen Tier B + Tier C ohne SSL-Crashes durchlaufen:
+
+1. **S&P 100 ex-NDX** (~40 US-Werte) zu Tier C addieren — schließt Lücke bei
+   Banken (JPM/BAC/WFC), Pharma (JNJ/PFE/LLY), Industrie (CAT/HON/RTX),
+   Energie (XOM/CVX). Tier C wächst auf ~136 — unter 200er-Robustheitsschwelle.
+2. **FTSE 50** (~50 UK-Werte) zu Tier B addieren — BP/Rio Tinto/Anglo/AstraZeneca/
+   GSK/Glencore für Brent-/Pharma-/Mining-Coverage. Tier B wächst auf ~261 —
+   nur sinnvoll, wenn UK-Quanto-Realität pro Setup geklärt (Memory Note #39
+   sagt: Quanto-Probleme bei US-Einzelaktien; GBP wahrscheinlich ähnlich).
+
+NICHT geplant: gesamtes S&P 500 oder Russell 2000 — KO-Handelbarkeit bei SB+/
+Gettex nicht gegeben, und Mid-/Small-Cap-Coverage hat MDAX/SDAX schon.
+
+---
+
+## 2026-04-29 — Universe-Erweiterung (historisch)
+
+### Was diese Aenderung bewirkt
 
 Erweiterung des Pipeline-Universums von ~63 Werten (Tier A: 12 + Tier B: 53)
 auf insgesamt ~330 Werte durch Aufnahme aller deutschen Index-Komponenten

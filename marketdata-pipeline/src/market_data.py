@@ -28,6 +28,11 @@ from __future__ import annotations
 
 import logging
 import os
+import random
+import socket
+import ssl
+import time
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from typing import Optional
@@ -46,6 +51,70 @@ logging.getLogger("yfinance").setLevel(logging.WARNING)
 
 # Mindestanteil erfolgreich gepullter Ticker, sonst Fehler
 HEALTH_THRESHOLD = 0.80
+
+# Retry-Konfiguration für yf.download (analog drive_writer._with_retry)
+YF_RETRY_MAX_ATTEMPTS = 3        # 1 Initial + 2 Retries
+YF_RETRY_BASE_SECONDS = 2.0      # 2, 4, 8 ...
+YF_RETRY_JITTER_SECONDS = 1.0
+
+_YF_RETRYABLE = (
+    ssl.SSLEOFError,
+    ssl.SSLError,
+    ConnectionError,
+    socket.timeout,
+    TimeoutError,
+    OSError,
+)
+
+
+@contextmanager
+def _silence_yfinance_logger():
+    """Temporär yfinance-Logger auf CRITICAL — verhindert die ERROR-Flut
+    "No earnings dates found, symbol may be delisted" für Werte ohne
+    Earnings-History (Special-Purpose-Vehicles, SDAX-Werte mit unregelmäßiger
+    Reporting, Tageskurs-Ticker etc.). Wird nur im _enrich_with_earnings-Loop
+    genutzt — der Haupt-Pull bleibt auf WARNING."""
+    yf_logger = logging.getLogger("yfinance")
+    prev_level = yf_logger.level
+    yf_logger.setLevel(logging.CRITICAL)
+    try:
+        yield
+    finally:
+        yf_logger.setLevel(prev_level)
+
+
+def _yf_download_with_retry(symbols, **kwargs):
+    """Wrappt yf.download mit Exponential-Backoff bei TLS/Connection-Resets.
+
+    Yahoo-API drosselt bei vielen Symbolen mit `threads=True` gelegentlich
+    via TLS-RST. Bei Tier B/C (~100-211 Symbole) ist das Risiko überschaubar
+    aber nicht null. Retry kostet bei 1 Initial + 2 Retries und Backoff 2/4s
+    maximal 6s pro Fehlversuch — verkraftbar gegenüber Komplett-Ausfall.
+
+    Returns das raw DataFrame; auf Fehler-Catch nicht; ein Pipeline-Crash
+    nach 3 Versuchen ist OK (besser als stilles Halbsynchronisieren).
+    """
+    last_exc: Optional[BaseException] = None
+    for attempt in range(1, YF_RETRY_MAX_ATTEMPTS + 1):
+        try:
+            return yf.download(symbols, **kwargs)
+        except _YF_RETRYABLE as e:
+            last_exc = e
+            if attempt == YF_RETRY_MAX_ATTEMPTS:
+                logger.error(
+                    f"yf.download: final retry failed after {attempt} attempts "
+                    f"({type(e).__name__}: {e})"
+                )
+                raise
+            wait = YF_RETRY_BASE_SECONDS ** attempt + random.uniform(0, YF_RETRY_JITTER_SECONDS)
+            logger.warning(
+                f"yf.download: attempt {attempt}/{YF_RETRY_MAX_ATTEMPTS} failed "
+                f"({type(e).__name__}: {e}) — retrying in {wait:.1f}s"
+            )
+            time.sleep(wait)
+    if last_exc is not None:
+        raise last_exc
+    raise RuntimeError("yf.download retry loop ended without result")
 
 # Preis-Einheiten-Normierung pro Suffix.
 # Yahoo liefert manche Listings in Subeinheiten (Pence statt Pound, Agorot
@@ -197,7 +266,7 @@ def fetch_ticker_data(
 
     # Batch-Pull: ein Aufruf für alle Ticker
     # group_by='ticker' macht nested DataFrame (level 0 = Symbol)
-    raw = yf.download(
+    raw = _yf_download_with_retry(
         symbols,
         period=period,
         interval="1d",
@@ -526,40 +595,46 @@ def _enrich_with_earnings(snapshots: dict[str, TickerSnapshot]) -> None:
     """
     today = date.today()
     skipped = 0
-    for symbol, snap in snapshots.items():
-        if not _is_equity_symbol(symbol):
-            skipped += 1
-            continue
-        try:
-            tk = yf.Ticker(symbol)
-            ed = tk.earnings_dates
-        except Exception as e:
-            logger.debug(f"earnings_dates failed for {symbol}: {e}")
-            continue
+    # yfinance loggt "No earnings dates found, symbol may be delisted" als
+    # ERROR für jeden Equity ohne Earnings-History (BVB, EKT, HAB, KSB3, STO3
+    # in unserem Universum, weil unregelmäßig reportende SDAX-Werte). Das
+    # füllt das Pipeline-Log mit Pseudo-Errors. Daher Logger für den Loop
+    # auf CRITICAL — eigene Logs bleiben auf logger.debug erhalten.
+    with _silence_yfinance_logger():
+        for symbol, snap in snapshots.items():
+            if not _is_equity_symbol(symbol):
+                skipped += 1
+                continue
+            try:
+                tk = yf.Ticker(symbol)
+                ed = tk.earnings_dates
+            except Exception as e:
+                logger.debug(f"earnings_dates failed for {symbol}: {e}")
+                continue
 
-        if ed is None or len(ed) == 0:
-            continue
+            if ed is None or len(ed) == 0:
+                continue
 
-        try:
-            # Index ist Timestamp; in Date konvertieren
-            dates = pd.to_datetime(ed.index).date
+            try:
+                # Index ist Timestamp; in Date konvertieren
+                dates = pd.to_datetime(ed.index).date
 
-            future_dates = [d for d in dates if d > today]
-            past_dates = [d for d in dates if d <= today]
+                future_dates = [d for d in dates if d > today]
+                past_dates = [d for d in dates if d <= today]
 
-            if future_dates:
-                snap.next_earnings_date = min(future_dates).isoformat()
+                if future_dates:
+                    snap.next_earnings_date = min(future_dates).isoformat()
 
-            if past_dates:
-                last = max(past_dates)
-                snap.last_earnings_date = last.isoformat()
-                # Handelstage-Approximation: Kalendertage minus volle Wochenenden
-                cal_days = (today - last).days
-                full_weekends = cal_days // 7 * 2
-                snap.days_since_last_earnings = max(0, cal_days - full_weekends)
-        except Exception as e:
-            logger.debug(f"earnings parse failed for {symbol}: {e}")
-            continue
+                if past_dates:
+                    last = max(past_dates)
+                    snap.last_earnings_date = last.isoformat()
+                    # Handelstage-Approximation: Kalendertage minus volle Wochenenden
+                    cal_days = (today - last).days
+                    full_weekends = cal_days // 7 * 2
+                    snap.days_since_last_earnings = max(0, cal_days - full_weekends)
+            except Exception as e:
+                logger.debug(f"earnings parse failed for {symbol}: {e}")
+                continue
 
     if skipped:
         logger.info(f"earnings_pull: skipped {skipped} non-equity symbols (indices/FX/futures/crypto/ETCs)")

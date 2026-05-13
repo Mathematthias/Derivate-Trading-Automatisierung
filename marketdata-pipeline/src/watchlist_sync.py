@@ -320,9 +320,13 @@ def replace_watchlist_block(state_text: str, new_block: str) -> str:
 
 def read_state_doc(drive_service, state_doc_id: str) -> tuple[str, str]:
     """Returnt (text, mime_type)."""
-    metadata = drive_service.files().get(
-        fileId=state_doc_id, fields="mimeType,name", supportsAllDrives=True,
-    ).execute()
+    from drive_writer import _with_retry  # lokaler Import, Zyklusvermeidung
+    metadata = _with_retry(
+        "read_state_doc.metadata",
+        lambda: drive_service.files().get(
+            fileId=state_doc_id, fields="mimeType,name", supportsAllDrives=True,
+        ).execute(),
+    )
     mime_type = metadata.get("mimeType", "")
 
     if mime_type == "application/vnd.google-apps.document":
@@ -333,7 +337,7 @@ def read_state_doc(drive_service, state_doc_id: str) -> tuple[str, str]:
         request = drive_service.files().get_media(
             fileId=state_doc_id, supportsAllDrives=True,
         )
-    content = request.execute()
+    content = _with_retry("read_state_doc.content", lambda: request.execute())
     if isinstance(content, bytes):
         for enc in ("utf-8", "cp1252", "latin-1"):
             try:
@@ -350,16 +354,20 @@ def write_state_doc(drive_service, state_doc_id: str, new_text: str, mime_type: 
     Markdown-Upload automatisch — bestehende Doc-Formatierung kann sich
     dadurch ändern. Bei text/markdown-Files unproblematisch.
     """
+    from drive_writer import _with_retry  # lokaler Import
     media = MediaInMemoryUpload(
         new_text.encode("utf-8"),
         mimetype="text/markdown",
         resumable=False,
     )
-    drive_service.files().update(
-        fileId=state_doc_id,
-        media_body=media,
-        supportsAllDrives=True,
-    ).execute()
+    _with_retry(
+        "write_state_doc",
+        lambda: drive_service.files().update(
+            fileId=state_doc_id,
+            media_body=media,
+            supportsAllDrives=True,
+        ).execute(),
+    )
 
 
 # ===========================================================================
@@ -387,15 +395,19 @@ def find_latest_journal(drive_service, search_folder_id: Optional[str] = None) -
 
     for q in queries:
         try:
-            result = drive_service.files().list(
-                q=q,
-                orderBy="modifiedTime desc",
-                fields="files(id,name,modifiedTime,parents)",
-                pageSize=10,
-                supportsAllDrives=True,
-                includeItemsFromAllDrives=True,
-                corpora="allDrives",
-            ).execute()
+            from drive_writer import _with_retry  # lokaler Import
+            result = _with_retry(
+                "find_latest_journal.list",
+                lambda q=q: drive_service.files().list(
+                    q=q,
+                    orderBy="modifiedTime desc",
+                    fields="files(id,name,modifiedTime,parents)",
+                    pageSize=10,
+                    supportsAllDrives=True,
+                    includeItemsFromAllDrives=True,
+                    corpora="allDrives",
+                ).execute(),
+            )
             files = result.get("files", [])
             if files:
                 logger.info(
@@ -416,6 +428,7 @@ def find_latest_journal(drive_service, search_folder_id: Optional[str] = None) -
 
 def download_journal(drive_service, file_id: str) -> bytes:
     """Lädt Journal als Bytes runter."""
+    from drive_writer import _with_retry  # lokaler Import
     request = drive_service.files().get_media(
         fileId=file_id, supportsAllDrives=True,
     )
@@ -423,7 +436,11 @@ def download_journal(drive_service, file_id: str) -> bytes:
     downloader = MediaIoBaseDownload(buf, request)
     done = False
     while not done:
-        _, done = downloader.next_chunk()
+        # next_chunk() macht intern auch HTTPs — bei TLS-Reset abfangen.
+        _, done = _with_retry(
+            "download_journal.next_chunk",
+            lambda: downloader.next_chunk(),
+        )
     return buf.getvalue()
 
 
