@@ -41,7 +41,9 @@ nachfolgend. Roadmap-Übersicht: siehe Top-Repo-`README.md`.
 - [x] **Build 1.4:** V1.6-Routinen lesen Pipeline-Files (im Skill „Phase 4")
 - [x] **Build 1.5:** Auto-Load bei Session-Start (im Skill „Phase 5")
 - [x] **Build 1.6:** Variante-A-Split (Tier B → B + C) + SSL-Retry-Robustheit (2026-05-13)
-- [ ] **Build 1.7:** Earnings-Kalender-Sync + BaFin-Insider-Scrape (separate wöchentliche Action)
+- [x] **Build 1.7:** Anomaly-Layer V1 — Gap, ATR-Z, Volumen-Z, NR7 (2026-05-15, Note #50)
+- [ ] **Build 1.8:** Earnings-Kalender-Sync + BaFin-Insider-Scrape (separate wöchentliche Action)
+- [ ] **Build 2.0:** Anomaly-Layer V2 — Peer-Divergenz (siehe `../ROADMAP.md`)
 
 > Der `derivate-trading`-Skill referenziert die Schritte 1.4 und 1.5 historisch
 > als „Phase 4" / „Phase 5". Das ist Skill-intern stabil dokumentiert und
