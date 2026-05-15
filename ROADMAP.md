@@ -8,6 +8,7 @@ noch nicht implementiert sind. Stand: 2026-05-15.
 | Phase | Inhalt | Status |
 |---|---|---|
 | Anomaly-Layer V1 | Gap, Volumen-Z, ATR-Z, NR7 | ✅ Erledigt (2026-05-15, Note #50) |
+| Anomaly-Layer V1.1 | Intraday-Guard (VOL-Z/NR7), Index/FX/Crypto-Filter | ✅ Erledigt (2026-05-15, Note #50.1) |
 | Anomaly-Layer V2 | Peer-Divergenz | 🔜 Geplant |
 | Anomaly-Layer V3 | News-Kurs-Mismatch, Correlation-Breakdown | 💭 Idee |
 
