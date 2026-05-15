@@ -110,6 +110,13 @@ def render_marketdata_full(
                 parts.append(f"WeeklyHHHL={'✓' if snap.weekly_higher_highs_lows else '✗'}")
             lines.append(f"- **EMA200-MeanRev:** {' · '.join(parts)}")
 
+        # === Anomaly-Layer V1 (Note #50, 2026-05-15) ===
+        # Nur ausgeben wenn mindestens ein Anomaly-Flag aktiv ist — die Roh-
+        # Werte (Z-Scores etc.) bleiben implizit im Code. Sichtbar wird der
+        # Indikator nur, wenn er kippt.
+        if snap.has_any_anomaly:
+            lines.append(f"- **Anomalies:** {' · '.join(snap.anomaly_flag_labels())}")
+
         # === Earnings (optional) ===
         if snap.next_earnings_date or snap.last_earnings_date:
             ep: list[str] = []
@@ -405,14 +412,20 @@ def render_candidates(
 
 
 def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]:
-    """Erzeugt die zwei Setup-Klassen-Sektionen (EMA200-MeanRev + PEAD-Window).
+    """Erzeugt die Setup-Klassen-Sektionen (EMA200-MeanRev + PEAD-Window + Anomaly-Layer V1).
 
     Sind sehr sichtbar am Dateianfang positioniert. Wenn keine Treffer in einer
-    Sektion: die Sektion komplett weglassen. Beide leer → leere Liste zurück.
+    Sektion: die Sektion komplett weglassen. Alle leer → leere Liste zurück.
 
     PEAD-Window-Definition: last_earnings_date ≤ 5 HT in der Vergangenheit.
     Earnings-Daten kommen nur in den Snapshot, wenn ENV EARNINGS_PULL=1 ist —
     sonst überspringen wir die Sektion still.
+
+    Anomaly-Layer V1 (Note #50, 2026-05-15): vier statistische Detektoren
+    (Gap, Volumen-Z, ATR-Z, NR7). Ein Ticker erscheint nur einmal in der
+    Sektion, mit aggregierten Flag-Labels. Sortiert nach "Auffälligkeits-
+    Stärke" — Tickers mit mehreren parallelen Flags zuerst, dann nach
+    Höhe des stärksten Z-Scores.
     """
     out: list[str] = []
 
@@ -463,6 +476,35 @@ def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]
                 f"Earnings {snap.last_earnings_date} | "
                 f"{snap.days_since_last_earnings}d ago"
             )
+            out.append(line)
+        out.append("")
+
+    # ----- ANOMALY-FLAGS (Note #50) -----
+    anomaly_snaps: list[TickerSnapshot] = [
+        s for s in snapshots.values() if s.has_any_anomaly
+    ]
+
+    if anomaly_snaps:
+        if out:
+            out.append("---")
+            out.append("")
+        out.append("## ⚡ ANOMALY-FLAGS (Note #50)")
+        out.append("")
+        # Sortier-Score: Anzahl der Flags (mehr = wichtiger), dann max. |Z|.
+        # Damit landen Mehrfach-Anomalien (z.B. Gap + Volumen-Spike) oben.
+        def _anomaly_priority(s: TickerSnapshot) -> tuple[int, float]:
+            n_flags = len(s.anomaly_flag_labels())
+            max_z = max(
+                abs(s.atr_zscore_60d or 0),
+                abs(s.volume_zscore_60d or 0),
+                abs(s.gap_pct or 0) / 2,  # /2 weil Gap-% in anderer Skala als σ
+            )
+            return (n_flags, max_z)
+
+        anomaly_snaps.sort(key=_anomaly_priority, reverse=True)
+        for snap in anomaly_snaps:
+            labels = snap.anomaly_flag_labels()
+            line = f"⚡ ANOMALY | {snap.symbol} | " + " · ".join(labels)
             out.append(line)
         out.append("")
 

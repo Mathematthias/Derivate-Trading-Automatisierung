@@ -135,6 +135,19 @@ WEEKLY_TREND_LOOKBACK_WK = 26    # Wochen-HH/HL-Check Fenster
 EARNINGS_PULL_ENABLED = os.environ.get("EARNINGS_PULL", "0") == "1"
 
 
+# === Anomaly-Layer V1 (2026-05-15, Note #50) ===
+# Vier statistische Anomalie-Detektoren oberhalb der schwellenwert-basierten
+# Bucket-Filter. Ziel: ungewöhnliche Bewegungen identifizieren, die durch das
+# normale Setup-Raster fallen, weil sie kontextuell auffällig sind statt
+# absolut-schwellenwert-überschreitend.
+ANOMALY_LOOKBACK_DAYS = 60           # Vergleichsfenster für Z-Scores (HT)
+ANOMALY_ATR_Z_THRESHOLD = 2.0        # |Z| ≥ 2.0 = Volatilitäts-Regime-Shift
+ANOMALY_GAP_PCT_THRESHOLD = 2.0      # |Gap| ≥ 2.0% = Anomalie-würdig
+ANOMALY_GAP_PCT_EXTREME = 5.0        # |Gap| ≥ 5.0% = Gamechanger-Klasse
+ANOMALY_VOLUME_Z_THRESHOLD = 2.0     # |Z| ≥ 2.0 auf log-Volumen = Spike
+ANOMALY_NR7_LOOKBACK = 7             # True-Range-Vergleichsfenster für NR7
+
+
 @dataclass
 class TickerSnapshot:
     """Aggregierte Daten und Indikatoren für einen Ticker zum aktuellen Zeitpunkt."""
@@ -207,6 +220,26 @@ class TickerSnapshot:
     """Handelstage seit last_earnings_date (näherungsweise via Kalendertage minus
     Wochenende). None wenn kein last_earnings_date."""
 
+    # === Anomaly-Layer V1 (Note #50, 2026-05-15) ===
+    atr_zscore_60d: Optional[float] = None
+    """Z-Score des heutigen ATR-14 gegen die letzten 60 HT ATR-Werte.
+    |Z| ≥ 2.0 = Volatilitäts-Regime-Shift. None bei History < 60 HT."""
+
+    gap_pct: Optional[float] = None
+    """Eröffnungs-Gap zum Vortags-Close in %: (today_open - prev_close) / prev_close × 100.
+    Positiv = Gap nach oben, negativ = Gap nach unten. None bei fehlenden Daten."""
+
+    volume_zscore_60d: Optional[float] = None
+    """Z-Score von log(volume_today) gegen log(volume) der letzten 60 HT.
+    Log-Transform macht den Score robust gegen Volumen-Verteilungen mit langem
+    rechten Tail. |Z| ≥ 2.0 = Volumen-Spike-Anomalie. None bei History < 60 HT
+    oder ungültigen Volumen-Daten (≤0)."""
+
+    nr7: Optional[bool] = None
+    """True wenn die heutige True-Range die niedrigste der letzten 7 Handelstage ist.
+    Klassisches Pre-Breakout-Signal (Volatility Contraction → Expansion).
+    None bei History < 7 HT."""
+
     # EMA-Stack (Hilfsmethoden)
     @property
     def has_bullish_stack(self) -> bool:
@@ -242,6 +275,70 @@ class TickerSnapshot:
         if not self.weekly_higher_highs_lows:
             return False
         return True
+
+    # === Anomaly-Convenience (Note #50) ===
+    @property
+    def is_atr_anomaly(self) -> bool:
+        """True wenn ATR-Z-Score in den extremen Bereich (|Z| ≥ 2.0) fällt."""
+        if self.atr_zscore_60d is None:
+            return False
+        return abs(self.atr_zscore_60d) >= ANOMALY_ATR_Z_THRESHOLD
+
+    @property
+    def is_gap_anomaly(self) -> bool:
+        """True wenn der Eröffnungs-Gap ≥ 2.0% beträgt (in beide Richtungen)."""
+        if self.gap_pct is None:
+            return False
+        return abs(self.gap_pct) >= ANOMALY_GAP_PCT_THRESHOLD
+
+    @property
+    def is_gap_extreme(self) -> bool:
+        """True wenn der Eröffnungs-Gap ≥ 5.0% beträgt (Gamechanger-Klasse)."""
+        if self.gap_pct is None:
+            return False
+        return abs(self.gap_pct) >= ANOMALY_GAP_PCT_EXTREME
+
+    @property
+    def is_volume_anomaly(self) -> bool:
+        """True wenn Log-Volumen-Z-Score |Z| ≥ 2.0."""
+        if self.volume_zscore_60d is None:
+            return False
+        return abs(self.volume_zscore_60d) >= ANOMALY_VOLUME_Z_THRESHOLD
+
+    @property
+    def is_range_compressed(self) -> bool:
+        """True wenn NR7-Bedingung erfüllt (heutige True-Range = niedrigste der letzten 7 HT)."""
+        return self.nr7 is True
+
+    @property
+    def has_any_anomaly(self) -> bool:
+        """True wenn mindestens ein Anomaly-Flag aktiv ist. Convenience für Renderer."""
+        return (
+            self.is_atr_anomaly
+            or self.is_gap_anomaly
+            or self.is_volume_anomaly
+            or self.is_range_compressed
+        )
+
+    def anomaly_flag_labels(self) -> list[str]:
+        """Liste der aktiven Anomaly-Flags als Kurz-Labels für Renderer.
+
+        Reihenfolge: Gap zuerst (am sichtbarsten), dann Volumen, ATR, Range.
+        Range-Compression ist letzter, weil es das schwächste Einzelsignal ist —
+        es lebt erst in Kombination mit anderen Anomalien.
+        """
+        labels: list[str] = []
+        if self.is_gap_extreme:
+            labels.append(f"GAP-EXTREME {self.gap_pct:+.1f}%")
+        elif self.is_gap_anomaly:
+            labels.append(f"GAP {self.gap_pct:+.1f}%")
+        if self.is_volume_anomaly:
+            labels.append(f"VOL-Z {self.volume_zscore_60d:+.1f}σ")
+        if self.is_atr_anomaly:
+            labels.append(f"ATR-Z {self.atr_zscore_60d:+.1f}σ")
+        if self.is_range_compressed:
+            labels.append("NR7")
+        return labels
 
 
 def fetch_ticker_data(
@@ -444,7 +541,92 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
     # === Wochen-Trend (höhere Hochs + höhere Tiefs auf 26-Wochen-Fenster) ===
     _compute_weekly_trend_field(snap, df)
 
+    # === Anomaly-Layer V1 (Note #50) ===
+    # Brauchen: 60 HT History für die Z-Scores, 7 HT für NR7.
+    _compute_anomaly_fields(snap, df)
+
     return snap
+
+
+def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
+    """Berechnet die vier V1-Anomaly-Felder — modifiziert snap in-place.
+
+    - atr_zscore_60d:    Z-Score des heutigen ATR-14 vs. letzte 60 HT ATR-Werte
+    - gap_pct:           Eröffnungs-Gap zum Vortags-Close in %
+    - volume_zscore_60d: Z-Score von log(volume_today) vs. letzte 60 HT log-Volumen
+    - nr7:               True-Range heute = niedrigste der letzten 7 HT
+
+    Stille Defaults bei zu kurzer History (60 HT bzw. 7 HT): die jeweiligen
+    Felder bleiben None. Convenience-Properties (is_*_anomaly) interpretieren
+    None als "kein Flag", nicht als Anomalie — sicheres Verhalten bei dünnen
+    Daten (z.B. frische IPOs).
+    """
+    # --- gap_pct: nur today_open vs. prev_close ---
+    if snap.today_open is not None and snap.prev_close is not None and snap.prev_close > 0:
+        snap.gap_pct = (snap.today_open - snap.prev_close) / snap.prev_close * 100
+
+    # --- ATR-Z-Score über 60 HT ---
+    # Bedingung: mindestens 60 HT ATR-Werte oberhalb der initialen 14-HT-Warmup
+    # → effektiv brauchen wir ≥ 74 HT Daten
+    if len(df) >= ANOMALY_LOOKBACK_DAYS + 14 and "High" in df.columns and "Low" in df.columns:
+        atr_series = _compute_atr_series(df, period=14)
+        # Letzten N + 1 Werte (Vergleichsfenster + heute selbst)
+        recent_atr = atr_series.dropna().tail(ANOMALY_LOOKBACK_DAYS + 1)
+        if len(recent_atr) >= ANOMALY_LOOKBACK_DAYS + 1:
+            today_atr = float(recent_atr.iloc[-1])
+            # Baseline OHNE den heutigen Wert (sonst zerrt der eigene Wert den Mittelwert)
+            baseline = recent_atr.iloc[:-1]
+            mean_atr = float(baseline.mean())
+            std_atr = float(baseline.std(ddof=1))
+            if std_atr > 0:
+                snap.atr_zscore_60d = (today_atr - mean_atr) / std_atr
+
+    # --- Volumen-Z-Score über 60 HT (log-transformiert) ---
+    if (
+        "Volume" in df.columns
+        and len(df) >= ANOMALY_LOOKBACK_DAYS + 1
+        and snap.volume_today is not None
+        and snap.volume_today > 0
+    ):
+        vols = df["Volume"].tail(ANOMALY_LOOKBACK_DAYS + 1)
+        # Volumen > 0 erzwingen (log(0) = -inf, NaN-Tage rauswerfen)
+        vols_clean = vols[vols > 0].dropna()
+        if len(vols_clean) >= ANOMALY_LOOKBACK_DAYS + 1:
+            import numpy as _np  # lokal, weil oben nicht zwingend importiert
+            log_vols = _np.log(vols_clean.astype(float))
+            today_log = float(log_vols.iloc[-1])
+            baseline = log_vols.iloc[:-1]
+            mean_log = float(baseline.mean())
+            std_log = float(baseline.std(ddof=1))
+            if std_log > 0:
+                snap.volume_zscore_60d = (today_log - mean_log) / std_log
+
+    # --- NR7: True-Range heute = niedrigste der letzten 7 HT ---
+    if len(df) >= ANOMALY_NR7_LOOKBACK + 1 and all(c in df.columns for c in ["High", "Low", "Close"]):
+        recent = df.tail(ANOMALY_NR7_LOOKBACK)
+        # True Range = max(H-L, |H-prev_close|, |L-prev_close|)
+        # Für saubere TR brauchen wir den prev_close der Reihe, also einen Eintrag
+        # mehr.
+        tr_window = df.tail(ANOMALY_NR7_LOOKBACK + 1).copy()
+        tr_window["prev_close"] = tr_window["Close"].shift(1)
+        tr_window["tr"] = tr_window.apply(
+            lambda r: max(
+                r["High"] - r["Low"],
+                abs(r["High"] - r["prev_close"]) if pd.notna(r["prev_close"]) else 0,
+                abs(r["Low"] - r["prev_close"]) if pd.notna(r["prev_close"]) else 0,
+            ),
+            axis=1,
+        )
+        # Letzte 7 vollständigen TRs (also ohne den allerersten, dessen prev_close
+        # NaN ist)
+        last_7_tr = tr_window["tr"].dropna().tail(ANOMALY_NR7_LOOKBACK)
+        if len(last_7_tr) == ANOMALY_NR7_LOOKBACK:
+            today_tr = float(last_7_tr.iloc[-1])
+            min_tr = float(last_7_tr.min())
+            # NR7 = strikt: heutige TR ist genau (oder eines der) Minima
+            # Wir nehmen "≤ min + Epsilon" um Floating-Point-Vergleiche zu robusten
+            eps = 1e-9
+            snap.nr7 = today_tr <= min_tr + eps
 
 
 def _compute_ema200_meanrev_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
