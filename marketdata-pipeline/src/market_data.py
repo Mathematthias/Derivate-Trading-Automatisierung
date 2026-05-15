@@ -147,6 +147,19 @@ ANOMALY_GAP_PCT_EXTREME = 5.0        # |Gap| ≥ 5.0% = Gamechanger-Klasse
 ANOMALY_VOLUME_Z_THRESHOLD = 2.0     # |Z| ≥ 2.0 auf log-Volumen = Spike
 ANOMALY_NR7_LOOKBACK = 7             # True-Range-Vergleichsfenster für NR7
 
+# V1.1 (2026-05-15): Intraday-Guard für volumen-basierte Anomalien.
+# yfinance liefert intraday einen PARTIAL Tagesvolumen-Wert. Vergleich gegen
+# historische Tagesschluss-Volumen → künstlich negative Z-Scores (Bug in V1).
+# Analog zu filter_engine._get_vol_status erst nach US-Close (20 UTC ≈
+# 21/22 CEST) ausgeben. Davor: volume_zscore_60d und nr7 bleiben None.
+ANOMALY_VOLUME_EOD_HOUR_UTC = 20
+
+# Symbole, die kein Setup-Kandidat sind (Indizes, Forex, Krypto, Futures) →
+# auch nicht in der ANOMALY-FLAGS-Sektion erscheinen. Heuristik per Suffix/
+# Präfix — deckt Yahoo-Konventionen ab.
+ANOMALY_EXCLUDED_PREFIXES = ("^",)          # ^GSPC, ^IXIC, ^VIX, ^DJI ...
+ANOMALY_EXCLUDED_SUFFIXES = ("=F", "=X", "-USD", "-EUR")  # Futures, FX, Krypto
+
 
 @dataclass
 class TickerSnapshot:
@@ -558,41 +571,46 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
 
     Stille Defaults bei zu kurzer History (60 HT bzw. 7 HT): die jeweiligen
     Felder bleiben None. Convenience-Properties (is_*_anomaly) interpretieren
-    None als "kein Flag", nicht als Anomalie — sicheres Verhalten bei dünnen
-    Daten (z.B. frische IPOs).
+    None als "kein Flag", nicht als Anomalie.
+
+    V1.1 (2026-05-15): Intraday-Guard. Während offener Märkte (vor US-Close
+    20 UTC) sind volumen- und range-basierte Werte (volume_zscore, nr7) noch
+    nicht final — sie bleiben dann None statt eines partial-Z-Score, der
+    systematisch negativ wäre und Fehlsignale produziert. ATR-Z und Gap sind
+    intraday stabil und werden immer berechnet.
     """
-    # --- gap_pct: nur today_open vs. prev_close ---
+    # Intraday-Guard auswerten (UTC, weil hard_evaluation_utc_hour in UTC)
+    now_utc_hour = datetime.utcnow().hour
+    is_eod = now_utc_hour >= ANOMALY_VOLUME_EOD_HOUR_UTC
+
+    # --- gap_pct: nur today_open vs. prev_close (intraday-stabil) ---
     if snap.today_open is not None and snap.prev_close is not None and snap.prev_close > 0:
         snap.gap_pct = (snap.today_open - snap.prev_close) / snap.prev_close * 100
 
-    # --- ATR-Z-Score über 60 HT ---
-    # Bedingung: mindestens 60 HT ATR-Werte oberhalb der initialen 14-HT-Warmup
-    # → effektiv brauchen wir ≥ 74 HT Daten
+    # --- ATR-Z-Score über 60 HT (intraday-stabil durch EWMA-Glättung) ---
     if len(df) >= ANOMALY_LOOKBACK_DAYS + 14 and "High" in df.columns and "Low" in df.columns:
         atr_series = _compute_atr_series(df, period=14)
-        # Letzten N + 1 Werte (Vergleichsfenster + heute selbst)
         recent_atr = atr_series.dropna().tail(ANOMALY_LOOKBACK_DAYS + 1)
         if len(recent_atr) >= ANOMALY_LOOKBACK_DAYS + 1:
             today_atr = float(recent_atr.iloc[-1])
-            # Baseline OHNE den heutigen Wert (sonst zerrt der eigene Wert den Mittelwert)
             baseline = recent_atr.iloc[:-1]
             mean_atr = float(baseline.mean())
             std_atr = float(baseline.std(ddof=1))
             if std_atr > 0:
                 snap.atr_zscore_60d = (today_atr - mean_atr) / std_atr
 
-    # --- Volumen-Z-Score über 60 HT (log-transformiert) ---
+    # --- Volumen-Z-Score: NUR EoD (Intraday-Guard) ---
     if (
-        "Volume" in df.columns
+        is_eod
+        and "Volume" in df.columns
         and len(df) >= ANOMALY_LOOKBACK_DAYS + 1
         and snap.volume_today is not None
         and snap.volume_today > 0
     ):
         vols = df["Volume"].tail(ANOMALY_LOOKBACK_DAYS + 1)
-        # Volumen > 0 erzwingen (log(0) = -inf, NaN-Tage rauswerfen)
         vols_clean = vols[vols > 0].dropna()
         if len(vols_clean) >= ANOMALY_LOOKBACK_DAYS + 1:
-            import numpy as _np  # lokal, weil oben nicht zwingend importiert
+            import numpy as _np
             log_vols = _np.log(vols_clean.astype(float))
             today_log = float(log_vols.iloc[-1])
             baseline = log_vols.iloc[:-1]
@@ -601,12 +619,8 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
             if std_log > 0:
                 snap.volume_zscore_60d = (today_log - mean_log) / std_log
 
-    # --- NR7: True-Range heute = niedrigste der letzten 7 HT ---
-    if len(df) >= ANOMALY_NR7_LOOKBACK + 1 and all(c in df.columns for c in ["High", "Low", "Close"]):
-        recent = df.tail(ANOMALY_NR7_LOOKBACK)
-        # True Range = max(H-L, |H-prev_close|, |L-prev_close|)
-        # Für saubere TR brauchen wir den prev_close der Reihe, also einen Eintrag
-        # mehr.
+    # --- NR7: NUR EoD (Intraday-Guard, da TR heute partial ist) ---
+    if is_eod and len(df) >= ANOMALY_NR7_LOOKBACK + 1 and all(c in df.columns for c in ["High", "Low", "Close"]):
         tr_window = df.tail(ANOMALY_NR7_LOOKBACK + 1).copy()
         tr_window["prev_close"] = tr_window["Close"].shift(1)
         tr_window["tr"] = tr_window.apply(
@@ -617,14 +631,10 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
             ),
             axis=1,
         )
-        # Letzte 7 vollständigen TRs (also ohne den allerersten, dessen prev_close
-        # NaN ist)
         last_7_tr = tr_window["tr"].dropna().tail(ANOMALY_NR7_LOOKBACK)
         if len(last_7_tr) == ANOMALY_NR7_LOOKBACK:
             today_tr = float(last_7_tr.iloc[-1])
             min_tr = float(last_7_tr.min())
-            # NR7 = strikt: heutige TR ist genau (oder eines der) Minima
-            # Wir nehmen "≤ min + Epsilon" um Floating-Point-Vergleiche zu robusten
             eps = 1e-9
             snap.nr7 = today_tr <= min_tr + eps
 

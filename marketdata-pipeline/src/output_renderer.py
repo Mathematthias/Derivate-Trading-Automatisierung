@@ -480,8 +480,20 @@ def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]
         out.append("")
 
     # ----- ANOMALY-FLAGS (Note #50) -----
+    # V1.1: Indizes/Forex/Krypto/Futures rausfiltern — sind Makro-Kontext,
+    # keine Trade-Kandidaten. Heuristik per Yahoo-Symbol-Konventionen.
+    from market_data import ANOMALY_EXCLUDED_PREFIXES, ANOMALY_EXCLUDED_SUFFIXES
+
+    def _is_excluded_anomaly_symbol(symbol: str) -> bool:
+        if any(symbol.startswith(p) for p in ANOMALY_EXCLUDED_PREFIXES):
+            return True
+        if any(symbol.endswith(s) for s in ANOMALY_EXCLUDED_SUFFIXES):
+            return True
+        return False
+
     anomaly_snaps: list[TickerSnapshot] = [
-        s for s in snapshots.values() if s.has_any_anomaly
+        s for s in snapshots.values()
+        if s.has_any_anomaly and not _is_excluded_anomaly_symbol(s.symbol)
     ]
 
     if anomaly_snaps:
