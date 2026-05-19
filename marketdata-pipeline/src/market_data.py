@@ -171,8 +171,9 @@ class TickerSnapshot:
     # Aktueller Stand
     price: float
     prev_close: Optional[float]
-    change_pct: Optional[float]  # heutige Bewegung vs. Vortag
-    volume_today: Optional[int]
+    prev_open: Optional[float] = None  # für Bullish-Engulfing-Detection (Note #70, 2026-05-19)
+    change_pct: Optional[float] = None  # heutige Bewegung vs. Vortag
+    volume_today: Optional[int] = None
 
     # Indikatoren auf Daily-Basis
     ema20: Optional[float] = None
@@ -455,14 +456,19 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
 
     timestamp = datetime.now()
 
-    # Vortag (vorletzter Close)
+    # Vortag (vorletzter Open + Close)
     prev_close: Optional[float] = None
+    prev_open: Optional[float] = None
     change_pct: Optional[float] = None
     if len(df) >= 2:
-        prev_close_val = df.iloc[-2]["Close"]
+        prev_row = df.iloc[-2]
+        prev_close_val = prev_row["Close"]
         if not pd.isna(prev_close_val):
             prev_close = float(prev_close_val)
             change_pct = (price - prev_close) / prev_close * 100
+        prev_open_val = prev_row.get("Open")
+        if prev_open_val is not None and not pd.isna(prev_open_val):
+            prev_open = float(prev_open_val)
 
     # Volumen heute
     volume_today: Optional[int] = None
@@ -475,6 +481,7 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         timestamp=timestamp,
         price=price,
         prev_close=prev_close,
+        prev_open=prev_open,
         change_pct=change_pct,
         volume_today=volume_today,
     )

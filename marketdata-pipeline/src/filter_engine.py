@@ -362,18 +362,69 @@ def _evaluate_trigger(
             conditions_missing.append("Vol n/a — keine Volumen-Daten")
 
     if trigger.require_hammer:
-        # Vereinfachter Hammer-Check: Lower-Wick > 50% UND Close oben in Range
-        if (snap.today_lower_wick_pct is not None
-                and snap.today_lower_wick_pct >= 50
-                and snap.today_close and snap.today_high and snap.today_low):
+        # Reverse-Close-Check (Note #70, 2026-05-19): zwei zulässige Patterns —
+        # (a) Klassischer Hammer: langer unterer Docht ≥50% der Range +
+        #     Close im oberen Drittel.
+        # (b) Bullish-Engulfing: gestrige Kerze bearish, heutige bullish,
+        #     heutiger Body schluckt gestrigen Body (Open ≤ prev_close,
+        #     Close ≥ prev_open) + Close im oberen Drittel.
+        # Anlass: CTSH 19.05.2026 (Open 47,96 / Tief 47,31 / Close 51,40)
+        # war klares Bullish-Engulfing am 52W-Tief, fiel aber durch reinen
+        # Hammer-Filter (Lower-Wick nur ~16%, Close-Position 100%).
+        hammer_match = False
+        engulfing_match = False
+        match_label = ""
+
+        has_today = (snap.today_close is not None and snap.today_high is not None
+                     and snap.today_low is not None and snap.today_open is not None)
+        if has_today:
             range_total = snap.today_high - snap.today_low
             close_pos = (snap.today_close - snap.today_low) / range_total if range_total > 0 else 0
-            if close_pos >= 0.6:
-                conditions_met.append(f"Hammer-Kerze ✓ (Wick {snap.today_lower_wick_pct:.0f}%)")
-            else:
-                conditions_missing.append(f"keine Hammer-Kerze (Close-Position {close_pos:.0%})")
+            close_in_upper_third = close_pos >= 0.6
+
+            # Pattern (a) — Hammer
+            if (snap.today_lower_wick_pct is not None
+                    and snap.today_lower_wick_pct >= 50
+                    and close_in_upper_third):
+                hammer_match = True
+                match_label = f"Hammer ✓ (Wick {snap.today_lower_wick_pct:.0f}%, Close-Pos {close_pos:.0%})"
+
+            # Pattern (b) — Bullish-Engulfing (lockere Definition):
+            # Heute bullish (Close > Open) + gestern bearish (Close < Open)
+            # + heute schließt ÜBER gestern's Open (= heutiger Body schluckt
+            # den gestrigen Bearish-Move). Strict Engulfing verlangt zusätzlich
+            # today_open ≤ prev_close — das filtert CTSH-Style aus, obwohl der
+            # Reversal-Effekt da ist (siehe Note #70).
+            elif (snap.prev_open is not None and snap.prev_close is not None
+                    and close_in_upper_third):
+                today_bullish = snap.today_close > snap.today_open
+                prev_bearish = snap.prev_close < snap.prev_open
+                close_above_prev_open = snap.today_close > snap.prev_open
+                if today_bullish and prev_bearish and close_above_prev_open:
+                    engulfing_match = True
+                    # Strict-Marker für Diagnose (informativ, kein Filter)
+                    strict = snap.today_open <= snap.prev_close
+                    qualifier = "strict" if strict else "loose"
+                    match_label = (
+                        f"Bullish-Engulfing ✓ ({qualifier}: Close {snap.today_close:.2f} "
+                        f"> prev_open {snap.prev_open:.2f}, Close-Pos {close_pos:.0%})"
+                    )
+
+        if hammer_match or engulfing_match:
+            conditions_met.append(match_label)
+        elif not has_today:
+            conditions_missing.append("keine Reverse-Kerze (keine Tages-OHLC)")
         else:
-            conditions_missing.append("keine Hammer-Kerze")
+            # Diagnostik: welches der beiden Patterns ist warum gescheitert?
+            details = []
+            if snap.today_lower_wick_pct is not None:
+                details.append(f"Wick {snap.today_lower_wick_pct:.0f}% (Hammer ≥50)")
+            details.append(f"Close-Pos {close_pos:.0%} (≥60% nötig)")
+            if snap.prev_open is None or snap.prev_close is None:
+                details.append("kein Vortag")
+            conditions_missing.append(
+                "keine Reverse-Kerze (" + ", ".join(details) + ")"
+            )
 
     if trigger.rsi_max is not None:
         if snap.rsi14 is not None and snap.rsi14 < trigger.rsi_max:

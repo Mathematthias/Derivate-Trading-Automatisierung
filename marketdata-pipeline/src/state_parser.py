@@ -420,7 +420,8 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
             except ValueError:
                 pt.vol_multiplier = None
 
-    if re.search(r"\b(Hammer|Reverse-Close)\b", content, re.IGNORECASE):
+    if re.search(r"\b(Hammer|Reverse-Close|Bullish-Engulfing|Engulfing|Bounce-Close)\b",
+                 content, re.IGNORECASE):
         pt.require_hammer = True
 
     # Touch-Operator: "Daily-Touch", "Touch EMA50", "Touch ...€"
