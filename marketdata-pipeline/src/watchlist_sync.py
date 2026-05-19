@@ -350,14 +350,34 @@ def read_state_doc(drive_service, state_doc_id: str) -> tuple[str, str]:
 def write_state_doc(drive_service, state_doc_id: str, new_text: str, mime_type: str) -> None:
     """Schreibt den neuen Inhalt zurück.
 
-    Bei Google Docs (vnd.google-apps.document) konvertiert Drive den
-    Markdown-Upload automatisch — bestehende Doc-Formatierung kann sich
-    dadurch ändern. Bei text/markdown-Files unproblematisch.
+    mime_type-aware (gefixt 2026-05-19, Note #68):
+    - Bei Google Docs Native (`vnd.google-apps.document`): Upload als
+      `text/plain`. Drive akzeptiert `text/markdown` per files().update()
+      mit `uploadType=media` unzuverlässig — beobachtet HTTP 400 Bad Request
+      seit ~Mitte Mai 2026, Folge: stiller Sync-Drift (CHKP-Schaden 18.05.).
+      Plain-Text-Upload behält die Markdown-Syntax (## Headers, | Tabellen)
+      als Klartext im Doc — state_parser liest via text/plain-Export sauber
+      zurück. Im Doc-Editor sieht's roh aus, das ist akzeptabel weil der
+      STATE-Doc primär von der Pipeline gelesen wird, nicht von Menschen.
+    - Bei Markdown-File (`text/markdown` o.ä.): Original-mime_type beibehalten.
     """
     from drive_writer import _with_retry  # lokaler Import
+
+    if mime_type == "application/vnd.google-apps.document":
+        upload_mime = "text/plain"
+    elif mime_type:
+        upload_mime = mime_type
+    else:
+        upload_mime = "text/markdown"
+
+    logger.info(
+        "write_state_doc: target_mime=%s, upload_mime=%s, bytes=%d",
+        mime_type or "unknown", upload_mime, len(new_text.encode("utf-8")),
+    )
+
     media = MediaInMemoryUpload(
         new_text.encode("utf-8"),
-        mimetype="text/markdown",
+        mimetype=upload_mime,
         resumable=False,
     )
     _with_retry(
@@ -483,7 +503,47 @@ def main() -> int:
     # 5. STATE-Doc schreiben
     write_state_doc(drive_service, state_doc_id, new_text, mime_type)
     logger.info("STATE-Doc aktualisiert (%d Einträge synchronisiert)", len(entries))
+
+    # 6. Sanity-Check (gefixt 2026-05-19, Note #68): Re-Read und Eintrags-Count
+    # vergleichen. Drive-API kann Markdown-Uploads stumm verlieren oder
+    # konvertieren — wenn das passiert, ist der Sync gescheitert, auch wenn
+    # files().update() 200 OK lieferte. Lieber rote Pipeline als grüne Lüge.
+    state_text_after, _ = read_state_doc(drive_service, state_doc_id)
+    after_count = _count_watchlist_entries(state_text_after)
+    if after_count != len(entries):
+        raise RuntimeError(
+            f"STATE-Doc-Sanity-Check fehlgeschlagen: erwartet {len(entries)} "
+            f"WL-Einträge nach Write, gefunden {after_count}. "
+            f"Drive-API-Drift wahrscheinlich (siehe Note #68). "
+            f"Manuell prüfen: STATE_DOC_ID={state_doc_id}"
+        )
+    logger.info("Sanity-Check OK: %d Einträge im STATE-Doc bestätigt", after_count)
     return 0
+
+
+def _count_watchlist_entries(state_text: str) -> int:
+    """Zählt Datenzeilen in der Watchlist-Tabelle des STATE-Docs.
+
+    Heuristik: nach dem WATCHLIST_HEADER alle Zeilen, die mit `|` beginnen,
+    keine Separator-/Header-Zeilen sind, und nicht in einer Nachbar-Sektion
+    liegen. Robust gegen text/plain-Export aus Google Docs (`##`-Headers
+    bleiben als Plain-Text erhalten).
+    """
+    match = _WATCHLIST_BLOCK_RE.search(state_text)
+    if not match:
+        return 0
+    block = match.group(0)
+    count = 0
+    for line in block.splitlines():
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        if "Kandidat" in s and "Symbol" in s:
+            continue  # Header-Zeile
+        if re.match(r"^\|\s*[-:]+\s*\|", s):
+            continue  # Separator
+        count += 1
+    return count
 
 
 if __name__ == "__main__":
