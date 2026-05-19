@@ -45,6 +45,8 @@ class FakeSnap:
     today_open: Optional[float] = None
     today_high: Optional[float] = None
     today_low: Optional[float] = None
+    prev_open: Optional[float] = None
+    prev_close: Optional[float] = None
 
 
 # ============================================================
@@ -159,6 +161,87 @@ class TestTouchOperatorEvaluation:
         ts = _evaluate_trigger(triggers[0], snap, "LONG", config, now_utc_hour=14)
         # approx mit 2% Toleranz: 54.00 ist 3.19% drüber → nicht in_zone
         assert ts.proximity != "in_zone"
+
+# ============================================================
+# REVERSE-CLOSE: Hammer ODER Bullish-Engulfing (Note #70, 2026-05-19)
+# ============================================================
+
+class TestReverseCloseEvaluation:
+    """Hammer- und Bullish-Engulfing-Patterns als Reverse-Kerze.
+    
+    Auslöser: CTSH 19.05.2026 Bullish-Engulfing am 52W-Tief, fiel durch
+    reinen Hammer-Filter."""
+
+    def test_classic_hammer_still_matches(self, config):
+        """Klassischer Hammer (Lower-Wick 55%, Close oben) — wie vor dem Patch."""
+        triggers = _parse_triggers("Daily-Touch 52,33$ + Hammer + Vol >Avg-30d")
+        snap = FakeSnap(
+            price=52.40,
+            today_lower_wick_pct=55, today_open=52.20, today_close=52.40,
+            today_high=52.50, today_low=51.80,
+            volume_multiplier_today=1.5,
+        )
+        ts = _evaluate_trigger(triggers[0], snap, "LONG", config, now_utc_hour=14)
+        assert any("Hammer ✓" in c for c in ts.conditions_met), \
+            f"Hammer sollte matchen, conditions_met={ts.conditions_met}"
+
+    def test_bullish_engulfing_ctsh_style(self, config):
+        """CTSH 19.05.2026 (Open 47,96 / Tief 47,31 / Close 51,40)
+        + Vortag bearish (Open 49,50 / Close 47,80). Loose Bullish-Engulfing
+        — heute schließt deutlich über prev_open.
+
+        Lower-Wick nur ~16%, Hammer fällt durch — Engulfing muss matchen."""
+        triggers = _parse_triggers("Daily-Touch 51,40$ + Reverse-Close + Vol >Avg-30d")
+        snap = FakeSnap(
+            price=51.40,
+            today_lower_wick_pct=16,  # Hammer fällt durch
+            today_open=47.96, today_close=51.40,
+            today_high=51.40, today_low=47.31,
+            prev_open=49.50, prev_close=47.80,  # gestern bearish
+            volume_multiplier_today=1.98,
+        )
+        ts = _evaluate_trigger(triggers[0], snap, "LONG", config, now_utc_hour=14)
+        assert any("Bullish-Engulfing ✓" in c for c in ts.conditions_met), \
+            f"Bullish-Engulfing sollte matchen, conditions_met={ts.conditions_met}, " \
+            f"conditions_missing={ts.conditions_missing}"
+
+    def test_engulfing_fails_if_today_bearish(self, config):
+        """Heutige Kerze bearish (Close < Open) → kein Bullish-Engulfing."""
+        triggers = _parse_triggers("Daily-Touch 50$ + Reverse-Close")
+        snap = FakeSnap(
+            price=49.50,
+            today_lower_wick_pct=20,
+            today_open=51.00, today_close=49.50,  # heute bearish
+            today_high=51.20, today_low=49.30,
+            prev_open=52.00, prev_close=51.00,  # gestern bearish
+        )
+        ts = _evaluate_trigger(triggers[0], snap, "LONG", config, now_utc_hour=14)
+        assert not any("Engulfing ✓" in c or "Hammer ✓" in c for c in ts.conditions_met)
+        assert any("keine Reverse-Kerze" in c for c in ts.conditions_missing)
+
+    def test_engulfing_fails_if_body_doesnt_engulf(self, config):
+        """Heute bullish + gestern bearish, aber Body schluckt nicht
+        (today_open > prev_close oder today_close < prev_open)."""
+        triggers = _parse_triggers("Daily-Touch 50$ + Reverse-Close")
+        snap = FakeSnap(
+            price=51.00,
+            today_lower_wick_pct=20,
+            today_open=50.50, today_close=51.00,  # heute bullish, aber kleiner Body
+            today_high=51.10, today_low=50.40,
+            prev_open=53.00, prev_close=51.50,  # gestern bearish, ABER prev_open 53 > today_close 51
+        )
+        ts = _evaluate_trigger(triggers[0], snap, "LONG", config, now_utc_hour=14)
+        assert not any("Engulfing ✓" in c for c in ts.conditions_met)
+
+    def test_engulfing_word_in_trigger_text(self, config):
+        """`Bullish-Engulfing` als Trigger-Wort soll require_hammer setzen."""
+        triggers = _parse_triggers("Daily-Touch 50$ + Bullish-Engulfing")
+        assert triggers[0].require_hammer is True
+
+    def test_bounce_close_word_in_trigger_text(self, config):
+        """`Bounce-Close` als breiterer Reverse-Begriff (siehe IFX-WL-Eintrag)."""
+        triggers = _parse_triggers("Touch ≤60€ + 1D-Bounce-Close")
+        assert triggers[0].require_hammer is True
 
 
 # ============================================================
