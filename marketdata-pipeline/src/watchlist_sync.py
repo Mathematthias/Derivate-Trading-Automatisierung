@@ -492,6 +492,23 @@ def main() -> int:
     # 3. STATE-Doc lesen
     state_text, mime_type = read_state_doc(drive_service, state_doc_id)
 
+    # 3a. Markdown-Escapes strippen (Note #68 Round 2, 2026-05-19):
+    # Drive's text/plain-Export escaped Markdown-Sonderzeichen mit Backslash.
+    # Ohne Strip akkumulieren bei jedem Read/Write-Cycle weitere Backslashes,
+    # bis das Doc exponentiell aufbläht und Drive HTTP 400 zurückgibt.
+    # state_parser hatte den Strip bereits beim Read — wir müssen ihn auch
+    # hier anwenden, weil watchlist_sync das Doc nicht nur liest sondern
+    # zurückschreibt.
+    from state_parser import _strip_markdown_escapes
+    original_len = len(state_text)
+    state_text = _strip_markdown_escapes(state_text)
+    if len(state_text) < original_len:
+        logger.info(
+            "Markdown-Escapes gestrippt: %d → %d Zeichen (%.1f%% Reduktion)",
+            original_len, len(state_text),
+            (original_len - len(state_text)) / original_len * 100,
+        )
+
     # 4. Watchlist-Block neu rendern und ersetzen
     new_block = render_watchlist_block(entries, datetime.utcnow())
     new_text = replace_watchlist_block(state_text, new_block)
@@ -504,11 +521,12 @@ def main() -> int:
     write_state_doc(drive_service, state_doc_id, new_text, mime_type)
     logger.info("STATE-Doc aktualisiert (%d Einträge synchronisiert)", len(entries))
 
-    # 6. Sanity-Check (gefixt 2026-05-19, Note #68): Re-Read und Eintrags-Count
-    # vergleichen. Drive-API kann Markdown-Uploads stumm verlieren oder
-    # konvertieren — wenn das passiert, ist der Sync gescheitert, auch wenn
-    # files().update() 200 OK lieferte. Lieber rote Pipeline als grüne Lüge.
+    # 6. Sanity-Check (Note #68): Re-Read und Eintrags-Count vergleichen.
+    # Drive-API kann Markdown-Uploads stumm verlieren oder konvertieren —
+    # wenn das passiert, ist der Sync gescheitert, auch wenn files().update()
+    # 200 OK lieferte. Lieber rote Pipeline als grüne Lüge.
     state_text_after, _ = read_state_doc(drive_service, state_doc_id)
+    state_text_after = _strip_markdown_escapes(state_text_after)
     after_count = _count_watchlist_entries(state_text_after)
     if after_count != len(entries):
         raise RuntimeError(

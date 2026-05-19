@@ -139,31 +139,31 @@ def fetch_state_doc(drive_service: Resource, state_doc_id: str) -> str:
 # ============================================================
 
 def _strip_markdown_escapes(text: str) -> str:
-    """Entfernt Backslash-Escapes vor Markdown-Sonderzeichen.
+    """Entfernt Backslash-Escapes vor Markdown-Sonderzeichen — iterativ.
 
     Google Docs gibt Markdown-Inhalte mit Escapes wie \\#, \\>, \\<, \\*
     zurück. text/plain-Export der Drive-API kann das auch enthalten.
-    Wir normalisieren hier, damit der eigentliche Parser sich nicht damit
-    rumschlagen muss.
+
+    ITERATIV (Note #68 Round 2, 2026-05-19): Bei jedem erfolgreichen
+    Read/Write-Cycle escaped Drive die bereits escapeten Backslashes
+    erneut, was zu exponentieller Eskalation führt (\\~ → \\\\~ → \\\\\\\\~ ...).
+    Aktuelles STATE-Doc hatte 12 Backslashes vor `~`. Iterativ strippen
+    bis Konvergenz, max 30 Iterationen als Safety-Belt.
+
+    Reihenfolge pro Iteration: erst `\\\\` → `\\` (Backslash-Backslash zu
+    einem), dann einzelne `\\<sonderzeichen>` → `<sonderzeichen>`.
     """
-    # Reihenfolge: Mehrzeichen-Sequenzen zuerst, dann Einzelzeichen
-    replacements = [
-        ("\\#", "#"),
-        ("\\>", ">"),
-        ("\\<", "<"),
-        ("\\*", "*"),
-        ("\\_", "_"),
-        ("\\`", "`"),
-        ("\\[", "["),
-        ("\\]", "]"),
-        ("\\(", "("),
-        ("\\)", ")"),
-        ("\\-", "-"),
-        ("\\.", "."),
-        ("\\~", "~"),
-    ]
-    for old, new in replacements:
-        text = text.replace(old, new)
+    specials = "#><*_`[]().~-"
+    prev = None
+    iterations = 0
+    while prev != text and iterations < 30:
+        prev = text
+        # Erst: doppelte Backslashes auflösen
+        text = text.replace("\\\\", "\\")
+        # Dann: einzelne Escape-Sequenzen
+        for char in specials:
+            text = text.replace(f"\\{char}", char)
+        iterations += 1
     return text
 
 
