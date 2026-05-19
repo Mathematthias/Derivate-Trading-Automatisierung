@@ -46,7 +46,12 @@ jobs:
           pip install -r requirements.txt
 
       - name: Sync Watchlist from Trading-Journal
-        continue-on-error: true
+        # 2026-05-19 (Note #68): continue-on-error war true und hat einen
+        # HTTP-400-Fehler im STATE-Doc-Write maskiert. Pipeline lief danach
+        # mit veraltetem STATE weiter (34 statt 51 WL-Einträge), Folge:
+        # CHKP-Setup am 18.05. gar nicht erst getriggert. Stille Fails sind
+        # teurer als rote Workflows — daher false.
+        continue-on-error: false
         working-directory: marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
