@@ -245,6 +245,74 @@ def test_replace_block_at_end_of_file():
     assert "alt" not in result
 
 
+# ---------------------------------------------------------------------------
+# Sanity-Check Count (gefixt 2026-05-19, Note #68)
+# ---------------------------------------------------------------------------
+
+def test_count_entries_basic():
+    """Drei Daten-Zeilen unter Header — _count zählt drei."""
+    from watchlist_sync import _count_watchlist_entries
+    state = """\
+# STATE START
+
+## Watchlist-Trigger (aktive Einträge)
+
+| Kandidat | Symbol | Richtung | Trigger | Status |
+|----------|--------|----------|---------|--------|
+| Commerzbank | CBK.DE | LONG | T | ⚠️ aktiv |
+| TUI | TUI1.DE | LONG | T | ⏸ paused |
+| AIXTRON | AIXA.DE | SHORT | T | 📅 pending |
+
+## Offene Notes
+"""
+    assert _count_watchlist_entries(state) == 3
+
+
+def test_count_entries_empty_block():
+    """Block existiert, aber keine Datenzeilen — zählt null."""
+    from watchlist_sync import _count_watchlist_entries
+    state = """\
+## Watchlist-Trigger (aktive Einträge)
+
+| Kandidat | Symbol | Richtung | Trigger | Status |
+|----------|--------|----------|---------|--------|
+
+## Offene Notes
+"""
+    assert _count_watchlist_entries(state) == 0
+
+
+def test_count_entries_no_block():
+    """Kein Watchlist-Block im STATE — zählt null."""
+    from watchlist_sync import _count_watchlist_entries
+    state = "# STATE START\n\n## Offene Positionen\n| 1 | foo |\n"
+    assert _count_watchlist_entries(state) == 0
+
+
+def test_count_entries_robust_against_plain_text_export():
+    """Google-Docs-Plain-Text-Export verliert Markdown-Tabellen-Pipes nicht —
+    `##` und `|` sind Plain-ASCII und überleben den text/plain-Export."""
+    from watchlist_sync import _count_watchlist_entries
+    # Simulierter Plain-Text-Export: extra Leerzeilen, aber Pipe-Struktur intakt
+    state = """\
+STATE START
+
+
+## Watchlist-Trigger (aktive Einträge)
+
+
+
+| Kandidat | Symbol | Richtung | Trigger | Status |
+|----------|--------|----------|---------|--------|
+| TestA    | A.DE   | LONG     | T       | aktiv  |
+| TestB    | B.DE   | SHORT    | T       | paused |
+
+
+## Offene Notes
+"""
+    assert _count_watchlist_entries(state) == 2
+
+
 # Mini-Runner
 if __name__ == "__main__":
     fns = [(n, f) for n, f in globals().items() if n.startswith("test_") and callable(f)]
