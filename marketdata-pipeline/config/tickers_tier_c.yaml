@@ -53,8 +53,10 @@ categories:
     Broadcom: "AVGO"  # [H]
     Cadence_Design: "CDNS"  # [H]
     Charter_A: "CHTR"  # [H]
+    Check_Point: "CHKP"  # [H] Note #68 — WL-Workaround 2026-05-19 (watchlist_sync Bug 1)
     Cintas: "CTAS"  # [H]
     Cisco: "CSCO"  # [H]
+    Cloudflare: "NET"  # [H] Note #68 — WL-Workaround 2026-05-19 (watchlist_sync Bug 1)
     Cognizant: "CTSH"  # [H]
     Comcast: "CMCSA"  # [H]
     Constellation_Energy: "CEG"  # [H]
