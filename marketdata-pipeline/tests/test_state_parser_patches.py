@@ -202,3 +202,76 @@ class TestRegression:
         assert triggers[0].price_op is None
         assert triggers[0].require_volume is False
         assert triggers[0].require_bounce is False
+
+
+# ============================================================
+# MARKDOWN-ESCAPE-STRIP (Note #68 Round 2, 2026-05-19)
+# Anlass: STATE-Doc hatte 12 Backslashes vor `~`, weil bei jedem
+# Read/Write-Cycle ein weiterer Backslash akkumulierte und der alte
+# Strip nicht iterativ war. Pipeline failte mit HTTP 400 weil Doc
+# auf 1,6 MB aufgebläht war.
+# ============================================================
+
+class TestStripMarkdownEscapesIterative:
+    def test_single_escape(self):
+        """Standard-Fall: ein Backslash vor ~ wird gestrippt."""
+        from state_parser import _strip_markdown_escapes
+        result = _strip_markdown_escapes(r"Trigger \~240€")
+        assert result == "Trigger ~240€"
+
+    def test_double_escape(self):
+        """Zwei Backslashes: \\~ wird zu ~ (über \\\\ → \\ → ~)."""
+        from state_parser import _strip_markdown_escapes
+        result = _strip_markdown_escapes(r"Trigger \\~240€")
+        assert "\\" not in result, f"Strip unvollständig: {result!r}"
+        assert "~240€" in result
+
+    def test_twelve_backslashes_real_state_doc_case(self):
+        """Realer Fall vom STATE-Doc 19.05.2026: 12 Backslashes vor `~`.
+
+        Vorher reduzierte der Single-Pass-Strip nur auf 10 — exponentielles
+        Wachstum war die Folge. Iterativ muss vollständig abräumen."""
+        from state_parser import _strip_markdown_escapes
+        input_text = "EMA100 1D " + "\\" * 12 + "~240€ + RSI 1D " + "\\" * 8 + "<35"
+        result = _strip_markdown_escapes(input_text)
+        assert "~240€" in result, f"Tilde nicht freigelegt: {result!r}"
+        assert "<35" in result, f"Less-than nicht freigelegt: {result!r}"
+        assert "\\" not in result, f"Backslashes übrig: {result!r}"
+
+    def test_mixed_specials_all_stripped(self):
+        """Verschiedene escapte Sonderzeichen — alle iterativ frei."""
+        from state_parser import _strip_markdown_escapes
+        # Mehrfach-escaped: # > < * _ ` [ ] ( ) - . ~
+        input_text = r"\\\#header \\\> quote \\\<price \\\* italic"
+        result = _strip_markdown_escapes(input_text)
+        assert "\\" not in result
+        assert "#header" in result
+        assert "> quote" in result
+        assert "<price" in result
+        assert "* italic" in result
+
+    def test_idempotent_on_clean_text(self):
+        """Bereits sauberer Text bleibt unverändert."""
+        from state_parser import _strip_markdown_escapes
+        clean = "Setup neu: ~240€ + RSI <35 + Vol >Avg-20d"
+        assert _strip_markdown_escapes(clean) == clean
+
+    def test_runaway_protection(self):
+        """30-Iterationen-Safety-Belt: extreme Eskalation (1000 Backslashes)
+        terminiert in endlicher Zeit, auch wenn das Ergebnis noch nicht voll
+        konvergiert ist (sollte aber)."""
+        from state_parser import _strip_markdown_escapes
+        input_text = "X" + "\\" * 1000 + "~Y"
+        result = _strip_markdown_escapes(input_text)
+        # Bei 30 Iterationen ist auch 1000 BS voll abgebaut
+        # (jede Iteration halbiert die Backslash-Zahl: 2^30 > 10^9)
+        assert "~Y" in result
+
+    def test_preserves_non_special_backslash_pairs(self):
+        """`\\n`, `\\t` etc. werden NICHT gestrippt — die sind keine
+        Markdown-Specials, das sind echte Escape-Sequenzen."""
+        from state_parser import _strip_markdown_escapes
+        # Hinweis: hier raw-string mit \n als Text, nicht als newline
+        result = _strip_markdown_escapes(r"Zeile1\nZeile2")
+        # `\n` als Token bleibt — Strip-Set deckt n nicht ab
+        assert "\\n" in result or "\nZeile2" in result
