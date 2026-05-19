@@ -106,7 +106,7 @@ GitHub Action manuell auslösen:
 ## Wichtige Pipeline-Konstanten
 
 In den Workflows:
-- `STATE_DOC_ID = 1ssFEij6_1x6tM0lnRzIHzVRMNL6Z69CWYwmdOi-EaLg`
+- `STATE_DOC_ID = 1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp`
 - `BRIEFING_FOLDER_ID = 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht`
 - Health-Check-Threshold: 80% der Ticker müssen erfolgreich sein
 
