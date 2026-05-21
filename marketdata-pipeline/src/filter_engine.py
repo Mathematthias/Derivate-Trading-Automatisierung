@@ -52,6 +52,7 @@ class TriggerStatus:
     conditions_missing: list[str] = field(default_factory=list)  # fehlende (hart durchgefallen)
     conditions_pending: list[str] = field(default_factory=list)  # noch offen (Tagesvolumen, etc.)
     summary: str = ""  # Kurzfassung für Output
+    blown_through: bool = False  # Task 5: Breakout-Zone durchgelaufen (Kurs über Obergrenze)
 
 
 @dataclass
@@ -273,6 +274,7 @@ def _evaluate_trigger(
     conditions_met: list[str] = []
     conditions_missing: list[str] = []
     conditions_pending: list[str] = []
+    blown_through = False  # Task 5: Breakout-Zone durchgelaufen
 
     # === PREIS-DISTANZ ===
     price = snap.price
@@ -288,9 +290,22 @@ def _evaluate_trigger(
             )
         else:  # price > price_high
             distance_pct = (price - trigger.price_high) / trigger.price_high * 100
-            conditions_missing.append(
-                f"Preis {price:.2f} über Range [{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%)"
-            )
+            if trigger.zone_kind == "breakout":
+                # Breakout-Zone: über der Obergrenze = durchgelaufen. Die
+                # Obergrenze sitzt auf dem R:R-1,35-Kipppunkt — darüber ist
+                # das Setup nicht mehr handelbar (Task 5).
+                blown_through = True
+                conditions_missing.append(
+                    f"Preis {price:.2f} ÜBER Breakout-Zone "
+                    f"[{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%) "
+                    f"— DURCHGELAUFEN: R:R-Schwelle gerissen, Setup tot"
+                )
+            else:
+                # Pullback-Zone (oder unbekannt): über der Zone = Rücksetzer
+                # noch nicht tief genug → legitimes Warten, Alt-Verhalten.
+                conditions_missing.append(
+                    f"Preis {price:.2f} über Range [{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%)"
+                )
 
     elif trigger.price_op == ">":
         # Trigger erfüllt wenn Kurs > Schwelle. Distance dann 0 (analog in_range
@@ -441,9 +456,18 @@ def _evaluate_trigger(
             conditions_missing.append(f"RSI {rsi_str} ≤ {trigger.rsi_min:.0f}")
 
     proximity = _classify_proximity(distance_pct, config)
+    if blown_through:
+        # Durchgelaufener Breakout darf NICHT als very_close/close erscheinen —
+        # die R:R-Erosion macht das Setup untauglich. Hart auf "far".
+        proximity = "far"
 
     # Summary kurz formulieren — BEREIT* differenziert "alles okay, nur Vol pending"
-    if proximity == "in_zone" and not conditions_missing and not conditions_pending:
+    if blown_through:
+        summary = (
+            f"📛 DURCHGELAUFEN — Kurs {price:.2f} über Breakout-Zonen-Obergrenze "
+            f"({distance_pct:+.2f}%), R:R gerissen"
+        )
+    elif proximity == "in_zone" and not conditions_missing and not conditions_pending:
         summary = "🎯 BEREIT — alle Bedingungen erfüllt"
     elif proximity == "in_zone" and not conditions_missing and conditions_pending:
         summary = f"🎯 BEREIT* — Preis & harte Conditions ok, offen: {', '.join(conditions_pending)}"
@@ -462,6 +486,7 @@ def _evaluate_trigger(
         conditions_missing=conditions_missing,
         conditions_pending=conditions_pending,
         summary=summary,
+        blown_through=blown_through,
     )
 
 

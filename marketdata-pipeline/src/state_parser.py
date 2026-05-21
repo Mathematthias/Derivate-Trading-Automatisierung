@@ -68,6 +68,13 @@ class ParsedTrigger:
     rsi_max: Optional[float] = None  # "RSI<60"
     rsi_min: Optional[float] = None
 
+    # Zonen-Semantik (Task 5, 2026-05-22): wie ist eine Trigger-Zone zu lesen,
+    # wenn der Kurs ÜBER der Obergrenze steht?
+    #   "breakout" → durchgelaufen, R:R erodiert, Setup tot
+    #   "pullback" → Rücksetzer noch nicht tief genug, weiter warten
+    #   None       → unbekannt → Evaluator behält Alt-Verhalten (kein Durchgelaufen-Check)
+    zone_kind: Optional[str] = None
+
 
 @dataclass
 class FilterOverride:
@@ -385,6 +392,36 @@ def _parse_triggers(trigger_raw: str) -> list[ParsedTrigger]:
     return triggers
 
 
+def _detect_zone_kind(content: str) -> Optional[str]:
+    """Bestimmt die Zonen-Semantik eines Triggers (Task 5 — Hybrid-Ansatz C).
+
+    Reihenfolge:
+    1. Expliziter Tag `[breakout]` / `[pullback]` (auch `-zone`-Suffix) — Vorrang.
+    2. Schlüsselwort-Heuristik als Fallback — greift NUR bei Eindeutigkeit:
+       breakout-Wörter XOR pullback-Wörter. Bei beiden oder keinem → None.
+    3. None → Evaluator behält Alt-Verhalten (kein Durchgelaufen-Check).
+
+    None ist die sichere Rückfallebene: lieber keine Durchgelaufen-Logik als
+    eine falsch geratene — ein falsches zone_kind bedeutet entweder "totes
+    Setup erscheint als BEREIT" oder "lebender Pullback wird totgesagt".
+    """
+    # 1. Expliziter Tag — hat immer Vorrang
+    tag = re.search(r"\[\s*(breakout|pullback)(?:-zone)?\s*\]", content, re.IGNORECASE)
+    if tag:
+        return tag.group(1).lower()
+
+    # 2. Heuristik — bewusst konservativ, nur bei Eindeutigkeit
+    has_breakout = bool(re.search(r"\b(?:breakout|ausbruch)\w*", content, re.IGNORECASE))
+    has_pullback = bool(re.search(r"\b(?:pullback|touch|r[uü]cksetzer)\w*", content, re.IGNORECASE))
+    if has_breakout and not has_pullback:
+        return "breakout"
+    if has_pullback and not has_breakout:
+        return "pullback"
+
+    # 3. Mehrdeutig oder kein Marker → None
+    return None
+
+
 def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
     """Parst einen einzelnen Trigger-Text in ParsedTrigger.
 
@@ -395,6 +432,9 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
     dem rohen content, weil dort nichts kollidiert.
     """
     pt = ParsedTrigger(label=label, raw=content)
+
+    # Zonen-Semantik bestimmen (Task 5) — Hybrid: Tag mit Vorrang, sonst Heuristik
+    pt.zone_kind = _detect_zone_kind(content)
 
     # === Modifikatoren auf RAW content (kollidieren nicht mit SL/TP) ===
 
