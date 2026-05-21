@@ -1,0 +1,75 @@
+name: Marketdata Sync Tier B (EU-Universum)
+
+# Trigger-Architektur (seit 2026-04-30):
+#   Single Source of Truth ist cron-job.org (externer Cron-Service mit
+#   PAT-basiertem workflow_dispatch). GitHub-eigene Schedules wurden wegen
+#   Unzuverlässigkeit (verzögertes/ausgelassenes Feuern) deaktiviert.
+#   Seit 2026-05-13 zusätzlich Hygiene-Bestätigung: KEIN `on: schedule` —
+#   bei öffentlichem Repo zudem unzuverlässig.
+#
+# Universumswechsel 2026-05-13: Tier B war vorher das ganze ~308-Symbol-
+# Universum (DE/EU + NASDAQ-100). SSL-Crashes beim Drive-Upload (Pipeline
+# 13.05. 14:07) führten zur Aufteilung (Variante-A-Split):
+#   - Tier B = EU-Universum (DAX + MDAX + SDAX + EuroStoxx + SMI, ~211)
+#   - Tier C = US-Universum (NASDAQ-100, ~96) — siehe tier_c_sync.yml
+# Output-Tag-Konvention seit 2026-05-13:
+#   MARKETDATA-FULL-EU-... + GAMECHANGER-HUNT-EU-... (statt "GC")
+#
+# Tier-B-Slots in cron-job.org (Berlin-Zeit) — Empfehlung 2×/Tag:
+#   - Mo-Fr 08:30 (vor DE-Open)                  → Crontab: 30 8 * * 1-5
+#   - Mo-Fr 15:00 (Frankfurt-Schluss-Vorbereitg) → Crontab: 0 15 * * 1-5
+#
+# PAT-Renewal-Deadline: 2026-07-21 (siehe Memory-Notiz).
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          # Workspace Shared Drive: Trading-Pipeline (STATE = echtes Google Doc)
+          STATE_DOC_ID: 1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          MODE: tier_b
+          CONFIG_DIR: ./config
+          PYTHONPATH: ./src
+          # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) auch in Tier B aktiv —
+          # PEAD braucht den großen Pool, EMA200-MeanRev kostet keinen Overhead.
+          # Nach Variante-A-Split ist Tier B nur noch ~211 EU-Symbole, der
+          # Earnings-Pull (Pro-Symbol-Call) ist damit klar verkraftbar.
+          EARNINGS_PULL: "1"
+        run: |
+          python src/marketdata_sync.py
+
+      - name: Run Adhoc-Catalyst-Scan
+        continue-on-error: true
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          STATE_DOC_ID: 1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
+        run: |
+          python src/adhoc_scanner.py --hours 24
