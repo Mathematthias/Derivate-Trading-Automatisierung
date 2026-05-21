@@ -1,15 +1,20 @@
 """
-Tests für EMA200-MeanRev-Schicht (Note #49) und PEAD-Window-Flag.
+Tests für Anomaly-Layer V1 (Note #50, 2026-05-15).
+
+Vier Anomaly-Detektoren:
+- atr_zscore_60d:     Volatilitäts-Regime-Shift
+- gap_pct:            Eröffnungs-Gap
+- volume_zscore_60d:  Volumen-Spike (log-transformiert)
+- nr7:                Range-Compression (Pre-Breakout-Signal)
 
 Ausführen vom marketdata-pipeline/ Verzeichnis:
-    PYTHONPATH=./src python tests/test_ema200_meanrev.py
+    PYTHONPATH=./src python tests/test_anomaly_flags.py
 oder mit pytest:
-    PYTHONPATH=./src pytest tests/ -v
+    PYTHONPATH=./src pytest tests/test_anomaly_flags.py -v
 """
 
 import os
 import sys
-from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -18,373 +23,547 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _SRC = os.path.join(os.path.dirname(_HERE), "src")
 sys.path.insert(0, _SRC)
 
-# market_data importieren — wir testen die einzelnen Compute-Funktionen, NICHT
-# den yfinance-Pull (der bräuchte Network und ist nicht reproduzierbar).
 from market_data import (
     TickerSnapshot,
-    _compute_ema200_meanrev_fields,
-    _compute_weekly_trend_field,
-    _compute_atr_series,
+    _compute_anomaly_fields,
+    _compute_snapshot,
+    ANOMALY_ATR_Z_THRESHOLD,
+    ANOMALY_GAP_PCT_THRESHOLD,
+    ANOMALY_GAP_PCT_EXTREME,
+    ANOMALY_VOLUME_Z_THRESHOLD,
 )
-from output_renderer import _render_setup_class_flags
+
+# V1.1 (2026-05-15): _compute_anomaly_fields hat einen Intraday-Guard, der
+# VOL-Z und NR7 nur nach US-Close berechnet. In Tests simulieren wir
+# "EoD"-Bedingungen via Monkey-Patch von datetime.utcnow.
+import market_data as _market_data_mod
+from datetime import datetime as _real_datetime
+
+
+class _EoDClock:
+    """Stub-datetime, dessen utcnow() immer 22:00 UTC zurückgibt (EoD)."""
+    @classmethod
+    def utcnow(cls):
+        return _real_datetime(2026, 5, 15, 22, 0, 0)
+    @classmethod
+    def now(cls, *args, **kwargs):
+        return _real_datetime.now(*args, **kwargs)
+
+
+class _IntradayClock:
+    """Stub-datetime, dessen utcnow() 14:00 UTC zurückgibt (Intraday)."""
+    @classmethod
+    def utcnow(cls):
+        return _real_datetime(2026, 5, 15, 14, 0, 0)
+    @classmethod
+    def now(cls, *args, **kwargs):
+        return _real_datetime.now(*args, **kwargs)
+
+
+# Default für alle Tests: EoD (sonst würden bestehende VOL-Z/NR7-Tests
+# durch den Guard auf None laufen). Einzelne Intraday-Tests setzen den
+# Stub explizit um.
+_market_data_mod.datetime = _EoDClock
 
 
 # ---------------------------------------------------------------------------
 # Test-Helpers
 # ---------------------------------------------------------------------------
 
-def make_test_df(closes: list[float], highs: list[float] = None, lows: list[float] = None,
-                  start_date: str = "2024-01-01") -> pd.DataFrame:
-    """Erzeugt einen synthetischen Daily-DataFrame aus einer Close-Liste.
+def make_df(
+    closes: list[float],
+    highs: list[float] = None,
+    lows: list[float] = None,
+    opens: list[float] = None,
+    volumes: list[int] = None,
+    start_date: str = "2024-01-01",
+) -> pd.DataFrame:
+    """Erzeugt einen synthetischen Daily-DataFrame.
 
-    Highs/Lows werden angenähert (close ± 1%) wenn nicht explizit gegeben.
-    Index sind Trading-Tage (Mo-Fr, ohne Feiertage).
+    Defaults: highs = closes*1.01, lows = closes*0.99, opens = closes, volume = 1M.
     """
     n = len(closes)
     if highs is None:
         highs = [c * 1.01 for c in closes]
     if lows is None:
         lows = [c * 0.99 for c in closes]
-    opens = closes  # vereinfacht
+    if opens is None:
+        opens = list(closes)  # vereinfacht: open = close
+    if volumes is None:
+        volumes = [1_000_000] * n
 
-    # bdate_range = Geschäftstage (Mo-Fr), keine Feiertage. Reicht für Tests.
     idx = pd.bdate_range(start=start_date, periods=n)
-
     return pd.DataFrame({
         "Open": opens,
         "High": highs,
         "Low": lows,
         "Close": closes,
-        "Volume": [1_000_000] * n,
+        "Volume": volumes,
     }, index=idx)
 
 
-def make_snapshot_from_df(symbol: str, df: pd.DataFrame) -> TickerSnapshot:
-    """Bastelt einen Snapshot mit den Basisfeldern, die _compute_ema200_meanrev_fields
-    braucht (price, ema200, atr14)."""
-    closes = df["Close"]
-    snap = TickerSnapshot(
-        symbol=symbol,
-        timestamp=datetime.now(),
-        price=float(closes.iloc[-1]),
-        prev_close=float(closes.iloc[-2]) if len(closes) >= 2 else None,
+def empty_snap() -> TickerSnapshot:
+    """Frischer Snapshot ohne Pre-Population."""
+    from datetime import datetime
+    return TickerSnapshot(
+        symbol="TEST",
+        timestamp=datetime(2026, 5, 15),
+        price=100.0,
+        prev_close=None,
         change_pct=None,
         volume_today=None,
     )
-    if len(closes) >= 200:
-        snap.ema200 = float(closes.ewm(span=200, adjust=False).mean().iloc[-1])
-    if len(closes) >= 50:
-        snap.ema50 = float(closes.ewm(span=50, adjust=False).mean().iloc[-1])
-    if len(closes) >= 20:
-        snap.ema20 = float(closes.ewm(span=20, adjust=False).mean().iloc[-1])
-    if len(df) >= 15:
-        snap.atr14 = float(_compute_atr_series(df, period=14).iloc[-1])
-    return snap
 
 
 # ---------------------------------------------------------------------------
-# EMA200-Distance-Tests
+# 1) gap_pct
 # ---------------------------------------------------------------------------
 
-def test_ema200_distance_pct_zero_at_touch():
-    """Wenn Kurs == EMA200, ist Distance 0%."""
-    # Synthetic: 400 HT mit konstantem Kurs 100 → EMA200 = 100, Distance 0
-    df = make_test_df([100.0] * 400)
-    snap = make_snapshot_from_df("FLAT", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    assert snap.ema200_distance_pct is not None
-    assert abs(snap.ema200_distance_pct) < 0.01, f"Erwartet ~0, bekam {snap.ema200_distance_pct}"
-    print(f"  ✅ flat-line distance: {snap.ema200_distance_pct:+.4f}%")
+def test_gap_pct_no_data():
+    """Ohne prev_close oder today_open → gap_pct bleibt None."""
+    snap = empty_snap()
+    df = make_df([100.0] * 10)
+    _compute_anomaly_fields(snap, df)
+    assert snap.gap_pct is None, f"Expected None, got {snap.gap_pct}"
 
 
-def test_ema200_distance_pct_above():
-    """Steigender Trend: Kurs über EMA200, Distance positiv."""
-    # Linear steigender Trend von 100 auf 200 über 400 HT
-    df = make_test_df(list(np.linspace(100.0, 200.0, 400)))
-    snap = make_snapshot_from_df("RISE", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    assert snap.ema200_distance_pct is not None
-    assert snap.ema200_distance_pct > 0, f"Erwartet positive Distance, bekam {snap.ema200_distance_pct}"
-    print(f"  ✅ rising-trend distance: {snap.ema200_distance_pct:+.2f}%")
+def test_gap_pct_positive():
+    """Gap nach oben: open=105, prev_close=100 → +5.0%."""
+    snap = empty_snap()
+    snap.today_open = 105.0
+    snap.prev_close = 100.0
+    df = make_df([100.0] * 10)
+    _compute_anomaly_fields(snap, df)
+    assert snap.gap_pct is not None
+    assert abs(snap.gap_pct - 5.0) < 0.001, f"Expected ~5.0, got {snap.gap_pct}"
+    assert snap.is_gap_anomaly  # ≥ 2.0%
+    assert snap.is_gap_extreme  # ≥ 5.0%
 
 
-# ---------------------------------------------------------------------------
-# Days-Since-Last-Touch-Tests
-# ---------------------------------------------------------------------------
-
-def test_days_since_touch_recent_touch():
-    """Wenn der Kurs heute am EMA200 hängt, ist days_since_last_touch == 0."""
-    # 400 Tage, Kurs am Ende = EMA200 (~ flat)
-    df = make_test_df([100.0] * 400)
-    snap = make_snapshot_from_df("FLAT", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    assert snap.days_since_last_ema200_touch is not None
-    assert snap.days_since_last_ema200_touch == 0, \
-        f"Erwartet 0, bekam {snap.days_since_last_ema200_touch}"
-    print(f"  ✅ recent-touch days: {snap.days_since_last_ema200_touch}")
+def test_gap_pct_negative_moderate():
+    """Gap nach unten -3%: anomaly aber nicht extrem."""
+    snap = empty_snap()
+    snap.today_open = 97.0
+    snap.prev_close = 100.0
+    df = make_df([100.0] * 10)
+    _compute_anomaly_fields(snap, df)
+    assert abs(snap.gap_pct + 3.0) < 0.001, f"Expected ~-3.0, got {snap.gap_pct}"
+    assert snap.is_gap_anomaly
+    assert not snap.is_gap_extreme
 
 
-def test_days_since_touch_old_touch():
-    """Lang gelaufener Trend: Touch war vor langer Zeit."""
-    # 100 HT bei 100, dann 300 HT linear auf 200 — Touch am Anfang, dann
-    # zieht der Kurs weg vom EMA200.
-    closes = [100.0] * 100 + list(np.linspace(100.0, 200.0, 300))
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("LONG-RUN", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    assert snap.days_since_last_ema200_touch is not None
-    # Letzter Touch sollte irgendwo im Übergangsbereich liegen — also viele Tage
-    # in der Vergangenheit. Mindestens 50 HT erwartet.
-    assert snap.days_since_last_ema200_touch >= 50, \
-        f"Erwartet ≥50, bekam {snap.days_since_last_ema200_touch}"
-    print(f"  ✅ old-touch days: {snap.days_since_last_ema200_touch}")
+def test_gap_pct_below_threshold():
+    """Gap +1.5%: kein Flag."""
+    snap = empty_snap()
+    snap.today_open = 101.5
+    snap.prev_close = 100.0
+    df = make_df([100.0] * 10)
+    _compute_anomaly_fields(snap, df)
+    assert not snap.is_gap_anomaly
 
 
 # ---------------------------------------------------------------------------
-# Trend-Qualified-Tests
+# 2) atr_zscore_60d
 # ---------------------------------------------------------------------------
 
-def test_trend_qualified_steady_uptrend():
-    """Klar steigende EMA200 → trend_qualified = True."""
-    closes = list(np.linspace(100.0, 200.0, 400))  # 400 HT linear steigend
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("UPTREND", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    assert snap.ema200_trend_qualified is True, \
-        f"Erwartet True, bekam {snap.ema200_trend_qualified}"
-    print("  ✅ steady-uptrend trend_qualified = True")
+def test_atr_zscore_insufficient_history():
+    """History < 60 + 14 HT → bleibt None."""
+    snap = empty_snap()
+    df = make_df([100.0] * 50)
+    _compute_anomaly_fields(snap, df)
+    assert snap.atr_zscore_60d is None
 
 
-def test_trend_qualified_choppy_sideways():
-    """Sägezahn-Seitwärts → trend_qualified = False."""
-    rng = np.random.default_rng(42)
-    # Random walk um 100 herum, ohne Drift
-    noise = rng.normal(0, 1.0, 400)
-    closes = (100 + noise.cumsum() * 0.05).tolist()
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("CHOP", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    # Bei reinem Random Walk ist die Wahrscheinlichkeit für 80% steigende EMA200-
-    # Tage praktisch null. trend_qualified sollte False sein.
-    assert snap.ema200_trend_qualified is False, \
-        f"Erwartet False bei sideways noise, bekam {snap.ema200_trend_qualified}"
-    print("  ✅ choppy-sideways trend_qualified = False")
-
-
-# ---------------------------------------------------------------------------
-# Weekly-HHHL-Tests
-# ---------------------------------------------------------------------------
-
-def test_weekly_hhhl_uptrend():
-    """Linearer Aufwärtstrend → weekly_higher_highs_lows = True."""
-    # 400 HT entspricht ~80 Wochen — mehr als genug für die 26-Wochen-Heuristik.
-    closes = list(np.linspace(100.0, 200.0, 400))
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("UP-WEEKLY", df)
-    _compute_weekly_trend_field(snap, df)
-    assert snap.weekly_higher_highs_lows is True, \
-        f"Erwartet True, bekam {snap.weekly_higher_highs_lows}"
-    print("  ✅ uptrend weekly_hhhl = True")
-
-
-def test_weekly_hhhl_downtrend():
-    """Linearer Abwärtstrend → weekly_higher_highs_lows = False."""
-    closes = list(np.linspace(200.0, 100.0, 400))
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("DOWN-WEEKLY", df)
-    _compute_weekly_trend_field(snap, df)
-    assert snap.weekly_higher_highs_lows is False, \
-        f"Erwartet False, bekam {snap.weekly_higher_highs_lows}"
-    print("  ✅ downtrend weekly_hhhl = False")
-
-
-def test_weekly_hhhl_short_history():
-    """Wenn weniger als 26 Wochen Daten vorliegen, Feld bleibt None."""
-    # Nur 50 HT = ~10 Wochen
-    df = make_test_df(list(np.linspace(100.0, 110.0, 50)))
-    snap = make_snapshot_from_df("SHORT", df)
-    _compute_weekly_trend_field(snap, df)
-    assert snap.weekly_higher_highs_lows is None, \
-        f"Erwartet None bei kurzer History, bekam {snap.weekly_higher_highs_lows}"
-    print("  ✅ short-history weekly_hhhl = None")
-
-
-# ---------------------------------------------------------------------------
-# Integrierter Qualifikations-Test
-# ---------------------------------------------------------------------------
-
-def test_meanrev_qualifies_perfect_setup():
-    """Klassischer Setup: starker Uptrend, Pullback EXAKT zum EMA200."""
-    # 350 HT linear auf 200, dann 50 HT Pullback bis ~EMA200-Niveau.
-    rise = list(np.linspace(100.0, 200.0, 350))
-    # EMA200 sollte am Ende des Anstiegs bei ~150-160 liegen, also Kurs auf
-    # ~155 fallen lassen für perfekten Touch.
-    fall = list(np.linspace(200.0, 158.0, 50))
-    closes = rise + fall
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("PERFECT", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    _compute_weekly_trend_field(snap, df)
-
-    print(f"  → distance={snap.ema200_distance_pct:+.2f}% · "
-          f"days={snap.days_since_last_ema200_touch} · "
-          f"trend_qual={snap.ema200_trend_qualified} · "
-          f"weekly_hhhl={snap.weekly_higher_highs_lows}")
-
-    # Bei diesem konstruierten Setup erwarten wir, dass alle 4 Bedingungen
-    # erfüllt sind ODER mind. 3 davon (EMA200-Pullback ist scharf bis auf
-    # ein paar % Toleranz). Wir prüfen die Felder einzeln, nicht das
-    # qualifies-Flag — der Punkt ist die Logik-Richtigkeit.
-    assert snap.ema200_distance_pct is not None
-    assert snap.days_since_last_ema200_touch is not None
-    assert snap.ema200_trend_qualified is True  # klarer Uptrend
-    print("  ✅ perfect-setup core fields populated, trend_qualified=True")
-
-
-def test_meanrev_qualifies_no_setup():
-    """Crash-Szenario: starker Abwärtstrend → qualifiziert nicht."""
-    closes = list(np.linspace(200.0, 100.0, 400))
-    df = make_test_df(closes)
-    snap = make_snapshot_from_df("CRASH", df)
-    _compute_ema200_meanrev_fields(snap, df)
-    _compute_weekly_trend_field(snap, df)
-
-    # trend_qualified MUSS False sein bei Downtrend
-    assert snap.ema200_trend_qualified is False
-    # weekly_hhhl MUSS False sein
-    assert snap.weekly_higher_highs_lows is False
-    # Daher qualifiziert das Setup nicht insgesamt
-    assert snap.ema200_meanrev_qualifies is False
-    print("  ✅ crash-scenario qualifies = False")
-
-
-# ---------------------------------------------------------------------------
-# Renderer-Tests (Output-Flag)
-# ---------------------------------------------------------------------------
-
-def test_render_setup_class_flags_with_qualified_candidate():
-    """Mock-Snapshot mit allen 4 Bedingungen erfüllt → Flag wird gerendert."""
-    snap = TickerSnapshot(
-        symbol="PERFECT.DE",
-        timestamp=datetime.now(),
-        price=158.0,
-        prev_close=160.0,
-        change_pct=-1.25,
-        volume_today=1_000_000,
-        ema200=160.0,
-        ema200_distance_pct=-1.25,
-        days_since_last_ema200_touch=180,
-        ema200_trend_qualified=True,
-        weekly_higher_highs_lows=True,
+def test_atr_zscore_normal_volatility():
+    """Konstante (verrauschte) Volatilität → Z-Score nahe 0, kein Flag."""
+    snap = empty_snap()
+    # 100 HT mit verrauschter aber stationärer Range
+    np.random.seed(11)
+    closes = [100.0 + 0.5 * np.sin(i * 0.3) for i in range(100)]
+    # Range ~2 ± 0.4: realistische Variation
+    ranges = [2.0 + 0.4 * np.random.randn() for _ in range(100)]
+    highs = [c + r / 2 for c, r in zip(closes, ranges)]
+    lows = [c - r / 2 for c, r in zip(closes, ranges)]
+    df = make_df(closes, highs=highs, lows=lows)
+    _compute_anomaly_fields(snap, df)
+    assert snap.atr_zscore_60d is not None, (
+        "Bei verrauschter Range muss Std > 0 sein, Z muss berechnet werden"
     )
-    out = _render_setup_class_flags({"PERFECT.DE": snap})
-    # Nur Daten-Zeilen — Header `## 🎯 EMA200-MEANREV-CANDIDATEs ...` ausschließen
-    flag_lines = [l for l in out if l.startswith("🎯 EMA200-MEANREV-CANDIDATE")]
-    assert len(flag_lines) == 1, f"Erwartet 1 Flag-Zeile, bekam: {out}"
-    line = flag_lines[0]
-    assert "PERFECT.DE" in line
-    assert "Distance -1.25%" in line
-    assert "LastTouch 180d" in line
-    assert "Trend ✓" in line
-    print(f"  ✅ rendered flag: {line}")
-
-
-def test_render_setup_class_flags_qualifying_threshold_strict():
-    """Distance > 2.0% → kein Flag (Übergabe-Spec inclusive ≤ 2.0)."""
-    snap = TickerSnapshot(
-        symbol="OVER.DE",
-        timestamp=datetime.now(),
-        price=170.0,
-        prev_close=170.0,
-        change_pct=0.0,
-        volume_today=1_000_000,
-        ema200=160.0,
-        ema200_distance_pct=6.25,  # zu weit weg
-        days_since_last_ema200_touch=180,
-        ema200_trend_qualified=True,
-        weekly_higher_highs_lows=True,
+    assert abs(snap.atr_zscore_60d) < 2.0, (
+        f"Stationäre Vola sollte |Z|<2 ergeben, got {snap.atr_zscore_60d}"
     )
-    out = _render_setup_class_flags({"OVER.DE": snap})
-    flag_lines = [l for l in out if l.startswith("🎯 EMA200-MEANREV-CANDIDATE")]
-    assert len(flag_lines) == 0, f"Erwartet 0 Flag-Zeilen, bekam: {out}"
-    print("  ✅ distance >2% correctly excluded")
+    assert not snap.is_atr_anomaly
 
 
-def test_render_setup_class_flags_pead_window():
-    """PEAD-Window: Earnings 2 HT in der Vergangenheit → Flag."""
-    snap = TickerSnapshot(
-        symbol="ALV.DE",
-        timestamp=datetime.now(),
-        price=400.0,
-        prev_close=395.0,
-        change_pct=1.27,
-        volume_today=500_000,
-        last_earnings_date="2026-05-06",
-        days_since_last_earnings=2,
+def test_atr_zscore_volatility_explosion():
+    """Plötzliche Vola-Explosion am Ende → Z-Score ≥ 2.0, Flag aktiv.
+
+    EWMA-ATR glättet, deshalb braucht der Spike Druck über mehrere Tage,
+    nicht nur eine extreme Einzelkerze. Wir setzen die letzten 3 Tage auf
+    deutlich höhere Range.
+    """
+    snap = empty_snap()
+    np.random.seed(42)
+    closes = [100.0 + 0.3 * np.random.randn() for _ in range(97)]
+    # Stationäre Range mit Rauschen
+    ranges = [2.0 + 0.3 * np.random.randn() for _ in range(97)]
+    # Letzte 3 Tage: 5× Range
+    closes += [100.0, 100.0, 100.0]
+    ranges += [10.0, 10.0, 10.0]
+    highs = [c + r / 2 for c, r in zip(closes, ranges)]
+    lows = [c - r / 2 for c, r in zip(closes, ranges)]
+    df = make_df(closes, highs=highs, lows=lows)
+    _compute_anomaly_fields(snap, df)
+    assert snap.atr_zscore_60d is not None
+    assert snap.atr_zscore_60d > ANOMALY_ATR_Z_THRESHOLD, (
+        f"Vola-Spike sollte Z > {ANOMALY_ATR_Z_THRESHOLD} ergeben, got {snap.atr_zscore_60d}"
     )
-    out = _render_setup_class_flags({"ALV.DE": snap})
-    pead_lines = [l for l in out if l.startswith("📅 PEAD-WINDOW")]
-    assert len(pead_lines) == 1, f"Erwartet 1 PEAD-Zeile, bekam: {out}"
-    line = pead_lines[0]
-    assert "ALV.DE" in line
-    assert "Earnings 2026-05-06" in line
-    assert "2d ago" in line
-    print(f"  ✅ rendered PEAD flag: {line}")
-
-
-def test_render_setup_class_flags_pead_too_old():
-    """PEAD-Window: Earnings 10 HT zurück → kein Flag."""
-    snap = TickerSnapshot(
-        symbol="MUV2.DE",
-        timestamp=datetime.now(),
-        price=500.0,
-        prev_close=500.0,
-        change_pct=0.0,
-        volume_today=300_000,
-        last_earnings_date="2026-04-23",
-        days_since_last_earnings=10,
-    )
-    out = _render_setup_class_flags({"MUV2.DE": snap})
-    pead_lines = [l for l in out if l.startswith("📅 PEAD-WINDOW")]
-    assert len(pead_lines) == 0, f"Erwartet 0 PEAD-Zeilen, bekam: {out}"
-    print("  ✅ stale earnings (10d ago) correctly excluded")
-
-
-def test_render_setup_class_flags_no_candidates_returns_empty():
-    """Wenn keine Snapshots qualifizieren, gibt der Renderer eine leere Liste zurück."""
-    snap = TickerSnapshot(
-        symbol="BORING",
-        timestamp=datetime.now(),
-        price=100.0,
-        prev_close=100.0,
-        change_pct=0.0,
-        volume_today=100,
-        # Alle EMA200-Fields = None
-    )
-    out = _render_setup_class_flags({"BORING": snap})
-    assert out == [], f"Erwartet [], bekam: {out}"
-    print("  ✅ no candidates → empty list (no header pollution)")
+    assert snap.is_atr_anomaly
 
 
 # ---------------------------------------------------------------------------
-# Mini-Runner
+# 3) volume_zscore_60d
+# ---------------------------------------------------------------------------
+
+def test_volume_zscore_insufficient_history():
+    """History < 61 HT → bleibt None."""
+    snap = empty_snap()
+    snap.volume_today = 1_500_000
+    df = make_df([100.0] * 30, volumes=[1_000_000] * 30)
+    _compute_anomaly_fields(snap, df)
+    assert snap.volume_zscore_60d is None
+
+
+def test_volume_zscore_normal():
+    """Konstantes Volumen → Z-Score ≈ 0."""
+    snap = empty_snap()
+    snap.volume_today = 1_000_000
+    closes = [100.0] * 100
+    # Realistisches Rauschen ± 10% um 1M
+    np.random.seed(42)
+    vols = [int(1_000_000 * (1 + 0.1 * np.random.randn())) for _ in range(100)]
+    df = make_df(closes, volumes=vols)
+    _compute_anomaly_fields(snap, df)
+    assert snap.volume_zscore_60d is not None
+    assert abs(snap.volume_zscore_60d) < 2.0, (
+        f"Normales Volumen, Z sollte |Z|<2 sein, got {snap.volume_zscore_60d}"
+    )
+
+
+def test_volume_zscore_spike():
+    """Plötzlicher Volumen-Spike an Tag 100 → Z-Score deutlich positiv."""
+    snap = empty_snap()
+    snap.volume_today = 5_000_000  # 5× Spike
+    closes = [100.0] * 100
+    # 99 Tage Normalvolumen, letzter Tag Spike
+    np.random.seed(42)
+    vols = [int(1_000_000 * (1 + 0.1 * np.random.randn())) for _ in range(99)]
+    vols.append(5_000_000)
+    df = make_df(closes, volumes=vols)
+    _compute_anomaly_fields(snap, df)
+    assert snap.volume_zscore_60d is not None
+    assert snap.volume_zscore_60d > ANOMALY_VOLUME_Z_THRESHOLD, (
+        f"5×-Spike sollte Z > {ANOMALY_VOLUME_Z_THRESHOLD} ergeben, "
+        f"got {snap.volume_zscore_60d}"
+    )
+    assert snap.is_volume_anomaly
+
+
+def test_volume_zscore_zero_volume_skipped():
+    """0-Volumen-Tage sollen log-transform nicht crashen lassen."""
+    snap = empty_snap()
+    snap.volume_today = 1_000_000
+    closes = [100.0] * 100
+    vols = [1_000_000] * 100
+    vols[42] = 0  # ein 0-Tag mittendrin
+    df = make_df(closes, volumes=vols)
+    # Sollte nicht crashen
+    _compute_anomaly_fields(snap, df)
+    # Z-Score kann None sein (wenn zu viele 0-Tage rausfallen), Hauptsache: kein Crash
+
+
+# ---------------------------------------------------------------------------
+# 4) NR7
+# ---------------------------------------------------------------------------
+
+def test_nr7_insufficient_history():
+    """History < 8 HT → bleibt None."""
+    snap = empty_snap()
+    df = make_df([100.0] * 5)
+    _compute_anomaly_fields(snap, df)
+    assert snap.nr7 is None
+
+
+def test_nr7_compression_detected():
+    """Heutige Range ist klar die kleinste der letzten 7 HT → True."""
+    snap = empty_snap()
+    # 7 Tage Range groß, letzter Tag Range minimal
+    highs = [105.0] * 7 + [100.5]
+    lows = [95.0] * 7 + [99.5]
+    closes = [100.0] * 8
+    df = make_df(closes, highs=highs, lows=lows)
+    _compute_anomaly_fields(snap, df)
+    assert snap.nr7 is True
+    assert snap.is_range_compressed
+
+
+def test_nr7_not_compressed():
+    """Heutige Range nicht kleinste → False.
+
+    Vorige 7 Tage haben kleine Range, heute hat größere Range.
+    """
+    snap = empty_snap()
+    # Vorige 7 Tage: enge Range. Heute: weite Range.
+    highs = [100.5] * 7 + [105.0]
+    lows = [99.5] * 7 + [95.0]
+    closes = [100.0] * 8
+    df = make_df(closes, highs=highs, lows=lows)
+    _compute_anomaly_fields(snap, df)
+    assert snap.nr7 is False, f"Expected False, got {snap.nr7}"
+    assert not snap.is_range_compressed
+
+
+# ---------------------------------------------------------------------------
+# Integration: _compute_snapshot inkl. Anomaly-Felder
+# ---------------------------------------------------------------------------
+
+def test_compute_snapshot_integration():
+    """Voller Snapshot-Compute mit Anomaly-Daten."""
+    # 80 HT History mit normalem Verlauf + Spike am letzten Tag
+    np.random.seed(7)
+    closes = [100.0 + 0.5 * np.random.randn() for _ in range(79)]
+    closes.append(108.0)  # +8% am letzten Tag
+    highs = [c * 1.01 for c in closes]
+    lows = [c * 0.99 for c in closes]
+    opens = closes[:-1] + [107.0]  # Tag 80: Open 107, Close 108 → Gap zum Vortag
+    vols = [1_000_000] * 79 + [4_000_000]  # Volumen-Spike
+
+    df = make_df(closes, highs=highs, lows=lows, opens=opens, volumes=vols)
+    snap = _compute_snapshot("INTEG", df)
+
+    assert snap is not None
+    # gap_pct: open=107 vs. prev_close=closes[-2]
+    assert snap.gap_pct is not None
+    # volume_zscore: spike sollte hoch sein
+    assert snap.volume_zscore_60d is not None
+    assert snap.volume_zscore_60d > 2.0
+    # has_any_anomaly muss True sein
+    assert snap.has_any_anomaly
+    # Flag-Labels nicht leer
+    labels = snap.anomaly_flag_labels()
+    assert len(labels) > 0
+
+
+def test_flag_labels_ordering_and_format():
+    """Flag-Labels: korrekte Reihenfolge und Format."""
+    snap = empty_snap()
+    snap.gap_pct = 6.0   # extreme
+    snap.volume_zscore_60d = 3.5
+    snap.atr_zscore_60d = 2.5
+    snap.nr7 = True
+
+    labels = snap.anomaly_flag_labels()
+    # Reihenfolge: Gap, Vol, ATR, NR7
+    assert labels[0].startswith("GAP-EXTREME")
+    assert labels[1].startswith("VOL-Z")
+    assert labels[2].startswith("ATR-Z")
+    assert labels[3] == "NR7"
+
+
+def test_no_anomalies_clean_state():
+    """Snapshot ohne Anomalien: alle Properties False, leere Label-Liste."""
+    snap = empty_snap()
+    snap.gap_pct = 0.5
+    snap.volume_zscore_60d = 0.3
+    snap.atr_zscore_60d = -0.8
+    snap.nr7 = False
+
+    assert not snap.has_any_anomaly
+    assert snap.anomaly_flag_labels() == []
+
+
+# ---------------------------------------------------------------------------
+# Renderer-Integration
+# ---------------------------------------------------------------------------
+
+def test_renderer_anomaly_section_present():
+    """Renderer baut ANOMALY-FLAGS-Sektion ein, wenn Snapshots Anomalien haben."""
+    from output_renderer import _render_setup_class_flags
+
+    snap_a = empty_snap()
+    snap_a.symbol = "AAA"
+    snap_a.gap_pct = 6.5
+    snap_a.volume_zscore_60d = 3.0
+
+    snap_b = empty_snap()
+    snap_b.symbol = "BBB"
+    snap_b.nr7 = True
+
+    snap_clean = empty_snap()
+    snap_clean.symbol = "CCC"
+    snap_clean.gap_pct = 0.1  # nichts auffällig
+
+    snapshots = {"AAA": snap_a, "BBB": snap_b, "CCC": snap_clean}
+    lines = _render_setup_class_flags(snapshots)
+    text = "\n".join(lines)
+
+    assert "ANOMALY-FLAGS" in text, "Sektions-Header muss enthalten sein"
+    assert "AAA" in text
+    assert "BBB" in text
+    assert "CCC" not in text, "Sauberer Ticker darf nicht in der Sektion erscheinen"
+    # AAA (Mehrfach-Flag) soll vor BBB (Einzel-NR7) stehen
+    aaa_pos = text.find("AAA")
+    bbb_pos = text.find("BBB")
+    assert aaa_pos < bbb_pos, "Mehrfach-Anomalie muss vor Einzel-Anomalie sortiert sein"
+
+
+def test_renderer_anomaly_section_empty_when_clean():
+    """Wenn alle Snapshots sauber sind: keine ANOMALY-FLAGS-Sektion."""
+    from output_renderer import _render_setup_class_flags
+
+    snap = empty_snap()
+    snap.gap_pct = 0.3
+    snap.nr7 = False
+
+    lines = _render_setup_class_flags({"X": snap})
+    text = "\n".join(lines)
+    assert "ANOMALY-FLAGS" not in text
+
+
+# ---------------------------------------------------------------------------
+# V1.1: Intraday-Guard und Symbol-Exclude (2026-05-15)
+# ---------------------------------------------------------------------------
+
+def test_v11_intraday_guard_blocks_volume_and_nr7():
+    """Intraday (vor 20 UTC): VOL-Z und NR7 bleiben None, Gap und ATR-Z aktiv."""
+    # Stub temporär auf Intraday umstellen
+    _market_data_mod.datetime = _IntradayClock
+    try:
+        snap = empty_snap()
+        snap.today_open = 105.0
+        snap.prev_close = 100.0
+        snap.volume_today = 5_000_000
+
+        # 100-HT-DF mit volatiler Range (ATR-Z sollte was geben) + Vol-Spike
+        np.random.seed(99)
+        closes = [100.0 + 0.3 * np.random.randn() for _ in range(99)]
+        closes.append(105.0)
+        ranges = [2.0 + 0.4 * np.random.randn() for _ in range(99)]
+        ranges.append(0.5)  # NR7-Kandidat
+        highs = [c + r / 2 for c, r in zip(closes, ranges)]
+        lows = [c - r / 2 for c, r in zip(closes, ranges)]
+        vols = [1_000_000] * 99 + [5_000_000]
+        df = make_df(closes, highs=highs, lows=lows, volumes=vols)
+
+        _compute_anomaly_fields(snap, df)
+
+        # Intraday-stabil: Gap und ATR-Z werden berechnet
+        assert snap.gap_pct is not None, "Gap muss auch intraday berechnet werden"
+        assert abs(snap.gap_pct - 5.0) < 0.001
+        # ATR-Z kann je nach Daten None/Wert sein, beides ok
+
+        # Intraday-Guard: VOL-Z und NR7 müssen None sein
+        assert snap.volume_zscore_60d is None, (
+            "VOL-Z muss intraday None bleiben, war: " + str(snap.volume_zscore_60d)
+        )
+        assert snap.nr7 is None, (
+            "NR7 muss intraday None bleiben, war: " + str(snap.nr7)
+        )
+    finally:
+        _market_data_mod.datetime = _EoDClock
+
+
+def test_v11_renderer_excludes_index_forex_crypto_futures():
+    """Renderer filtert ^GSPC, =F, =X, -USD aus der ANOMALY-FLAGS-Sektion."""
+    from output_renderer import _render_setup_class_flags
+
+    # Vier zu-excludierende + ein normaler Aktien-Ticker mit Anomalie
+    snap_idx = empty_snap()
+    snap_idx.symbol = "^GSPC"
+    snap_idx.gap_pct = 3.0
+
+    snap_fut = empty_snap()
+    snap_fut.symbol = "NG=F"
+    snap_fut.gap_pct = 4.0
+
+    snap_fx = empty_snap()
+    snap_fx.symbol = "EURUSD=X"
+    snap_fx.gap_pct = 2.5
+
+    snap_crypto = empty_snap()
+    snap_crypto.symbol = "BTC-USD"
+    snap_crypto.gap_pct = 5.5
+
+    snap_equity = empty_snap()
+    snap_equity.symbol = "SAP.DE"
+    snap_equity.gap_pct = 2.2
+
+    snapshots = {
+        "^GSPC": snap_idx,
+        "NG=F": snap_fut,
+        "EURUSD=X": snap_fx,
+        "BTC-USD": snap_crypto,
+        "SAP.DE": snap_equity,
+    }
+    lines = _render_setup_class_flags(snapshots)
+    text = "\n".join(lines)
+
+    assert "SAP.DE" in text, "Normale Aktie muss erscheinen"
+    assert "^GSPC" not in text, "Index muss ausgefiltert werden"
+    assert "NG=F" not in text, "Future muss ausgefiltert werden"
+    assert "EURUSD=X" not in text, "FX muss ausgefiltert werden"
+    assert "BTC-USD" not in text, "Krypto muss ausgefiltert werden"
+
+
+# ---------------------------------------------------------------------------
+# Test-Runner für direkten Aufruf
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    fns = [(n, f) for n, f in globals().items()
-           if n.startswith("test_") and callable(f)]
-    passed = failed = 0
-    for name, fn in fns:
+    test_funcs = [
+        # gap_pct
+        test_gap_pct_no_data,
+        test_gap_pct_positive,
+        test_gap_pct_negative_moderate,
+        test_gap_pct_below_threshold,
+        # atr_zscore
+        test_atr_zscore_insufficient_history,
+        test_atr_zscore_normal_volatility,
+        test_atr_zscore_volatility_explosion,
+        # volume_zscore
+        test_volume_zscore_insufficient_history,
+        test_volume_zscore_normal,
+        test_volume_zscore_spike,
+        test_volume_zscore_zero_volume_skipped,
+        # NR7
+        test_nr7_insufficient_history,
+        test_nr7_compression_detected,
+        test_nr7_not_compressed,
+        # Integration
+        test_compute_snapshot_integration,
+        test_flag_labels_ordering_and_format,
+        test_no_anomalies_clean_state,
+        # Renderer
+        test_renderer_anomaly_section_present,
+        test_renderer_anomaly_section_empty_when_clean,
+        # V1.1
+        test_v11_intraday_guard_blocks_volume_and_nr7,
+        test_v11_renderer_excludes_index_forex_crypto_futures,
+    ]
+    failed = 0
+    for f in test_funcs:
         try:
-            fn()
-            passed += 1
+            f()
+            print(f"  ✓ {f.__name__}")
         except AssertionError as e:
-            print(f"  ❌ {name}: {e}")
+            print(f"  ✗ {f.__name__}: {e}")
             failed += 1
         except Exception as e:
-            print(f"  ❌ {name}: UNEXPECTED — {type(e).__name__}: {e}")
-            import traceback
-            traceback.print_exc()
+            print(f"  ✗ {f.__name__}: UNEXPECTED {type(e).__name__}: {e}")
             failed += 1
-    print(f"\n{passed} passed, {failed} failed")
-    sys.exit(0 if failed == 0 else 1)
+    total = len(test_funcs)
+    if failed == 0:
+        print(f"\nAlle {total} Tests grün.")
+    else:
+        print(f"\n{failed}/{total} Tests fehlgeschlagen.")
+        sys.exit(1)

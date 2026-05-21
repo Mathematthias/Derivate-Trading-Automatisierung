@@ -1,264 +1,106 @@
-# Tier B - EU-Universum (DAX + MDAX + SDAX + EuroStoxx ex-DAX + SMI)
-# Stand: 2026-05-13 (Variante-A-Split: US-Werte nach Tier C verschoben, da
-#                    308-Symbol-Runs zu unrobust waren — siehe MIGRATION_NOTES)
-# Quellen: finanzen.net (DAX/MDAX/SDAX/EuroStoxx 24-29.04.2026)
-#          finanzen.ch (SMI 29.04.2026)
-#          Wikipedia-Kategorie + Wissen (DAX-Verifikation indirekt)
-#          Yahoo Finance (Ticker-Verifikation 30.04.2026)
-#
-# Universumsgroesse: ~211 Symbole (DAX 39 + MDAX 50 + SDAX 70 + EuroStoxx 32 + SMI 20).
-# NASDAQ-100 wandert in tickers_tier_c.yaml.
-#
-# Ethik-Filter: Rheinmetall (RHM.DE) ueber ethik_excluded ausgenommen.
-#               BAE Systems (BA.L) ueber ethik_excluded ausgenommen.
-#
-# Konfidenz-Tags pro Wert:
-#   [H] high   - Standard-Mapping, Pipeline sollte Daten finden
-#   [M] medium - Ticker plausibel, beim ersten Pull verifizieren
-#   [L] low    - unsicher, manuelle Pruefung empfohlen
-#
-# Doubletten-Strategie: Werte in tier_a/nebenwerte_de werden hier nicht
-# erneut aufgenommen. TecDAX-only-Werte gibt es 2026-04 keine - alle
-# 30 TecDAX-Werte sind in DAX/MDAX/SDAX/tier_a abgedeckt.
-#
-# Bestehende Tier-B-Sektionen (biotech_de, ma_hot_list, ai_quantum,
-# nasdaq_growth, tecdax_kern) bleiben unveraendert. Pipeline soll
-# Duplikate beim yfinance-Pull deduplizieren - falls nicht, im Skript
-# fixen oder die alten Sektionen leeren.
+# Derivate Trading Automation
 
-categories:
+Automatisierte Morning- und Breaking-News-Scans für Matthias' Derivate-Trading
+(KO-Zertifikate / Turbos auf DAX/MDAX/SDAX + US-Einzelwerte), ausgeführt als
+Claude Code Routines auf Anthropic-Cloud.
 
-  dax_komponenten:
-    Adidas: "ADS.DE"  # [H]
-    Airbus: "AIR.DE"  # [H] auch EuroStoxx 50
-    Allianz: "ALV.DE"  # [H] auch EuroStoxx 50
-    BASF: "BAS.DE"  # [H] auch EuroStoxx 50
-    Bayer: "BAYN.DE"  # [H] auch EuroStoxx 50, Pharma
-    Beiersdorf: "BEI.DE"  # [H]
-    BMW: "BMW.DE"  # [H] auch EuroStoxx 50
-    Brenntag: "BNR.DE"  # [H]
-    Commerzbank: "CBK.DE"  # [H] M&A: UniCredit-Stake
-    Continental: "CON.DE"  # [H]
-    Daimler_Truck: "DTG.DE"  # [H]
-    Deutsche_Bank: "DBK.DE"  # [H] auch EuroStoxx 50
-    Deutsche_Boerse: "DB1.DE"  # [H] auch EuroStoxx 50
-    Deutsche_Telekom: "DTE.DE"  # [H] auch EuroStoxx 50, TecDAX
-    DHL_Group: "DHL.DE"  # [H] auch EuroStoxx 50
-    EON: "EOAN.DE"  # [H]
-    Fresenius: "FRE.DE"  # [H]
-    GEA_Group: "G1A.DE"  # [H] DAX seit Sept 2025
-    Hannover_Rueck: "HNR1.DE"  # [H]
-    Heidelberg_Materials: "HEI.DE"  # [H]
-    Henkel_VZ: "HEN3.DE"  # [H]
-    Infineon: "IFX.DE"  # [H] auch EuroStoxx 50, TecDAX
-    Mercedes_Benz: "MBG.DE"  # [H] auch EuroStoxx 50
-    Merck_KGaA: "MRK.DE"  # [H] Pharma
-    MTU_Aero: "MTX.DE"  # [H]
-    Muenchener_Rueck: "MUV2.DE"  # [H] auch EuroStoxx 50
-    Porsche_SE: "PAH3.DE"  # [H] Holding
-    Qiagen: "QIA.DE"  # [H] auch TecDAX, Diagnostik
-    RWE: "RWE.DE"  # [H]
-    SAP: "SAP.DE"  # [H] auch EuroStoxx 50, TecDAX
-    Sartorius_STAMM: "SRT.DE"  # [M] STAMM im DAX, VZ im MDAX (Annahme)
-    Siemens: "SIE.DE"  # [H] auch EuroStoxx 50
-    Siemens_Energy: "ENR.DE"  # [H] auch EuroStoxx 50
-    Siemens_Healthineers: "SHL.DE"  # [H] auch TecDAX
-    Symrise: "SY1.DE"  # [H]
-    Volkswagen_VZ: "VOW3.DE"  # [H] auch EuroStoxx 50
-    Vonovia: "VNA.DE"  # [H]
-    Zalando: "ZAL.DE"  # [H] M&A: About-You-Konsolidierung
+## Zweck dieses Repos
 
-  mdax_komponenten:
-    AIXTRON: "AIXA.DE"  # [H] auch TecDAX
-    Aroundtown: "AT1.DE"  # [H]
-    AUMOVIO: "AMV0.DE"  # [H] Conti-Spinoff 09/2025, M&A. Yahoo-Ticker AMV0 (nicht AUM)
-    Aurubis: "NDA.DE"  # [H]
-    AUTO1: "AG1.DE"  # [M] Ticker AG1 verifizieren
-    Bechtle: "BC8.DE"  # [H] auch TecDAX
-    Bilfinger: "GBF.DE"  # [H]
-    CTS_Eventim: "EVD.DE"  # [H]
-    Delivery_Hero: "DHER.DE"  # [H]
-    Deutz: "DEZ.DE"  # [H] MDAX seit Maerz 2026
-    DWS_Group: "DWS.DE"  # [H]
-    Evonik: "EVK.DE"  # [H] auch tier_a/nebenwerte_de
-    flatexDEGIRO: "FTK.DE"  # [M]
-    Fraport: "FRA.DE"  # [H]
-    freenet: "FNTN.DE"  # [H] auch TecDAX
-    FUCHS_VZ: "FPE3.DE"  # [H]
-    HELLA: "HLE.DE"  # [M] Ticker verifizieren
-    Hensoldt: "HAG.DE"  # [H] auch tier_a, Defensiv-Tech-Border-Case
-    Hochtief: "HOT.DE"  # [H]
-    Hugo_Boss: "BOSS.DE"  # [H]
-    IONOS: "IOS.DE"  # [M] auch TecDAX
-    Jenoptik: "JEN.DE"  # [H] MDAX seit Maerz 2026
-    Jungheinrich_VZ: "JUN3.DE"  # [H]
-    K_S: "SDF.DE"  # [H]
-    KION_Group: "KGX.DE"  # [H] auch tier_a/nebenwerte_de
-    Knorr_Bremse: "KBX.DE"  # [H]
-    Krones: "KRN.DE"  # [H]
-    Lanxess: "LXS.DE"  # [H]
-    LEG_Immobilien: "LEG.DE"  # [H]
-    Lufthansa: "LHA.DE"  # [H] M&A: DAX-Rueckkehr-Spec
-    Nemetschek: "NEM.DE"  # [H] auch TecDAX
-    Nordex: "NDX1.DE"  # [H] auch TecDAX
-    Porsche_AG: "P911.DE"  # [M] Porsche vz. (operative AG), laut finanzen.net im MDAX, DAX-Wechsel pruefen
-    Puma: "PUM.DE"  # [H]
-    Rational: "RAA.DE"  # [H]
-    Redcare_Pharmacy: "RDC.DE"  # [H] ex Shop Apotheke, NL-ISIN
-    RENK: "R3NK.DE"  # [M] Defensiv-Tech, Border-Case-Ethik
-    RTL: "RRTL.DE"  # [M] LU-ISIN
-    Salzgitter: "SZG.DE"  # [H] MDAX seit Maerz 2026
-    Sartorius_VZ: "SRT3.DE"  # [H] auch TecDAX (Pharma-Equipment)
-    Schaeffler: "SHA0.DE"  # [H] Yahoo-Ticker SHA0, nicht SHA
-    Stroeer: "SAX.DE"  # [H]
-    TAG_Immobilien: "TEG.DE"  # [H]
-    Talanx: "TLX.DE"  # [H]
-    Thyssenkrupp: "TKA.DE"  # [H] M&A: Marine-Spinoff
-    TKMS_Marine: "TKMS.DE"  # [M] Marine-Spinoff von TKA, Defensiv-Border-Case
-    Traton: "8TRA.DE"  # [M] Ticker 8TRA verifizieren
-    TUI: "TUI1.DE"  # [H]
-    United_Internet: "UTDI.DE"  # [H]
-    Wacker_Chemie: "WCH.DE"  # [H]
+Dieses Repo ist **Skill-Host** für Claude Code Routines — es hält die
+Trading-Logik, die Helper-Bibliothek und die Routine-Prompts, die täglich
+automatisch ausgeführt werden.
 
-  sdax_komponenten:
-    Eins_und_Eins: "1U1.DE"  # [H] 1&1
-    adesso: "ADN1.DE"  # [H]
-    Adtran_Networks: "ADV.DE"  # [M] ex ADVA, Ticker verifizieren
-    Alzchem: "ACT.DE"  # [M]
-    ATOSS_Software: "AOF.DE"  # [H] Position Trade #53
-    Befesa: "BFSA.DE"  # [H]
-    BVB: "BVB.DE"  # [H] Borussia Dortmund
-    CANCOM: "COK.DE"  # [H] auch TecDAX, auch tier_a
-    Carl_Zeiss_Meditec: "AFX.DE"  # [H] auch TecDAX, MDAX-Absteiger Maerz 2026
-    CEWE_Stiftung: "CWC.DE"  # [M]
-    Dermapharm: "DMP.DE"  # [M]
-    Deutsche_Beteiligungs: "DBAN.DE"  # [M]
-    Deutsche_Euroshop: "DEQ.DE"  # [M]
-    Douglas: "DOU.DE"  # [M]
-    Draegerwerk: "DRW3.DE"  # [H]
-    Duerr: "DUE.DE"  # [H]
-    Eckert_Ziegler: "EUZ.DE"  # [H]
-    Einhell_VZ: "EIN3.DE"  # [M]
-    Elmos_Semiconductor: "ELG.DE"  # [H]
-    Energiekontor: "EKT.DE"  # [H] auch tier_a/nebenwerte_de
-    Evotec: "EVT.DE"  # [H] auch TecDAX, Biotech
-    Fielmann: "FIE.DE"  # [H] MDAX-Absteiger Maerz 2026
-    Friedrich_Vorwerk: "VH2.DE"  # [M]
-    GFT: "GFT.DE"  # [M]
-    Grand_City_Properties: "GYC.DE"  # [M] LU-ISIN, Ticker verifizieren
-    Grenke: "GLJ.DE"  # [M]
-    Hamborner_REIT: "HAB.DE"  # [M]
-    Heidelberger_Druck: "HDD.DE"  # [H]
-    HelloFresh: "HFG.DE"  # [H]
-    HORNBACH_Holding: "HBH.DE"  # [H] auch tier_a/nebenwerte_de
-    Hypoport: "HYQ.DE"  # [M]
-    INDUS: "INH.DE"  # [M]
-    Init_Innovation: "IXX.DE"  # [M] SDAX seit Maerz 2026
-    JOST_Werke: "JST.DE"  # [M]
-    Kloeckner_Co: "KCO.DE"  # [H]
-    Kontron: "KTN.DE"  # [H] AT-ISIN, auch TecDAX
-    KSB_VZ: "KSB3.DE"  # [M]
-    KWS_SAAT: "KWS.DE"  # [M]
-    MBB: "MBB.DE"  # [M]
-    Medios: "ILM1.DE"  # [M]
-    MLP: "MLP.DE"  # [M]
-    Mutares: "MUX.DE"  # [M]
-    Nagarro: "NA9.DE"  # [H] auch TecDAX
-    NORMA_Group: "NOEJ.DE"  # [M]
-    Ottobock: "OBCK.DE"  # [M] 10/2025 IPO, auch TecDAX. Yahoo-Ticker OBCK (nicht BCK)
-    PATRIZIA: "PAT.DE"  # [M]
-    pbb: "PBB.DE"  # [M] Pfandbriefbank
-    PNE: "PNE3.DE"  # [H] auch tier_a/nebenwerte_de
-    ProSiebenSat1: "PSM.DE"  # [H] M&A: MFE-Uebernahme
-    PVA_TePla: "TPE.DE"  # [M]
-    SAF_Holland: "SFQ.DE"  # [M]
-    Schott_Pharma: "1SXP.DE"  # [M]
-    secunet: "YSN.DE"  # [M]
-    SFC_Energy: "F3C.DE"  # [H] auch tier_a/nebenwerte_de
-    Shelly: "SLYG.DE"  # [M] BG-ISIN, Frankfurt Prime Standard. Yahoo-Ticker SLYG
-    Siltronic: "WAF.DE"  # [H] auch tier_a/nebenwerte_de
-    Sixt: "SIX2.DE"  # [H]
-    SMA_Solar: "S92.DE"  # [H] auch tier_a/nebenwerte_de
-    Springer_Nature: "SPG.DE"  # [M]
-    Stabilus: "STM.DE"  # [M]
-    STO_VZ: "STO3.DE"  # [M]
-    Suedzucker: "SZU.DE"  # [M]
-    Suess_MicroTec: "SMHN.DE"  # [H] auch TecDAX
-    TeamViewer: "TMV.DE"  # [H] auch TecDAX, MDAX-Absteiger Maerz 2026
-    tonies: "TNIE.DE"  # [M] LU-ISIN
-    Verbio: "VBK.DE"  # [H] auch TecDAX
-    Verve_Group: "VER.ST"  # [M] Umbenennung MGI→Verve 06/2024, Stockholm-primary (SEK). Frankfurt M8G.F dünn
-    Vossloh: "VOS.DE"  # [M]
-    Wacker_Neuson: "WAC.DE"  # [M]
-    Wuestenrot_Wuerttemb: "WUW.DE"  # [M] W&W
+**Was NICHT im Repo liegt:**
+- Journal-Datei (`Trading_Journal_YYYYMMDD.xlsx`) — bleibt lokal
+- Portfolio-State (offene Positionen, Einstiegskurse, etc.) — liegt im
+  verknüpften Google Doc
+- Persönliche Daten jeglicher Art
 
-  # nasdaq_100 wurde 2026-05-13 nach tickers_tier_c.yaml verschoben (Variante-A-Split)
+**Was im Repo liegt:**
+- Skill-Definition (`skills/derivate-trading/SKILL.md`)
+- Helper-Bibliothek (`journal_utils.py`)
+- Referenzmaterial (News-Scan, Technische Analyse, Produktkenntnis, etc.)
+- Routine-Prompts (Morning-Check, Afternoon-Scan, Evening-Scan)
 
-  eurostoxx_ex_dax:
-    AB_InBev: "ABI.BR"  # [H] Belgien
-    Adyen: "ADYEN.AS"  # [H] Niederlande
-    Ahold_Delhaize: "AD.AS"  # [H] Niederlande
-    Air_Liquide: "AI.PA"  # [H] Frankreich
-    arGEN_X: "ARGX.BR"  # [H] Hauptlisting Brüssel (Euronext), HQ Amsterdam, Biotech
-    ASML_EU: "ASML.AS"  # [H] Niederlande, Hauptlisting
-    AXA: "CS.PA"  # [H] Frankreich
-    BBVA: "BBVA.MC"  # [H] Spanien
-    BNP_Paribas: "BNP.PA"  # [H] Frankreich
-    Danone: "BN.PA"  # [H] Frankreich
-    Enel: "ENEL.MI"  # [H] Italien
-    Eni: "ENI.MI"  # [H] Italien
-    EssilorLuxottica: "EL.PA"  # [H] Frankreich
-    Ferrari: "RACE.MI"  # [H] Italien
-    Iberdrola: "IBE.MC"  # [H] Spanien
-    Inditex: "ITX.MC"  # [H] Spanien
-    ING_Group: "INGA.AS"  # [H] Niederlande
-    Intesa_Sanpaolo: "ISP.MI"  # [H] Italien
-    LOreal: "OR.PA"  # [H] Frankreich
-    LVMH: "MC.PA"  # [H] Frankreich
-    Nordea_Bank: "NDA-FI.HE"  # [M] Finnland, Ticker verifizieren
-    Prosus: "PRX.AS"  # [H] Niederlande
-    SAFRAN: "SAF.PA"  # [H] Frankreich, Defensiv-Border-Case
-    Saint_Gobain: "SGO.PA"  # [H] Frankreich
-    Sanofi: "SAN.PA"  # [H] Frankreich
-    Santander: "SAN.MC"  # [H] Spanien
-    Schneider_Electric: "SU.PA"  # [H] Frankreich
-    TotalEnergies: "TTE.PA"  # [H] Frankreich
-    UniCredit: "UCG.MI"  # [H] Italien
-    VINCI: "DG.PA"  # [H] Frankreich
-    Vivendi: "VIV.PA"  # [H] Frankreich
-    Wolters_Kluwer: "WKL.AS"  # [H] Niederlande
+## Aufbau
 
-  smi_20:
-    ABB: "ABBN.SW"  # [H]
-    Alcon: "ALC.SW"  # [H]
-    Amrize: "AMRZ.SW"  # [L] Holcim-Spinoff 2025, Ticker verifizieren
-    Geberit: "GEBN.SW"  # [H]
-    Givaudan: "GIVN.SW"  # [H]
-    Holcim: "HOLN.SW"  # [H]
-    Kuehne_Nagel: "KNIN.SW"  # [H]
-    Logitech: "LOGN.SW"  # [H]
-    Lonza: "LONN.SW"  # [H]
-    Nestle: "NESN.SW"  # [H]
-    Novartis: "NOVN.SW"  # [H]
-    Partners_Group: "PGHN.SW"  # [H]
-    Richemont: "CFR.SW"  # [H]
-    Roche: "ROG.SW"  # [H] Genussschein, am liquidesten
-    Sika: "SIKA.SW"  # [H]
-    Swiss_Life: "SLHN.SW"  # [H]
-    Swiss_Re: "SREN.SW"  # [H]
-    Swisscom: "SCMN.SW"  # [H]
-    UBS: "UBSG.SW"  # [H]
-    Zurich_Insurance: "ZURN.SW"  # [H]
+```
+derivate-trading-automation/
+├── README.md                           ← diese Datei
+├── .gitignore                          ← blockt Excel, CSV, PDFs
+├── skills/
+│   └── derivate-trading/
+│       ├── SKILL.md                    ← Skill-Definition (YAML-Front + Anleitung)
+│       ├── journal_utils.py            ← openpyxl-Helper für Journal-I/O
+│       └── references/
+│           ├── journal-layout.md
+│           ├── journal-utils-api.md
+│           ├── news-scan.md
+│           ├── produktkenntnis.md
+│           ├── technische-analyse.md
+│           └── trade-plan-templates.md
+└── routines/
+    ├── morning-check-prompt.md         ← Prompt für 08:45 Routine
+    ├── scan-prompt-1545.md             ← Prompt für 15:45 Afternoon-Scan
+    ├── scan-prompt-2030.md             ← Prompt für 20:30 Evening-Scan
+    └── state-doc-template.md           ← Struktur + Pflege-Regeln des STATE-Docs
+```
 
+## Claude Code Routines Setup
 
-# ============================================================
-# UNVERAENDERT - bestehende Tier-B-Sektionen aus dem Pipeline-Repo
-# Diese hier nur als Platzhalter aufgefuehrt, damit klar ist, dass sie
-# bestehen bleiben. Beim Patchen NICHT ueberschreiben - aus dem
-# bestehenden tickers_tier_b.yaml uebernehmen.
-# ------------------------------------------------------------
-#  tecdax_kern:        # 10 Werte, kann erweitert oder aufgeloest werden
-#  biotech_de:         # 11 Werte, evtl. um DAX-Pharma reduzieren
-#  nasdaq_growth:      # 21 Werte, durch nasdaq_100 ersetzt - kann weg
-#  ma_hot_list:        # 6 Werte
-#  ai_quantum:         # 5 Werte
+Drei scheduled Routines, alle Mo–Fr, Timezone Europe/Berlin:
+
+| Routine | Cron | Prompt-Datei |
+|---------|------|--------------|
+| `trading-morning-check` | `45 8 * * 1-5` | `routines/morning-check-prompt.md` |
+| `trading-scan-afternoon` | `45 15 * * 1-5` | `routines/scan-prompt-1545.md` |
+| `trading-scan-evening` | `30 20 * * 1-5` | `routines/scan-prompt-2030.md` |
+
+Seit Version 1.3 sind die beiden Scans separate Prompt-Files mit hartkodiertem
+Slot (statt einer parametrisierten Datei). Das ist Absicht: Routine-Prompts
+haben keine Variable-Substitution, und zwei getrennte Files eliminieren die
+Copy-Patch-Fehlerquelle beim Anlegen. Die Folder-ID des Ziel-Ordners ist
+ebenfalls direkt in jedem Prompt eingetragen.
+
+Connector-Anforderung:
+- **Google Drive** (Pflicht, Read+Write auf `Trading/Briefing/` Ordner)
+- Gmail (optional, für Phase 2 Push-Mail bei Gamechanger)
+
+## Phase-Roadmap
+
+Drei Feature-Phasen aus User-Sicht. Build-Schritte sind Sub-Items innerhalb
+einer Phase und in `marketdata-pipeline/README.md` detailliert nachverfolgt.
+
+- **Phase 1 — Pipeline-Foundation** (aktuell, Build seit 2026-04-24):
+  Morning-Check + 2 Scans, Output ins Workspace-Drive-Briefing-Doc.
+  Gamechanger-Flag wird im CANDIDATES/GAMECHANGER-File markiert,
+  keine Push-Benachrichtigung. Build-Schritte 1.0–1.5 ✅, 1.6 (Earnings-
+  Kalender + BaFin-Insider-Scrape) noch offen.
+
+- **Phase 2 — Push-Notifications** (geplant, ab ~4–6 Wochen nach Phase-1-
+  Stabilität): Echte Push-Mail via Resend bei Gamechanger-Kriterien
+  (G1 Portfolio-Treffer / G2 Watchlist-Trigger / G3 Makro-Schock).
+
+- **Phase 3 — Krypto-Integration** (geplant): Paralleles Krypto-Briefing
+  mit `krypto-grid-trading` und `krypto-portfolio` Skills, Pipeline-Anbindung
+  für Krypto-Setup-Filter.
+
+> **Hinweis zur Nomenklatur:** Der `derivate-trading`-Skill referenziert
+> intern „Phase 4" (V1.6-Routinen lesen Pipeline) und „Phase 5" (Auto-Load).
+> Das sind die Build-Schritte 1.4 und 1.5 dieser Roadmap. Skill-Sprachgebrauch
+> bleibt aus historischen Gründen erhalten — neue Doku verwendet das Schema
+> hier.
+
+## Sicherheit
+
+- Repo ist privat, nur Matthias + Claude Code haben Zugriff.
+- Keine API-Keys oder Passwörter im Repo — alles über Claude Code
+  Cloud-Environment-Variables.
+- Branch-Protection: Claude pushed per Default nur auf `claude/*`-Branches.
+
+## Stand
+
+- **Phase 1 Build**: 2026-04-24 gestartet, Build-Schritte 1.0–1.5 ✅ am 2026-04-26
+- **Erste scharfe Routine**: ab Mo 2026-04-27 08:45 CET
+- **Filename-Schema** (seit 2026-04-26): `MARKETDATA-FULL-STD-…` und `MARKETDATA-FULL-GC-…` mit Universum-Tag
+- **Skill-Version**: 1.x (aktuelle Entwicklungsversion, Iterationen laufen)

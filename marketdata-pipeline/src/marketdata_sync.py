@@ -69,6 +69,77 @@ logging.basicConfig(
 logger = logging.getLogger("pipeline")
 
 
+def build_pull_universe(
+    mode: str,
+    ticker_config: dict,
+    watchlist_entries: list,
+) -> tuple[set[str], set[str], set[str]]:
+    """Baut die Symbol-Mengen für einen Pipeline-Lauf.
+
+    Returns (all_symbols, excluded_symbols, excluded_category_symbols):
+      all_symbols               — was via yfinance gepullt wird
+      excluded_symbols          — Ethik-Ausschlüsse (nie pullen, nie rendern)
+      excluded_category_symbols — Indizes/Rohstoffe/Krypto/Positionen, vom
+                                  Universe-Setup-Filter ausgenommen (nur tier_a)
+
+    Watchlist-Symbole sind Teil von all_symbols in JEDEM Tier (Fix
+    watchlist_sync Bug 1, 2026-05-21). Vor dem Fix wurden sie nur in tier_a
+    in den Pull aufgenommen — US-Watchlist-Werte (NET, CHKP, ...) bekamen so
+    nie eine Auswertung zur US-Session, die in tier_c läuft. Folge:
+    CHKP-Trigger-B-Miss 18.05.2026 (Note #68). Der frühere Workaround
+    (NET/CHKP-Hardcode in tickers_tier_c.yaml) ist damit obsolet.
+
+    Pure Funktion ohne I/O — testbar ohne Drive (test_marketdata_universe.py).
+    """
+    all_symbols: set[str] = set()
+    excluded_symbols: set[str] = set()
+    excluded_category_symbols: set[str] = set()
+
+    if mode == "tier_a":
+        # Indizes/Rohstoffe/Krypto/Positionen aus tickers_tier_a.yaml.
+        # Diese Kategorien sind Makro-Kontext, kein Trade-Universum →
+        # zusätzlich als excluded_category_symbols für den Setup-Filter.
+        for category in ["indizes", "rohstoffe_forex", "krypto", "positionen"]:
+            section = ticker_config.get(category, {}) or {}
+            for sym in section.values():
+                if sym:
+                    all_symbols.add(sym)
+                    excluded_category_symbols.add(sym)
+    else:
+        # Tier B / Tier C — Auto-Discover: alle Sektionen unter Root oder
+        # unter 'categories:'. Tier B = EU-Universum, Tier C = US-Universum.
+        container = ticker_config.get("categories", ticker_config)
+        loaded_sections: list[tuple[str, int]] = []
+        for name, section in container.items():
+            if name == "ethik_excluded" or not isinstance(section, dict):
+                continue
+            count = 0
+            for sym in section.values():
+                if sym:
+                    all_symbols.add(sym)
+                    count += 1
+            loaded_sections.append((name, count))
+        logger.info(
+            f"  {mode.upper()} sections loaded: "
+            + ", ".join(f"{n}={c}" for n, c in loaded_sections)
+        )
+
+    # Ethik-Ausschlüsse (kommen NICHT in Pull, NICHT in Output)
+    for sym in ticker_config.get("ethik_excluded", []) or []:
+        excluded_symbols.add(sym)
+
+    # Watchlist-Symbole — in JEDEM Tier Teil des Pull-Universums (Bug-1-Fix).
+    watchlist_symbols = {
+        e.symbol for e in watchlist_entries if getattr(e, "symbol", None)
+    }
+    all_symbols.update(watchlist_symbols)
+
+    # Ethik gewinnt immer — auch gegen Watchlist-Einträge
+    all_symbols -= excluded_symbols
+
+    return all_symbols, excluded_symbols, excluded_category_symbols
+
+
 def main():
     # === ENV LESEN ===
     state_doc_id = os.environ.get("STATE_DOC_ID")
@@ -127,61 +198,13 @@ def main():
     )
 
     # === TICKER-LISTE ZUSAMMENBAUEN ===
-    all_symbols: set[str] = set()
-    excluded_symbols: set[str] = set()
-
-    if mode == "tier_a":
-        # Indizes/Rohstoffe/Krypto/Positionen aus tickers_a.yaml
-        for category in ["indizes", "rohstoffe_forex", "krypto", "positionen"]:
-            section = ticker_config.get(category, {}) or {}
-            for sym in section.values():
-                if sym:
-                    all_symbols.add(sym)
-
-        # Watchlist-Symbole aus STATE
-        watchlist_symbols = {entry.symbol for entry in watchlist_entries}
-        all_symbols.update(watchlist_symbols)
-
-        # Ethik-Ausschlüsse merken (kommen NICHT in Pull, NICHT in Output)
-        for sym in ticker_config.get("ethik_excluded", []) or []:
-            excluded_symbols.add(sym)
-    else:
-        # Tier B / Tier C — Auto-Discover: alle Sektionen unter Root oder
-        # unter 'categories:' werden eingelesen. Tier B = EU-Universum,
-        # Tier C = US-Universum. Code-Pfad identisch.
-        container = ticker_config.get("categories", ticker_config)
-        loaded_sections: list[tuple[str, int]] = []
-        for name, section in container.items():
-            if name == "ethik_excluded":
-                continue
-            if not isinstance(section, dict):
-                continue
-            count = 0
-            for sym in section.values():
-                if sym:
-                    all_symbols.add(sym)
-                    count += 1
-            loaded_sections.append((name, count))
-        for sym in ticker_config.get("ethik_excluded", []) or []:
-            excluded_symbols.add(sym)
-        logger.info(
-            f"  {mode.upper()} sections loaded: "
-            + ", ".join(f"{n}={c}" for n, c in loaded_sections)
-        )
-
-    # Sicher: keine ethik-excluded in Pull
-    all_symbols = all_symbols - excluded_symbols
-
+    # Universe-Aufbau ausgelagert in build_pull_universe() — pure Funktion,
+    # testbar ohne Drive (siehe tests/test_marketdata_universe.py).
+    # Watchlist-Symbole sind in JEDEM Tier Teil des Pull (Bug-1-Fix).
+    all_symbols, excluded_symbols, excluded_category_symbols = build_pull_universe(
+        mode, ticker_config, watchlist_entries,
+    )
     logger.info(f"Total symbols to fetch: {len(all_symbols)}")
-
-    # === KATEGORIEN-AUSSCHLUSS für Universe-Setup-Filter ===
-    excluded_category_symbols: set[str] = set()
-    if mode == "tier_a":
-        for category in ["indizes", "rohstoffe_forex", "krypto", "positionen"]:
-            section = ticker_config.get(category, {}) or {}
-            for sym in section.values():
-                if sym:
-                    excluded_category_symbols.add(sym)
 
     # === YFINANCE PULL ===
     snapshots = fetch_ticker_data(sorted(all_symbols))
@@ -193,38 +216,30 @@ def main():
     # bleibt "Vol unter Schwelle" als pending, danach failed).
     now_utc_hour = timestamp.astimezone(ZoneInfo("UTC")).hour
 
-    watchlist_results = []
-    universe_matches = []
+    # Watchlist-Trigger werden in JEDEM Tier ausgewertet (Fix watchlist_sync
+    # Bug 1, 2026-05-21). Vor dem Fix lief evaluate_watchlist nur in tier_a,
+    # daher bekamen US-Watchlist-Werte nie eine Auswertung zur US-Session
+    # (tier_c, 14:30/21:30 CEST) — CHKP-Trigger-B-Miss 18.05.2026 (Note #68).
+    # Jeder Tier wertet jetzt die volle Watchlist gegen seine frischesten
+    # Snapshots aus; der Skill pickt ohnehin die jüngste Ergebnisdatei, also
+    # gewinnt für US-Werte der tier_c-Lauf mit echten US-Session-Daten.
+    watchlist_symbols_set = {e.symbol for e in watchlist_entries if e.symbol}
 
-    if mode == "tier_a":
-        watchlist_results = evaluate_watchlist(
-            watchlist_entries, snapshots, filter_config, today, now_utc_hour,
-        )
-
-        watchlist_symbols_set = {e.symbol for e in watchlist_entries}
-        universe_matches = evaluate_universe(
-            snapshots,
-            excluded_symbols=watchlist_symbols_set,
-            config=filter_config,
-            overrides=overrides,
-            today=today,
-            excluded_category_symbols=excluded_category_symbols,
-        )
-
-        logger.info(
-            f"Watchlist results: {len(watchlist_results)}, "
-            f"Universe matches: {len(universe_matches)}"
-        )
-
-    else:
-        universe_matches = evaluate_universe(
-            snapshots,
-            excluded_symbols=set(),
-            config=filter_config,
-            overrides=overrides,
-            today=today,
-        )
-        logger.info(f"{mode.upper()} Universe matches: {len(universe_matches)}")
+    watchlist_results = evaluate_watchlist(
+        watchlist_entries, snapshots, filter_config, today, now_utc_hour,
+    )
+    universe_matches = evaluate_universe(
+        snapshots,
+        excluded_symbols=watchlist_symbols_set,
+        config=filter_config,
+        overrides=overrides,
+        today=today,
+        excluded_category_symbols=excluded_category_symbols,
+    )
+    logger.info(
+        f"{mode.upper()} — Watchlist results: {len(watchlist_results)}, "
+        f"Universe matches: {len(universe_matches)}"
+    )
 
     # === OUTPUT RENDERN ===
     timestamp_str = timestamp.strftime("%Y-%m-%d-%H%M")
