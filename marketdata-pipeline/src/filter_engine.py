@@ -279,21 +279,34 @@ def _evaluate_trigger(
     # === PREIS-DISTANZ ===
     price = snap.price
     if trigger.price_op == "in_range":
-        # Distanz = 0 wenn IN range, sonst nach unten/oben gemessen
+        # Distanz = 0 wenn IN range, sonst nach unten/oben gemessen.
+        # Durchgelaufen-Logik (Task 5) ist richtungsabhängig:
+        #   breakout + LONG  → über Obergrenze = durchgelaufen
+        #   breakout + SHORT → unter Untergrenze = durchgelaufen (Breakdown)
         if trigger.price_low <= price <= trigger.price_high:
             distance_pct = 0.0
             conditions_met.append(f"Preis {price:.2f} IN-ZONE [{trigger.price_low:.2f}–{trigger.price_high:.2f}]")
         elif price < trigger.price_low:
             distance_pct = (price - trigger.price_low) / trigger.price_low * 100
-            conditions_missing.append(
-                f"Preis {price:.2f} unter Range [{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%)"
-            )
+            if trigger.zone_kind == "breakout" and direction == "SHORT":
+                # Short-Breakdown: unter der Untergrenze = durchgelaufen. Die
+                # Untergrenze sitzt auf dem R:R-1,35-Kipppunkt (Task 5).
+                blown_through = True
+                conditions_missing.append(
+                    f"Preis {price:.2f} UNTER Breakdown-Zone "
+                    f"[{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%) "
+                    f"— DURCHGELAUFEN: R:R-Schwelle gerissen, Setup tot"
+                )
+            else:
+                # Long-Breakout noch nicht erfolgt / Pullback-Zone: legitimes Warten.
+                conditions_missing.append(
+                    f"Preis {price:.2f} unter Range [{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%)"
+                )
         else:  # price > price_high
             distance_pct = (price - trigger.price_high) / trigger.price_high * 100
-            if trigger.zone_kind == "breakout":
-                # Breakout-Zone: über der Obergrenze = durchgelaufen. Die
-                # Obergrenze sitzt auf dem R:R-1,35-Kipppunkt — darüber ist
-                # das Setup nicht mehr handelbar (Task 5).
+            if trigger.zone_kind == "breakout" and direction == "LONG":
+                # Long-Breakout: über der Obergrenze = durchgelaufen. Die
+                # Obergrenze sitzt auf dem R:R-1,35-Kipppunkt (Task 5).
                 blown_through = True
                 conditions_missing.append(
                     f"Preis {price:.2f} ÜBER Breakout-Zone "
@@ -301,8 +314,7 @@ def _evaluate_trigger(
                     f"— DURCHGELAUFEN: R:R-Schwelle gerissen, Setup tot"
                 )
             else:
-                # Pullback-Zone (oder unbekannt): über der Zone = Rücksetzer
-                # noch nicht tief genug → legitimes Warten, Alt-Verhalten.
+                # Short-Breakdown noch nicht erfolgt / Pullback-Zone: legitimes Warten.
                 conditions_missing.append(
                     f"Preis {price:.2f} über Range [{trigger.price_low:.2f}–{trigger.price_high:.2f}] ({distance_pct:+.2f}%)"
                 )
