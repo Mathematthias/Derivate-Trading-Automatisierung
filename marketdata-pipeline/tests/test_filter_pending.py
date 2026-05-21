@@ -303,3 +303,61 @@ class TestEvaluateWatchlistSignature:
             [entry], {"TEST": snap}, config, date(2026, 5, 13), now_utc_hour=14
         )
         assert results[0].trigger_results[0].conditions_pending
+
+
+# ============================================================
+# BREAKOUT-ZONE DURCHGELAUFEN (Task 5, 2026-05-22)
+# ============================================================
+
+class TestBreakoutDurchgelaufen:
+    """Breakout-Zone: Kurs ueber Obergrenze = durchgelaufen, Setup tot.
+    Pullback-Zone / zone_kind=None: Alt-Verhalten (ueber Zone = warten)."""
+
+    def _zone(self, zone_kind):
+        return ParsedTrigger(
+            label="A", raw="Zone 120-124", price_low=120.0, price_high=124.0,
+            price_op="in_range", zone_kind=zone_kind,
+        )
+
+    def test_breakout_ueber_obergrenze_durchgelaufen(self, config):
+        """Kurs 1,6% ueber Breakout-Zone → blown_through, proximity far."""
+        snap = FakeSnap(price=126.0)  # 124 * 1.016
+        ts = _evaluate_trigger(self._zone("breakout"), snap, "LONG", config, now_utc_hour=14)
+        assert ts.blown_through is True
+        assert ts.proximity == "far"
+        assert "DURCHGELAUFEN" in ts.summary
+
+    def test_breakout_durchgelaufen_nicht_very_close(self, config):
+        """Regressions-Sicherung: durchgelaufener Breakout 1,6% drueber landet
+        NICHT in very_close (≤2%) — genau der Bug, den Task 5 schliesst."""
+        snap = FakeSnap(price=126.0)
+        ts = _evaluate_trigger(self._zone("breakout"), snap, "LONG", config, now_utc_hour=14)
+        assert ts.proximity != "very_close"
+
+    def test_breakout_in_zone_normal(self, config):
+        """Kurs IN der Breakout-Zone → in_zone, nicht durchgelaufen."""
+        snap = FakeSnap(price=122.0)
+        ts = _evaluate_trigger(self._zone("breakout"), snap, "LONG", config, now_utc_hour=14)
+        assert ts.blown_through is False
+        assert ts.proximity == "in_zone"
+
+    def test_breakout_unter_untergrenze_normal(self, config):
+        """Kurs unter der Breakout-Zone → wartend, nicht durchgelaufen."""
+        snap = FakeSnap(price=118.0)
+        ts = _evaluate_trigger(self._zone("breakout"), snap, "LONG", config, now_utc_hour=14)
+        assert ts.blown_through is False
+
+    def test_pullback_ueber_obergrenze_kein_durchgelaufen(self, config):
+        """Pullback-Zone, Kurs drueber = Ruecksetzer noch nicht tief genug →
+        Alt-Verhalten (very_close), NICHT durchgelaufen."""
+        snap = FakeSnap(price=126.0)
+        ts = _evaluate_trigger(self._zone("pullback"), snap, "LONG", config, now_utc_hour=14)
+        assert ts.blown_through is False
+        assert ts.proximity == "very_close"
+
+    def test_zone_kind_none_abwaertskompatibel(self, config):
+        """zone_kind=None → exakt Alt-Verhalten, kein Durchgelaufen-Check."""
+        snap = FakeSnap(price=126.0)
+        ts = _evaluate_trigger(self._zone(None), snap, "LONG", config, now_utc_hour=14)
+        assert ts.blown_through is False
+        assert ts.proximity == "very_close"

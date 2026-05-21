@@ -6,7 +6,7 @@
 """
 
 import pytest
-from state_parser import _parse_triggers, _split_into_triggers, _strip_sl_tp
+from state_parser import _parse_triggers, _split_into_triggers, _strip_sl_tp, _detect_zone_kind
 
 
 # ============================================================
@@ -275,3 +275,63 @@ class TestStripMarkdownEscapesIterative:
         result = _strip_markdown_escapes(r"Zeile1\nZeile2")
         # `\n` als Token bleibt — Strip-Set deckt n nicht ab
         assert "\\n" in result or "\nZeile2" in result
+
+
+# ============================================================
+# ZONE-KIND (Task 5, 2026-05-22) — Hybrid-Erkennung Ansatz C
+# ============================================================
+
+class TestZoneKind:
+    """_detect_zone_kind: expliziter Tag mit Vorrang, sonst Heuristik, sonst None."""
+
+    # --- Expliziter Tag ---
+    def test_tag_breakout(self):
+        assert _detect_zone_kind("Daily-Close 120-124$ [breakout]") == "breakout"
+
+    def test_tag_pullback(self):
+        assert _detect_zone_kind("Touch 374-385$ [pullback]") == "pullback"
+
+    def test_tag_with_zone_suffix(self):
+        assert _detect_zone_kind("Zone 120-124$ [breakout-zone]") == "breakout"
+
+    def test_tag_case_insensitive(self):
+        assert _detect_zone_kind("Zone [PULLBACK]") == "pullback"
+
+    def test_tag_takes_precedence_over_heuristic(self):
+        """Tag [pullback] gewinnt, auch wenn das Wort 'Breakout' im Text steht."""
+        assert _detect_zone_kind("Breakout-Logik, aber Zone [pullback]") == "pullback"
+
+    # --- Heuristik-Fallback ---
+    def test_heuristic_breakout_word(self):
+        assert _detect_zone_kind("Daily-Close >124$ Breakout ueber Konsol-Hoch") == "breakout"
+
+    def test_heuristic_ausbruch_word(self):
+        assert _detect_zone_kind("Ausbruchs-Long ueber 124$") == "breakout"
+
+    def test_heuristic_pullback_word(self):
+        assert _detect_zone_kind("Pullback in EMA20-Zone 374-385$") == "pullback"
+
+    def test_heuristic_touch_word(self):
+        assert _detect_zone_kind("Touch EMA20 1D ~174$") == "pullback"
+
+    # --- Sichere Rückfallebene None ---
+    def test_ambiguous_both_words_returns_none(self):
+        """Breakout UND Pullback im Text → None (lieber kein Check als falscher)."""
+        assert _detect_zone_kind("Pullback nach Breakout, Zone 120-124$") is None
+
+    def test_no_marker_returns_none(self):
+        assert _detect_zone_kind("Daily-Close >124$ + Vol >Avg-20d") is None
+
+    # --- Integration über _parse_triggers ---
+    def test_parse_triggers_sets_zone_kind(self):
+        text = ("A) Daily-Close 1019-1024$ [breakout] + Vol >Avg-20d. "
+                "B) Touch 925-952$ [pullback]")
+        triggers = _parse_triggers(text)
+        assert len(triggers) == 2
+        assert triggers[0].zone_kind == "breakout"
+        assert triggers[1].zone_kind == "pullback"
+
+    def test_parse_triggers_zone_kind_none_when_unmarked(self):
+        triggers = _parse_triggers("Daily-Close >50,46€ + Volumen-Bestaetigung")
+        assert len(triggers) == 1
+        assert triggers[0].zone_kind is None
