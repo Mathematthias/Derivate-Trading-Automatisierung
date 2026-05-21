@@ -361,3 +361,50 @@ class TestBreakoutDurchgelaufen:
         ts = _evaluate_trigger(self._zone(None), snap, "LONG", config, now_utc_hour=14)
         assert ts.blown_through is False
         assert ts.proximity == "very_close"
+
+
+# ============================================================
+# SHORT-BREAKDOWN DURCHGELAUFEN (Task 5 Etappe-1-Nachtrag, 2026-05-22)
+# ============================================================
+
+class TestBreakdownShortDurchgelaufen:
+    """Short-Breakdown-Zone: Kurs UNTER Untergrenze = durchgelaufen.
+    Spiegelbild zum Long-Breakout — Durchgelaufen-Logik richtungsabhaengig."""
+
+    def _zone(self):
+        return ParsedTrigger(
+            label="A", raw="Zone 58,94-60,00", price_low=58.94, price_high=60.00,
+            price_op="in_range", zone_kind="breakout",
+        )
+
+    def test_short_breakdown_unter_untergrenze_durchgelaufen(self, config):
+        """SHORT, Kurs unter Breakdown-Zone → blown_through, far."""
+        snap = FakeSnap(price=58.0)
+        ts = _evaluate_trigger(self._zone(), snap, "SHORT", config, now_utc_hour=14)
+        assert ts.blown_through is True
+        assert ts.proximity == "far"
+        assert "DURCHGELAUFEN" in ts.summary
+
+    def test_short_breakdown_in_zone_normal(self, config):
+        """SHORT, Kurs in der Zone → in_zone, nicht durchgelaufen."""
+        snap = FakeSnap(price=59.5)
+        ts = _evaluate_trigger(self._zone(), snap, "SHORT", config, now_utc_hour=14)
+        assert ts.blown_through is False
+        assert ts.proximity == "in_zone"
+
+    def test_short_breakdown_ueber_obergrenze_wartet(self, config):
+        """SHORT, Kurs ueber Zone = Breakdown noch nicht erfolgt → warten."""
+        snap = FakeSnap(price=61.0)
+        ts = _evaluate_trigger(self._zone(), snap, "SHORT", config, now_utc_hour=14)
+        assert ts.blown_through is False
+
+    def test_long_breakout_unter_untergrenze_kein_durchgelaufen(self, config):
+        """Gegenprobe: LONG-breakout, Kurs unter Zone = Ausbruch noch nicht
+        erfolgt → warten, NICHT durchgelaufen (Short-Logik darf nicht greifen)."""
+        zone = ParsedTrigger(
+            label="A", raw="Zone 411-415", price_low=411.0, price_high=415.0,
+            price_op="in_range", zone_kind="breakout",
+        )
+        snap = FakeSnap(price=405.0)
+        ts = _evaluate_trigger(zone, snap, "LONG", config, now_utc_hour=14)
+        assert ts.blown_through is False
