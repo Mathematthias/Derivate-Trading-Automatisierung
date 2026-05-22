@@ -408,6 +408,32 @@ def render_candidates(
             lines.append(f"- **{ov.symbol}** [{ov.override_type}] — {ov.reason} (gültig bis {until})")
         lines.append("")
 
+    # === LEKTION-4-SL-AUDIT (Note #88/#89/#92, 2026-05-22) ===
+    # Sammel-Sektion aller Fix-SL-Verstöße/Grenzfälle über die ganze Watchlist.
+    # Der Morgen-Briefing-Lauf (Routine 7) zieht diese als Wartungs-Einzeiler
+    # in Bucket 5. ok/skip erscheinen hier NICHT.
+    sl_audit: list[tuple[str, str]] = []
+    for r in watchlist_results:
+        for ts in r.trigger_results:
+            if ts.sl_check is None:
+                continue
+            level, msg = ts.sl_check
+            if level in ("verstoss", "grenz"):
+                label = f"[{ts.label}] " if ts.label else ""
+                sl_audit.append((level, f"**{r.entry.symbol}** {label}— {msg}"))
+
+    if sl_audit:
+        lines.append("---")
+        lines.append("")
+        lines.append("## ⚠️ Lektion-4-SL-Audit")
+        lines.append("")
+        # Verstöße zuerst, dann Grenzfälle
+        for level, marker in (("verstoss", "⚠️"), ("grenz", "⚠")):
+            for lv, text in sl_audit:
+                if lv == level:
+                    lines.append(f"- {marker} {text}")
+        lines.append("")
+
     return "\n".join(lines)
 
 
@@ -543,6 +569,14 @@ def _render_watchlist_entry(r: WatchlistResult) -> list[str]:
             lines.append(f"    ⏳ {c}")
         for c in ts.conditions_missing:
             lines.append(f"    ✗ {c}")
+        # Lektion-4-SL-Guard (Note #88/#89/#92): nur verstoss/grenz zeigen,
+        # ok/skip bleiben still (sonst Output-Rauschen).
+        if ts.sl_check is not None:
+            level, msg = ts.sl_check
+            if level == "verstoss":
+                lines.append(f"    ⚠️ SL-WARNUNG: {msg}")
+            elif level == "grenz":
+                lines.append(f"    ⚠ SL-grenzwertig: {msg}")
 
     if r.entry.status_note:
         lines.append(f"  - _Note: {r.entry.status_note}_")

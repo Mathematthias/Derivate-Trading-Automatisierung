@@ -75,6 +75,15 @@ class ParsedTrigger:
     #   None       → unbekannt → Evaluator behält Alt-Verhalten (kein Durchgelaufen-Check)
     zone_kind: Optional[str] = None
 
+    # Stop-Loss (Lektion-4-SL-Guard, 2026-05-22, Note #88/#89/#92):
+    #   sl_kind = 'fix'           → numerisches Fix-Level, sl_value gesetzt
+    #   sl_kind = 'entry_relativ' → SL ist 1,5×ATR ab Entry → per Definition konform
+    #   sl_kind = 'pattern'       → SL als Kerzen-/ATR-4h-/Prozent-Funktion → 1D-ATR-Check n/a
+    #   sl_kind = None            → kein SL im Trigger-Text gefunden
+    # Der filter_engine-Check rechnet nur bei sl_kind='fix' SL-Abstand ÷ ATR(14).
+    sl_kind: Optional[str] = None
+    sl_value: Optional[float] = None
+
 
 @dataclass
 class FilterOverride:
@@ -422,6 +431,78 @@ def _detect_zone_kind(content: str) -> Optional[str]:
     return None
 
 
+def _extract_sl(content: str) -> tuple[Optional[str], Optional[float]]:
+    """Extrahiert SL-Art und ggf. SL-Level aus einem Trigger-Chunk.
+
+    Lektion-4-SL-Guard (Note #88/#89/#92, 2026-05-22). Drei erkennbare Fälle
+    plus None:
+
+    1. **entry-relativ** — Text enthält `entry-relativ` oder `Entry ±1,5×ATR`.
+       → ('entry_relativ', None). Per Konstruktion 1,5×ATR ab Entry → konform.
+    2. **Pattern/Sonder-Konvention** — SL als Funktion einer Kerze
+       (`SL = Reverse-Kerzen-Hoch + 1,0×ATR-4h`), ATR-4h-Konvention oder
+       prozentualer SL (`SL 5%`). → ('pattern', None). 1D-ATR-Check nicht
+       anwendbar → der filter_engine markiert das als 'skip'.
+    3. **Fix-Level** — `SL <245€` / `SL >3,55$` / `SL 232`. Operator und
+       Währungssuffix optional, deutsche Dezimalkomma-Notation wird beachtet.
+       → ('fix', float).
+    4. Kein SL im Text → (None, None).
+
+    Reihenfolge ist wichtig: entry-relativ zuerst (kann das Wort ATR enthalten),
+    dann Pattern, dann numerisches Fix-Level. Ein parenthetischer Kommentar wie
+    `SL <125€ (unter 52W-Tief)` bleibt korrekt 'fix' — das Fix-Muster wird am
+    Anfang des SL-Ausdrucks verankert geprüft, der Klammerzusatz ignoriert.
+    """
+    # 1. entry-relativ — höchste Priorität
+    if re.search(r"entry[\s\-]?relativ", content, re.IGNORECASE):
+        return ("entry_relativ", None)
+    if re.search(
+        r"\bEntry\s*[-−+±]\s*\d+(?:[.,]\d+)?\s*[×x]?\s*ATR",
+        content,
+        re.IGNORECASE,
+    ):
+        return ("entry_relativ", None)
+
+    # SL-Ausdruck isolieren: ab 'SL' (optional ':'/'=') bis Satz-/Token-Grenze.
+    m = re.search(
+        r"\bSL\b\s*[:=]?\s*(.*?)(?:\.\s|;|$|\bTP\d|\bR:R\b)",
+        content,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if not m or not m.group(1).strip():
+        return (None, None)
+    sl_expr = m.group(1).strip()
+
+    # 2. Pattern/Sonder-Konvention — kerzenbasiert oder ATR-4h
+    if re.search(r"ATR", sl_expr, re.IGNORECASE) and re.search(
+        r"4h", sl_expr, re.IGNORECASE
+    ):
+        return ("pattern", None)
+    if re.search(
+        r"Kerze|Hammer|Reverse|Wick|Docht|Engulfing",
+        sl_expr,
+        re.IGNORECASE,
+    ):
+        return ("pattern", None)
+
+    # 3. Fix-Level — Operator/Währung optional, am Anfang des SL-Ausdrucks
+    fix = re.match(
+        r"[<>≤≥]?\s*(-?\d+(?:[.,]\d+)?)\s*([€$%]?)",
+        sl_expr,
+    )
+    if fix:
+        if fix.group(2) == "%":
+            # prozentualer SL: relativ, kein numerisches Fix-Level → skip
+            return ("pattern", None)
+        try:
+            return ("fix", _parse_eu_number(fix.group(1)))
+        except ValueError:
+            return (None, None)
+
+    # SL-Ausdruck beginnt nicht numerisch (z.B. '= EMA200', 'unter Vortagstief')
+    return ("pattern", None)
+
+
 def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
     """Parst einen einzelnen Trigger-Text in ParsedTrigger.
 
@@ -435,6 +516,9 @@ def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
 
     # Zonen-Semantik bestimmen (Task 5) — Hybrid: Tag mit Vorrang, sonst Heuristik
     pt.zone_kind = _detect_zone_kind(content)
+
+    # SL-Art + ggf. Fix-Level extrahieren (Lektion-4-SL-Guard, 2026-05-22)
+    pt.sl_kind, pt.sl_value = _extract_sl(content)
 
     # === Modifikatoren auf RAW content (kollidieren nicht mit SL/TP) ===
 
