@@ -38,6 +38,18 @@ logger = logging.getLogger(__name__)
 
 
 # ============================================================
+# KONSTANTEN
+# ============================================================
+
+# Lektion-4-SL-Guard (Note #88/#89/#92, 2026-05-22): Mindest-SL-Abstand zur
+# ungünstigen Zonenkante, gemessen in ATR(14). Sind keine Tuning-Knöpfe,
+# sondern methodisch fixe Werte (R:R-1,35-Kipppunkt aus Lektion 4/17) —
+# darum Modul-Konstanten statt filter_config.yaml.
+SL_LEKTION4_HARD_RATIO = 1.35   # ratio < 1,35 → Verstoß
+SL_LEKTION4_WARN_RATIO = 1.5    # 1,35 ≤ ratio < 1,5 → grenzwertig
+
+
+# ============================================================
 # DATENMODELLE FÜR OUTPUT
 # ============================================================
 
@@ -53,6 +65,10 @@ class TriggerStatus:
     conditions_pending: list[str] = field(default_factory=list)  # noch offen (Tagesvolumen, etc.)
     summary: str = ""  # Kurzfassung für Output
     blown_through: bool = False  # Task 5: Breakout-Zone durchgelaufen (Kurs über Obergrenze)
+    # Lektion-4-SL-Guard (Note #88/#89/#92, 2026-05-22): (level, msg) mit
+    # level ∈ {'verstoss','grenz','ok','skip'}. None nur wenn der Trigger leer
+    # ist. Rein diagnostisch — ändert KEIN Bucket-Verhalten.
+    sl_check: Optional[tuple[str, str]] = None
 
 
 @dataclass
@@ -146,6 +162,78 @@ def _get_vol_status(
     if now_utc_hour >= hard_hour:
         return "failed"
     return "pending"
+
+
+def check_sl_lektion4(
+    trigger: ParsedTrigger,
+    snap: Optional[TickerSnapshot],
+    direction: str,
+) -> tuple[str, str]:
+    """Prüft den SL-Abstand eines Triggers gegen ATR(14) — Lektion-4-Guard.
+
+    Note #88/#89/#92 (2026-05-22), Lektion 17. Hintergrund: Ein über die
+    ganze Trigger-Zone fixer SL erfüllt die 1,5×ATR-Regel nur an einem Punkt.
+    An der für die Handelsrichtung ungünstigen Zonenkante (Long: Untergrenze,
+    Short: Obergrenze) wird der Abstand minimal — dort wird der Fix-SL zu eng.
+    Reine Zonenbreite ist KEIN ausreichendes Kriterium (Befund CHKP-A: Zone
+    1,11×ATR breit, Fix-SL trotzdem nur 0,93×ATR an der Untergrenze).
+
+    Der Check ist rein diagnostisch: er flaggt, ändert aber kein Bucket.
+
+    Returns:
+        (level, msg) mit level ∈ {'ok','grenz','verstoss','skip'}.
+        - 'ok'       — entry-relativ ODER Fix-SL ≥ 1,5×ATR.
+        - 'grenz'    — Fix-SL 1,35–1,5×ATR: grenzwertig.
+        - 'verstoss' — Fix-SL < 1,35×ATR: Lektion-4-Verstoß.
+        - 'skip'     — nicht prüfbar (Pattern-SL, ATR fehlt, keine Preis-Zone).
+    """
+    if trigger.sl_kind == "entry_relativ":
+        return ("ok", "SL entry-relativ — Lektion-4-konform per Konstruktion")
+    if trigger.sl_kind in (None, "pattern"):
+        return (
+            "skip",
+            "SL nicht numerisch (Pattern/Sonder-Konvention) — manueller Check",
+        )
+
+    # sl_kind == 'fix' → numerisches Level, sl_value gesetzt
+    if trigger.sl_value is None:
+        return ("skip", "Fix-SL ohne Wert — manueller Check")
+
+    atr = getattr(snap, "atr14", None) if snap is not None else None
+    if atr is None or atr <= 0:
+        return ("skip", "ATR-Quelle fehlt (Ticker off-universe) — manueller Check")
+
+    # Ungünstige Zonenkante bestimmen
+    if trigger.price_op == "in_range":
+        if trigger.price_low is None or trigger.price_high is None:
+            return ("skip", "Zonenkante unbestimmt — manueller Check")
+        # Long kauft tief → Untergrenze ist worst case (SL am nächsten).
+        # Short verkauft hoch → Obergrenze ist worst case.
+        kante = trigger.price_low if direction == "LONG" else trigger.price_high
+    elif trigger.price_op in (">", "<", "approx"):
+        # Pattern-/Schwellen-Trigger ohne echte Zone: die Schwelle ist die Kante.
+        if trigger.price_single is None:
+            return ("skip", "Trigger-Schwelle unbestimmt — manueller Check")
+        kante = trigger.price_single
+    else:
+        return ("skip", "kein Preis-Trigger — SL-Abstand nicht prüfbar")
+
+    abstand = abs(kante - trigger.sl_value)
+    ratio = abstand / atr
+
+    if ratio < SL_LEKTION4_HARD_RATIO:
+        return (
+            "verstoss",
+            f"Fix-SL nur {ratio:.2f}×ATR an Zonenkante {kante:.2f} "
+            f"(<1,35) — Lektion-4-Verstoß, SL entry-relativ umstellen",
+        )
+    if ratio < SL_LEKTION4_WARN_RATIO:
+        return (
+            "grenz",
+            f"Fix-SL {ratio:.2f}×ATR an Zonenkante {kante:.2f} "
+            f"(1,35–1,5) — grenzwertig, entry-relativ empfohlen",
+        )
+    return ("ok", f"Fix-SL {ratio:.2f}×ATR — konform")
 
 
 def _classify_proximity(distance_pct: float, cfg: dict) -> str:
@@ -490,6 +578,11 @@ def _evaluate_trigger(
     else:
         summary = f"… {proximity} ({distance_pct:+.2f}%)"
 
+    # Lektion-4-SL-Guard (Note #88/#89/#92): SL-Abstand ÷ ATR an der
+    # ungünstigen Zonenkante. Rein diagnostisch — verändert proximity/Bucket
+    # NICHT, hängt nur ein Flag an.
+    sl_check = check_sl_lektion4(trigger, snap, direction)
+
     return TriggerStatus(
         label=trigger.label,
         proximity=proximity,
@@ -499,6 +592,7 @@ def _evaluate_trigger(
         conditions_pending=conditions_pending,
         summary=summary,
         blown_through=blown_through,
+        sl_check=sl_check,
     )
 
 
