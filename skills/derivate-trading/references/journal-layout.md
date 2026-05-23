@@ -2,7 +2,9 @@
 
 **Wird geladen bei:** Detail-Fragen zu Sheet-Spalten, Saldo-Zeilen, Formatting, Zellenfarben, Umbau des Journals.
 
-**Stand:** 24.04.2026 — Layout v3 (Gebühren-Transparenz: SK N+O, AV O+P, Archiv M+N, Übersicht R15)
+**Stand:** 23.05.2026 — Watchlist Layout v4 (3-Trigger-Schema mit 🚦-Ampel,
+12 Spalten). Übriges Journal Layout v3 (Gebühren-Transparenz: SK N+O, AV O+P,
+Archiv M+N, Übersicht R15).
 
 ---
 
@@ -11,7 +13,7 @@
 | # | Sheet | Zweck |
 |---|-------|-------|
 | 1 | **Übersicht** | Dashboard: Steuertöpfe + Portfolio |
-| 2 | **Watchlist** | Kandidaten-Liste mit Trigger, These, Status |
+| 2 | **Watchlist** | Kandidaten-Liste mit bis zu 3 Triggern je 🚦-Ampel |
 | 3 | **Geschlossene Trades** | Archiv aller geschlossenen Trades (Derivate + Aktien) |
 | 4 | **Sonstige Kapitalerträge** | Detail: Derivate + ETFs + ETPs + ETCs |
 | 5 | **Aktienveräußerungen** | Detail: Direktaktien (separater Steuertopf!) |
@@ -92,20 +94,53 @@ Nach jedem Trade-Update (Eintrag, Close, Teil-Exit):
 ### Zweck
 Kandidaten-Liste. Persistent über Chats hinweg.
 
-### Spalten (Layout v2 — 8 Spalten, seit 2026-05)
+### Spalten (Layout v4 — 12 Spalten, 3-Trigger-Schema seit 23.05.2026)
 
 | Spalte | Inhalt | Format |
 |--------|--------|--------|
 | A | Aktie (Name) | Text |
 | B | Symbol (Yahoo-Ticker, z.B. `DHL.DE`) — Pflichtspalte für Pipeline-Sync | Text |
-| C | Richtung (`LONG` / `SHORT`) | Text |
-| D | Entry-Trigger | Text |
-| E | These (kurz) | Text |
-| F | Status — z.B. `👀 beobachten`, `🟡 Trigger nah`, `🟢 Setup reif`, `✅ Trade #XX eröffnet`, `📦 ARCHIVED` | Text mit Emoji |
-| G | Datum hinzugefügt | `'DD.MM.YYYY'` |
-| H | Verfallsdatum / Re-Eval-Datum (Default +14 HT, Event-Ausnahme Event+3 HT) | `'DD.MM.YYYY'` + Klammerzusatz |
+| C | Richtung (`LONG` / `SHORT`, ggf. mit Klammer-Modifier) | Text |
+| D | 🚦 A — Ampel für Trigger A | Emoji 🟢/🟡/⏳/🔴 |
+| E | Trigger A | Text |
+| F | 🚦 B — Ampel für Trigger B | Emoji 🟢/🟡/⏳/🔴 |
+| G | Trigger B | Text |
+| H | 🚦 C — Ampel für Trigger C | Emoji 🟢/🟡/⏳/🔴 |
+| I | Trigger C | Text |
+| J | Bemerkungen (These, Counter-These, Beobachtungen) | Text |
+| K | Datum hinzugefügt | `'DD.MM.YYYY'` + Klammerzusatz |
+| L | Verfallsdatum / Re-Eval-Datum (Default +14 HT, Event-Ausnahme Event+3 HT) | `'DD.MM.YYYY'` + Klammerzusatz |
 
-Kein Saldo-Block. Status-Änderungen per Substring-Match auf Spalte A; `update_watchlist_status()` schreibt nach **Spalte F (Status)**. Layout v1 (6 Spalten, ohne `Symbol`/`Verfallsdatum`) ist obsolet — alte Doku-Stände, die `update_watchlist_status` auf Spalte E zeigen, sind die Ursache des 15.05.2026-Bugs (Journal-Note #63).
+Ein Eintrag hat bis zu drei Trigger (A/B/C), jeder mit eigener 🚦-Ampel. Nicht
+belegte Trigger-Slots bleiben leer (Ampel- und Trigger-Spalte). Die Ampel-Werte:
+
+| Ampel | Bedeutung |
+|-------|-----------|
+| 🟢 | scharf — Trigger wird ausgewertet, Pipeline meldet bei Reichweite |
+| 🟡 | beobachten — Trigger wird ausgewertet, passiv |
+| ⏳ | wartet — Datum/Bedingung noch nicht erreicht, Pipeline überspringt den Trigger |
+| 🔴 | tot — Trigger durchgelaufen/invalidiert, Pipeline überspringt den Trigger |
+
+Kein Saldo-Block. Es gibt keine eintragsweite Status-Spalte mehr — die
+handelbare Differenzierung liegt seit v4 trigger-granular in der 🚦-Ampel.
+
+**Pipeline-Sync:** `watchlist_sync.py` liest dieses Sheet, bündelt die bis zu
+drei Trigger-Slots als einen Block `🟢 A) … · 🔴 B) …` und schreibt ihn in die
+(unverändert 6-spaltige) STATE-Doc-Watchlist-Tabelle; die STATE-Status-Spalte
+ist dort fix `⚠️ aktiv`. `state_parser.py` splittet den Block wieder in einzelne
+Trigger und überträgt die Ampel auf `ParsedTrigger.gate`; `filter_engine.py`
+überspringt 🔴- und ⏳-Trigger bei der Auswertung. Das Datum-Constraint kommt
+weiterhin aus `nach JJJJ-MM-TT` im Trigger-Text. Die Bemerkungen-Spalte (J)
+wird NICHT ins STATE-Doc übernommen (reiner Journal-Kontext).
+
+Layout v2 (8 Spalten: `Entry-Trigger`/`These`/`Status`) und v1 (6 Spalten) sind
+obsolet. `watchlist_sync.read_journal_watchlist` wirft einen RuntimeError, wenn
+die Spalte `Trigger A` fehlt (Alt-Schema-Erkennung).
+
+> **Folge-TODO (nicht in diesem Patch):** `journal_utils.update_watchlist_status()`
+> schrieb in das alte Status-Feld (Spalte F v2). Im 3-Trigger-Schema gibt es das
+> Feld nicht mehr — die Funktion muss auf das 🚦-Ampel-Schreiben (Spalte D/F/H)
+> umgestellt oder ersetzt werden.
 
 ---
 
