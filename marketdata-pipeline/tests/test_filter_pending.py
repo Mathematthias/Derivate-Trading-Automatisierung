@@ -408,3 +408,65 @@ class TestBreakdownShortDurchgelaufen:
         snap = FakeSnap(price=405.0)
         ts = _evaluate_trigger(zone, snap, "LONG", config, now_utc_hour=14)
         assert ts.blown_through is False
+
+
+# ============================================================
+# JOURNAL-GATE-SKIP (3-Trigger-Schema, 2026-05-23)
+# ============================================================
+
+class TestGateSkip:
+    """Trigger mit 🚦-Gate 🔴 (tot) oder ⏳ (wartet) werden von
+    _evaluate_trigger nicht inhaltlich ausgewertet, sondern hart auf
+    proximity='far' gesetzt. 🟢/🟡/None → normale Auswertung.
+    """
+
+    def _price_trigger(self, gate):
+        # In-Zone-Trigger: ohne Gate-Skip wäre das proximity='in_zone'.
+        return ParsedTrigger(
+            label="A", raw="Zone 95-105", price_low=95.0, price_high=105.0,
+            price_op="in_range", gate=gate,
+        )
+
+    def test_gate_rot_skipped(self, config):
+        snap = FakeSnap(price=100.0)  # mitten in der Zone
+        ts = _evaluate_trigger(self._price_trigger("🔴"), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.proximity == "far"
+        assert "🔴" in ts.summary
+        assert ts.conditions_missing  # Skip-Grund vermerkt
+
+    def test_gate_sanduhr_skipped(self, config):
+        snap = FakeSnap(price=100.0)
+        ts = _evaluate_trigger(self._price_trigger("⏳"), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.proximity == "far"
+        assert "⏳" in ts.summary
+        assert ts.conditions_pending  # wartet, nicht hart durchgefallen
+
+    def test_gate_gruen_evaluated_normally(self, config):
+        """🟢 → Trigger wird ausgewertet, In-Zone bleibt In-Zone."""
+        snap = FakeSnap(price=100.0)
+        ts = _evaluate_trigger(self._price_trigger("🟢"), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.proximity == "in_zone"
+
+    def test_gate_gelb_evaluated_normally(self, config):
+        """🟡 (beobachten) → ebenfalls normale Auswertung, kein Skip."""
+        snap = FakeSnap(price=100.0)
+        ts = _evaluate_trigger(self._price_trigger("🟡"), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.proximity == "in_zone"
+
+    def test_gate_none_evaluated_normally(self, config):
+        """Kein Gate (Alt-STATE-Doc) → normale Auswertung wie bisher."""
+        snap = FakeSnap(price=100.0)
+        ts = _evaluate_trigger(self._price_trigger(None), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.proximity == "in_zone"
+
+    def test_gate_label_preserved_on_skip(self, config):
+        """Auch ein übersprungener Trigger behält sein Label im Output."""
+        snap = FakeSnap(price=100.0)
+        ts = _evaluate_trigger(self._price_trigger("🔴"), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.label == "A"

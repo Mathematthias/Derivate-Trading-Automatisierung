@@ -41,14 +41,16 @@ from pipeline_utils import parse_candidates
 # ---------------------------------------------------------------------------
 
 def make_journal_xlsx(verfall_value) -> bytes:
-    """Minimales Journal mit 8-Spalten-Watchlist-Sheet (Stand 2026-05-23)."""
+    """Minimales Journal mit 12-Spalten-Watchlist-Sheet (3-Trigger-Schema)."""
     wb = Workbook()
     ws = wb.active
     ws.title = "Watchlist"
-    ws.append(["Aktie", "Symbol", "Richtung", "Entry-Trigger", "These",
-               "Status", "Datum hinzugefügt", "Verfallsdatum"])
-    ws.append(["Testfirma AG", "TST.DE", "LONG", "A) Daily-Close > 100",
-               "These-Text", "aktiv", "aktualisiert 20.05.2026", verfall_value])
+    ws.append(["Aktie", "Symbol", "Richtung", "🚦 A", "Trigger A", "🚦 B",
+               "Trigger B", "🚦 C", "Trigger C", "Bemerkungen",
+               "Datum hinzugefügt", "Verfallsdatum"])
+    ws.append(["Testfirma AG", "TST.DE", "LONG", "🟢", "A) Daily-Close > 100",
+               None, None, None, None, "These-Text",
+               "aktualisiert 20.05.2026", verfall_value])
     buf = io.BytesIO()
     wb.save(buf)
     return buf.getvalue()
@@ -110,7 +112,7 @@ def test_render_watchlist_block_has_verfall_column():
     """Der STATE-Block bekommt eine 6. Spalte 'Verfall'."""
     entries = [{
         "aktie": "Testfirma", "symbol": "TST.DE", "richtung": "LONG",
-        "trigger": "A) Trigger", "status": "aktiv", "note": "",
+        "triggers": [{"label": "A", "gate": "🟢", "text": "A) Trigger"}],
         "verfall": "2026-06-11",
     }]
     block = render_watchlist_block(entries, dt.datetime(2026, 5, 23, 12, 0))
@@ -119,10 +121,10 @@ def test_render_watchlist_block_has_verfall_column():
 
 
 def test_render_watchlist_block_missing_verfall_key():
-    """Fehlender verfall-Key (Alt-Aufrufer) -> leere Zelle statt KeyError."""
+    """Fehlender verfall-Key -> leere Zelle statt KeyError."""
     entries = [{
         "aktie": "Testfirma", "symbol": "TST.DE", "richtung": "LONG",
-        "trigger": "A) Trigger", "status": "aktiv", "note": "",
+        "triggers": [{"label": "A", "gate": "🟢", "text": "A) Trigger"}],
     }]
     block = render_watchlist_block(entries, dt.datetime(2026, 5, 23, 12, 0))
     assert "| Verfall |" in block  # Header trotzdem da
@@ -171,6 +173,34 @@ def test_parse_watchlist_empty_verfall_cell():
     assert e.symbol == "TST.DE"
     assert e.direction == "SHORT"
     assert e.status == "aktiv"
+
+
+def test_parse_watchlist_escaped_pipe_in_trigger():
+    """Regression: ein escaptes \\| im Trigger-Text (z.B. (a)/(b)/(c)-
+    Produktaufzählung) darf die Spaltenzuordnung NICHT verschieben — sonst
+    fällt der Eintrag still raus (FDX-Befund 2026-05-23). Die Pipe gehört
+    zum Zellinhalt und wird beim Parsen wieder un-escapet."""
+    rows = (
+        "| Kandidat | Symbol | Richtung | Trigger (🚦 A/B/C) | Status | Verfall |\n"
+        "|----------|--------|----------|--------------------|--------|---------|\n"
+        "| FedEx | FDX | LONG | 🔴 A) Breakout 380$ · 🟢 B) Pullback 368$. "
+        "PRODUKT: (a) USD-KO \\| (b) Direktaktie \\| (c) SKIP "
+        "| ⚠️ aktiv | 2026-05-27 |\n"
+    )
+    entries = parse_watchlist(state_doc(rows))
+    assert len(entries) == 1, f"Eintrag verloren: {entries}"
+    e = entries[0]
+    assert e.symbol == "FDX"
+    assert e.direction == "LONG"
+    assert e.status == "aktiv"
+    assert e.expiry_date == dt.date(2026, 5, 27)
+    # beide Trigger erhalten, Gate korrekt
+    assert len(e.triggers) == 2
+    assert e.triggers[0].gate == "🔴"
+    assert e.triggers[1].gate == "🟢"
+    # un-escapet: echtes | wieder im Trigger-Text
+    assert "(b) Direktaktie" in e.triggers[1].raw
+    assert "\\|" not in e.triggers[1].raw
 
 
 # ---------------------------------------------------------------------------

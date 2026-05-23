@@ -1,4 +1,9 @@
-"""Tests für watchlist_sync — laufen ohne Netz und ohne Drive."""
+"""Tests für watchlist_sync — laufen ohne Netz und ohne Drive.
+
+Schema-Stand 2026-05-23 v2: 3-Trigger-Schema mit 🚦-Ampel. Das Watchlist-Sheet
+hat 12 Spalten (Aktie | Symbol | Richtung | 🚦 A | Trigger A | 🚦 B | Trigger B
+| 🚦 C | Trigger C | Bemerkungen | Datum hinzugefügt | Verfallsdatum).
+"""
 
 import datetime as dt
 import io
@@ -12,42 +17,20 @@ sys.path.insert(0, _SRC)
 from openpyxl import Workbook
 
 from watchlist_sync import (
-    _parse_status, _shorten_richtung, _shorten_trigger,
-    read_journal_watchlist, render_watchlist_block, replace_watchlist_block,
+    _count_watchlist_entries,
+    _format_trigger_for_state,
+    _normalize_gate,
+    _shorten_richtung,
+    read_journal_watchlist,
+    render_watchlist_block,
+    replace_watchlist_block,
 )
 
-
-# ---------------------------------------------------------------------------
-# Status-Parsing
-# ---------------------------------------------------------------------------
-
-def test_status_paused():
-    status, note = _parse_status("⏸ warten auf Pullback — aktuell 265,80€")
-    assert status == "paused"
-    assert "warten auf Pullback" in note
-
-
-def test_status_pending_with_date():
-    status, note = _parse_status("📅 28.04.2026 (Di): Short-Pre-Trade-Plan erstellen")
-    assert status == "pending"
-    assert "2026-04-28" in note
-
-
-def test_status_aktiv_default():
-    status, note = _parse_status("Trigger A in Reichweite, Note #9")
-    # Kein Emoji → default aktiv
-    assert status == "aktiv"
-
-
-def test_status_beobachten_eye():
-    status, note = _parse_status("👀 beobachten — Pullback-Only, kein Chase")
-    assert status == "beobachten"
-
-
-def test_status_long_note_truncated():
-    long_text = "⏸ warten — " + "x" * 200
-    _, note = _parse_status(long_text)
-    assert len(note) <= 80
+# 12-Spalten-Header des neuen Watchlist-Schemas
+HEADER = [
+    "Aktie", "Symbol", "Richtung", "🚦 A", "Trigger A", "🚦 B", "Trigger B",
+    "🚦 C", "Trigger C", "Bemerkungen", "Datum hinzugefügt", "Verfallsdatum",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -62,6 +45,7 @@ def test_richtung_simple():
 def test_richtung_with_modifier():
     assert _shorten_richtung("LONG (Post-Earnings-Pullback)") == "LONG"
     assert _shorten_richtung("SHORT (Bounce)") == "SHORT"
+    assert _shorten_richtung("LONG (Momentum-Continuation v0.1)") == "LONG"
 
 
 def test_richtung_konditional():
@@ -71,28 +55,63 @@ def test_richtung_konditional():
 
 
 # ---------------------------------------------------------------------------
-# Trigger-Kürzung
+# Gate-Normalisierung
 # ---------------------------------------------------------------------------
 
-def test_trigger_short_unchanged():
-    s = "Pullback 258€ + RSI<60"
-    assert _shorten_trigger(s) == s
+def test_normalize_gate_known_emojis():
+    assert _normalize_gate("🟢") == "🟢"
+    assert _normalize_gate("🟡") == "🟡"
+    assert _normalize_gate("⏳") == "⏳"
+    assert _normalize_gate("🔴") == "🔴"
 
 
-def test_trigger_long_truncated():
-    s = "A) " + "Lorem ipsum " * 50
-    result = _shorten_trigger(s)
-    assert len(result) <= 201
-    assert result.endswith("…")
+def test_normalize_gate_with_extra_text():
+    # Zelle darf Zusatztext tragen — Emoji wird trotzdem extrahiert
+    assert _normalize_gate("🔴 tot seit 22.05.") == "🔴"
 
 
-def test_trigger_empty():
-    assert _shorten_trigger("") == ""
-    assert _shorten_trigger(None) == ""
+def test_normalize_gate_empty_defaults_green():
+    # Leere oder unbekannte Zelle → 🟢 (sicherer "wird ausgewertet"-Default)
+    assert _normalize_gate("") == "🟢"
+    assert _normalize_gate(None) == "🟢"
+    assert _normalize_gate("xyz") == "🟢"
 
 
 # ---------------------------------------------------------------------------
-# Excel-Read
+# Trigger-Formatierung fürs STATE-Doc
+# ---------------------------------------------------------------------------
+
+def test_format_trigger_basic():
+    out = _format_trigger_for_state("A", "🟢", "Daily-Close >50€")
+    assert out == "🟢 A) Daily-Close >50€"
+
+
+def test_format_trigger_strips_existing_marker():
+    # Migrations-Artefakt: Zelltext beginnt schon mit 'A)' — nicht doppeln
+    out = _format_trigger_for_state("A", "🟢", "A) Daily-Close >50€")
+    assert out == "🟢 A) Daily-Close >50€"
+    assert out.count("A)") == 1
+
+
+def test_format_trigger_marker_after_preamble():
+    # 'A)' steht hinter einer Präambel (FDX/HNR1-Stil) — Marker raus, Präambel bleibt
+    out = _format_trigger_for_state("A", "🔴", "LONG Breakout-Setup: A) 1D-Schluss 380$")
+    assert out == "🔴 A) LONG Breakout-Setup: 1D-Schluss 380$"
+
+
+def test_format_trigger_newlines_collapsed():
+    out = _format_trigger_for_state("B", "🟡", "Touch 45€\n\nReverse-Kerze")
+    assert "\n" not in out
+    assert out == "🟡 B) Touch 45€ Reverse-Kerze"
+
+
+def test_format_trigger_empty():
+    assert _format_trigger_for_state("A", "🟢", "") == ""
+    assert _format_trigger_for_state("A", "🟢", None) == ""
+
+
+# ---------------------------------------------------------------------------
+# Excel-Read (12-Spalten-Schema)
 # ---------------------------------------------------------------------------
 
 def _make_test_xlsx(rows: list[list]) -> bytes:
@@ -108,22 +127,58 @@ def _make_test_xlsx(rows: list[list]) -> bytes:
 
 def test_excel_basic_parsing():
     xlsx = _make_test_xlsx([
-        ["Aktie", "Symbol", "Richtung", "Entry-Trigger", "These", "Status", "Datum"],
-        ["Commerzbank", "CBK.DE", "LONG", "Pullback 33,40€", "These", "⚠️ aktiv", "2026-04-23"],
-        ["AIXTRON", "AIXA.DE", "SHORT (Sell-the-news)", "Rejection 44€", "These", "📅 30.04.2026 abwarten", ""],
+        HEADER,
+        ["United Rentals", "URI", "LONG (Momentum)", "🟢", "A) Daily-Close 1019-1049$",
+         "🟢", "B) Touch 925-952$", None, None, "These-Text", "2026-05-22",
+         "11.06.2026 (Momentum +14 HT)"],
+        ["Nemetschek", "NEM.DE", "SHORT", "🔴", "A) Daily-Close <58€",
+         None, None, None, None, "These", "2026-05-12", "27.05.2026"],
     ])
     entries = read_journal_watchlist(xlsx)
     assert len(entries) == 2
-    assert entries[0]["symbol"] == "CBK.DE"
-    assert entries[0]["status"] == "aktiv"
-    assert entries[1]["richtung"] == "SHORT"
-    assert entries[1]["status"] == "pending"
+    assert entries[0]["symbol"] == "URI"
+    assert entries[0]["richtung"] == "LONG"
+    # URI hat zwei Trigger-Slots
+    assert len(entries[0]["triggers"]) == 2
+    assert entries[0]["triggers"][0]["label"] == "A"
+    assert entries[0]["triggers"][0]["gate"] == "🟢"
+    assert entries[0]["triggers"][1]["label"] == "B"
+    # NEM hat nur Trigger A, Gate 🔴
+    assert len(entries[1]["triggers"]) == 1
+    assert entries[1]["triggers"][0]["gate"] == "🔴"
+    # Verfall ISO-normiert
+    assert entries[0]["verfall"] == "2026-06-11"
+
+
+def test_excel_three_triggers():
+    xlsx = _make_test_xlsx([
+        HEADER,
+        ["Check Point", "CHKP", "LONG", "🟢", "A) Trigger eins", "🟡", "B) Trigger zwei",
+         "⏳", "C) nach 2026-06-01 Trigger drei", "Bem", "2026-05-20", "01.06.2026"],
+    ])
+    entries = read_journal_watchlist(xlsx)
+    assert len(entries) == 1
+    triggers = entries[0]["triggers"]
+    assert len(triggers) == 3
+    assert [t["label"] for t in triggers] == ["A", "B", "C"]
+    assert [t["gate"] for t in triggers] == ["🟢", "🟡", "⏳"]
+
+
+def test_excel_gate_missing_defaults_green():
+    # Trigger gesetzt, Gate-Zelle leer → 🟢 (Trigger soll ausgewertet werden)
+    xlsx = _make_test_xlsx([
+        HEADER,
+        ["Test", "T.DE", "LONG", None, "A) Daily-Close >50€",
+         None, None, None, None, "", "2026-05-23", ""],
+    ])
+    entries = read_journal_watchlist(xlsx)
+    assert entries[0]["triggers"][0]["gate"] == "🟢"
 
 
 def test_excel_missing_symbol_raises():
     xlsx = _make_test_xlsx([
-        ["Aktie", "Richtung", "Entry-Trigger", "These", "Status", "Datum"],
-        ["Commerzbank", "LONG", "Pullback", "T", "⚠️ aktiv", ""],
+        ["Aktie", "Richtung", "🚦 A", "Trigger A", "Bemerkungen"],
+        ["Commerzbank", "LONG", "🟢", "A) Pullback", "T"],
     ])
     try:
         read_journal_watchlist(xlsx)
@@ -132,23 +187,47 @@ def test_excel_missing_symbol_raises():
         assert "Symbol" in str(e)
 
 
-def test_excel_skip_empty_rows():
+def test_excel_old_schema_raises():
+    # Altes 7-Spalten-Schema (Entry-Trigger statt Trigger A) → klare Fehlermeldung
     xlsx = _make_test_xlsx([
         ["Aktie", "Symbol", "Richtung", "Entry-Trigger", "These", "Status", "Datum"],
-        ["Commerzbank", "CBK.DE", "LONG", "T", "T", "⚠️", ""],
-        [None, None, None, None, None, None, None],
-        ["AIXTRON", "AIXA.DE", "SHORT", "T", "T", "⏸", ""],
+        ["Commerzbank", "CBK.DE", "LONG", "Pullback 33€", "T", "⚠️ aktiv", "2026-04-23"],
+    ])
+    try:
+        read_journal_watchlist(xlsx)
+        assert False, "Sollte Fehler werfen — altes Schema ohne 'Trigger A'"
+    except RuntimeError as e:
+        assert "Trigger A" in str(e)
+
+
+def test_excel_skip_empty_rows():
+    xlsx = _make_test_xlsx([
+        HEADER,
+        ["Commerzbank", "CBK.DE", "LONG", "🟢", "A) T", None, None, None, None, "", "", ""],
+        [None] * 12,
+        ["AIXTRON", "AIXA.DE", "SHORT", "🟡", "A) T", None, None, None, None, "", "", ""],
     ])
     entries = read_journal_watchlist(xlsx)
     assert len(entries) == 2
 
 
-def test_excel_skip_row_with_only_aktie_no_symbol():
-    """Eintrag mit Aktie aber ohne Symbol → übersprungen mit Warnung."""
+def test_excel_skip_row_without_trigger():
+    # Symbol da, aber kein einziger Trigger → übersprungen
     xlsx = _make_test_xlsx([
-        ["Aktie", "Symbol", "Richtung", "Entry-Trigger", "These", "Status", "Datum"],
-        ["Commerzbank", "CBK.DE", "LONG", "T", "T", "⚠️", ""],
-        ["NeuerWert", "", "LONG", "T", "T", "⚠️", ""],
+        HEADER,
+        ["Commerzbank", "CBK.DE", "LONG", "🟢", "A) T", None, None, None, None, "", "", ""],
+        ["LeerWert", "LEER.DE", "LONG", None, None, None, None, None, None, "Bem", "", ""],
+    ])
+    entries = read_journal_watchlist(xlsx)
+    assert len(entries) == 1
+    assert entries[0]["symbol"] == "CBK.DE"
+
+
+def test_excel_skip_row_with_only_aktie_no_symbol():
+    xlsx = _make_test_xlsx([
+        HEADER,
+        ["Commerzbank", "CBK.DE", "LONG", "🟢", "A) T", None, None, None, None, "", "", ""],
+        ["NeuerWert", "", "LONG", "🟢", "A) T", None, None, None, None, "", "", ""],
     ])
     entries = read_journal_watchlist(xlsx)
     assert len(entries) == 1
@@ -159,41 +238,80 @@ def test_excel_skip_row_with_only_aktie_no_symbol():
 # Markdown-Rendering
 # ---------------------------------------------------------------------------
 
+def _entry(aktie="Commerzbank", symbol="CBK.DE", richtung="LONG",
+           triggers=None, verfall=""):
+    if triggers is None:
+        triggers = [{"label": "A", "gate": "🟢", "text": "A) Daily-Close >50€"}]
+    return {"aktie": aktie, "symbol": symbol, "richtung": richtung,
+            "triggers": triggers, "verfall": verfall}
+
+
 def test_render_block_structure():
-    entries = [
-        {"aktie": "Commerzbank", "symbol": "CBK.DE", "richtung": "LONG",
-         "trigger": "Pullback 33,40€", "status": "aktiv", "note": "Note #9"},
-    ]
-    block = render_watchlist_block(entries, dt.datetime(2026, 4, 29, 18, 30))
+    block = render_watchlist_block([_entry()], dt.datetime(2026, 5, 23, 18, 30))
     assert "## Watchlist-Trigger (aktive Einträge)" in block
     assert "| Kandidat | Symbol | Richtung | Trigger" in block
     assert "| Commerzbank | CBK.DE | LONG |" in block
-    assert "⚠️ aktiv — Note #9" in block
-    assert "Auto-Sync zuletzt: 2026-04-29 18:30 UTC (1 Einträge)" in block
+    # Status-Spalte ist eintragsweit fix
+    assert "⚠️ aktiv" in block
+    assert "Auto-Sync zuletzt: 2026-05-23 18:30 UTC (1 Einträge)" in block
+
+
+def test_render_trigger_block_joined():
+    """Mehrere Trigger werden als '🟢 A) … · 🔴 B) …' in EINE Zelle gerendert."""
+    e = _entry(triggers=[
+        {"label": "A", "gate": "🟢", "text": "A) Daily-Close >50€"},
+        {"label": "B", "gate": "🔴", "text": "B) Touch ~45€"},
+    ])
+    block = render_watchlist_block([e], dt.datetime(2026, 5, 23))
+    data_line = [l for l in block.splitlines()
+                 if l.startswith("|") and "CBK.DE" in l][0]
+    assert "🟢 A) Daily-Close >50€" in data_line
+    assert "🔴 B) Touch ~45€" in data_line
+    assert " · " in data_line
+
+
+def test_render_gate_survives_roundtrip():
+    """Gerendertes Gate muss vom state_parser wieder als ParsedTrigger.gate
+    erkannt werden — End-to-End-Absicherung der Sync-Kette."""
+    from state_parser import _parse_triggers
+    e = _entry(triggers=[
+        {"label": "A", "gate": "🟢", "text": "A) Daily-Close >50,46€"},
+        {"label": "B", "gate": "🔴", "text": "B) Touch ~45€"},
+    ])
+    block = render_watchlist_block([e], dt.datetime(2026, 5, 23))
+    data_line = [l for l in block.splitlines()
+                 if l.startswith("|") and "CBK.DE" in l][0]
+    # Trigger-Zelle ist die 4. echte Spalte
+    cols = [c.strip() for c in data_line.split("|")][1:-1]
+    trigger_cell = cols[3]
+    triggers = _parse_triggers(trigger_cell)
+    assert len(triggers) == 2
+    assert triggers[0].gate == "🟢"
+    assert triggers[1].gate == "🔴"
 
 
 def test_render_with_pipe_in_content():
     """Pipe-Zeichen in Trigger-Texten dürfen die Tabelle nicht zerschießen."""
-    entries = [
-        {"aktie": "Test|Wert", "symbol": "X.DE", "richtung": "LONG",
-         "trigger": "A | B alternative", "status": "aktiv", "note": "x|y"},
-    ]
-    block = render_watchlist_block(entries, dt.datetime(2026, 4, 29))
-    # In der Datenzeile muss jeder Pipe innerhalb von Zellen escaped sein
-    data_lines = [
-        l for l in block.splitlines()
-        if l.startswith("|") and "Test" in l
-    ]
+    e = _entry(aktie="Test|Wert", symbol="X.DE",
+               triggers=[{"label": "A", "gate": "🟢", "text": "A) X | Y alternative"}])
+    block = render_watchlist_block([e], dt.datetime(2026, 5, 23))
+    data_lines = [l for l in block.splitlines()
+                  if l.startswith("|") and "Test" in l]
     assert len(data_lines) == 1
-    # Sollte 5 echte Zellen haben + 2 äußere Pipes = 6 Pipes — die in
-    # Inhalten escapeten (\|) zählen für split nicht mit
-    line = data_lines[0]
-    # Echter Pipe-Test: raw line muss escapte Pipes enthalten
-    assert "\\|" in line
+    assert "\\|" in data_lines[0]
+
+
+def test_render_marker_not_doubled():
+    """Zelltext mit vorhandenem 'A)'-Marker → im Output nur ein 'A)'."""
+    e = _entry(triggers=[{"label": "A", "gate": "🟢", "text": "A) Daily-Close >50€"}])
+    block = render_watchlist_block([e], dt.datetime(2026, 5, 23))
+    data_line = [l for l in block.splitlines()
+                 if l.startswith("|") and "CBK.DE" in l][0]
+    assert data_line.count("A)") == 1
 
 
 # ---------------------------------------------------------------------------
-# Block-Replace
+# Block-Replace (unverändert — Funktion nicht angefasst)
 # ---------------------------------------------------------------------------
 
 def test_replace_existing_block():
@@ -215,7 +333,6 @@ def test_replace_existing_block():
     result = replace_watchlist_block(state_text, new_block)
     assert "alte tabelle" not in result
     assert "NEUER INHALT" in result
-    # Nachbar-Sektionen erhalten
     assert "## Offene Positionen" in result
     assert "## Offene Notes" in result
     assert "#1 alt" in result
@@ -227,12 +344,10 @@ def test_replace_no_block_existing_inserts_after_state_start():
     result = replace_watchlist_block(state_text, new_block)
     assert "NEU" in result
     assert "## Offene Notes" in result
-    # NEU sollte vor Offene Notes stehen
     assert result.index("NEU") < result.index("## Offene Notes")
 
 
 def test_replace_block_at_end_of_file():
-    """Watchlist-Block ist die letzte Sektion — Replace darf nicht crashen."""
     state_text = """\
 # STATE START
 
@@ -246,22 +361,20 @@ def test_replace_block_at_end_of_file():
 
 
 # ---------------------------------------------------------------------------
-# Sanity-Check Count (gefixt 2026-05-19, Note #68)
+# Sanity-Check Count (unverändert — Funktion nicht angefasst)
 # ---------------------------------------------------------------------------
 
 def test_count_entries_basic():
-    """Drei Daten-Zeilen unter Header — _count zählt drei."""
-    from watchlist_sync import _count_watchlist_entries
     state = """\
 # STATE START
 
 ## Watchlist-Trigger (aktive Einträge)
 
-| Kandidat | Symbol | Richtung | Trigger | Status |
-|----------|--------|----------|---------|--------|
-| Commerzbank | CBK.DE | LONG | T | ⚠️ aktiv |
-| TUI | TUI1.DE | LONG | T | ⏸ paused |
-| AIXTRON | AIXA.DE | SHORT | T | 📅 pending |
+| Kandidat | Symbol | Richtung | Trigger (🚦 A/B/C) | Status | Verfall |
+|----------|--------|----------|--------------------|--------|---------|
+| Commerzbank | CBK.DE | LONG | 🟢 A) T | ⚠️ aktiv | |
+| TUI | TUI1.DE | LONG | 🔴 A) T | ⚠️ aktiv | |
+| AIXTRON | AIXA.DE | SHORT | ⏳ A) T | ⚠️ aktiv | |
 
 ## Offene Notes
 """
@@ -269,13 +382,11 @@ def test_count_entries_basic():
 
 
 def test_count_entries_empty_block():
-    """Block existiert, aber keine Datenzeilen — zählt null."""
-    from watchlist_sync import _count_watchlist_entries
     state = """\
 ## Watchlist-Trigger (aktive Einträge)
 
-| Kandidat | Symbol | Richtung | Trigger | Status |
-|----------|--------|----------|---------|--------|
+| Kandidat | Symbol | Richtung | Trigger (🚦 A/B/C) | Status | Verfall |
+|----------|--------|----------|--------------------|--------|---------|
 
 ## Offene Notes
 """
@@ -283,17 +394,11 @@ def test_count_entries_empty_block():
 
 
 def test_count_entries_no_block():
-    """Kein Watchlist-Block im STATE — zählt null."""
-    from watchlist_sync import _count_watchlist_entries
     state = "# STATE START\n\n## Offene Positionen\n| 1 | foo |\n"
     assert _count_watchlist_entries(state) == 0
 
 
 def test_count_entries_robust_against_plain_text_export():
-    """Google-Docs-Plain-Text-Export verliert Markdown-Tabellen-Pipes nicht —
-    `##` und `|` sind Plain-ASCII und überleben den text/plain-Export."""
-    from watchlist_sync import _count_watchlist_entries
-    # Simulierter Plain-Text-Export: extra Leerzeilen, aber Pipe-Struktur intakt
     state = """\
 STATE START
 
@@ -302,10 +407,10 @@ STATE START
 
 
 
-| Kandidat | Symbol | Richtung | Trigger | Status |
-|----------|--------|----------|---------|--------|
-| TestA    | A.DE   | LONG     | T       | aktiv  |
-| TestB    | B.DE   | SHORT    | T       | paused |
+| Kandidat | Symbol | Richtung | Trigger (🚦 A/B/C) | Status | Verfall |
+|----------|--------|----------|--------------------|--------|---------|
+| TestA    | A.DE   | LONG     | 🟢 A) T            | ⚠️ aktiv | |
+| TestB    | B.DE   | SHORT    | 🔴 A) T            | ⚠️ aktiv | |
 
 
 ## Offene Notes
@@ -320,13 +425,13 @@ if __name__ == "__main__":
     for name, fn in fns:
         try:
             fn()
-            print(f"  ✅ {name}")
+            print(f"  OK {name}")
             passed += 1
         except AssertionError as e:
-            print(f"  ❌ {name}: {e}")
+            print(f"  FAIL {name}: {e}")
             failed += 1
         except Exception as e:
-            print(f"  ❌ {name}: UNEXPECTED — {type(e).__name__}: {e}")
+            print(f"  FAIL {name}: UNEXPECTED — {type(e).__name__}: {e}")
             failed += 1
     print(f"\n{passed} passed, {failed} failed")
     sys.exit(0 if failed == 0 else 1)

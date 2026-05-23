@@ -14,31 +14,33 @@ from state_parser import _parse_triggers, _split_into_triggers, _strip_sl_tp, _d
 # ============================================================
 
 class TestSplitter:
+    # _split_into_triggers liefert seit dem 3-Trigger-Schema 3-Tupel:
+    # (gate, label, content). gate ist "" wenn kein 🚦-Emoji vorhanden ist.
     def test_klammer_splitter_2_trigger(self):
         """A) ... B) ... → 2 Trigger mit Labels A und B."""
         text = "A) Daily-Close <60€ + Volumen >Avg-20d → Re-Short. B) Daily-Close <58€"
         chunks = _split_into_triggers(text)
         assert len(chunks) == 2
-        assert chunks[0][0] == "A"
-        assert chunks[1][0] == "B"
-        assert "Daily-Close <60€" in chunks[0][1]
-        assert "Daily-Close <58€" in chunks[1][1]
+        assert chunks[0][1] == "A"
+        assert chunks[1][1] == "B"
+        assert "Daily-Close <60€" in chunks[0][2]
+        assert "Daily-Close <58€" in chunks[1][2]
 
     def test_doppelpunkt_splitter_2_trigger(self):
         """A: ... · B: ... → 2 Trigger mit Labels A und B."""
         text = "A: Touch EMA50 33,40–33,60€ + Bounce · B: Daily-Close >35,10€ auf Vol ≥30D-Ø"
         chunks = _split_into_triggers(text)
         assert len(chunks) == 2
-        assert chunks[0][0] == "A"
-        assert chunks[1][0] == "B"
+        assert chunks[0][1] == "A"
+        assert chunks[1][1] == "B"
 
     def test_trigger_label_form(self):
         """Trigger A: ... → Label A erkannt."""
         text = "Bounce-Short an Re-Resistance. Trigger A: 4h-Bearish-Engulfing"
         chunks = _split_into_triggers(text)
         assert len(chunks) == 1
-        assert chunks[0][0] == "A"
-        assert "4h-Bearish-Engulfing" in chunks[0][1]
+        assert chunks[0][1] == "A"
+        assert "4h-Bearish-Engulfing" in chunks[0][2]
 
     def test_no_false_match_on_trigger_a_phrase(self):
         """"Alter Trigger A (Pullback 258€) verfallen" darf NICHT als Label-Marker
@@ -46,29 +48,76 @@ class TestSplitter:
         text = "A) Reverse-Kerze ~240€. Alter Trigger A (Pullback 258€) verfallen."
         chunks = _split_into_triggers(text)
         assert len(chunks) == 1, f"Erwartet 1 Trigger, bekam {len(chunks)}: {chunks}"
-        assert chunks[0][0] == "A"
+        assert chunks[0][1] == "A"
 
     def test_no_label_falls_back_to_dot_separator(self):
         """Trigger ohne Labels → ·-Separator."""
         text = "Pullback ~59$ + 4h-Reversal · Daily-Close >62$"
         chunks = _split_into_triggers(text)
         assert len(chunks) == 2
-        assert chunks[0][0] == ""
-        assert chunks[1][0] == ""
+        assert chunks[0][1] == ""
+        assert chunks[1][1] == ""
 
     def test_single_trigger_no_label(self):
         """Einzelner Trigger ohne Label und ohne ·."""
         text = "Pullback ~59$ + 4h-Reversal (nach Gap +28.9%)"
         chunks = _split_into_triggers(text)
         assert len(chunks) == 1
-        assert chunks[0][0] == ""
+        assert chunks[0][1] == ""
 
     def test_rr_not_misread_as_label(self):
         """"R:R 1,2" enthält 'R:' aber kein Trigger-Label."""
         text = "Daily-Close >380$ + RSI 1D >55. R:R 1,2 / 2,4"
         chunks = _split_into_triggers(text)
         assert len(chunks) == 1, f"R:R darf nicht splitten, bekam {len(chunks)}: {chunks}"
+        assert chunks[0][1] == ""
+
+    # --- Gate-Emoji (3-Trigger-Schema, 2026-05-23) ---
+
+    def test_gate_emoji_parsed(self):
+        """🟢/🔴 vor dem Label landen im gate-Feld, nicht im content."""
+        text = "🟢 A) Daily-Close 1019-1049$ [breakout] · 🔴 B) Touch 925-952$ [pullback]"
+        chunks = _split_into_triggers(text)
+        assert len(chunks) == 2
+        assert chunks[0][0] == "🟢"
+        assert chunks[0][1] == "A"
+        assert chunks[1][0] == "🔴"
+        assert chunks[1][1] == "B"
+        # Emoji darf nicht im content hängen
+        assert "🟢" not in chunks[0][2]
+        assert "🔴" not in chunks[1][2]
+
+    def test_gate_emoji_all_four(self):
+        """⏳ und 🟡 werden ebenfalls als Gate erkannt."""
+        text = "⏳ A) nach 2026-06-01 Daily-Close >50€ · 🟡 B) Touch ~45€"
+        chunks = _split_into_triggers(text)
+        assert chunks[0][0] == "⏳"
+        assert chunks[1][0] == "🟡"
+
+    def test_no_gate_emoji_empty_string(self):
+        """Ohne Emoji bleibt das gate-Feld leerer String (Alt-STATE-Docs)."""
+        text = "A) Daily-Close <60€ · B) Daily-Close <58€"
+        chunks = _split_into_triggers(text)
         assert chunks[0][0] == ""
+        assert chunks[1][0] == ""
+
+    def test_gate_emoji_dot_separator_no_gate(self):
+        """·-Fallback ohne Label trägt ebenfalls leeres gate-Feld."""
+        text = "Pullback ~59$ · Daily-Close >62$"
+        chunks = _split_into_triggers(text)
+        assert all(c[0] == "" for c in chunks)
+
+    def test_gate_emoji_reaches_parsed_trigger(self):
+        """End-to-End: _parse_triggers überträgt das Gate auf ParsedTrigger.gate."""
+        triggers = _parse_triggers("🟢 A) Daily-Close >50,46€ · 🔴 B) Touch ~45€")
+        assert len(triggers) == 2
+        assert triggers[0].gate == "🟢"
+        assert triggers[1].gate == "🔴"
+
+    def test_no_gate_means_gate_none(self):
+        """Ohne Emoji ist ParsedTrigger.gate None (nicht leerer String)."""
+        triggers = _parse_triggers("A) Daily-Close >50,46€")
+        assert triggers[0].gate is None
 
 
 # ============================================================
