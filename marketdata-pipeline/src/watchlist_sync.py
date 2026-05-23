@@ -19,7 +19,18 @@ Erforderliche ENVs (gleich wie marketdata_sync.py):
                         (default: gleich BRIEFING_FOLDER_ID-Parent, also
                         Workspace-Shared-Drive Trading-Pipeline-Root)
 
-Stand: 2026-04-29 v1
+Schema-Stand: 2026-05-23 v2 — 3-Trigger-Schema mit 🚦-Ampel.
+    Das Watchlist-Sheet hat 12 Spalten:
+        Aktie | Symbol | Richtung | 🚦 A | Trigger A | 🚦 B | Trigger B
+              | 🚦 C | Trigger C | Bemerkungen | Datum hinzugefügt | Verfallsdatum
+    Jeder der drei Trigger-Slots ist optional und trägt ein eigenes
+    Ampel-Emoji (🟢 scharf / 🟡 beobachten / ⏳ wartet / 🔴 tot). Die drei
+    Slots werden als ein Trigger-Block `🟢 A) … · 🔴 B) …` in die (unveränderte)
+    6-spaltige STATE-Doc-Tabelle gerendert; state_parser splittet sie wieder
+    auf, filter_engine überspringt 🔴/⏳-Trigger. Die alte separate
+    These-/Status-Spalte ist entfallen — die STATE-Status-Spalte ist fix
+    `⚠️ aktiv`, das Datum-Constraint kommt weiterhin aus `nach JJJJ-MM-TT`
+    im Trigger-Text.
 """
 
 from __future__ import annotations
@@ -51,77 +62,47 @@ logger = logging.getLogger("watchlist_sync")
 # Excel → Watchlist-Einträge
 # ===========================================================================
 
-# Mapping erstes Emoji → Pipeline-Status
-# Fallback "aktiv" wenn nichts erkannt.
-EMOJI_TO_STATUS: list[tuple[str, str]] = [
-    ("⚠️", "aktiv"),
-    ("📅", "pending"),
-    ("⏸", "paused"),
-    ("👀", "beobachten"),
-    ("🔍", "beobachten"),
-]
+# Erlaubte 🚦-Ampel-Emojis (Reihenfolge entspricht filter_engine-Semantik):
+# 🟢 scharf · 🟡 beobachten · ⏳ wartet (Datum/Bedingung) · 🔴 tot.
+VALID_GATES: tuple[str, ...] = ("🟢", "🟡", "⏳", "🔴")
 
-# Datum aus Status extrahieren (für pending-Einträge)
-_DATE_RE = re.compile(r"\b(\d{2})\.(\d{2})\.(\d{4})\b")
+# Default-Gate, wenn eine Gate-Zelle leer oder unlesbar ist: 🟢 (scharf).
+# Bewusst der "wird-ausgewertet"-Wert — ein Trigger ohne erkennbares Gate soll
+# nicht stillschweigend übersprungen werden (das wäre 🔴/⏳).
+_DEFAULT_GATE = "🟢"
 
 
-def _parse_status(raw_status: str) -> tuple[str, str]:
-    """Heuristik: erstes Emoji → Pipeline-Status. Rest → kurze Note.
+def _normalize_gate(raw: str) -> str:
+    """Extrahiert das 🚦-Ampel-Emoji aus einer Gate-Zelle.
 
-    Returns (status_keyword, status_note).
+    Akzeptiert 🟢/🟡/⏳/🔴 (auch wenn die Zelle zusätzlichen Text enthält).
+    Leere oder unbekannte Zelle → `_DEFAULT_GATE` (🟢).
     """
-    raw = (raw_status or "").strip()
-    status = "aktiv"
-    for emoji, keyword in EMOJI_TO_STATUS:
-        if emoji in raw:
-            status = keyword
-            break
-
-    # Note = Rest nach dem Emoji, gekürzt auf max 80 Zeichen
-    note = raw
-    for emoji, _ in EMOJI_TO_STATUS:
-        if emoji in note:
-            # Alles nach dem Emoji nehmen
-            note = note.split(emoji, 1)[1].strip()
-            break
-    # Aufräumen: führende ":-—," entfernen
-    note = note.lstrip(": -—,").strip()
-    if len(note) > 80:
-        note = note[:77] + "..."
-
-    # Bei pending-Status: Datum extrahieren und voranstellen
-    if status == "pending":
-        m = _DATE_RE.search(raw)
-        if m:
-            iso_date = f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
-            note = f"{iso_date} — {note}" if note else iso_date
-
-    return status, note
+    raw = (raw or "").strip()
+    for gate in VALID_GATES:
+        if gate in raw:
+            return gate
+    return _DEFAULT_GATE
 
 
-def _shorten_trigger(trigger: str) -> str:
-    """Excel-Trigger ist Lang-Form; Pipeline und STATE-Doc-Lesbarkeit
-    profitieren von Kurz-Form.
+def _format_trigger_for_state(label: str, gate: str, text: str) -> str:
+    """Rendert einen Trigger-Slot als `{gate} {label}) {content}` für den
+    STATE-Doc-Trigger-Block.
 
-    Heuristik: bei Mehrfach-Triggern (A) ... B) ...) nur ersten Trigger
-    nehmen, Rest mit "..." andeuten. Sonst auf 120 Zeichen kürzen,
-    sauber an Wortgrenze.
+    Ein im Zelltext bereits vorhandener `{label})`/`{label}:`-Marker (Artefakt
+    der Schema-Migration, z.B. "A) Daily-Close …") wird einmalig entfernt,
+    damit der Marker nicht doppelt erscheint und das Gate-Emoji direkt vor dem
+    Marker sitzt — so bleibt der state_parser-Splitter eindeutig.
+    Interne Zeilenumbrüche werden zu Leerzeichen (Markdown-Tabellenzelle ist
+    einzeilig). Leerer Text → leerer String (Slot wird vom Aufrufer übersprungen).
     """
-    if not trigger:
+    text = (text or "").strip()
+    if not text:
         return ""
-    text = str(trigger).strip()
-
-    # Mehrfach-Trigger: A)...B)... → nur A) zeigen plus Hinweis
-    has_b = re.search(r"\bB\)\s", text)
-    if text.startswith("A)") and has_b:
-        text = text[: has_b.start()].rstrip(" .,;:") + " · (B) ..."
-
-    if len(text) <= 120:
-        return text
-    cut = text.rfind(" ", 0, 120)
-    if cut < 60:
-        cut = 120
-    return text[:cut].rstrip(",.;:—–-") + "…"
+    marker = re.compile(rf"(?<![A-Za-z0-9]){re.escape(label)}[\)\:]\s*")
+    text = marker.sub("", text, count=1).strip()
+    text = re.sub(r"\s*\n\s*", " ", text)
+    return f"{gate} {label}) {text}"
 
 
 def _shorten_richtung(richtung: str) -> str:
@@ -168,10 +149,14 @@ def _parse_verfall_date(raw: str) -> str:
 def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
     """Liest das Watchlist-Sheet aus dem Journal und gibt Dicts zurück.
 
-    Erwartet das aktuelle Format mit Spalten:
-        Aktie | Symbol | Richtung | Entry-Trigger | These | Status | Datum
-    Das Symbol-Feld ist Pflicht — Zeilen ohne Symbol werden übersprungen
-    mit Warnung.
+    Erwartet das 3-Trigger-Schema (ab 2026-05-23) mit den Spalten:
+        Aktie | Symbol | Richtung | 🚦 A | Trigger A | 🚦 B | Trigger B
+              | 🚦 C | Trigger C | Bemerkungen | Datum hinzugefügt | Verfallsdatum
+
+    Jeder Eintrag bekommt eine `triggers`-Liste mit bis zu drei Slots, je ein
+    Dict {label, gate, text}. Leere Trigger-Slots werden ausgelassen. Symbol
+    und mindestens ein Trigger sind Pflicht — Zeilen ohne werden mit Warnung
+    übersprungen.
     """
     wb = load_workbook(io.BytesIO(xlsx_bytes), data_only=True)
     if "Watchlist" not in wb.sheetnames:
@@ -193,7 +178,8 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
     if header_row_idx is None:
         raise RuntimeError("Header-Zeile in Watchlist-Sheet nicht gefunden")
 
-    # Spalten-Indizes finden
+    # Spalten-Indizes finden — erster Header, der einen Kandidaten als
+    # Substring enthält.
     def find_col(*candidates: str) -> Optional[int]:
         for cand in candidates:
             for j, h in enumerate(headers):
@@ -204,8 +190,18 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
     col_aktie = find_col("aktie")
     col_symbol = find_col("symbol")
     col_richtung = find_col("richtung")
-    col_trigger = find_col("entry-trigger", "trigger")
-    col_status = find_col("status")
+    col_trigger = {
+        "A": find_col("trigger a"),
+        "B": find_col("trigger b"),
+        "C": find_col("trigger c"),
+    }
+    # Gate-Spalten: Header sind "🚦 A" etc. — "🚦" als Anker, Fallback-Aliase
+    # für den Fall, dass das Ampel-Symbol mal anders heißt.
+    col_gate = {
+        "A": find_col("🚦 a", "🚦a", "ampel a", "gate a"),
+        "B": find_col("🚦 b", "🚦b", "ampel b", "gate b"),
+        "C": find_col("🚦 c", "🚦c", "ampel c", "gate c"),
+    }
     col_verfall = find_col("verfallsdatum", "verfall")
 
     if col_symbol is None:
@@ -217,13 +213,27 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
         raise RuntimeError(
             "Pflichtspalten 'Aktie' oder 'Richtung' nicht gefunden."
         )
+    if col_trigger["A"] is None:
+        raise RuntimeError(
+            "Spalte 'Trigger A' nicht gefunden — das Watchlist-Sheet scheint "
+            "noch im alten Schema zu sein. watchlist_sync erwartet seit "
+            "2026-05-23 das 3-Trigger-Schema (Aktie|Symbol|Richtung|🚦 A|"
+            "Trigger A|🚦 B|Trigger B|🚦 C|Trigger C|Bemerkungen|"
+            "Datum hinzugefügt|Verfallsdatum)."
+        )
 
     entries: list[dict] = []
     for row in ws.iter_rows(min_row=header_row_idx + 1, values_only=True):
         if not row or all(c is None for c in row):
             continue
-        aktie = (str(row[col_aktie]).strip() if row[col_aktie] else "").strip()
-        symbol = (str(row[col_symbol]).strip() if row[col_symbol] else "").strip()
+
+        def cell(idx: Optional[int]) -> str:
+            if idx is None or idx >= len(row) or row[idx] is None:
+                return ""
+            return str(row[idx]).strip()
+
+        aktie = cell(col_aktie)
+        symbol = cell(col_symbol)
         if not aktie or not symbol:
             if aktie or symbol:
                 logger.warning(
@@ -231,32 +241,29 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
                     "aktie=%r symbol=%r", aktie, symbol,
                 )
             continue
-        richtung = str(row[col_richtung]).strip() if row[col_richtung] else ""
-        trigger = (
-            str(row[col_trigger]).strip()
-            if col_trigger is not None and row[col_trigger]
-            else ""
-        )
-        raw_status = (
-            str(row[col_status]).strip()
-            if col_status is not None and row[col_status]
-            else ""
-        )
-        raw_verfall = (
-            str(row[col_verfall]).strip()
-            if col_verfall is not None and row[col_verfall]
-            else ""
-        )
 
-        status, note = _parse_status(raw_status)
+        triggers: list[dict] = []
+        for slot in ("A", "B", "C"):
+            text = cell(col_trigger[slot])
+            if not text:
+                continue
+            triggers.append({
+                "label": slot,
+                "gate": _normalize_gate(cell(col_gate[slot])),
+                "text": text,
+            })
+        if not triggers:
+            logger.warning(
+                "Zeile übersprungen — kein Trigger gesetzt: symbol=%r", symbol,
+            )
+            continue
+
         entries.append({
             "aktie": aktie,
             "symbol": symbol,
-            "richtung": _shorten_richtung(richtung),
-            "trigger": _shorten_trigger(trigger),
-            "status": status,
-            "note": note,
-            "verfall": _parse_verfall_date(raw_verfall),
+            "richtung": _shorten_richtung(cell(col_richtung)),
+            "triggers": triggers,
+            "verfall": _parse_verfall_date(cell(col_verfall)),
         })
     return entries
 
@@ -267,55 +274,56 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
 
 WATCHLIST_HEADER = "## Watchlist-Trigger (aktive Einträge)"
 PFLEGE_BLOCK = """\
-> **Pflege:** Tot-Einträge (✅ gelaufen, ❌ These geplatzt, 📉 Chart-not)
-> aus dieser Tabelle entfernen und in Sektion "Watchlist-Archiv" verschieben.
+> **Pflege:** Tot-Einträge (alle Trigger 🔴 / These geplatzt / gelaufen)
+> aus dem Watchlist-Sheet ins "Watchlist-Archiv"-Sheet verschieben.
 > Pipeline ignoriert archivierte Einträge automatisch.
 >
-> **Status-Werte (definiert):**
-> - ⚠️ aktiv — Trigger nah/in Reichweite, Pipeline meldet täglich
-> - 📅 pending — Datum-Constraint noch nicht erreicht
-> - ⏸ paused — Bedingung temporär nicht da (RSI/Vol/etc.)
-> - 🔍 beobachten — passive (>10% entfernt), These intakt
+> **🚦-Ampel pro Trigger (A/B/C) — steht als Präfix im Trigger-Feld:**
+> - 🟢 scharf — Trigger wird ausgewertet, Pipeline meldet bei Reichweite
+> - 🟡 beobachten — Trigger wird ausgewertet, passiv beobachtet
+> - ⏳ wartet — Datum/Bedingung noch nicht erreicht, von der Pipeline übersprungen
+> - 🔴 tot — Trigger durchgelaufen/invalidiert, von der Pipeline übersprungen
 >
-> **Tot-Werte (→ Archiv):** ✅ gelaufen / ❌ These geplatzt / 📉 Chart-not bestätigt
+> Die Status-Spalte ist eintragsweit fix `⚠️ aktiv` — die handelbare
+> Differenzierung liegt in der 🚦-Ampel je Trigger. Das Datum-Constraint
+> wird weiterhin aus `nach JJJJ-MM-TT` im Trigger-Text gelesen.
 >
 > **AUTO-SYNC:** Diese Tabelle wird bei jedem Tier-A-Lauf (alle 30 Min) aus
 > dem Watchlist-Sheet des Trading-Journals neu generiert. Manuelle Edits
 > hier werden überschrieben — bitte Watchlist im Journal pflegen."""
 
 
-def _status_emoji(status: str) -> str:
-    return {
-        "aktiv": "⚠️",
-        "pending": "📅",
-        "paused": "⏸",
-        "beobachten": "🔍",
-    }.get(status, "⚠️")
-
-
 def render_watchlist_block(entries: list[dict], generated_at: datetime) -> str:
-    """Generiert den kompletten Watchlist-Block (Header + Pflege + Tabelle)."""
+    """Generiert den kompletten Watchlist-Block (Header + Pflege + Tabelle).
+
+    Die Tabelle hat unverändert 6 Spalten; das Trigger-Feld bündelt die bis
+    zu drei Trigger-Slots als `🟢 A) … · 🔴 B) …`. Die Status-Spalte ist
+    eintragsweit fix `⚠️ aktiv`.
+    """
     lines = [WATCHLIST_HEADER, "", PFLEGE_BLOCK, ""]
     lines.append(
         f"> _Auto-Sync zuletzt: {generated_at.strftime('%Y-%m-%d %H:%M UTC')} "
         f"({len(entries)} Einträge)_"
     )
     lines.append("")
-    lines.append("| Kandidat | Symbol | Richtung | Trigger (Kurzform) | Status | Verfall |")
+    lines.append("| Kandidat | Symbol | Richtung | Trigger (🚦 A/B/C) | Status | Verfall |")
     lines.append("|----------|--------|----------|--------------------|--------|---------|")
     for e in entries:
-        emoji = _status_emoji(e["status"])
-        status_cell = f"{emoji} {e['status']}"
-        if e["note"]:
-            status_cell += f" — {e['note']}"
+        # Trigger-Block: alle nicht-leeren Slots als '{gate} {label}) {text}',
+        # mit ' · ' verbunden — state_parser splittet daran wieder auf.
+        trigger_cell = " · ".join(
+            s for s in (
+                _format_trigger_for_state(t["label"], t["gate"], t["text"])
+                for t in e["triggers"]
+            ) if s
+        )
         # Pipe in Zellinhalten escapen, sonst kaputte Tabelle
         kandidat = e["aktie"].replace("|", "\\|")
-        trigger = e["trigger"].replace("|", "\\|").replace("\n", " ")
-        status_cell = status_cell.replace("|", "\\|")
+        trigger_cell = trigger_cell.replace("|", "\\|").replace("\n", " ")
         verfall = e.get("verfall", "").replace("|", "\\|")
         lines.append(
-            f"| {kandidat} | {e['symbol']} | {e['richtung']} | {trigger} | "
-            f"{status_cell} | {verfall} |"
+            f"| {kandidat} | {e['symbol']} | {e['richtung']} | {trigger_cell} | "
+            f"⚠️ aktiv | {verfall} |"
         )
     lines.append("")
     return "\n".join(lines)

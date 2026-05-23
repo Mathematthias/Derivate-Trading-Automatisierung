@@ -51,6 +51,13 @@ class ParsedTrigger:
     label: str  # "A", "B", oder "" wenn unbenannt
     raw: str  # vollständiger Trigger-Text
 
+    # Journal-Gate-Emoji (3-Trigger-Schema, 2026-05-23): das 🚦-Ampel-Emoji
+    # aus dem Watchlist-Sheet — 🟢 scharf / 🟡 beobachten / ⏳ wartet / 🔴 tot.
+    # watchlist_sync schreibt es als Präfix direkt vor den A)/B)/C)-Marker;
+    # die filter_engine überspringt 🔴- und ⏳-Trigger bei der Auswertung.
+    # None = kein Gate im Trigger-Text (Alt-STATE-Docs / ·-Fallback).
+    gate: Optional[str] = None
+
     # Preis-Komponenten
     price_low: Optional[float] = None
     price_high: Optional[float] = None
@@ -241,8 +248,16 @@ def parse_watchlist(state_text: str) -> list[WatchlistEntry]:
             continue
         if not in_table:
             continue
-        # Zeilen mit < 5 Pipes sind keine Datenzeilen
-        cols = [c.strip() for c in stripped.split("|")]
+        # An nicht-escapten Pipes splitten — ein escaptes `\|` gehört zum
+        # Zellinhalt (z.B. die (a)/(b)/(c)-Aufzählung in einem Trigger-Text)
+        # und darf die Spaltenzuordnung nicht verschieben. Danach `\|` → `|`
+        # un-escapen. watchlist_sync escaped beim Rendern jede Zelle; ohne
+        # dieses Gegenstück verlöre die Pipeline jeden Eintrag mit Pipe im
+        # Trigger-Feld still (Sanity-Count zählt Zeilen, nicht Spalten).
+        cols = [
+            c.strip().replace("\\|", "|")
+            for c in re.split(r"(?<!\\)\|", stripped)
+        ]
         # Nur die durch die Rand-Pipes erzeugten Leer-Zellen am Anfang/Ende
         # entfernen — INNERE Leerzellen behalten (die Verfall-Spalte darf
         # leer sein, sonst verschiebt sich die Spaltenzuordnung). Patch 5.
@@ -369,8 +384,16 @@ def _strip_sl_tp(text: str) -> str:
     return text
 
 
-def _split_into_triggers(trigger_raw: str) -> list[tuple[str, str]]:
-    """Splittet einen Trigger-Text in [(label, content), ...].
+# 🚦-Ampel-Emojis des Watchlist-Schemas — als Character-Class für den Splitter.
+_GATE_EMOJI_CLASS = "🟢🟡⏳🔴"
+
+
+def _split_into_triggers(trigger_raw: str) -> list[tuple[str, str, str]]:
+    """Splittet einen Trigger-Text in [(gate, label, content), ...].
+
+    `gate` ist das optionale 🚦-Ampel-Emoji (🟢/🟡/⏳/🔴), das watchlist_sync
+    im 3-Trigger-Schema direkt vor den A)/B)/C)-Marker schreibt — leerer
+    String, wenn keins vorhanden ist (Alt-STATE-Docs, ·-Fallback).
 
     Erkennt Label-Marker (A:, A), Trigger A:, Trigger A)) und den alten
     ·-Separator. Vermeidet false Matches auf Phrasen wie "Trigger A (Pullback"
@@ -378,27 +401,30 @@ def _split_into_triggers(trigger_raw: str) -> list[tuple[str, str]]:
 
     Whitelist auf A–E, damit "R:R", "Q4", etc. nicht als Label getriggert werden.
     """
-    # Label-Marker: optional "Trigger ", dann A–E, dann ) oder :, dann Whitespace.
-    # Vorne ein Anker (Wortgrenze, Whitespace, Doppelpunkt oder Zeilenstart).
+    # Label-Marker: Anker, optionales Gate-Emoji, optional "Trigger ", dann
+    # A–E, dann ) oder :, dann Whitespace.
     label_pattern = re.compile(
-        r"(?:^|[\s\.:])(?:Trigger\s+)?([A-E])[\)\:]\s+"
+        r"(?:^|[\s\.:])([" + _GATE_EMOJI_CLASS + r"]\s*)?(?:Trigger\s+)?([A-E])[\)\:]\s+"
     )
     matches = list(label_pattern.finditer(trigger_raw))
 
     if matches:
-        result: list[tuple[str, str]] = []
+        result: list[tuple[str, str, str]] = []
         for i, m in enumerate(matches):
-            label = m.group(1)
+            gate = (m.group(1) or "").strip()
+            label = m.group(2)
             start = m.end()
             end = matches[i + 1].start() if i + 1 < len(matches) else len(trigger_raw)
-            chunk = trigger_raw[start:end].strip().rstrip(".,;: ")
+            # `·` mit in den rstrip-Satz: beim ` · `-Join der Trigger landet das
+            # Trennzeichen sonst am Chunk-Ende des vorhergehenden Triggers.
+            chunk = trigger_raw[start:end].strip().rstrip(".,;:· ")
             if chunk:
-                result.append((label, chunk))
+                result.append((gate, label, chunk))
         return result
 
     # Kein Label-Marker: alter ·-Separator als Fallback
     parts = re.split(r"\s+·\s+", trigger_raw)
-    return [("", p.strip()) for p in parts if p.strip()]
+    return [("", "", p.strip()) for p in parts if p.strip()]
 
 
 def _parse_triggers(trigger_raw: str) -> list[ParsedTrigger]:
@@ -413,8 +439,8 @@ def _parse_triggers(trigger_raw: str) -> list[ParsedTrigger]:
     """
     chunks = _split_into_triggers(trigger_raw)
     triggers: list[ParsedTrigger] = []
-    for label, content in chunks:
-        triggers.append(_parse_single_trigger(label, content))
+    for gate, label, content in chunks:
+        triggers.append(_parse_single_trigger(label, content, gate))
     return triggers
 
 
@@ -520,16 +546,17 @@ def _extract_sl(content: str) -> tuple[Optional[str], Optional[float]]:
     return ("pattern", None)
 
 
-def _parse_single_trigger(label: str, content: str) -> ParsedTrigger:
+def _parse_single_trigger(label: str, content: str, gate: str = "") -> ParsedTrigger:
     """Parst einen einzelnen Trigger-Text in ParsedTrigger.
 
     `content` enthält den vollen Trigger inkl. SL/TP/R:R/ATR-Hinweisen.
-    Die Preis-Heuristiken arbeiten auf einer SL/TP-bereinigten Variante,
-    damit z.B. "Daily-Close >380$. SL <370$" nicht "<370$" als price_op fängt.
-    Modifikator-Erkennung (Bounce, Vol, Hammer, RSI, EMA) läuft weiter auf
-    dem rohen content, weil dort nichts kollidiert.
+    `gate` ist das optionale 🚦-Ampel-Emoji des 3-Trigger-Schemas (leerer
+    String → kein Gate). Die Preis-Heuristiken arbeiten auf einer SL/TP-
+    bereinigten Variante, damit z.B. "Daily-Close >380$. SL <370$" nicht
+    "<370$" als price_op fängt. Modifikator-Erkennung (Bounce, Vol, Hammer,
+    RSI, EMA) läuft weiter auf dem rohen content, weil dort nichts kollidiert.
     """
-    pt = ParsedTrigger(label=label, raw=content)
+    pt = ParsedTrigger(label=label, raw=content, gate=gate or None)
 
     # Zonen-Semantik bestimmen (Task 5) — Hybrid: Tag mit Vorrang, sonst Heuristik
     pt.zone_kind = _detect_zone_kind(content)

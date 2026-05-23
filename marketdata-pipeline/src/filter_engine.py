@@ -336,6 +336,28 @@ def _evaluate_trigger(
     now_utc_hour: Optional[int] = None,
 ) -> TriggerStatus:
     """Bewertet einen einzelnen Trigger gegen aktuelle Daten."""
+    # Journal-Gate-Skip (3-Trigger-Schema, 2026-05-23): Trigger, die im
+    # Watchlist-Journal per 🚦-Ampel als tot (🔴) oder wartend (⏳) markiert
+    # sind, werden NICHT inhaltlich ausgewertet. Sie erscheinen als 'far' im
+    # Output (sichtbar, aber nie BEREIT/NAHE) — analog zum is_empty-Fall.
+    # 🟢 (scharf) / 🟡 (beobachten) / None → normale Auswertung.
+    if trigger.gate == "🔴":
+        return TriggerStatus(
+            label=trigger.label,
+            proximity="far",
+            distance_pct=0.0,
+            conditions_missing=["🚦 🔴 — Trigger im Journal als tot markiert"],
+            summary="🔴 Gate tot — übersprungen",
+        )
+    if trigger.gate == "⏳":
+        return TriggerStatus(
+            label=trigger.label,
+            proximity="far",
+            distance_pct=0.0,
+            conditions_pending=["🚦 ⏳ — Trigger wartet (Datum/Bedingung nicht erreicht)"],
+            summary="⏳ Gate wartet — übersprungen",
+        )
+
     # Edge case: leerer Trigger ohne Preis-Op und ohne Modifier
     # (z.B. "ONBERG-Story — Setup ergänzen wenn relevant")
     is_empty = (
