@@ -857,24 +857,30 @@ def _append_to_geschlossene_aktie(wb: Workbook, ws_av: Worksheet, av_row: int):
 # ============================================================
 
 def add_watchlist(wb: Workbook, entry: Dict[str, Any]) -> int:
-    """
-    Fügt Eintrag zur Watchlist hinzu (Layout v2, 7 Spalten).
+    """Fügt einen Watchlist-Eintrag hinzu (12-Spalten-3-Trigger-Schema).
 
-    Spalten-Layout:
-      A=Aktie, B=Symbol, C=Richtung, D=Entry-Trigger, E=These, F=Status, G=Datum hinzugefügt
+    Spalten-Layout (seit 23.05.2026):
+      A=Aktie B=Symbol C=Richtung D=🚦A E=Trigger A F=🚦B G=Trigger B
+      H=🚦C I=Trigger C J=Bemerkungen K=Datum hinzugefügt L=Verfallsdatum
 
     Keys im entry-Dict:
       **aktie**, **symbol** (Yahoo-Ticker, z.B. 'DHL.DE'),
       **richtung** ('LONG'/'SHORT' bzw. 'LONG (Pullback)' etc.),
-      **trigger** (Entry-Bedingungen), **these** (Story/Status-Begründung),
-      status (default '⏸ beobachten'),
-      datum (default heute im Format TT.MM.JJJJ)
+      **triggers** — Liste von 1-3 Dicts je {label: 'A'/'B'/'C',
+                     gate: 🟢/🟡/⏳/🔴 (default 🟢), text: Trigger-Bedingungen},
+      bemerkungen (default ''), datum (default heute TT.MM.JJJJ),
+      verfall (default '').
 
-    Bei fehlendem 'symbol' wird leer gelassen (Pipeline kann dann den Eintrag nicht
-    auto-syncen — Pflichtspalte laut SKILL.md § Watchlist-Sync).
+    Bei fehlendem 'symbol' wird leer gelassen (Pipeline kann den Eintrag dann
+    nicht auto-syncen — Pflichtspalte laut SKILL.md § Watchlist-Sync).
     """
     from datetime import datetime
     ws = wb[SHEET_WATCHLIST]
+
+    valid_gates = ("🟢", "🟡", "⏳", "🔴")
+    gate_col = {"A": 4, "B": 6, "C": 8}
+    trig_col = {"A": 5, "B": 7, "C": 9}
+
     # Finde erste leere Zeile ab Z2
     row = 2
     for r in range(2, ws.max_row + 2):
@@ -885,32 +891,78 @@ def add_watchlist(wb: Workbook, entry: Dict[str, Any]) -> int:
     ws.cell(row=row, column=1).value = entry['aktie']
     ws.cell(row=row, column=2).value = entry.get('symbol', '')
     ws.cell(row=row, column=3).value = entry['richtung']
-    ws.cell(row=row, column=4).value = entry['trigger']
-    ws.cell(row=row, column=5).value = entry['these']
-    ws.cell(row=row, column=6).value = entry.get('status', '⏸ beobachten')
-    ws.cell(row=row, column=7).value = entry.get('datum', datetime.now().strftime('%d.%m.%Y'))
 
-    for col in range(1, 8):
+    for t in entry.get('triggers', []):
+        label = str(t['label']).strip().upper()
+        if label not in trig_col:
+            raise ValueError(f"Trigger-label muss 'A'/'B'/'C' sein, war {label!r}")
+        gate = t.get('gate', '🟢')
+        if gate not in valid_gates:
+            raise ValueError(f"gate muss eines von {valid_gates} sein, war {gate!r}")
+        ws.cell(row=row, column=gate_col[label]).value = gate
+        ws.cell(row=row, column=trig_col[label]).value = t['text']
+
+    ws.cell(row=row, column=10).value = entry.get('bemerkungen', '')
+    ws.cell(row=row, column=11).value = entry.get(
+        'datum', datetime.now().strftime('%d.%m.%Y'))
+    ws.cell(row=row, column=12).value = entry.get('verfall', '')
+
+    for col in range(1, 13):
         ws.cell(row=row, column=col).font = FONT_CALIBRI
     return row
 
 
-def update_watchlist_status(wb: Workbook, aktie: str, status: str) -> bool:
-    """Setzt neuen Status für Watchlist-Eintrag. Match per Substring.
+def update_watchlist_gate(
+    wb: Workbook, aktie: str, gate: str, label: str = "A"
+) -> bool:
+    """Setzt das 🚦-Ampel-Emoji eines Triggers (A/B/C) im Watchlist-Sheet.
 
-    Schreibt in Spalte 6 (F = Status). Bug-Fix 16.05.2026: vorher fälschlicherweise
-    Spalte 5 (E = These) — siehe Journal-Notes Eintrag vom 15.05.2026 zum
-    update_watchlist_status-Bug (alte Layout-v1-Zuordnung).
-    Layout v2: A=Aktie, B=Symbol, C=Richtung, D=Entry-Trigger, E=These, F=Status, G=Datum.
+    12-Spalten-Schema (seit 23.05.2026): die Gate-Spalten sind D (Trigger A),
+    F (Trigger B), H (Trigger C). Match per Substring auf Spalte A (Aktie).
+    Ersetzt das alte `update_watchlist_status` — eine eintragsweite Status-
+    Spalte gibt es nicht mehr, der Status ist trigger-granular.
+
+    Args:
+        gate: eines von 🟢 / 🟡 / ⏳ / 🔴.
+        label: Trigger-Slot 'A', 'B' oder 'C' (default 'A').
+
+    Returns True bei Treffer, False wenn die Aktie nicht gefunden wurde.
     """
+    valid_gates = ("🟢", "🟡", "⏳", "🔴")
+    gate_col = {"A": 4, "B": 6, "C": 8}
+    label = str(label).strip().upper()
+    if label not in gate_col:
+        raise ValueError(f"label muss 'A', 'B' oder 'C' sein, war {label!r}")
+    if gate not in valid_gates:
+        raise ValueError(
+            f"gate muss eines von {valid_gates} sein, war {gate!r}"
+        )
     ws = wb[SHEET_WATCHLIST]
     aktie_lower = aktie.lower()
     for row in range(2, ws.max_row + 1):
         val = ws.cell(row=row, column=1).value
         if isinstance(val, str) and aktie_lower in val.lower():
-            ws.cell(row=row, column=6).value = status
+            ws.cell(row=row, column=gate_col[label]).value = gate
             return True
     return False
+
+
+def update_watchlist_status(wb: Workbook, aktie: str, status: str) -> bool:
+    """OBSOLET seit dem 12-Spalten-3-Trigger-Schema (23.05.2026).
+
+    Es gibt keine eintragsweite Status-Spalte mehr — der Status ist
+    trigger-granular als 🚦-Ampel hinterlegt. Diese Funktion schrieb in
+    Spalte F, die jetzt das Trigger-B-Gate ist; ein stiller Aufruf hätte
+    das Gate mit einem Status-String überschrieben und die DataValidation
+    verletzt. Darum der harte Fehler statt stillem Journal-Schaden.
+
+    Ersatz: update_watchlist_gate(wb, aktie, gate, label='A').
+    """
+    raise RuntimeError(
+        "update_watchlist_status ist obsolet (12-Spalten-Schema seit "
+        "23.05.2026 — keine eintragsweite Status-Spalte mehr). "
+        "Nutze update_watchlist_gate(wb, aktie, gate, label='A')."
+    )
 
 
 def remove_watchlist(wb: Workbook, aktie: str) -> bool:
@@ -956,25 +1008,40 @@ def _wl_tokenize(s: str) -> set:
 
 def list_watchlist(wb: Workbook) -> List[Dict[str, Any]]:
     """
-    Gibt alle Watchlist-Einträge als Liste von Dicts zurück.
+    Gibt alle Watchlist-Einträge als Liste von Dicts zurück (12-Spalten-Schema).
 
     Returns:
-        Liste mit Keys: row, aktie, richtung, trigger, these, status, datum
+        Liste mit Keys: row, aktie, symbol, richtung, triggers, bemerkungen,
+        datum, verfall. `triggers` ist eine Liste von bis zu 3 Dicts je
+        {label: 'A'/'B'/'C', gate: 🟢/🟡/⏳/🔴, text: Trigger-Bedingungen}.
     """
     ws = wb[SHEET_WATCHLIST]
+    gate_col = {"A": 4, "B": 6, "C": 8}
+    trig_col = {"A": 5, "B": 7, "C": 9}
     out: List[Dict[str, Any]] = []
     for row in range(2, ws.max_row + 1):
         aktie = ws.cell(row=row, column=1).value
         if not aktie:
             continue
+        triggers: List[Dict[str, Any]] = []
+        for label in ("A", "B", "C"):
+            text = ws.cell(row=row, column=trig_col[label]).value
+            if not text:
+                continue
+            triggers.append({
+                'label': label,
+                'gate': ws.cell(row=row, column=gate_col[label]).value or '🟢',
+                'text': str(text),
+            })
         out.append({
             'row': row,
             'aktie': aktie,
-            'richtung': ws.cell(row=row, column=2).value or '',
-            'trigger': ws.cell(row=row, column=3).value or '',
-            'these': ws.cell(row=row, column=4).value or '',
-            'status': ws.cell(row=row, column=5).value or '',
-            'datum': ws.cell(row=row, column=6).value or '',
+            'symbol': ws.cell(row=row, column=2).value or '',
+            'richtung': ws.cell(row=row, column=3).value or '',
+            'triggers': triggers,
+            'bemerkungen': ws.cell(row=row, column=10).value or '',
+            'datum': ws.cell(row=row, column=11).value or '',
+            'verfall': ws.cell(row=row, column=12).value or '',
         })
     return out
 
@@ -996,8 +1063,8 @@ def match_watchlist(wb: Workbook, query: str) -> Optional[Dict[str, Any]]:
         query: Aktienname, Kürzel, Ticker, WKN oder ISIN
 
     Returns:
-        Dict mit Keys: row, aktie, richtung, trigger, these, status, datum
-        oder None wenn kein Match.
+        Dict mit Keys: row, aktie, symbol, richtung, triggers, bemerkungen,
+        datum, verfall (siehe list_watchlist) oder None wenn kein Match.
         Bei mehreren Matches wird der erste (= oberste Watchlist-Zeile) zurückgegeben.
 
     Beispiele:
