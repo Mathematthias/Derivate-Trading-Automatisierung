@@ -1,7 +1,7 @@
 # Roadmap — Pipeline-Erweiterungen
 
 Lebendes Dokument für Pipeline-Erweiterungen, die nach dem aktuellen Stand
-noch nicht implementiert sind. Stand: 2026-05-15.
+noch nicht implementiert sind. Stand: 2026-05-23.
 
 ## Status-Übersicht
 
@@ -9,6 +9,7 @@ noch nicht implementiert sind. Stand: 2026-05-15.
 |---|---|---|
 | Anomaly-Layer V1 | Gap, Volumen-Z, ATR-Z, NR7 | ✅ Erledigt (2026-05-15, Note #50) |
 | Anomaly-Layer V1.1 | Intraday-Guard (VOL-Z/NR7), Index/FX/Crypto-Filter | ✅ Erledigt (2026-05-15, Note #50.1) |
+| Anomaly-Layer V1.2 | Ex-Dividende-Anreicherung (Breakdown-False-Positive-Filter) | ✅ Erledigt (2026-05-23, Note #67) |
 | Anomaly-Layer V2 | Peer-Divergenz | 🔜 Geplant |
 | Anomaly-Layer V3 | News-Kurs-Mismatch, Correlation-Breakdown | 💭 Idee |
 
@@ -106,3 +107,27 @@ Beobachtung empfohlen.
 
 Tests: `tests/test_anomaly_flags.py` mit 19 Testfällen (Edge Cases:
 unzureichende History, 0-Volumen, Mehrfach-Anomalien, Sortier-Reihenfolge).
+
+### Anomaly-Layer V1.2 — Ex-Dividende-Anreicherung (2026-05-23, Note #67)
+
+Schließt eine Lücke des V1-Layers: ein −3% bis −10%-Tag in der HV-Saison wurde
+ohne Ex-Dividende-Kontext fälschlich als Breakdown-Signal klassifiziert.
+Auslöser war HEI.DE am 15.05.2026 — ein −7,16%-Ex-Tag, als Breakdown-Short
+gemeldet, obwohl der Drop überwiegend buchhalterischer Effekt war.
+
+Vier neue `TickerSnapshot`-Felder: `last_ex_div_date`, `last_ex_div_days_ago`
+(exakte Handelstage aus der df-Index-Position), `last_ex_div_amount`,
+`next_ex_div_date` (geschätzt aus der Auszahlungs-Kadenz, ≈91/182/365 Tage).
+
+Abweichung von der ursprünglichen Patch-Skizze: statt eines Pro-Symbol-
+`.actions`-Calls hinter einem ENV-Flag wird der bestehende Batch-Download mit
+`actions=True` aufgerufen — die `Dividends`-Spalte kommt ohne einen einzigen
+Extra-Call mit. Damit entfällt der Rate-Limit-Grund für ein Opt-in-Flag; die
+Anreicherung läuft auf allen Tiers ohne zusätzliche Yahoo-Last.
+
+Breakdown-Detector: `_check_bucket` überspringt `breakdown_short`-Kandidaten
+mit `last_ex_div_days_ago ≤ 2`. Output: `Ex-Div:`-Zeile pro Ticker in
+MARKETDATA-FULL plus `⚠️ EX-DIVIDENDE kürzlich`-Sektion in CANDIDATES /
+GAMECHANGER-HUNT für Ex-Tage ≤ 7 HT.
+
+Tests: `tests/test_ex_dividend.py`.

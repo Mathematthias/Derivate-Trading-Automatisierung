@@ -34,7 +34,7 @@ import ssl
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
 import pandas as pd
@@ -234,6 +234,24 @@ class TickerSnapshot:
     """Handelstage seit last_earnings_date (näherungsweise via Kalendertage minus
     Wochenende). None wenn kein last_earnings_date."""
 
+    # === Ex-Dividende-Felder (V1.2, Note #67, 2026-05-17) ===
+    last_ex_div_date: Optional[str] = None
+    """Letzter Ex-Dividenden-Tag als ISO YYYY-MM-DD. None wenn keine Dividenden-
+    History (Indizes/FX/Futures/Krypto/dividendenlose Aktien)."""
+
+    last_ex_div_days_ago: Optional[int] = None
+    """Handelstage seit last_ex_div_date — exakt aus der df-Index-Position
+    abgeleitet (0 = Ex-Tag ist heute). Vom Breakdown-Detector als Pre-Filter
+    genutzt: ≤2 → Tagesverlust ist überwiegend Ex-Effekt, kein Verkaufsdruck."""
+
+    last_ex_div_amount: Optional[float] = None
+    """Bardividenden-Betrag des letzten Ex-Tags in Listing-Währung."""
+
+    next_ex_div_date: Optional[str] = None
+    """Geschätzter nächster Ex-Tag (ISO) — last_ex_div_date + erkannte Kadenz
+    (≈91/182/365 Tage). None wenn die Kadenz aus der History nicht ableitbar
+    ist (nur eine Dividende vorhanden)."""
+
     # === Anomaly-Layer V1 (Note #50, 2026-05-15) ===
     atr_zscore_60d: Optional[float] = None
     """Z-Score des heutigen ATR-14 gegen die letzten 60 HT ATR-Werte.
@@ -383,6 +401,9 @@ def fetch_ticker_data(
         interval="1d",
         group_by="ticker",
         auto_adjust=False,
+        # V1.2 (Note #67): actions=True liefert die Dividends-Spalte im selben
+        # Batch-Pull mit — Ex-Dividende-Anreicherung ohne Pro-Symbol-Extra-Call.
+        actions=True,
         progress=False,
         threads=True,
     )
@@ -565,7 +586,23 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
     # Brauchen: 60 HT History für die Z-Scores, 7 HT für NR7.
     _compute_anomaly_fields(snap, df)
 
+    # === Ex-Dividende-Anreicherung V1.2 (Note #67) ===
+    # Liest die Dividends-Spalte (kommt via actions=True gratis mit).
+    _compute_ex_dividend_fields(snap, df)
+
     return snap
+
+
+def _is_eod_now() -> bool:
+    """True, wenn die aktuelle UTC-Stunde >= ANOMALY_VOLUME_EOD_HOUR_UTC ist.
+
+    Als eigene Funktion ausgelagert, damit Tests die EOD-Bedingung
+    deterministisch patchen können (Ziel: market_data._is_eod_now). Sonst
+    hängt volume_zscore_60d/nr7 von der Wanduhr zur Testlaufzeit ab — eine
+    Suite, die vor 20:00 UTC läuft, wäre sonst rot, obwohl die Pipeline-
+    Logik korrekt ist.
+    """
+    return datetime.now(timezone.utc).hour >= ANOMALY_VOLUME_EOD_HOUR_UTC
 
 
 def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
@@ -586,9 +623,9 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
     systematisch negativ wäre und Fehlsignale produziert. ATR-Z und Gap sind
     intraday stabil und werden immer berechnet.
     """
-    # Intraday-Guard auswerten (UTC, weil hard_evaluation_utc_hour in UTC)
-    now_utc_hour = datetime.utcnow().hour
-    is_eod = now_utc_hour >= ANOMALY_VOLUME_EOD_HOUR_UTC
+    # Intraday-Guard auswerten (UTC). Über _is_eod_now() gekapselt, damit
+    # Tests die Bedingung deterministisch setzen können.
+    is_eod = _is_eod_now()
 
     # --- gap_pct: nur today_open vs. prev_close (intraday-stabil) ---
     if snap.today_open is not None and snap.prev_close is not None and snap.prev_close > 0:
@@ -644,6 +681,55 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
             min_tr = float(last_7_tr.min())
             eps = 1e-9
             snap.nr7 = today_tr <= min_tr + eps
+
+
+def _compute_ex_dividend_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
+    """Leitet die Ex-Dividende-Felder aus der Dividends-Spalte ab (V1.2, Note #67).
+
+    Datenquelle ist die `Dividends`-Spalte, die yf.download(actions=True) im
+    selben Batch-Pull mitliefert — kein zusätzlicher Pro-Symbol-Call. Zeilen
+    mit Dividends > 0 sind die Ex-Tage.
+
+    Setzt last_ex_div_date/_days_ago/_amount aus dem jüngsten Ex-Tag und
+    schätzt next_ex_div_date aus dem Median-Abstand der letzten ~5 Ex-Tage,
+    gerundet auf {91, 182, 365} Tage. Stille Defaults (Felder bleiben None)
+    bei fehlender Dividends-Spalte oder leerer Dividenden-History — der
+    Renderer lässt die Ex-Div-Zeile dann weg.
+
+    Hintergrund (HEI.DE 15.05.2026): ein Ex-Tag-Drop von -7,16% wurde fälschlich
+    als Breakdown-Short erkannt. last_ex_div_days_ago erlaubt dem Breakdown-
+    Detector, solche Buchungseffekte herauszufiltern.
+    """
+    if "Dividends" not in df.columns or len(df) == 0:
+        return
+
+    div = df["Dividends"]
+    ex_rows = div[div > 0].dropna()
+    if ex_rows.empty:
+        return
+
+    last_ex_ts = ex_rows.index[-1]
+    snap.last_ex_div_date = last_ex_ts.date().isoformat()
+    snap.last_ex_div_amount = float(ex_rows.iloc[-1])
+
+    # Handelstage zurück = Positionsdifferenz im df-Index (df ist eine HT-Serie).
+    try:
+        pos = int(df.index.get_loc(last_ex_ts))
+        snap.last_ex_div_days_ago = len(df) - 1 - pos
+    except (KeyError, TypeError):
+        pass
+
+    # Nächsten Ex-Tag schätzen: Median-Kalenderabstand der letzten Ex-Tage auf
+    # {91, 182, 365} runden. Bei nur einer Dividende keine Schätzung möglich.
+    recent = ex_rows.index[-5:]
+    if len(recent) >= 2:
+        gaps = sorted(
+            (recent[i] - recent[i - 1]).days for i in range(1, len(recent))
+        )
+        median_gap = gaps[len(gaps) // 2]
+        cadence = min((91, 182, 365), key=lambda c: abs(c - median_gap))
+        next_ts = last_ex_ts + pd.Timedelta(days=cadence)
+        snap.next_ex_div_date = next_ts.date().isoformat()
 
 
 def _compute_ema200_meanrev_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
@@ -846,13 +932,14 @@ def _normalize_price_units(symbol: str, df: pd.DataFrame) -> pd.DataFrame:
     Hintergrund: Yahoo Finance liefert LSE-Listings standardmäßig in Pence,
     obwohl der Currency-Field "GBP" angibt. Beispiel SHEL.L: Yahoo-Close
     3192.00 entspricht 31.92 GBP.
-    Volume bleibt unverändert (Stückzahl, nicht Preis).
+    Volume bleibt unverändert (Stückzahl, nicht Preis); die Dividends-Spalte
+    (V1.2, Bardividende in Listing-Währung) wird wie ein Preis mit-skaliert.
     Erweiterbar für weitere Subunit-Listings (z.B. .TA für Tel Aviv = Agorot).
     """
     for suffix, divisor in PRICE_DIVISORS.items():
         if symbol.endswith(suffix):
             df = df.copy()
-            for col in ("Open", "High", "Low", "Close", "Adj Close"):
+            for col in ("Open", "High", "Low", "Close", "Adj Close", "Dividends"):
                 if col in df.columns:
                     df[col] = df[col] / divisor
             return df

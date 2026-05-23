@@ -14,9 +14,13 @@ name: Marketdata Sync Tier C (US-Universum)
 # Beide Tiers laufen jetzt mit identischer Architektur, nur unterschiedlichen
 # Ticker-YAMLs und Output-Tags ("EU" bzw. "US").
 #
-# Tier-C-Slots in cron-job.org (Berlin-Zeit) — Empfehlung 2×/Tag:
-#   - Mo-Fr 14:30 (vor US-Open 15:30 CEST)  → Crontab: 30 14 * * 1-5
-#   - Mo-Fr 21:30 (nach US-Close 22:00 CEST)→ Crontab: 30 21 * * 1-5
+# Tier-C-Slots in cron-job.org (Berlin-Zeit) — Stand 2026-05-23 (live konfiguriert):
+#   - Mo-Fr je :00 und :30 der Stunden 14, 19, 20, 21, 22 (10 Läufe/Tag, 50/Woche)
+#     → Crontab: 0,30 14,19,20,21,22 * * 1-5
+#   Abdeckung: 14:00/14:30 pre-US-Open (15:30 CEST), 19:00-21:30 deckt das
+#   Abendfenster 19-22 im 30-Min-Raster, 22:00/22:30 post-US-Close (22:00 CEST).
+#   Die 22:00/22:30-Läufe sitzen post-Volumen-Guard (20:00 UTC) → finales
+#   US-EOD inkl. volume_zscore/nr7 fürs Morgen-Briefing.
 #
 # PAT-Renewal-Deadline: 2026-07-21 (siehe Memory-Notiz).
 

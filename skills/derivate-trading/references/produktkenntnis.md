@@ -88,18 +88,68 @@ Automatische Folge-Order, die erst aktiv wird, wenn eine Bedingung erfüllt ist.
 - Keine Laufzeitbegrenzung unter 4 Wochen
 - Spread > 5% → Finger weg
 - KO-Abstand < 15% → zu riskant
-- Fremdwährungs-Underlying in **EM-/Inflationswährung** (TRY, ZAR, ARS, MXN, RUB) → NO GO (Lektion 1)
-- Fremdwährungs-Underlying **ohne Quanto bei Haltedauer > 10 Tagen** → NO GO (Lektion 1)
+- Fremdwährungs-Underlying in **EM-/Inflationswährung** (TRY, ZAR, ARS, MXN, RUB) → NO GO (Lektion 1 v2)
+- Fremdwährungs-Underlying **ohne Quanto und ohne FX-adjustierten R:R-Plan** → NO GO (Lektion 1 v2)
 
 ### 3a. Produktverfügbarkeits-Vorstufe (Stufe 2/3 Universum)
 
 Bei Nicht-EUR-Underlyings vor der vollen Produktcheck-Reihenfolge ein schneller Vorab-Check — verhindert, dass du R:R-Rechnungen für nicht-handelbare Produkte machst:
 
 1. **Quanto-KO auf Gettex oder SB+ verfügbar?** (TradeRepublic-Suche oder Smartbroker+-Derivatesuche, Filter: Quanto + Knock-Out + Emittent HSBC/SG/Vontobel/UBS)
-2. **Haltedauer-Plan:** ≤ 10 Tage → Non-Quanto auch erlaubt, Quanto-Gebühr entfällt. > 10 Tage → Quanto Pflicht (Lektion 1).
-3. **FX-Szenario explizit:** Bei Non-Quanto Entscheidung dokumentieren (Rückenwind / neutral / bewusst akzeptiert).
+2. **Wenn Quanto nicht verfügbar: FX-adjustierter R:R-Plan nach Lektion 1 v2** (siehe unten). Pauschal-Zeitlimit existiert nicht mehr — Setup-R:R nach FX-Drag-Abzug muss Mindest-Schwelle erreichen.
+3. **FX-Szenario explizit:** Bei Non-Quanto-Entry Richtung dokumentieren (Rückenwind / neutral / bewusst akzeptiert), DXY-Stack und EUR/USD ATR-14 prüfen.
 4. **Rohstoff-Korrelationscheck** bei NOK/CAD/AUD/BRL-Underlyings: These unabhängig vom Rohstoffzyklus, oder spiele ich denselben Makro-Trade zweimal?
 5. **Ergebnis:** Produkt handelbar → weiter mit Produktcheck-Reihenfolge unten. Nicht handelbar → Alternative (Sektor-ETF-KO, Direktaktie) oder SKIP.
+
+### Lektion 1 v2 — FX-adjustierter R:R-Buffer (statt pauschales Zeitlimit)
+
+**Hintergrund:** Lektion 1 v1 hatte ein pauschales 10-Tage-Limit auf Non-Quanto-FX-Underlyings. Das schützt nicht das eigentliche Risiko — sondern verbietet auch saubere R:R-Setups, die FX-Drag verkraften, und erlaubt umgekehrt R:R-knappe Setups innerhalb der 10 Tage, die im FX-Verlust enden würden. **Echtes Risiko ist nicht die Halte-Dauer, sondern der R:R-Buffer-Verlust durch FX-Drift während der Halte.**
+
+**Mechanik FX-Drag-Abschätzung:**
+
+EUR/USD-Tagesvola ≈ 0,3-0,5%, gelegentlich 0,8-1% bei Makro-Events. Erwartete kumulierte Drift über Halte-Periode `n` Tage (statistische Erfahrung, kein hartes Modell):
+
+| Halte-Tage | Erwarteter FX-Drag (Median-Szenario) | Worst-Case-Szenario (Top 10%) |
+|---|---|---|
+| 1-2 Tage | 0,3-0,8% | 1,5% |
+| 3-5 Tage | 0,8-1,5% | 2,5% |
+| 6-10 Tage | 1,5-2,5% | 4% |
+| 11-20 Tage | 2,5-4% | 6% |
+| > 20 Tage | nicht mehr planbar — Quanto Pflicht |
+
+**Anwendungsregel — Lektion 1 v2:**
+
+Bei Non-Quanto-KOs auf Foreign-Currency-Underlyings (insbes. USD-Underlyings):
+
+1. **Halte-Plan kalkulieren** (z.B. 5 Tage bis TP1, 10 Tage bis TP2)
+2. **FX-Drag aus Tabelle ablesen** (Median-Szenario)
+3. **FX-Drag von TP-Reward abziehen, zu SL-Risiko hinzuzählen** (konservativ in beide Richtungen)
+4. **Adjustiertes R:R berechnen:** (TP-Reward − FX-Drag) / (SL-Risiko + FX-Drag)
+5. **Mindestschwelle:** adjustiertes R:R **≥ 1,4** (statt 1,35 wie bei EUR-Underlyings)
+6. **Setup nicht handelbar wenn adjust. R:R < 1,4** → SKIP oder Quanto erzwingen oder Direktaktien-Alternative
+
+**Beispiel-Berechnung CTSH-Setup (Halte 5 Tage, ohne Quanto):**
+
+- Underlying-Plan Entry 52,00 / SL 50,90 / TP1 56,00 (USD)
+- Underlying-R:R = 4,00 / 1,10 = 3,64
+- FX-Drag bei 5 Tagen Halte ≈ 1,2% (Median aus Tabelle)
+- Cert ≈ 50€ Risiko, ≈ 180€ Reward (Annahme)
+- 1,2% von 180€ = 2,16€ FX-Drag-Abzug auf Reward → 177,84€
+- 1,2% von 50€ = 0,60€ FX-Drag-Aufschlag auf Risiko → 50,60€
+- Adjustiertes R:R = 177,84 / 50,60 = **3,51 ✅** (deutlich über 1,4)
+
+→ Setup **handelbar** unter Lektion 1 v2, war unter v1 nur durch das Zeitlimit erlaubt, R:R hätte aber jederzeit gestimmt.
+
+**Sonderfälle — FX-Vola-Phasen erfordern strengere Schwelle:**
+
+- **EUR/USD ATR-14 > 0,8%** ODER **DXY mit klarem Trend-Stack (alle EMAs gestapelt)** → adjustiertes R:R-Minimum auf **1,7** anheben statt 1,4
+- **Pre-Fed/EZB-Termine** in Halte-Periode → entweder Quanto erzwingen oder Halte-Periode unter Termin verkürzen
+
+**Was Lektion 1 v2 NICHT erlaubt:**
+
+- EM-/Inflationswährungen (TRY, ZAR, ARS, MXN, RUB, BRL als Reserve-Schwelle prüfen) — bleiben pauschal NO GO. Tagesvola dort ist nicht statistisch berechenbar
+- Halte > 20 Tage ohne Quanto — kumulierte FX-Drift wird zu groß, Quanto Pflicht
+- Setups, deren Underlying-R:R < 1,5 ist — die haben keinen Sicherheitspuffer für FX-Drag
 
 ### Produktcheck-Reihenfolge
 

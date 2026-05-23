@@ -92,18 +92,20 @@ Nach jedem Trade-Update (Eintrag, Close, Teil-Exit):
 ### Zweck
 Kandidaten-Liste. Persistent über Chats hinweg.
 
-### Spalten
+### Spalten (Layout v2 — 8 Spalten, seit 2026-05)
 
 | Spalte | Inhalt | Format |
 |--------|--------|--------|
 | A | Aktie (Name) | Text |
-| B | Richtung (`LONG` / `SHORT`) | Text |
-| C | Entry-Trigger | Text |
-| D | These (kurz) | Text |
-| E | Status — z.B. `👀 beobachten`, `🟡 Trigger nah`, `🟢 Setup reif`, `✅ Trade #XX eröffnet`, `❌ verworfen` | Text mit Emoji |
-| F | Datum hinzugefügt | `'DD.MM.YYYY'` |
+| B | Symbol (Yahoo-Ticker, z.B. `DHL.DE`) — Pflichtspalte für Pipeline-Sync | Text |
+| C | Richtung (`LONG` / `SHORT`) | Text |
+| D | Entry-Trigger | Text |
+| E | These (kurz) | Text |
+| F | Status — z.B. `👀 beobachten`, `🟡 Trigger nah`, `🟢 Setup reif`, `✅ Trade #XX eröffnet`, `📦 ARCHIVED` | Text mit Emoji |
+| G | Datum hinzugefügt | `'DD.MM.YYYY'` |
+| H | Verfallsdatum / Re-Eval-Datum (Default +14 HT, Event-Ausnahme Event+3 HT) | `'DD.MM.YYYY'` + Klammerzusatz |
 
-Kein Saldo-Block. Status-Änderungen per Substring-Match auf Spalte A.
+Kein Saldo-Block. Status-Änderungen per Substring-Match auf Spalte A; `update_watchlist_status()` schreibt nach **Spalte F (Status)**. Layout v1 (6 Spalten, ohne `Symbol`/`Verfallsdatum`) ist obsolet — alte Doku-Stände, die `update_watchlist_status` auf Spalte E zeigen, sind die Ursache des 15.05.2026-Bugs (Journal-Note #63).
 
 ---
 

@@ -15,9 +15,14 @@ name: Marketdata Sync Tier B (EU-Universum)
 # Output-Tag-Konvention seit 2026-05-13:
 #   MARKETDATA-FULL-EU-... + GAMECHANGER-HUNT-EU-... (statt "GC")
 #
-# Tier-B-Slots in cron-job.org (Berlin-Zeit) — Empfehlung 2×/Tag:
-#   - Mo-Fr 08:30 (vor DE-Open)                  → Crontab: 30 8 * * 1-5
-#   - Mo-Fr 15:00 (Frankfurt-Schluss-Vorbereitg) → Crontab: 0 15 * * 1-5
+# Tier-B-Slots in cron-job.org (Berlin-Zeit) — Stand 2026-05-23 (live konfiguriert):
+#   - Mo-Fr je :00 und :30 der Stunden 8, 9, 11, 18 (8 Läufe/Tag, 40/Woche)
+#     → Crontab: 0,30 8,9,11,18 * * 1-5
+#   Abdeckung: 08:00-09:30 Briefing-Anker + Xetra-Open, 11:00/11:30 deckt das
+#   Handelsfenster 09-12 ab, 18:00/18:30 EU-EOD nach Xetra-Schluss (17:30).
+#   Hinweis: 18:00/18:30 = 16:00/16:30 UTC, unter dem Volumen-Guard (20:00 UTC)
+#   → volume_zscore/nr7 bleiben fürs EU-Universum None (bekannt, Designfrage
+#   region-bewusste Guard-Stunde offen).
 #
 # PAT-Renewal-Deadline: 2026-07-21 (siehe Memory-Notiz).
 

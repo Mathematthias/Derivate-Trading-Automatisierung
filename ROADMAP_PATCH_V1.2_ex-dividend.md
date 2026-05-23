@@ -10,7 +10,7 @@ Anweisung an mich selbst (Mathematthias): Diesen Patch als neuen Abschnitt in `R
 
 ## V1.2 — Ex-Dividende-Anreicherung (Anomaly-Layer-Patch)
 
-**Status:** 🔵 geplant
+**Status:** ✅ DONE (2026-05-23)
 **Aufwand-Schätzung:** ~2-3h
 **Priorität:** Mittel — verhindert konkrete False-Positives bei Breakdown-Short-Erkennung
 
@@ -58,11 +58,23 @@ Cutoff von 2 Tagen ist konservativ — bei reinen Ex-Tag-Drops ist die Bewegung 
 
 ### Akzeptanzkriterien
 
-- [ ] Alle ~307 Tier-B-Ticker und ~65 Tier-A-Ticker liefern `last_ex_div_days_ago` und `last_ex_div_amount` im MARKETDATA-Output
-- [ ] Breakdown-Detector skippt Kandidaten mit `last_ex_div_days_ago ≤ 2`
-- [ ] Tests: Synthetic-Fall HEI.DE 15.05.2026 wird NICHT als Breakdown-Short gemeldet
-- [ ] CANDIDATES.md-Output zeigt Ex-Div-Info inline bei Kandidaten, falls Tag relevant (≤ 7 HT alt)
-- [ ] V1.1-Tests (122/122) bleiben grün
+- [x] Alle Tier-B- und Tier-A-Ticker liefern `last_ex_div_days_ago` und `last_ex_div_amount` im MARKETDATA-Output
+- [x] Breakdown-Detector skippt Kandidaten mit `last_ex_div_days_ago ≤ 2`
+- [x] Tests: Synthetic-Fall HEI.DE 15.05.2026 wird NICHT als Breakdown-Short gemeldet
+- [x] CANDIDATES.md-Output zeigt Ex-Div-Info inline bei Kandidaten, falls Tag relevant (≤ 7 HT alt)
+- [x] V1.1-Tests bleiben grün
+
+### Umsetzungs-Notiz (2026-05-23) — Abweichung von der Skizze
+
+Statt der oben skizzierten Pro-Symbol-`.actions`-Calls hinter einem ENV-Flag
+wird der bestehende Batch-Download (`fetch_ticker_data`) mit `actions=True`
+aufgerufen. Die `Dividends`-Spalte kommt damit im selben Pull mit — **null
+zusätzliche Yahoo-Calls**. Der im Patch genannte Call-Budget-Grund für ein
+Opt-in-Flag entfällt damit; die Anreicherung läuft ohne Flag auf allen Tiers.
+`last_ex_div_days_ago` zählt exakte Handelstage (df-Index-Positionsdifferenz),
+nicht Kalendertage. Implementiert in `market_data.py`
+(`_compute_ex_dividend_fields`), `output_renderer.py` (MARKETDATA-FULL-Zeile +
+`EX-DIVIDENDE kürzlich`-Sektion), `filter_engine.py` (`_check_bucket`-Skip).
 
 ### Nicht-Ziele für V1.2
 

@@ -41,6 +41,7 @@ class WatchlistEntry:
     # Extrahierte Trigger-Komponenten
     triggers: list["ParsedTrigger"] = field(default_factory=list)
     earliest_date: Optional[date] = None  # bei "nach 2026-04-30"
+    expiry_date: Optional[date] = None  # Verfallsdatum (Spalte H, Patch 5)
 
 
 @dataclass
@@ -242,12 +243,27 @@ def parse_watchlist(state_text: str) -> list[WatchlistEntry]:
             continue
         # Zeilen mit < 5 Pipes sind keine Datenzeilen
         cols = [c.strip() for c in stripped.split("|")]
-        # erstes und letztes element sind leer durch leading/trailing pipe
-        cols = [c for c in cols if c != ""]
+        # Nur die durch die Rand-Pipes erzeugten Leer-Zellen am Anfang/Ende
+        # entfernen — INNERE Leerzellen behalten (die Verfall-Spalte darf
+        # leer sein, sonst verschiebt sich die Spaltenzuordnung). Patch 5.
+        if cols and cols[0] == "":
+            cols = cols[1:]
+        if cols and cols[-1] == "":
+            cols = cols[:-1]
         if len(cols) < 5:
             continue
 
         name, symbol, direction, trigger_raw, status_full = cols[:5]
+
+        # 6. Spalte Verfall — nur in neuen STATE-Docs vorhanden (Patch 5).
+        # Alte 5-Spalten-Tabellen liefern hier nichts → expiry_date bleibt None.
+        expiry_raw = cols[5] if len(cols) >= 6 else ""
+        expiry_date: Optional[date] = None
+        if expiry_raw:
+            try:
+                expiry_date = date.fromisoformat(expiry_raw)
+            except ValueError:
+                expiry_date = None
 
         # Status-Wert + Note trennen: "⚠️ aktiv — Note #9"
         status_key, status_note = _parse_status_field(status_full)
@@ -273,6 +289,7 @@ def parse_watchlist(state_text: str) -> list[WatchlistEntry]:
             status_note=status_note,
             triggers=triggers,
             earliest_date=earliest_date,
+            expiry_date=expiry_date,
         ))
 
     return entries

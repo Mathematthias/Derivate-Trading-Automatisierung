@@ -7,9 +7,13 @@ name: Marketdata Sync Tier A
 #   Seit 2026-05-13 zusätzlich Hygiene-Bestätigung: KEIN `on: schedule` —
 #   bei öffentlichem Repo zudem unzuverlässig.
 #
-# Tier-A-Slots in cron-job.org (Berlin-Zeit):
-#   - Mo-Fr alle 30 Min, Lauf-Fenster 08:00-21:00  → Crontab: */30 8-21 * * 1-5
-#   - Sa 10:00 (Wochenend-Snapshot)                → Crontab: 0 10 * * 6
+# Tier-A-Slots in cron-job.org (Berlin-Zeit) — Stand 2026-05-23 (live konfiguriert):
+#   - Mo-Fr alle 30 Min, Lauf-Fenster 08:00-22:30  → Crontab: 0,30 8-22 * * 1-5
+#   Fenster bis 22:30 (vorher 21:00): deckt die Handelsfenster 09-12 + 19-22
+#   ab; die 22:00/22:30-Läufe sitzen post-US-Close und post-Volumen-Guard
+#   (20:00 UTC) → finales EOD inkl. volume_zscore/nr7 fürs Morgen-Briefing.
+#   Sa-Snapshot (früher 0 10 * * 6) am 2026-05-23 entfernt — am Wochenende
+#   kein neuer EOD-Stand gegenüber Freitag, kein Wochenend-Handel.
 #
 # Da cron-job.org bereits in Berlin-Zeit triggert und nur zur gewünschten
 # Zeit feuert, ist das frühere Berlin-Time-Gate obsolet und entfernt. Bei

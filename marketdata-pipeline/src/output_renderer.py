@@ -19,12 +19,19 @@ EMA200-MeanRev + Earnings-Erweiterung (2026-05-08, Note #47/#49):
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional
+
+import numpy as np
 
 from filter_engine import CandidateMatch, WatchlistResult
 from market_data import TickerSnapshot
 from state_parser import FilterOverride
+
+
+# Watchlist-Verfall: ≤ dieser Handelstage bis zum Verfallsdatum → ⏰-Markierung
+# (Patch 5, #42). Schwelle gewählt, nicht empirisch — leicht justierbar.
+EXPIRY_NEAR_THRESHOLD_HT = 3
 
 
 # ============================================================
@@ -128,6 +135,22 @@ def render_marketdata_full(
                     last_str += f" ({snap.days_since_last_earnings}d ago)"
                 ep.append(last_str)
             lines.append(f"- **Earnings:** {' · '.join(ep)}")
+
+        # === Ex-Dividende (V1.2, Note #67) ===
+        if snap.last_ex_div_date:
+            last_part = f"Last={snap.last_ex_div_date}"
+            details: list[str] = []
+            if snap.last_ex_div_days_ago is not None:
+                details.append(f"{snap.last_ex_div_days_ago}d ago")
+            if snap.last_ex_div_amount is not None:
+                details.append(f"Betrag {_fmt_price(snap.last_ex_div_amount)}")
+            if details:
+                last_part += f" ({', '.join(details)})"
+            next_part = (
+                f"Next={snap.next_ex_div_date} (geschätzt)"
+                if snap.next_ex_div_date else "Next=unbekannt"
+            )
+            lines.append(f"- **Ex-Div:** {last_part} · {next_part}")
 
         lines.append("")
 
@@ -546,7 +569,50 @@ def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]
             out.append(line)
         out.append("")
 
+    # ----- EX-DIV-RECENT (V1.2, Note #67) -----
+    # Symbole mit Ex-Tag ≤7 HT zurück — Briefing-Warnung, damit ein Ex-Effekt-
+    # Drop nicht als Verkaufsdruck fehlgelesen wird (HEI.DE-Lehre).
+    exdiv_snaps: list[TickerSnapshot] = [
+        s for s in snapshots.values()
+        if s.last_ex_div_days_ago is not None and s.last_ex_div_days_ago <= 7
+    ]
+    if exdiv_snaps:
+        if out:
+            out.append("---")
+            out.append("")
+        out.append("## ⚠️ EX-DIVIDENDE kürzlich (V1.2, Note #67)")
+        out.append("")
+        exdiv_snaps.sort(key=lambda s: s.last_ex_div_days_ago or 999)
+        for snap in exdiv_snaps:
+            amt = (
+                f" | Betrag {_fmt_price(snap.last_ex_div_amount)}"
+                if snap.last_ex_div_amount is not None else ""
+            )
+            out.append(
+                f"⚠️ EX-DIV | {snap.symbol} | ex {snap.last_ex_div_date} | "
+                f"{snap.last_ex_div_days_ago}d ago{amt}"
+            )
+        out.append("")
+
     return out
+
+
+def _expiry_flag(expiry_date: Optional[date], today: date) -> Optional[str]:
+    """Verfall-Flag für eine Watchlist-Zeile. None wenn kein Verfallsdatum.
+
+    Countdown in Handelstagen (Mo-Fr, ohne Feiertage — konsistent mit der
+    '+N HT'-Konvention, mit der die Verfallsdaten im Journal gesetzt werden).
+    ≤0 HT → verfallen, ≤EXPIRY_NEAR_THRESHOLD_HT → ⏰-Markierung, sonst Info.
+    """
+    if expiry_date is None:
+        return None
+    ht = int(np.busday_count(today, expiry_date))
+    iso = expiry_date.isoformat()
+    if ht <= 0:
+        return f"⛔ verfallen (Verfall {iso})"
+    if ht <= EXPIRY_NEAR_THRESHOLD_HT:
+        return f"⏰ Verfall in {ht} HT ({iso})"
+    return f"Verfall: {iso} ({ht} HT)"
 
 
 def _render_watchlist_entry(r: WatchlistResult) -> list[str]:
@@ -559,6 +625,10 @@ def _render_watchlist_entry(r: WatchlistResult) -> list[str]:
     lines.append(
         f"- **{r.entry.symbol}** ({r.entry.direction} {direction_arrow}) — Kurs {price_str}"
     )
+    # Verfall-Flag (Patch 5, #42) — Countdown bis zum Verfallsdatum.
+    expiry_flag = _expiry_flag(r.entry.expiry_date, date.today())
+    if expiry_flag:
+        lines.append(f"  - {expiry_flag}")
 
     for ts in r.trigger_results:
         label_str = f"[{ts.label}] " if ts.label else ""

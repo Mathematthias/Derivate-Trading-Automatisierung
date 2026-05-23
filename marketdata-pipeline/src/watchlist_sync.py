@@ -29,7 +29,7 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional
 
 from googleapiclient.errors import HttpError
@@ -142,6 +142,29 @@ def _shorten_richtung(richtung: str) -> str:
     return first  # KONDITIONAL etc. unverändert lassen
 
 
+_VERFALL_DATE_RE = re.compile(r"(\d{1,2})\.(\d{1,2})\.(\d{4})")
+
+
+def _parse_verfall_date(raw: str) -> str:
+    """Extrahiert das führende TT.MM.JJJJ aus dem Verfallsdatum-Feld (Spalte H)
+    und normiert es auf ISO YYYY-MM-DD für den STATE-Doc.
+
+    Das Journal-Feld enthält Datum plus Freitext-Klammer, z.B.
+    '11.06.2026 (Momentum-Setup +14 HT)'. Leerer String bei fehlendem oder
+    unparsbarem Datum.
+    """
+    if not raw:
+        return ""
+    m = _VERFALL_DATE_RE.search(raw)
+    if not m:
+        return ""
+    d, mo, y = m.groups()
+    try:
+        return date(int(y), int(mo), int(d)).isoformat()
+    except ValueError:
+        return ""
+
+
 def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
     """Liest das Watchlist-Sheet aus dem Journal und gibt Dicts zurück.
 
@@ -183,6 +206,7 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
     col_richtung = find_col("richtung")
     col_trigger = find_col("entry-trigger", "trigger")
     col_status = find_col("status")
+    col_verfall = find_col("verfallsdatum", "verfall")
 
     if col_symbol is None:
         raise RuntimeError(
@@ -218,6 +242,11 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
             if col_status is not None and row[col_status]
             else ""
         )
+        raw_verfall = (
+            str(row[col_verfall]).strip()
+            if col_verfall is not None and row[col_verfall]
+            else ""
+        )
 
         status, note = _parse_status(raw_status)
         entries.append({
@@ -227,6 +256,7 @@ def read_journal_watchlist(xlsx_bytes: bytes) -> list[dict]:
             "trigger": _shorten_trigger(trigger),
             "status": status,
             "note": note,
+            "verfall": _parse_verfall_date(raw_verfall),
         })
     return entries
 
@@ -271,8 +301,8 @@ def render_watchlist_block(entries: list[dict], generated_at: datetime) -> str:
         f"({len(entries)} Einträge)_"
     )
     lines.append("")
-    lines.append("| Kandidat | Symbol | Richtung | Trigger (Kurzform) | Status |")
-    lines.append("|----------|--------|----------|--------------------|--------|")
+    lines.append("| Kandidat | Symbol | Richtung | Trigger (Kurzform) | Status | Verfall |")
+    lines.append("|----------|--------|----------|--------------------|--------|---------|")
     for e in entries:
         emoji = _status_emoji(e["status"])
         status_cell = f"{emoji} {e['status']}"
@@ -282,8 +312,10 @@ def render_watchlist_block(entries: list[dict], generated_at: datetime) -> str:
         kandidat = e["aktie"].replace("|", "\\|")
         trigger = e["trigger"].replace("|", "\\|").replace("\n", " ")
         status_cell = status_cell.replace("|", "\\|")
+        verfall = e.get("verfall", "").replace("|", "\\|")
         lines.append(
-            f"| {kandidat} | {e['symbol']} | {e['richtung']} | {trigger} | {status_cell} |"
+            f"| {kandidat} | {e['symbol']} | {e['richtung']} | {trigger} | "
+            f"{status_cell} | {verfall} |"
         )
     lines.append("")
     return "\n".join(lines)

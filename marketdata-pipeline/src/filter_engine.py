@@ -787,6 +787,12 @@ def _check_bucket(
 
     # Breakdown Short
     if bucket == "breakdown_short":
+        # V1.2 Ex-Div-Pre-Filter (Note #67, Lektion 16): liegt der letzte
+        # Ex-Tag 0-2 HT zurück, ist der Tagesverlust überwiegend Buchungs-
+        # effekt, kein realer Verkaufsdruck (HEI.DE 15.05.2026: -7,16% am
+        # Ex-Tag fälschlich als Breakdown gemeldet). Kein Breakdown-Signal.
+        if snap.last_ex_div_days_ago is not None and snap.last_ex_div_days_ago <= 2:
+            return None
         if cfg.get("require_bearish_ema_stack") and not snap.has_bearish_stack:
             return None
         if snap.low_20d is None:

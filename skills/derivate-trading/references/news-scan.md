@@ -9,17 +9,57 @@
 
 ---
 
-## ⚠️ Pflicht-Schritt 0 — Watchlist-Abgleich (gilt für 8, 8b, 8c)
+## ⚡ Pflicht-Schritt 0a — Pipeline-Load (seit Phase 4, 26.04.2026)
+
+**Vor jeder Recherche** wird die jüngste MARKETDATA + CANDIDATES + GAMECHANGER-HUNT aus dem Workspace Shared Drive geladen — die ersten beiden liefern für 47 Ticker bereits Kurs/EMA/RSI/30d-Move/Volumen und Watchlist-Trigger-Status, GAMECHANGER-HUNT zusätzlich Setup-getriggerte Stufe-2-Kandidaten. Volltext: `references/pipeline-integration.md`. Kurzform:
+
+```python
+import sys; sys.path.insert(0, '/mnt/skills/user/derivate-trading')
+import pipeline_utils as pu
+
+# (1) Drive: jüngste 3 Files finden — search_files mit modifiedTime DESC
+# (2) Drive: read_file_content für alle drei Files
+# (3) Frische prüfen
+ROUTINE = 'scan_afternoon'  # oder 'scan_evening'
+md_status   = pu.freshness_status(md_modified_time_iso, ROUTINE)
+cand_status = pu.freshness_status(cand_modified_time_iso, ROUTINE)
+gc_status   = pu.freshness_status(gc_modified_time_iso, ROUTINE)
+
+core_fallback = (md_status['status'] in ('ausfall', 'missing') or
+                 cand_status['status'] in ('ausfall', 'missing'))
+
+if core_fallback:
+    # 🔴 Pipeline-Fallback aktiv — komplette Web-Logik wie vor Phase 4
+    fallback = True
+else:
+    # 🟢/🟡 Pipeline-Daten nutzen
+    md = pu.parse_marketdata(md_content)
+    snap = pu.parse_candidates(cand_content)
+    # Gamechanger ist additiv — bei Ausfall einfach leer
+    gc = (pu.parse_gamechanger(gc_content)
+          if gc_status['status'] not in ('ausfall', 'missing')
+          else pu.GamechangerSnapshot())
+    fallback = False
+```
+
+**Header-Pflicht im Output:** Bei `stale` (🟡) oder Core-Fallback (🔴) muss der Briefing-Header das nennen — `pu.render_freshness_header(md_status, cand_status, ROUTINE, gc_status=gc_status)`. Bei reinem Gamechanger-Ausfall: kompakte Hinweiszeile, kein roter Fallback (siehe Reference, Abschnitt „Fallback-Granularität").
+
+---
+
+## ⚠️ Pflicht-Schritt 0b — Watchlist-Abgleich (gilt für 8, 8b, 8c)
 
 **Bevor ein Kandidat ausgegeben wird**, wird sein Name (und ggf. Kürzel/Ticker) gegen die Watchlist abgeglichen. Grund: Watchlist-Einträge haben bereits durchdachte Trigger und Thesen — sie sind **keine neuen Kandidaten**, und wenn sie erneut auftauchen, ist die relevante Information „Trigger jetzt erreicht / noch nicht" — nicht „hier ist eine neue Idee".
 
-**Implementation:**
+**Implementation (Pipeline-First):**
 
 ```python
-match = ju.match_watchlist(wb, kandidat_name)
+match = pu.find_candidate_in_buckets(snap, kandidat_name)  # snap aus Schritt 0a
 if match:
     # Output-Format siehe unten — NICHT als neuer Kandidat!
+    # match.bucket = 'bereit' | 'very_close' | 'close' | ...
 ```
+
+Bei Pipeline-Fallback (Schritt 0a `fallback=True`): Auf `ju.match_watchlist(wb, name)` zurückfallen — Logik unverändert wie vor Phase 4.
 
 **Output bei Watchlist-Match (ersetzt den normalen Kandidaten-Block):**
 
@@ -27,15 +67,30 @@ if match:
 🔔 WATCHLIST-TREFFER — nicht als neuer Kandidat
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Kandidat: [Name] — [Long/Short]
-Auf Watchlist seit: [Datum]
-Trigger:  [Trigger-Text aus Watchlist]
-Status:   [aktueller Status aus Watchlist]
-Check:    [Ist der Trigger JETZT erreicht? 🟢/🟡/⏸]
-Aktion:   [volle Checkliste JETZT / weiter warten / invalidiert → remove]
+Bucket:   [bereit / very_close / close / watching / pending / paused / passive]
+Details:  [Detail-Text aus CANDIDATES — z.B. "Preis 33.94 IN-ZONE [33.40-33.60]"]
+Aktion:   [bereit → volle Checkliste JETZT / very_close → vorbereiten / sonst → weiter warten]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Nur wenn der **Watchlist-Trigger jetzt tatsächlich erreicht ist**, geht der Kandidat in die volle 7/7-Checkliste — mit dem Hinweis, dass es ein Watchlist-Trigger-Hit ist, nicht ein News-/Hidden-/Insider-Scan-Hit. Dem User ist damit klar, dass die These schon vorher vereinbart war.
+Nur wenn der Bucket **`bereit`** ist (= Pipeline hat Trigger als erfüllt geflaggt), geht der Kandidat in die volle 7/7-Checkliste — mit dem Hinweis, dass es ein Watchlist-Trigger-Hit ist, nicht ein News-/Hidden-/Insider-Scan-Hit. Dem User ist damit klar, dass die These schon vorher vereinbart war.
+
+---
+
+## ⚠️ Pflicht-Schritt 0c — Counter-These-Quick-Check (seit 07.05.2026)
+
+**Vor jeder vollen Kandidaten-Bewertung** läuft Counter-These als Step 1 (siehe SKILL.md § Counter-These-Quick-Check). Drei Punkte, max. 2 Web-Suchen:
+
+1. Aktiver Aktienrückkauf? (gegen Short tot, für Long stützend)
+2. Frische Analysten-Aktionen letzte 14 Tage? (Konsens-Drift = hartes Counter-Signal)
+3. Earnings/HV/Ex-Div in ≤ 5 Handelstagen? (Event-Risiko)
+
+≥ 1 Treffer gegen die These → SKIP oder Setup-Wechsel, **nicht** in volle Vorcheckliste gehen. Erst nach Quick-Check-Pass:
+- Schritt 0a (Pipeline-Load) bereits erledigt
+- Schritt 0b (Watchlist-Abgleich) bereits erledigt
+- Schritt 0c (Counter-These) erledigt → jetzt Kandidaten-Bewertung mit 7/7-Vorcheckliste
+
+**Rationale:** Workflow-Korrektur aus CRM-Lehre Note #38. Counter-These als letzter Filter erzeugte Sunk-Cost bei Plan-Arbeit. Ab Step 1 spart das Zeit und Klar-Disziplin: Setups, die durch Buyback-/Analyst-/Event-Filter fallen, werden nicht zu Plänen.
 
 ---
 
@@ -57,11 +112,13 @@ Nur wenn der **Watchlist-Trigger jetzt tatsächlich erreicht ist**, geht der Kan
 
 Bei jedem Kandidaten **in dieser Reihenfolge** prüfen, bevor die News-These bewertet wird. Grund: News-Katalysator kommt zuletzt, nicht zuerst — sonst klingt jede Schlagzeile nach Trade.
 
-1. **30d-Move** (primäre Late-Entry-Metrik): >15% = stärkeres Setup nötig. **Nicht YTD verwenden** — zeitvariant (im Januar ~2 Wochen, im Dezember ~12 Monate) und deshalb als Timing-Filter ungeeignet.
-2. **52W-Hoch-Abstand**: Am ATH = wenig Raum nach oben. 10–30% unter Hoch = komfortabler Puffer.
-3. **RSI (Daily)**: <60 für Long-Kandidaten erwünscht; >70 = überkauft, nicht einsteigen.
-4. **EMA-Staffelung**: Kurs über EMA20>EMA50>EMA100>EMA200 = gesunder Uptrend. Andernfalls Trend-Zustand einordnen, bevor gekauft wird.
-5. **News-Katalysator erst jetzt bewerten**: Hat der Markt die Information schon eingepreist (Rally vor der Meldung) oder ist noch Reaktion offen?
+**🆕 Phase 4:** Wenn der Kandidat im Pipeline-Universe (47 Ticker) liegt → alle Werte aus `pu.get_ticker_data(md, ticker)`. Liefert das `None` (Off-Universe) → gezielte Web-Suche nur für diesen Ticker. Bei Pipeline-Fallback: alles per Web wie bisher.
+
+1. **30d-Move** (primäre Late-Entry-Metrik): >15% = stärkeres Setup nötig. **Nicht YTD verwenden** — zeitvariant (im Januar ~2 Wochen, im Dezember ~12 Monate) und deshalb als Timing-Filter ungeeignet. → `td.move_30d`
+2. **52W-Hoch-Abstand**: Am ATH = wenig Raum nach oben. 10–30% unter Hoch = komfortabler Puffer. → `td.hi_52w_dist`
+3. **RSI (Daily)**: <60 für Long-Kandidaten erwünscht; >70 = überkauft, nicht einsteigen. → `td.rsi`
+4. **EMA-Staffelung**: Kurs über EMA20>EMA50>EMA100>EMA200 = gesunder Uptrend. Andernfalls Trend-Zustand einordnen, bevor gekauft wird. → `td.ema_stack` (`'bullish' | 'bearish' | 'neutral'`) plus `td.ema20/50/200`
+5. **News-Katalysator erst jetzt bewerten**: Hat der Markt die Information schon eingepreist (Rally vor der Meldung) oder ist noch Reaktion offen? → Bleibt Web-Suche.
 
 **Makro-Phasen-Beobachtung:** Nach abrupten Makro-Wenden (z.B. Iran-Hormus-Öffnung 17.04.2026) sind News-Scan-Long-Kandidaten systemisch Late-Entries — der Markt hat die Information im Vorfeld der Schlagzeile verarbeitet. In solchen Phasen: Pullbacks abwarten oder Short-Setups priorisieren.
 
@@ -71,7 +128,7 @@ Bei jedem Kandidaten **in dieser Reihenfolge** prüfen, bevor die News-These bew
 2. **Websuche:** `[auffälliger Kandidat] Aktie Ursache [aktuelles Datum]` (nur wenn konkreter Kandidat aus Schritt 1)
 3. **Sekundär-Websuche (Stufe 2 — automatisch bei <2 reifen Stufe-1-Kandidaten):** `S&P 500 Nasdaq biggest movers earnings surprise [aktuelles Datum]`
 4. **Stufe 3 nur auf Codewort „Asien-Scan"** oder expliziten Makro-Trigger aus Makro-Check (BoJ/PBoC-Event, China-Stimulus): `Nikkei Hang Seng movers [aktuelles Datum]`
-5. **Watchlist-Abgleich (Pflicht — Schritt 0 oben):** Jeder Kandidat durch `ju.match_watchlist(wb, name)`. Bei Treffer → Watchlist-Treffer-Format, nicht Kandidaten-Format.
+5. **Watchlist-Abgleich (Pflicht — Schritt 0b oben):** Jeder Kandidat durch `pu.find_candidate_in_buckets(snap, name)` (Pipeline) oder bei Fallback `ju.match_watchlist(wb, name)`. Bei Treffer → Watchlist-Treffer-Format, nicht Kandidaten-Format.
 6. Ausgabe im NEWS-SCAN-Format, Kandidaten mit Stufen-Kennzeichnung
 
 ### Output-Format
@@ -109,10 +166,17 @@ Standard: 2–3 Websuchen für reine Stufe 1; 4–5 wenn Stufe 2 automatisch tri
 
 ### 4 Schichten der Suche
 
+**Schicht 0 — GAMECHANGER-HUNT aus Pipeline (seit Phase 4, IMMER zuerst):**
+- Quelle: Bereits in Schritt 0a geladen (`gc = pu.parse_gamechanger(gc_content)`). Liefert Setup-getriggerte Stufe-2-Kandidaten (Long/Short-Trend-Pullback etc.) aus dem Universe-Scan — genau die Art „chartbasiert sichtbar, aber noch keine News dazu", die Hidden Catalyst sucht.
+- Verarbeitung: Jeden Gamechanger-Kandidaten als Vor-Kandidat aufnehmen, Schicht 1 (EQS/DGAP) und Schicht 2 (Insider) **gezielt für diese Tickers** durchsuchen statt breit. Das spart Web-Calls und fokussiert auf Setups, die die Pipeline ohnehin als plausibel markiert hat.
+- Wenn Gamechanger leer ist (oder Pipeline ausgefallen): Schicht 1 und 2 wie bisher breit suchen.
+- Watchlist-Cross-Check: Gamechanger-Kandidaten via `pu.find_candidate_in_buckets(snap, ticker)` prüfen — falls Treffer in CANDIDATES, Watchlist-Treffer-Format ausgeben (Schritt 0b).
+
 **Schicht 1 — EQS/DGAP Ad-hoc Pflichtmeldungen (IMMER):**
 - Websuche: `DGAP Ad-hoc Meldung heute [aktuelles Datum] Nebenwert Deutschland`
 - Alternative: `EQS-News Ad-hoc [aktuelles Datum] SDAX`
 - Ziel: Aufträge, Beteiligungen, strategische Entscheidungen, Prognoseänderungen, noch nicht eingepreist
+- **Bei Schicht-0-Kandidaten zusätzlich:** Pro Gamechanger-Ticker gezielt: `[Ticker-Name] DGAP EQS Meldung [aktuelles Datum]`
 
 **Schicht 2 — WpHG §40 Insider-Käufe / Directors' Dealings (IMMER):**
 - Websuche: `Insider Kauf WpHG Directors Dealings Deutschland [aktueller Monat Jahr]`
@@ -127,13 +191,27 @@ Standard: 2–3 Websuchen für reine Stufe 1; 4–5 wenn Stufe 2 automatisch tri
 - Cluster-Logik identisch zu BaFin (CEO+CFO, seriell, Großvolumen ≥ 500k USD)
 - **Produktverfügbarkeits-Vorstufe beachten** bevor Kandidat in volle Checkliste geht
 
-**Schicht 3 — Behörden-Entscheidungen (auf Wunsch):**
+**Schicht 3 — Behörden-Entscheidungen (automatisch bei Eskalation, sonst auf Wunsch):**
 - Websuche: `Kartellamt Freigabe [Monat Jahr]` oder `BaFin Entscheidung [Monat Jahr]`
 - Ziel: M&A-Katalysatoren, Zulassungen (FDA, EMA)
 
-**Schicht 4 — Sektor-Frühindikatoren (auf Wunsch):**
+**Schicht 4 — Sektor-Frühindikatoren (automatisch bei Eskalation, sonst auf Wunsch):**
 - Baltic Dry Index, Gasflüsse (GIE AGSI), Rohstoff-Moves, FDA-Kalender
 - Ziel: Trendwende in Sektor-Daten bevor sich Einzeltitel bewegen
+
+### Eskalations-Automatik Schicht 3 + 4 (seit 2026-05-21)
+
+Schicht 3 und 4 sind grundsätzlich on-demand — mit **einer** Ausnahme, die sie ohne Rückfrage auslöst:
+
+**Trigger:** Wenn Schicht 1 + 2 (sowie 2b, sofern wegen dünner DE-Lage aktiviert) **keinen neuen handelbaren Kandidaten** liefern, werden Schicht 3 **und** 4 automatisch nachgezogen.
+
+**Was als „handelbarer Kandidat" zählt:** ein neuer Wert, der in einen Bucket BEREIT oder NAHE mündet bzw. eine Stufe-1-GO-Empfehlung trägt. **Nicht** ausreichend, um die Eskalation zu unterdrücken: Bestätigungen bereits offener Positionen, reine Kontext-Funde (operative News ohne Setup), Kandidaten die schon auf der Watchlist stehen, oder Negativ-Befunde („geprüft, kein Cluster").
+
+**Gilt für:** Routine 8b (Hidden Catalyst Scan) und den Hidden-Scan-Teil im Morgen-Briefing (Routine 7 — dort laufen Schichten 0–2 ohnehin ungefragt, die Eskalation hängt 3 + 4 bei Bedarf an).
+
+**Greift nicht:** Liefern Schicht 1/2/2b mindestens einen neuen Kandidaten, bleiben 3 + 4 on-demand. Manuell sind beide jederzeit auch ohne Eskalations-Trigger anforderbar.
+
+**Credit-Hinweis (Regel 18):** Die Eskalation kostet typisch 3–5 zusätzliche Web-Calls, greift aber nur bei wirklich leerem Schicht-1/2/2b-Ertrag — an Tagen mit Insider- oder Ad-hoc-Fund läuft sie nicht.
 
 ### 6 Hidden-Catalyst-Muster
 
@@ -146,7 +224,7 @@ Standard: 2–3 Websuchen für reine Stufe 1; 4–5 wenn Stufe 2 automatisch tri
 
 ### Watchlist-Abgleich (Pflicht)
 
-Vor Output jeder Kandidaten-Karte: `ju.match_watchlist(wb, name)`. Bei Treffer → Watchlist-Treffer-Format statt Hidden-Catalyst-Block (siehe Schritt 0 oben).
+Vor Output jeder Kandidaten-Karte: `pu.find_candidate_in_buckets(snap, name)` (Pipeline) oder bei Fallback `ju.match_watchlist(wb, name)`. Bei Treffer → Watchlist-Treffer-Format statt Hidden-Catalyst-Block (siehe Schritt 0b oben).
 
 ### Output-Format
 
@@ -200,7 +278,7 @@ Empfehlung: [GO zur vollen Checkliste / SKIP]
    - **BaFin Directors' Dealings (DE):** Primärquelle
    - **OpenInsider (US):** https://openinsider.com/top-insider-sales-of-the-month — Cluster-Sells mit SEC-Form-4-Primärdaten
    - **Finviz Insider (US):** https://finviz.com/insidertrading.ashx?tc=1 (Cluster Sales Filter)
-6. **Watchlist-Abgleich (Pflicht — Schritt 0 oben):** Jeder Kandidat durch `ju.match_watchlist(wb, name)`. Bei Treffer → Watchlist-Treffer-Format statt Short-Kandidaten-Block.
+6. **Watchlist-Abgleich (Pflicht — Schritt 0b oben):** Jeder Kandidat durch `pu.find_candidate_in_buckets(snap, name)` (Pipeline) oder bei Fallback `ju.match_watchlist(wb, name)`. Bei Treffer → Watchlist-Treffer-Format statt Short-Kandidaten-Block.
 7. Ausgabe im Format unten — bei Stufe-2-Kandidaten Produktverfügbarkeit als Zusatzzeile
 
 ### Output-Format

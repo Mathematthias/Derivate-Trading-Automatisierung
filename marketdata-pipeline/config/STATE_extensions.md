@@ -21,7 +21,7 @@
 |------|--------------|-----------|
 | ATOSS Software | AOF.DE | Position #53 |
 | CTS Eventim | EVD.DE | Position #48 |
-| Xetra-Gold ETC | 4GLD.DE | Position #39 |
+| Xtrackers Physical Gold ETC | XAD5.DE | Position #39 |
 | BTC-EUR | BTC-EUR | Krypto Bison |
 | ETH-EUR | ETH-EUR | Krypto Bison |
 | SOL-EUR | SOL-EUR | Krypto Bison |
@@ -88,7 +88,7 @@
 ### Underlying-Closes Xetra (TradingView)
 - ATOSS (AOF.DE):       82,20€   (+3,27%)
 - CTS Eventim (EVD.DE): noch eintragen
-- Xetra-Gold (4GLD.DE): noch eintragen
+- Xtrackers Gold (XAD5.DE): noch eintragen
 - Commerzbank (CBK.DE): 33,89€   (Trigger-Zone A 33,40-33,60)
 - DAX:                  24.055,06   (-0,02%)
 

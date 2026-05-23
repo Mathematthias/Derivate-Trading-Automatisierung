@@ -858,37 +858,57 @@ def _append_to_geschlossene_aktie(wb: Workbook, ws_av: Worksheet, av_row: int):
 
 def add_watchlist(wb: Workbook, entry: Dict[str, Any]) -> int:
     """
-    Fügt Eintrag zur Watchlist hinzu.
-    Keys: **aktie**, **richtung** ('LONG'/'SHORT'), **trigger**, **these**, status (default '👀 beobachten'), datum (default heute)
+    Fügt Eintrag zur Watchlist hinzu (Layout v2, 7 Spalten).
+
+    Spalten-Layout:
+      A=Aktie, B=Symbol, C=Richtung, D=Entry-Trigger, E=These, F=Status, G=Datum hinzugefügt
+
+    Keys im entry-Dict:
+      **aktie**, **symbol** (Yahoo-Ticker, z.B. 'DHL.DE'),
+      **richtung** ('LONG'/'SHORT' bzw. 'LONG (Pullback)' etc.),
+      **trigger** (Entry-Bedingungen), **these** (Story/Status-Begründung),
+      status (default '⏸ beobachten'),
+      datum (default heute im Format TT.MM.JJJJ)
+
+    Bei fehlendem 'symbol' wird leer gelassen (Pipeline kann dann den Eintrag nicht
+    auto-syncen — Pflichtspalte laut SKILL.md § Watchlist-Sync).
     """
+    from datetime import datetime
     ws = wb[SHEET_WATCHLIST]
-    row = _find_geschlossene_next_row(ws) if False else 2
     # Finde erste leere Zeile ab Z2
+    row = 2
     for r in range(2, ws.max_row + 2):
         if ws.cell(row=r, column=1).value is None:
             row = r
             break
 
     ws.cell(row=row, column=1).value = entry['aktie']
-    ws.cell(row=row, column=2).value = entry['richtung']
-    ws.cell(row=row, column=3).value = entry['trigger']
-    ws.cell(row=row, column=4).value = entry['these']
-    ws.cell(row=row, column=5).value = entry.get('status', '👀 beobachten')
-    ws.cell(row=row, column=6).value = entry.get('datum', '')
+    ws.cell(row=row, column=2).value = entry.get('symbol', '')
+    ws.cell(row=row, column=3).value = entry['richtung']
+    ws.cell(row=row, column=4).value = entry['trigger']
+    ws.cell(row=row, column=5).value = entry['these']
+    ws.cell(row=row, column=6).value = entry.get('status', '⏸ beobachten')
+    ws.cell(row=row, column=7).value = entry.get('datum', datetime.now().strftime('%d.%m.%Y'))
 
-    for col in range(1, 7):
+    for col in range(1, 8):
         ws.cell(row=row, column=col).font = FONT_CALIBRI
     return row
 
 
 def update_watchlist_status(wb: Workbook, aktie: str, status: str) -> bool:
-    """Setzt neuen Status für Watchlist-Eintrag. Match per Substring."""
+    """Setzt neuen Status für Watchlist-Eintrag. Match per Substring.
+
+    Schreibt in Spalte 6 (F = Status). Bug-Fix 16.05.2026: vorher fälschlicherweise
+    Spalte 5 (E = These) — siehe Journal-Notes Eintrag vom 15.05.2026 zum
+    update_watchlist_status-Bug (alte Layout-v1-Zuordnung).
+    Layout v2: A=Aktie, B=Symbol, C=Richtung, D=Entry-Trigger, E=These, F=Status, G=Datum.
+    """
     ws = wb[SHEET_WATCHLIST]
     aktie_lower = aktie.lower()
     for row in range(2, ws.max_row + 1):
         val = ws.cell(row=row, column=1).value
         if isinstance(val, str) and aktie_lower in val.lower():
-            ws.cell(row=row, column=5).value = status
+            ws.cell(row=row, column=6).value = status
             return True
     return False
 

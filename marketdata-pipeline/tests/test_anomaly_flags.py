@@ -18,6 +18,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+from unittest.mock import patch
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _SRC = os.path.join(os.path.dirname(_HERE), "src")
@@ -81,6 +82,17 @@ def empty_snap() -> TickerSnapshot:
         change_pct=None,
         volume_today=None,
     )
+
+
+def force_eod():
+    """Context-Manager: erzwingt is_eod=True im Anomaly-Guard.
+
+    Ohne diesen Override berechnet _compute_anomaly_fields volume_zscore/nr7
+    nur nach 20:00 UTC (ANOMALY_VOLUME_EOD_HOUR_UTC) — die Suite wäre sonst
+    laufzeitabhängig und vor 20:00 UTC rot. Patcht das ausgelagerte
+    market_data._is_eod_now. Nutzung: `with force_eod(): ...`.
+    """
+    return patch("market_data._is_eod_now", return_value=True)
 
 
 # ---------------------------------------------------------------------------
@@ -211,7 +223,8 @@ def test_volume_zscore_normal():
     np.random.seed(42)
     vols = [int(1_000_000 * (1 + 0.1 * np.random.randn())) for _ in range(100)]
     df = make_df(closes, volumes=vols)
-    _compute_anomaly_fields(snap, df)
+    with force_eod():
+        _compute_anomaly_fields(snap, df)
     assert snap.volume_zscore_60d is not None
     assert abs(snap.volume_zscore_60d) < 2.0, (
         f"Normales Volumen, Z sollte |Z|<2 sein, got {snap.volume_zscore_60d}"
@@ -228,7 +241,8 @@ def test_volume_zscore_spike():
     vols = [int(1_000_000 * (1 + 0.1 * np.random.randn())) for _ in range(99)]
     vols.append(5_000_000)
     df = make_df(closes, volumes=vols)
-    _compute_anomaly_fields(snap, df)
+    with force_eod():
+        _compute_anomaly_fields(snap, df)
     assert snap.volume_zscore_60d is not None
     assert snap.volume_zscore_60d > ANOMALY_VOLUME_Z_THRESHOLD, (
         f"5×-Spike sollte Z > {ANOMALY_VOLUME_Z_THRESHOLD} ergeben, "
@@ -270,7 +284,8 @@ def test_nr7_compression_detected():
     lows = [95.0] * 7 + [99.5]
     closes = [100.0] * 8
     df = make_df(closes, highs=highs, lows=lows)
-    _compute_anomaly_fields(snap, df)
+    with force_eod():
+        _compute_anomaly_fields(snap, df)
     assert snap.nr7 is True
     assert snap.is_range_compressed
 
@@ -286,7 +301,8 @@ def test_nr7_not_compressed():
     lows = [99.5] * 7 + [95.0]
     closes = [100.0] * 8
     df = make_df(closes, highs=highs, lows=lows)
-    _compute_anomaly_fields(snap, df)
+    with force_eod():
+        _compute_anomaly_fields(snap, df)
     assert snap.nr7 is False, f"Expected False, got {snap.nr7}"
     assert not snap.is_range_compressed
 
@@ -307,7 +323,8 @@ def test_compute_snapshot_integration():
     vols = [1_000_000] * 79 + [4_000_000]  # Volumen-Spike
 
     df = make_df(closes, highs=highs, lows=lows, opens=opens, volumes=vols)
-    snap = _compute_snapshot("INTEG", df)
+    with force_eod():
+        snap = _compute_snapshot("INTEG", df)
 
     assert snap is not None
     # gap_pct: open=107 vs. prev_close=closes[-2]
