@@ -40,6 +40,7 @@ class FakeSnap:
     price: float = 100.0
     rsi14: Optional[float] = 50.0
     volume_multiplier_today: Optional[float] = None
+    last_bar_date: Optional[str] = None
     today_lower_wick_pct: Optional[float] = None
     today_close: Optional[float] = None
     today_open: Optional[float] = None
@@ -87,6 +88,86 @@ class TestGetVolStatus:
         """Wenn now_utc_hour=None → konservativ failed (alter Default)."""
         snap = FakeSnap(volume_multiplier_today=0.5)
         assert _get_vol_status(snap, config, vol_multiplier=None, now_utc_hour=None) == "failed"
+
+
+# ============================================================
+# VOL-STATUS: HANDELSTAGS-CHECK (Wochenend-/Feiertags-Lauf, 2026-05-24)
+# ============================================================
+
+class TestVolStatusTradingDayCheck:
+    """Der Vol-Guard darf an Nicht-Handelstagen das finale Volumen des letzten
+    abgeschlossenen Handelstags nicht als 'pending' werten.
+
+    Auslöser: Wochenend-Läufe liegen uhrzeitlich immer vor 20 UTC und ließen
+    Freitags finales Volumen als 'noch offen' durchgehen → BEREIT-Bucket blähte
+    auf. Fix: liegt der letzte Balken vor `today`, ist die Sitzung abgeschlossen.
+    """
+
+    FRIDAY = date(2026, 5, 22)
+    SATURDAY = date(2026, 5, 23)
+    MONDAY = date(2026, 5, 25)
+
+    def test_weekend_run_below_threshold_is_failed(self, config):
+        """Sa-Lauf 10 UTC, letzter Balken Fr, Vol unter Schwelle → failed
+        (nicht pending) — das ist der eigentliche Bug-Fix."""
+        snap = FakeSnap(volume_multiplier_today=0.8,
+                        last_bar_date=self.FRIDAY.isoformat())
+        assert _get_vol_status(snap, config, None, now_utc_hour=10,
+                               today=self.SATURDAY) == "failed"
+
+    def test_monday_early_run_friday_bar_is_failed(self, config):
+        """Mo 07 UTC, letzter Balken noch Fr → Freitags-Volumen ist final."""
+        snap = FakeSnap(volume_multiplier_today=0.8,
+                        last_bar_date=self.FRIDAY.isoformat())
+        assert _get_vol_status(snap, config, None, now_utc_hour=7,
+                               today=self.MONDAY) == "failed"
+
+    def test_genuine_intraday_today_bar_still_pending(self, config):
+        """Letzter Balken == heute, vor 20 UTC → weiter pending (echtes
+        Intraday, Volumen kann noch wachsen)."""
+        snap = FakeSnap(volume_multiplier_today=0.8,
+                        last_bar_date=self.FRIDAY.isoformat())
+        assert _get_vol_status(snap, config, None, now_utc_hour=14,
+                               today=self.FRIDAY) == "pending"
+
+    def test_today_bar_after_hard_hour_is_failed(self, config):
+        """Letzter Balken == heute, nach 20 UTC → failed wie gehabt."""
+        snap = FakeSnap(volume_multiplier_today=0.8,
+                        last_bar_date=self.FRIDAY.isoformat())
+        assert _get_vol_status(snap, config, None, now_utc_hour=21,
+                               today=self.FRIDAY) == "failed"
+
+    def test_met_unaffected_by_dates(self, config):
+        """Volumen über Schwelle → met, unabhängig von Datum/Uhrzeit."""
+        snap = FakeSnap(volume_multiplier_today=1.5,
+                        last_bar_date=self.FRIDAY.isoformat())
+        assert _get_vol_status(snap, config, None, now_utc_hour=10,
+                               today=self.SATURDAY) == "met"
+
+    def test_no_bar_date_falls_back_to_time_logic(self, config):
+        """last_bar_date=None → reine Uhrzeit-Logik (pending vor 20 UTC)."""
+        snap = FakeSnap(volume_multiplier_today=0.8, last_bar_date=None)
+        assert _get_vol_status(snap, config, None, now_utc_hour=14,
+                               today=self.SATURDAY) == "pending"
+
+    def test_no_today_falls_back_to_time_logic(self, config):
+        """today=None (Alt-Aufruf) → reine Uhrzeit-Logik, Backward-Compat."""
+        snap = FakeSnap(volume_multiplier_today=0.8,
+                        last_bar_date=self.FRIDAY.isoformat())
+        assert _get_vol_status(snap, config, None, now_utc_hour=14,
+                               today=None) == "pending"
+
+    def test_threading_through_evaluate_trigger(self, config):
+        """today erreicht _get_vol_status auch über _evaluate_trigger: Sa-Lauf
+        → Vol landet in conditions_missing (failed), nicht conditions_pending."""
+        triggers = _parse_triggers("Daily-Close >35,10€ + Vol ≥30D-Ø")
+        snap = FakeSnap(price=36.0, volume_multiplier_today=0.7,
+                        last_bar_date=self.FRIDAY.isoformat())
+        ts = _evaluate_trigger(triggers[0], snap, "LONG", config,
+                               now_utc_hour=10, today=self.SATURDAY)
+        assert ts.conditions_missing
+        assert ts.conditions_pending == []
+        assert "BEREIT*" not in ts.summary
 
 
 # ============================================================
