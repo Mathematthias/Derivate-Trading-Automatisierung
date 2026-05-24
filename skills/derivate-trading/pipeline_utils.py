@@ -223,6 +223,56 @@ def _unescape_drive_markdown(text: str) -> str:
     return text
 
 
+def decode_drive_b64(source: str, out_path: Optional[str] = None) -> str:
+    """Dekodiert eine via Drive `download_file_content` geholte Datei.
+
+    `download_file_content` liefert byte-exakte Base64 — der korrekte Weg für
+    Pipeline-Files (CANDIDATES/MARKETDATA/GAMECHANGER), weil `read_file_content`
+    die Emoji-Bucket-Marker (🎯 📍 🔴 📅) zu Mojibake zerlegt und damit den
+    Parser bricht.
+
+    `source` ist ein **Dateipfad** — entweder:
+      - eine tool_results-JSON-Datei (große Ergebnisse landen unter
+        /mnt/user-data/tool_results/*.json), Form {'content': '<b64>'} ODER
+        [{'text': '<json-string mit content>'}], oder
+      - eine reine Base64-Textdatei (kleine Ergebnisse, per create_file
+        zwischengespeichert).
+
+    NIE mit /dev/stdin oder interaktivem Heredoc arbeiten — das hängt. Immer
+    erst in eine echte Datei schreiben, dann diese Funktion mit dem Pfad rufen.
+
+    Returns: dekodierter UTF-8-Text. Schreibt ihn zusätzlich nach `out_path`,
+    falls gesetzt.
+    """
+    import json
+    import base64
+
+    raw = open(source, "r", encoding="utf-8").read()
+    b64: Optional[str] = None
+    try:
+        obj = json.loads(raw)
+        if isinstance(obj, dict):
+            b64 = obj.get("content")
+        elif isinstance(obj, list):
+            for item in obj:
+                if isinstance(item, dict) and "text" in item:
+                    inner = json.loads(item["text"])
+                    b64 = inner.get("content") if isinstance(inner, dict) else None
+                    if b64:
+                        break
+    except (json.JSONDecodeError, ValueError):
+        b64 = raw  # reine Base64-Datei
+
+    if not b64:
+        raise ValueError(f"Kein Base64-'content'-Feld gefunden in {source}")
+
+    text = base64.b64decode(b64).decode("utf-8")
+    if out_path:
+        with open(out_path, "w", encoding="utf-8") as fh:
+            fh.write(text)
+    return text
+
+
 def parse_marketdata(content: str) -> dict[str, TickerData]:
     """Parst MARKETDATA-FULL.md zu Dict[ticker -> TickerData].
 

@@ -13,6 +13,10 @@ description: >
 
 Operatives Handbuch für gehebelte Derivate-Trades auf Trade Republic und Smartbroker+. Kodifiziert Regeln, Workflows und Lektionen aus der bisherigen Zusammenarbeit.
 
+## Notation: „Note #N"
+
+`Note #N` in diesem Skill bezeichnet einen **Skill-internen Changelog-Eintrag** — die fortlaufende Nummerierung der Regel-/Lektions-Ergänzungen dieses Handbuchs. Das **Journal-Notes-Sheet** (`Trading_Journal_*.xlsx`, Sheet „Notes") führt eine **eigene, unabhängige ID-Folge**. Die Nummern beider Systeme korrespondieren NICHT — `Note #66` im Skill ist nicht dasselbe wie Zeile/ID 66 im Journal-Notes-Sheet. Skill-Querverweise (`Note #N`, `siehe § …`) meinen immer den Skill-Changelog. Ist ausnahmsweise ein Journal-Eintrag gemeint, wird er explizit „Journal-Note #N" genannt.
+
 ## ⚡ Routinen-Schnellreferenz
 
 | Codewort / Trigger | Routine | Detail in |
@@ -79,7 +83,9 @@ Kaufsumme    = Einsatz + Gebühr Kauf    (ab v3 explizit einpflegen)
 
 **Wichtig zur Frequenz-Logik:** 5/7-Trades sind explizit erlaubt — sie sind die Frequenz-Klasse. Der Erwartungswert bleibt positiv solange Trefferquote ≥ 35% (bei R:R 2,0). Nicht als Trade-Pattern vermeiden.
 
-Korrelierte Positionen zählen als **ein** Block gegen das 2%-Budget. Bei mehreren parallelen Trades aus unterschiedlichen Sizing-Klassen: Summe der Sizing-Faktoren muss <70% Risikokapital ergeben (Lektion 12 Erweiterung).
+Korrelierte Positionen zählen als **ein** Block.
+
+**Sub-Cluster-Budget (risk-basiert, seit 22.05.2026 — ersetzt die frühere Stückzahl-Obergrenze „MAX 1"):** Pro Sub-Cluster (z.B. Insurance, Cyber-A2) gilt ein **Risk-Budget** statt einer Positions-Stückzahl. Das Budget = Sizing-Faktor der stärksten Score-Klasse im Cluster (Insider+7/7 → 4% = 600€; sonst entsprechend niedriger). Konkret **Insurance-Cluster {MUV2, HNR1, TLX}: Budget 4% Risikokapital.** Ein neuer Trade im Cluster ist zulässig, solange Σ(tatsächliches Risk der offenen Cluster-Positionen) + Risk des neuen Trades ≤ Budget. Beispiel: bei offener MUV2-Position mit ~2,3% Risk verbleibt ~1,7% Headroom = genau ein weiterer 1%-Trade. Bei Doppel-Trigger im selben Cluster entscheidet die Edge-Hierarchie (§ Pipeline-WL-Merge-Regel), bei gleichem Edge-Tier das R:R-beste Setup. Über alle Cluster hinweg bleibt die SB+-Liquiditäts-Formel (§ Kapital-Basis) das übergeordnete Cap.
 
 **Minimum:** Unter 400€ sind KO-Zertifikate spread-ineffizient.
 
@@ -1101,6 +1107,7 @@ Volldetail mit allen Edge-Cases (Range-Notation, Volumen-Multiplier-Variationen,
 | `references/pipeline-integration.md` | **SOFORT laden** vor jedem Lauf von Routine 7, 8, 8b oder 8c — definiert den vollen Workflow (Drive holen → parsen → Frische → Briefing rendern), File-Schemata, Fallback-Verhalten und Helper-Aufrufe. |
 | `references/journal-utils-api.md` | API-Referenz des Moduls — vollständige Funktionsliste inkl. Notes-API, typische Workflows (Routine 1/1a/2/partial/Watchlist/Notes), Konstanten-Tabelle. |
 | `references/trade-plan-templates.md` | Trade-Plan benötigt (Routine 1b, neue Position planen). KO-Template + Direktaktien-Template. |
+| `references/setup-klassen.md` | Setup-Klassen-Spezifikation gebraucht — PEAD-Pilot v0.1 (+ Unterklasse News-Catalyst-Continuation-Long), Insider-Buys-Cluster v0.1, EMA200-Mean-Reversion v0.1. Enthält je Klasse Vorprüfung, 7/7-Filter, Entry/Exit, Haltedauer, Sizing, Anker. |
 | `references/journal-layout.md` | Detail-Fragen zu Sheet-Spalten, Saldo-Zeilen-Struktur, Formatting-Standards, Zellenfarben, Zebra-Streifen. |
 | `references/news-scan.md` | News-Scan / Hidden Scan / Insider-Verkäufe — **SOFORT laden** bei Codewort, dann Routine ausführen. |
 | `references/technische-analyse.md` | Fragen zu Indikatoren, Chart-Analyse, TradingView-Setup, Candlestick-Patterns, oder Chart-Abgleich im Makro-Workflow. |
