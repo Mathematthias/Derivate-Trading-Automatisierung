@@ -130,15 +130,18 @@ def _get_vol_status(
     cfg: dict,
     vol_multiplier: Optional[float],
     now_utc_hour: Optional[int],
+    today: Optional[date] = None,
 ) -> str:
     """Bewertet die Volumen-Bedingung mit 4 Stati.
 
     Returns:
         'met'     — Tagesvolumen erreicht (oder bereits über) die Schwelle.
-        'failed'  — Volumen unter Schwelle UND wir sind nach der Hard-Evaluation-Stunde
-                    (= Tagesvolumen ist defacto final).
-        'pending' — Volumen unter Schwelle, aber vor der Hard-Evaluation-Stunde
-                    (= Tagesvolumen kann sich noch füllen).
+        'failed'  — Volumen unter Schwelle UND das Tagesvolumen ist final:
+                    entweder nach der Hard-Evaluation-Stunde, ODER der letzte
+                    Balken stammt aus einer bereits abgeschlossenen Sitzung
+                    (Wochenend-/Feiertags-Lauf, Montag früh mit Freitags-Balken).
+        'pending' — Volumen unter Schwelle, letzter Balken ist der heutige UND
+                    vor der Hard-Evaluation-Stunde (Volumen kann sich noch füllen).
         'unknown' — Keine Volumen-Daten verfügbar.
 
     Hintergrund: Wenn die Pipeline tagsüber läuft (z.B. 14:30 CEST), ist das
@@ -146,6 +149,16 @@ def _get_vol_status(
     blockiert dann unnötig den BEREIT-Bucket, obwohl das Volumen bis Tagesende
     noch ankommen kann. Erst nach `hard_evaluation_utc_hour` (Default 20 UTC
     = 21/22 CEST nach US-Close) wird "fehlend" zu "failed".
+
+    Handelstags-Check (2026-05-24): Die Uhrzeit allein reicht nicht. Ein Lauf
+    am Wochenende oder Feiertag liegt immer "vor 20 UTC" relativ zum nächsten
+    Handelstag und würde fälschlich 'pending' liefern, obwohl der letzte Balken
+    (z.B. Freitag) ein *finales* Volumen trägt — das blähte den BEREIT-Bucket
+    auf. Daher: liegt `snap.last_bar_date` vor `today`, ist die gemessene
+    Sitzung abgeschlossen → 'failed' statt 'pending'. Ein Nicht-Handelstag
+    erzeugt schlicht keinen neuen Balken, der Datums-Vergleich deckt Wochenende
+    und Feiertage damit implizit ab — ein expliziter Handelskalender entfällt.
+    `today` optional für Backward-Compat: None → reine Uhrzeit-Logik wie zuvor.
     """
     if snap.volume_multiplier_today is None:
         return "unknown"
@@ -154,10 +167,20 @@ def _get_vol_status(
     if snap.volume_multiplier_today >= threshold:
         return "met"
 
-    # Unter Schwelle — pending oder failed je nach Uhrzeit
+    # Unter Schwelle. 'pending' (= warte auf mehr Volumen) ist nur plausibel,
+    # wenn das gemessene Volumen überhaupt noch wachsen kann — also der letzte
+    # Balken der heutige ist und die Sitzung noch läuft. Liegt der letzte
+    # Balken vor heute (Wochenend-/Feiertags-Lauf, oder Montag früh mit
+    # Freitags-Balken), ist die Sitzung abgeschlossen und das Volumen final.
+    if today is not None and snap.last_bar_date is not None:
+        # last_bar_date ist ISO YYYY-MM-DD; today kann date oder datetime sein.
+        if snap.last_bar_date < today.isoformat()[:10]:
+            return "failed"
+
+    # Letzter Balken ist heute (oder Datum unbekannt) → Uhrzeit entscheidet.
     hard_hour = cfg["watchlist_trigger_parsing"].get("hard_evaluation_utc_hour", 20)
     if now_utc_hour is None:
-        # Kein Zeit-Kontext vorhanden → konservativer Default: failed (alter Verhalten)
+        # Kein Zeit-Kontext vorhanden → konservativer Default: failed (altes Verhalten)
         return "failed"
     if now_utc_hour >= hard_hour:
         return "failed"
@@ -317,7 +340,7 @@ def _evaluate_single_entry(
     # Trigger einzeln bewerten
     trigger_results: list[TriggerStatus] = []
     for trigger in entry.triggers:
-        ts = _evaluate_trigger(trigger, snap, entry.direction, config, now_utc_hour)
+        ts = _evaluate_trigger(trigger, snap, entry.direction, config, now_utc_hour, today)
         trigger_results.append(ts)
 
     return WatchlistResult(
@@ -334,8 +357,13 @@ def _evaluate_trigger(
     direction: str,
     config: dict,
     now_utc_hour: Optional[int] = None,
+    today: Optional[date] = None,
 ) -> TriggerStatus:
-    """Bewertet einen einzelnen Trigger gegen aktuelle Daten."""
+    """Bewertet einen einzelnen Trigger gegen aktuelle Daten.
+
+    `today` wird für den Vol-Guard-Handelstags-Check durchgereicht (siehe
+    _get_vol_status); None → reine Uhrzeit-Logik (Backward-Compat).
+    """
     # Journal-Gate-Skip (3-Trigger-Schema, 2026-05-23): Trigger, die im
     # Watchlist-Journal per 🚦-Ampel als tot (🔴) oder wartend (⏳) markiert
     # sind, werden NICHT inhaltlich ausgewertet. Sie erscheinen als 'far' im
@@ -479,7 +507,7 @@ def _evaluate_trigger(
             conditions_missing.append(f"keine Bounce-Kerze (Wick {wick_str}, Close>Open: {snap.today_close > snap.today_open if snap.today_close and snap.today_open else 'n/a'})")
 
     if trigger.require_volume:
-        vol_status = _get_vol_status(snap, config, trigger.vol_multiplier, now_utc_hour)
+        vol_status = _get_vol_status(snap, config, trigger.vol_multiplier, now_utc_hour, today)
         mul = snap.volume_multiplier_today
         mul_str = f"{mul:.2f}×" if mul is not None else "n/a"
         threshold = (

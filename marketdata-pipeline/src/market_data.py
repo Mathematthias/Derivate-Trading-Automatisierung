@@ -174,6 +174,11 @@ class TickerSnapshot:
     prev_open: Optional[float] = None  # für Bullish-Engulfing-Detection (Note #70, 2026-05-19)
     change_pct: Optional[float] = None  # heutige Bewegung vs. Vortag
     volume_today: Optional[int] = None
+    last_bar_date: Optional[str] = None
+    """ISO-Datum (YYYY-MM-DD) des letzten OHLC-Balkens — der Datenstand, nicht
+    die Pipeline-Laufzeit (dafür: timestamp). Der Vol-Guard nutzt es, um ein
+    finales Tagesvolumen von einem partiellen Intraday-Wert zu trennen
+    (Handelstags-Check, 2026-05-24)."""
 
     # Indikatoren auf Daily-Basis
     ema20: Optional[float] = None
@@ -497,6 +502,17 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
     if vol_val is not None and not pd.isna(vol_val):
         volume_today = int(vol_val)
 
+    # Datum des letzten Balkens (Datenstand). Der Vol-Guard braucht es, um ein
+    # abgeschlossenes Tagesvolumen von einem partiellen Intraday-Wert zu
+    # trennen. Ein Nicht-Handelstag (Wochenende/Feiertag) erzeugt keinen neuen
+    # Balken — der Datums-Vergleich deckt beide Fälle ab, ein Handelskalender
+    # ist dafür nicht nötig.
+    last_bar_date: Optional[str] = None
+    try:
+        last_bar_date = df.index[-1].date().isoformat()
+    except (AttributeError, IndexError):
+        pass
+
     snap = TickerSnapshot(
         symbol=symbol,
         timestamp=timestamp,
@@ -505,6 +521,7 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         prev_open=prev_open,
         change_pct=change_pct,
         volume_today=volume_today,
+        last_bar_date=last_bar_date,
     )
 
     closes = df["Close"]
