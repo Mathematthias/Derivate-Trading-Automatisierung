@@ -90,7 +90,7 @@ Nur wenn der Bucket **`bereit`** ist (= Pipeline hat Trigger als erfüllt geflag
 - Schritt 0b (Watchlist-Abgleich) bereits erledigt
 - Schritt 0c (Counter-These) erledigt → jetzt Kandidaten-Bewertung mit 7/7-Vorcheckliste
 
-**Rationale:** Workflow-Korrektur aus CRM-Lehre Note #38. Counter-These als letzter Filter erzeugte Sunk-Cost bei Plan-Arbeit. Ab Step 1 spart das Zeit und Klar-Disziplin: Setups, die durch Buyback-/Analyst-/Event-Filter fallen, werden nicht zu Plänen.
+**Rationale:** Workflow-Korrektur aus der CRM-Lehre (07.05.2026). Counter-These als letzter Filter erzeugte Sunk-Cost bei Plan-Arbeit. Ab Step 1 spart das Zeit und Klar-Disziplin: Setups, die durch Buyback-/Analyst-/Event-Filter fallen, werden nicht zu Plänen.
 
 ---
 
@@ -198,6 +198,8 @@ Standard: 2–3 Websuchen für reine Stufe 1; 4–5 wenn Stufe 2 automatisch tri
 **Schicht 4 — Sektor-Frühindikatoren (automatisch bei Eskalation, sonst auf Wunsch):**
 - Baltic Dry Index, Gasflüsse (GIE AGSI), Rohstoff-Moves, FDA-Kalender
 - Ziel: Trendwende in Sektor-Daten bevor sich Einzeltitel bewegen
+
+**Sektor-Mapping-Hinweis Gas (seit 21.05.2026):** Ein Gaspreis-Anstieg macht **nicht** LNG-Shipping oder Gasinfrastruktur zu Profiteuren — verbreiteter Denkfehler. LNG-Carrier (Flex LNG etc.) verdienen an **Charterraten**, nicht am Gaspreis (Spot-Raten können bei hohem Gaspreis sogar fallen). Regulierte Gasnetzbetreiber (Snam, Enagas) haben **RAB-basierte, gaspreis-unabhängige** Erlöse — das sind defensive Zins-/Regulierungs-Plays. Echtes Gas-Beta sitzt bei **US-E&P-Produzenten** (EQT, Antero, Range, Expand Energy), deren Erlöse direkt mit dem Henry-Hub-Preis skalieren. Konsequenz: Bei einem Schicht-4-Gas-Signal direkt auf E&P-Produzenten gehen, nicht auf Carrier oder Netzbetreiber.
 
 ### Eskalations-Automatik Schicht 3 + 4 (seit 2026-05-21)
 
