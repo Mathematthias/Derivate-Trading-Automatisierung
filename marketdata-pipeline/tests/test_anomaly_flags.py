@@ -368,6 +368,66 @@ def test_no_anomalies_clean_state():
 
 
 # ---------------------------------------------------------------------------
+# Symbol-Exclusion (V1.1-Fix 2026-05-27)
+# ---------------------------------------------------------------------------
+
+def _spike_df() -> pd.DataFrame:
+    """80-HT-DataFrame mit Volumen-Spike + Gap am letzten Tag.
+
+    Datenform analog test_compute_snapshot_integration — würde bei einem
+    normalen Aktien-Symbol has_any_anomaly auslösen.
+    """
+    np.random.seed(7)
+    closes = [100.0 + 0.5 * np.random.randn() for _ in range(79)]
+    closes.append(108.0)
+    highs = [c * 1.01 for c in closes]
+    lows = [c * 0.99 for c in closes]
+    opens = closes[:-1] + [107.0]
+    vols = [1_000_000] * 79 + [4_000_000]
+    return make_df(closes, highs=highs, lows=lows, opens=opens, volumes=vols)
+
+
+def test_excluded_symbol_helper():
+    """is_anomaly_excluded_symbol: Präfix/Suffix-Heuristik korrekt."""
+    from market_data import is_anomaly_excluded_symbol
+
+    for sym in ("^GSPC", "^GDAXI", "^VIX", "BZ=F", "GC=F", "EURUSD=X",
+                "BTC-USD", "ETH-EUR"):
+        assert is_anomaly_excluded_symbol(sym), f"{sym} sollte ausgeschlossen sein"
+    for sym in ("SAP.DE", "AAPL", "MUV2.DE", "NET", "7203.T"):
+        assert not is_anomaly_excluded_symbol(sym), f"{sym} darf nicht ausgeschlossen sein"
+
+
+def test_excluded_symbols_get_no_anomaly_fields():
+    """Indizes/Futures/FX/Krypto: keine Anomaly-Werte trotz auffälliger Daten.
+
+    Regression-Test für den V1.1-Fix (2026-05-27): die Symbol-Exclusion muss
+    auf Computation-Ebene greifen, nicht nur im Renderer. Sonst leakt ein auf
+    yfinance-Index-„Volumen" gerechneter VOL-Z in die Pro-Ticker-Anomalies-
+    Zeile der MARKETDATA-Datei.
+    """
+    df = _spike_df()
+    for excluded in ("^GSPC", "^GDAXI", "BZ=F", "EURUSD=X", "BTC-USD", "ETH-EUR"):
+        with force_eod():
+            snap = _compute_snapshot(excluded, df)
+        assert snap is not None
+        assert snap.gap_pct is None, f"{excluded}: gap_pct gesetzt"
+        assert snap.atr_zscore_60d is None, f"{excluded}: atr_zscore gesetzt"
+        assert snap.volume_zscore_60d is None, f"{excluded}: volume_zscore gesetzt"
+        assert snap.nr7 is None, f"{excluded}: nr7 gesetzt"
+        assert not snap.has_any_anomaly, f"{excluded}: has_any_anomaly True"
+
+
+def test_normal_symbol_still_flagged():
+    """Gegenprobe: ein normales Aktien-Symbol mit denselben Daten wird geflaggt."""
+    df = _spike_df()
+    with force_eod():
+        snap = _compute_snapshot("SAP.DE", df)
+    assert snap is not None
+    assert snap.has_any_anomaly, "normales Symbol mit Spike+Gap muss geflaggt werden"
+
+
+# ---------------------------------------------------------------------------
 # Renderer-Integration
 # ---------------------------------------------------------------------------
 
