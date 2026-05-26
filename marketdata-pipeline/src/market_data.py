@@ -155,10 +155,28 @@ ANOMALY_NR7_LOOKBACK = 7             # True-Range-Vergleichsfenster für NR7
 ANOMALY_VOLUME_EOD_HOUR_UTC = 20
 
 # Symbole, die kein Setup-Kandidat sind (Indizes, Forex, Krypto, Futures) →
-# auch nicht in der ANOMALY-FLAGS-Sektion erscheinen. Heuristik per Suffix/
-# Präfix — deckt Yahoo-Konventionen ab.
+# bekommen gar keine Anomaly-Werte. Heuristik per Suffix/Präfix — deckt
+# Yahoo-Konventionen ab.
 ANOMALY_EXCLUDED_PREFIXES = ("^",)          # ^GSPC, ^IXIC, ^VIX, ^DJI ...
 ANOMALY_EXCLUDED_SUFFIXES = ("=F", "=X", "-USD", "-EUR")  # Futures, FX, Krypto
+
+
+def is_anomaly_excluded_symbol(symbol: str) -> bool:
+    """True für Symbole, die vom Anomaly-Layer ausgeschlossen sind.
+
+    Indizes (^…), Futures (…=F), FX (…=X) und Krypto (…-USD/-EUR) sind
+    Makro-Kontext, keine Trade-Kandidaten. yfinance liefert für sie zudem
+    unzuverlässige Volumendaten (Index-„Volumen" ist ein bedeutungsloses
+    Aggregat) — ein Volumen-Z-Score darauf wäre Rauschen. Wird in
+    _compute_anomaly_fields ausgewertet: für solche Symbole bleiben alle
+    vier Anomaly-Felder None, d.h. sie erscheinen weder in der Pro-Ticker-
+    Anomalies-Zeile noch in der aggregierten ANOMALY-FLAGS-Sektion.
+    """
+    if any(symbol.startswith(p) for p in ANOMALY_EXCLUDED_PREFIXES):
+        return True
+    if any(symbol.endswith(s) for s in ANOMALY_EXCLUDED_SUFFIXES):
+        return True
+    return False
 
 
 @dataclass
@@ -640,6 +658,14 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
     systematisch negativ wäre und Fehlsignale produziert. ATR-Z und Gap sind
     intraday stabil und werden immer berechnet.
     """
+    # V1.1-Fix (2026-05-27): Ausgeschlossene Symbolklassen (Indizes/Futures/
+    # FX/Krypto) bekommen gar keine Anomaly-Werte. Sonst leakt z.B. ein auf
+    # yfinance-Index-„Volumen" gerechneter VOL-Z in die Pro-Ticker-Anomalies-
+    # Zeile der MARKETDATA-Datei — die Exclusion griff vorher nur im Renderer
+    # (output_renderer), nicht auf Computation-Ebene.
+    if is_anomaly_excluded_symbol(snap.symbol):
+        return
+
     # Intraday-Guard auswerten (UTC). Über _is_eod_now() gekapselt, damit
     # Tests die Bedingung deterministisch setzen können.
     is_eod = _is_eod_now()
