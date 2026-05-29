@@ -187,6 +187,76 @@ def _get_vol_status(
     return "pending"
 
 
+# ------------------------------------------------------------------
+# Carry-Forward bestätigter Tagesschluss-Breakouts (Note #110, 2026-05-29)
+# ------------------------------------------------------------------
+# Bug: Ein Daily-Close-Breakout, der im Abendlauf NACH Markt-Schluss als
+# "BEREIT — alle Bedingungen erfüllt" (volles Tagesvolumen) bestätigt wurde,
+# wird am Folgetag-Morgen gegen die WERDENDE (partielle) Tageskerze neu
+# bewertet → Preis = Teilbalken-Kurs, Volumen resettet auf Intraday → der
+# bestätigte Breakout fällt zurück auf BEREIT*/very_close und ist im
+# Morning-Check unsichtbar. Fix: Für reine Close-Breakout-Trigger werden
+# Preis UND Volumen gegen die zuletzt ABGESCHLOSSENE Tageskerze (prev_*)
+# evaluiert, solange die aktuelle Sitzung noch läuft. Selbst-invalidierend:
+# schließt eine Tageskerze zurück durch den Trigger, zeigt prev_close das.
+
+def _is_close_breakout_trigger(trigger: ParsedTrigger) -> bool:
+    """True für reine Daily-Close-Breakout-Trigger (Preis-Schwelle >/< oder
+    Breakout-Zone) OHNE Reverse-Kerzen-/Bounce-Anforderung.
+
+    Nur diese profitieren vom Carry-Forward: Ihre Bestätigung ist ein
+    Tagesschluss-Ereignis. Pullback-/Touch-/Reversal-Trigger (require_hammer,
+    require_bounce, approx-Touch) hängen an der Live-/Tageskerze und bleiben
+    unangetastet — für sie ist die werdende Kerze die richtige Bezugsgröße.
+    """
+    if trigger.require_hammer or trigger.require_bounce:
+        return False
+    if trigger.price_op in (">", "<"):
+        return True
+    if trigger.price_op == "in_range" and trigger.zone_kind == "breakout":
+        return True
+    return False
+
+
+def _last_bar_is_forming(
+    snap: TickerSnapshot,
+    today: Optional[date],
+    now_utc_hour: Optional[int],
+    hard_hour: int,
+) -> bool:
+    """True, wenn der letzte OHLC-Balken die heute noch laufende (nicht finale)
+    Sitzung ist — dann sind `snap.price`/`volume_multiplier_today` partielle
+    Intraday-Werte. Spiegelbild der "Sitzung final"-Logik aus _get_vol_status.
+
+    Ohne Zeit-Kontext (today/now_utc_hour None) → False (konservativ: Live-Werte
+    wie bisher, Backward-Compat). Letzter Balken aus abgeschlossener Sitzung
+    (last_bar_date < today) → False (final). last_bar_date == today und vor
+    Hard-Hour → True (Sitzung läuft).
+    """
+    if today is None or now_utc_hour is None or snap.last_bar_date is None:
+        return False
+    if snap.last_bar_date < today.isoformat()[:10]:
+        return False
+    return now_utc_hour < hard_hour
+
+
+def _live_back_through_trigger(trigger: ParsedTrigger, snap: TickerSnapshot) -> bool:
+    """Carry-Forward-Begleiter: ist der LIVE-Intraday-Kurs zurück durch den
+    Trigger gelaufen (LONG: unter, SHORT: über)? Dann ist der Vortags-Breakout
+    zwar bestätigt, aber am Verpuffen → Failing-Breakout-Watch im Summary.
+    """
+    live = snap.price
+    if live is None:
+        return False
+    if trigger.price_op == ">" and trigger.price_single is not None:
+        return live <= trigger.price_single
+    if trigger.price_op == "<" and trigger.price_single is not None:
+        return live >= trigger.price_single
+    if trigger.price_op == "in_range" and trigger.price_low is not None and trigger.price_high is not None:
+        return live < trigger.price_low or live > trigger.price_high
+    return False
+
+
 def check_sl_lektion4(
     trigger: ParsedTrigger,
     snap: Optional[TickerSnapshot],
@@ -414,8 +484,21 @@ def _evaluate_trigger(
     conditions_pending: list[str] = []
     blown_through = False  # Task 5: Breakout-Zone durchgelaufen
 
+    # Carry-Forward bestätigter Tagesschluss-Breakouts (Note #110): bei reinem
+    # Close-Breakout-Trigger und noch laufender Sitzung Preis + Volumen gegen die
+    # letzte ABGESCHLOSSENE Tageskerze (prev_*) evaluieren, statt gegen den
+    # partiellen Teilbalken. Damit überlebt ein zum Schluss N bestätigter
+    # Breakout den Morgen N+1 — und invalidiert sich selbst, sobald eine
+    # Tageskerze zurück durch den Trigger schließt (prev_close zeigt es dann).
+    hard_hour = config["watchlist_trigger_parsing"].get("hard_evaluation_utc_hour", 20)
+    use_completed = (
+        _is_close_breakout_trigger(trigger)
+        and _last_bar_is_forming(snap, today, now_utc_hour, hard_hour)
+        and snap.prev_close is not None
+    )
+
     # === PREIS-DISTANZ ===
-    price = snap.price
+    price = snap.prev_close if use_completed else snap.price
     if trigger.price_op == "in_range":
         # Distanz = 0 wenn IN range, sonst nach unten/oben gemessen.
         # Durchgelaufen-Logik (Task 5) ist richtungsabhängig:
@@ -507,14 +590,19 @@ def _evaluate_trigger(
             conditions_missing.append(f"keine Bounce-Kerze (Wick {wick_str}, Close>Open: {snap.today_close > snap.today_open if snap.today_close and snap.today_open else 'n/a'})")
 
     if trigger.require_volume:
-        vol_status = _get_vol_status(snap, config, trigger.vol_multiplier, now_utc_hour, today)
-        mul = snap.volume_multiplier_today
-        mul_str = f"{mul:.2f}×" if mul is not None else "n/a"
         threshold = (
             trigger.vol_multiplier
             if trigger.vol_multiplier is not None
             else config["watchlist_trigger_parsing"]["volume_validation"]["require_multiplier"]
         )
+        if use_completed and snap.prev_volume_multiplier is not None:
+            # Abgeschlossene Kerze → Volumen final: met/failed direkt, nie pending.
+            mul = snap.prev_volume_multiplier
+            vol_status = "met" if mul >= threshold else "failed"
+        else:
+            vol_status = _get_vol_status(snap, config, trigger.vol_multiplier, now_utc_hour, today)
+            mul = snap.volume_multiplier_today
+        mul_str = f"{mul:.2f}×" if mul is not None else "n/a"
         if vol_status == "met":
             conditions_met.append(f"Vol {mul_str} ≥ {threshold:.2f}× ✓")
         elif vol_status == "pending":
@@ -618,7 +706,18 @@ def _evaluate_trigger(
             f"({distance_pct:+.2f}%), R:R gerissen"
         )
     elif proximity == "in_zone" and not conditions_missing and not conditions_pending:
-        summary = "🎯 BEREIT — alle Bedingungen erfüllt"
+        if use_completed:
+            summary = (
+                f"🎯 BEREIT — Daily-Close bestätigt (letzter Schluss {snap.prev_close:.2f}, "
+                f"Carry-Forward Vortagsschluss)"
+            )
+            if _live_back_through_trigger(trigger, snap):
+                summary += (
+                    f" · ⚠ Kurs intraday {snap.price:.2f} zurück am/durch Trigger "
+                    f"— Failing-Breakout-Watch (Re-Close abwarten)"
+                )
+        else:
+            summary = "🎯 BEREIT — alle Bedingungen erfüllt"
     elif proximity == "in_zone" and not conditions_missing and conditions_pending:
         summary = f"🎯 BEREIT* — Preis & harte Conditions ok, offen: {', '.join(conditions_pending)}"
     elif proximity == "in_zone":

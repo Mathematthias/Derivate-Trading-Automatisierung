@@ -216,6 +216,12 @@ class TickerSnapshot:
     volume_avg_20d: Optional[int] = None
     volume_eur_avg_20d: Optional[float] = None  # Avg-Volumen × Kurs in EUR
     volume_multiplier_today: Optional[float] = None  # heute vs. avg
+    prev_volume_multiplier: Optional[float] = None
+    """Volumen der letzten ABGESCHLOSSENEN Tageskerze (vorletzter Balken) vs.
+    avg-20d. Carry-Forward-Fix (Note #110, 2026-05-29): bei intraday noch
+    laufender Sitzung trägt `volume_multiplier_today` nur ein partielles
+    Volumen — die Volumen-Bedingung eines Daily-Close-Breakouts gehört dann
+    gegen die zuletzt abgeschlossene Kerze geprüft, nicht gegen den Teilbalken."""
 
     # 20d Range (für Breakout-Detection)
     high_20d: Optional[float] = None
@@ -589,6 +595,13 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
             snap.volume_eur_avg_20d = snap.volume_avg_20d * price
             if snap.volume_avg_20d > 0 and volume_today is not None:
                 snap.volume_multiplier_today = volume_today / snap.volume_avg_20d
+            # Volumen der letzten ABGESCHLOSSENEN Kerze (vorletzter Balken) —
+            # Carry-Forward-Fix (Note #110): wird für Daily-Close-Breakouts
+            # gebraucht, wenn der letzte Balken noch die laufende Sitzung ist.
+            if snap.volume_avg_20d > 0 and len(df) >= 2:
+                prev_vol_val = df["Volume"].iloc[-2]
+                if prev_vol_val is not None and not pd.isna(prev_vol_val):
+                    snap.prev_volume_multiplier = float(prev_vol_val) / snap.volume_avg_20d
 
     # 20d-High/Low (für Breakout)
     if len(df) >= 20 and "High" in df.columns:
