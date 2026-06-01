@@ -72,6 +72,12 @@ class ParsedTrigger:
     require_volume: bool = False  # "Vol ≥30D-Ø", "Vol >Avg-20d", "Vol ≥ 1,2× Avg" etc.
     vol_multiplier: Optional[float] = None  # bei "1,2× Avg" → 1.2; bei "≥30D-Ø" → None (= 1.0)
     require_hammer: bool = False  # "Hammer" / "Reverse-Close"
+    # Verdeckt-BEREIT-Blindfleck (2026-06-01): Timeframe der Reverse-/Bounce-
+    # Bedingung. "4h" = explizit auf Sub-Daily spezifiziert → der Daily-
+    # Kerzen-Check im filter_engine kann sie NICHT abbilden und darf darum
+    # nicht als harter Block (NAHE) zählen, sondern als manueller 4h-Handcheck
+    # (→ conditions_pending → BEREIT*). None = Daily/Default, harter Block bleibt.
+    reverse_tf: Optional[str] = None
     is_touch: bool = False  # "Daily-Touch ...", "Touch EMA50 ..." — Punkt-Touch-Logik
     rsi_max: Optional[float] = None  # "RSI<60"
     rsi_min: Optional[float] = None
@@ -591,6 +597,24 @@ def _parse_single_trigger(label: str, content: str, gate: str = "") -> ParsedTri
     if re.search(r"\b(Hammer|Reverse-Close|Bullish-Engulfing|Engulfing|Bounce-Close)\b",
                  content, re.IGNORECASE):
         pt.require_hammer = True
+
+    # Sub-Daily-Reverse-Erkennung (Verdeckt-BEREIT-Blindfleck, 2026-06-01):
+    # Ist die Reverse-/Bounce-Bedingung explizit auf 4h spezifiziert
+    # ("4h-Reverse-Close", "4h-Bearish-Engulfing", "4h-Reversal",
+    # "4h-EMA20-Reclaim"), kann der Daily-Kerzen-Check sie nicht abbilden.
+    # Markieren → filter_engine wertet den fehlenden Daily-Reverse dann als
+    # manuellen 4h-Handcheck (conditions_pending) statt als harten Block.
+    # NUR im Entry-/Bedingungsteil VOR 'SL' suchen, damit ATR-4h-/Kerzen-
+    # Referenzen in der SL-Definition keine Falsch-Positive erzeugen
+    # (z.B. Daily-Reverse-Trigger mit "SL = Reverse-Hoch + 1,0×ATR-4h").
+    _cond_part = re.split(r"\bSL\b", content, maxsplit=1, flags=re.IGNORECASE)[0]
+    if (pt.require_hammer or pt.require_bounce) and re.search(
+        r"4h[\s\-]{0,3}(?:(?:Bull|Bear)\w*|EMA\d*|SMA\d*)?[\s\-]{0,3}"
+        r"(?:Reverse|Reversal|Hammer|Engulf\w*|Bounce-Close|Reclaim)"
+        r"|(?:Reverse|Reversal|Hammer|Engulf\w*|Bounce-Close|Reclaim)[^.]{0,20}4h",
+        _cond_part, re.IGNORECASE,
+    ):
+        pt.reverse_tf = "4h"
 
     # Touch-Operator: "Daily-Touch", "Touch EMA50", "Touch ...€"
     # Wird unten beim Preis-Parsing als is_touch markiert, wenn ein Preis
