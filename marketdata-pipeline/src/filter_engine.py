@@ -839,6 +839,39 @@ def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
     return True
 
 
+
+
+def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
+    """R:R-Vorfilter (Paket A, 2026-06-09): Reward-Proxy / Lektion-4-Mindest-SL.
+
+    Konservativ gerechnet: Entry = aktueller Kurs, TP1-Proxy = 20d-Hoch (Long)
+    bzw. 20d-Tief (Short), Risk = atr_mult x ATR14 (Lektion-4-Minimum).
+    Bei Pullback-Entries an der EMA20 ist das echte R:R tendenziell BESSER â
+    der Proxy markiert nur strukturell enge Faelle (Flag), er disqualifiziert
+    NICHT (False-Negative-Schutz fuer Breakout-Thesen ohne nahen TP).
+    Anlass: 2026-06-09 starben 4 von 6 manuell geprueften Stufe-2-Kandidaten
+    (ROST, ORLY, DDOG, BKNG) an genau dieser Stelle.
+    """
+    cfg = config.get("rr_proxy", {})
+    if not cfg.get("enabled", False):
+        return ""
+    if snap.atr14 is None or snap.atr14 <= 0 or snap.price is None:
+        return ""
+    risk = cfg.get("atr_mult", 1.5) * snap.atr14
+    if direction == "long":
+        if snap.high_20d is None:
+            return ""
+        reward = snap.high_20d - snap.price
+    else:
+        if snap.low_20d is None:
+            return ""
+        reward = snap.price - snap.low_20d
+    if risk <= 0:
+        return ""
+    rr = reward / risk
+    flag = " ⚠️ENG" if rr < cfg.get("min_rr", 1.4) else ""
+    return f"  RRprox={rr:.2f}{flag}"
+
 def _check_bucket(
     snap: TickerSnapshot,
     bucket: str,
@@ -874,6 +907,7 @@ def _check_bucket(
             f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
             f"30d={snap.move_30d_pct:+.1f}%"
         )
+        summary += _rr_proxy_suffix(snap, "long", config)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,
@@ -903,6 +937,7 @@ def _check_bucket(
             f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
             f"30d={snap.move_30d_pct:+.1f}%"
         )
+        summary += _rr_proxy_suffix(snap, "short", config)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,

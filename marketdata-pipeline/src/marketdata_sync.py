@@ -264,11 +264,18 @@ def main():
     enable_setup_class_flags = True
 
     md_content = render_marketdata_full(snapshots, timestamp)
+    # Paket B (2026-06-09): Watchlist-Block nur in CANDIDATES (Tier A);
+    # GAMECHANGER-Files lassen ihn weg, sofern Config nicht widerspricht.
+    include_wl = (
+        mode == "tier_a"
+        or config.get("output", {}).get("gamechanger_include_watchlist", True)
+    )
     cand_content = render_candidates(
         watchlist_results, universe_matches, overrides, timestamp,
         snapshots=snapshots,
         header_title=candidates_header,
         enable_setup_class_flags=enable_setup_class_flags,
+        include_watchlist_block=include_wl,
     )
 
     # === DRIVE SCHREIBEN ===

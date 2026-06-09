@@ -19,6 +19,7 @@ EMA200-MeanRev + Earnings-Erweiterung (2026-05-08, Note #47/#49):
 
 from __future__ import annotations
 
+import re
 from datetime import date, datetime
 from typing import Optional
 
@@ -169,6 +170,7 @@ def render_candidates(
     snapshots: Optional[dict] = None,
     header_title: str = "CANDIDATES",
     enable_setup_class_flags: bool = True,
+    include_watchlist_block: bool = True,
 ) -> str:
     """Render die Stufe-1 + Stufe-2-Ergebnisse als Markdown.
 
@@ -457,7 +459,21 @@ def render_candidates(
                     lines.append(f"- {marker} {text}")
         lines.append("")
 
-    return "\n".join(lines)
+    content = "\n".join(lines)
+    if not include_watchlist_block:
+        # Paket B (2026-06-09): Stufe-1-Block in GAMECHANGER-Files unterdruecken
+        # — er ist 1:1 redundant zum CANDIDATES-File des Tier-A-Laufs
+        # (pipeline_utils.py vermerkt das seit jeher). Spart ~50% Filegroesse.
+        # Revert: config output.gamechanger_include_watchlist: true
+        content = re.sub(
+            r"## Stufe 1 — Watchlist-Trigger-Status.*?(?=## Stufe 2 —)",
+            "*(Stufe-1-Watchlist-Block unterdrueckt — siehe CANDIDATES-File "
+            "des Tier-A-Laufs. Revert via output.gamechanger_include_watchlist.)*"
+            "\n\n---\n\n",
+            content,
+            flags=re.DOTALL,
+        )
+    return content
 
 
 def _render_setup_class_flags(snapshots: dict[str, TickerSnapshot]) -> list[str]:
