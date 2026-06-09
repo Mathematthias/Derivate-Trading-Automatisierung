@@ -149,9 +149,21 @@ watchlist_trigger_parsing:
 # ============================================================
 # OUTPUT-FORMATIERUNG
 # ============================================================
+# R:R-Vorfilter fuer Stufe-2-Pullback-Buckets (Paket A, 2026-06-09)
+# Proxy: (20d-Extrem - Kurs) / (atr_mult x ATR14). Unter min_rr -> Flag "ENG"
+# im Summary (kein Ausschluss). Nur long/short_trend_pullback.
+rr_proxy:
+  enabled: true
+  atr_mult: 1.5
+  min_rr: 1.4
+
 output:
   # Stufe 1: Watchlist-Status — IMMER im Output, sortiert nach Trigger-Nähe
   watchlist_status_always_visible: true
+
+  # Paket B (2026-06-09): Stufe-1-Block in GAMECHANGER-HUNT-Files (Tier B/C)
+  # unterdruecken — redundant zu CANDIDATES. true = altes Verhalten.
+  gamechanger_include_watchlist: false
 
   # Stufe 2: Maximale neue Kandidaten pro Setup-Bucket
   max_new_candidates_per_bucket: 5
