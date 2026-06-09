@@ -268,7 +268,7 @@ def main():
     # GAMECHANGER-Files lassen ihn weg, sofern Config nicht widerspricht.
     include_wl = (
         mode == "tier_a"
-        or config.get("output", {}).get("gamechanger_include_watchlist", True)
+        or filter_config.get("output", {}).get("gamechanger_include_watchlist", True)
     )
     cand_content = render_candidates(
         watchlist_results, universe_matches, overrides, timestamp,
