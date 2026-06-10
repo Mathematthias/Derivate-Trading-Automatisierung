@@ -311,36 +311,56 @@ def list_recent_form4(
     return out
 
 
+def _xml_url_candidates(base: str, primary_doc: str) -> list[str]:
+    """Kandidaten-URLs fürs Raw-XML aus dem primaryDocument-Feld.
+
+    Gotcha (Live-Befund 2026-06-10, 186/186 Fails im Erstlauf): Bei
+    Ownership-Filings liefert die submissions-API als primaryDocument oft
+    den Pfad in die XSL-gerenderte Viewer-Version, z.B.
+    'xslF345X05/form4.xml'. Das Raw-XML liegt unter dem Basename OHNE
+    xsl-Verzeichnis. Daher: Basename zuerst, gelieferten Pfad als Fallback.
+    """
+    out: list[str] = []
+    doc_base = primary_doc.split("/")[-1]
+    if doc_base.lower().endswith(".xml"):
+        out.append(f"{base}/{doc_base}")
+        if "/" in primary_doc:
+            out.append(f"{base}/{primary_doc}")
+    return out
+
+
 def fetch_form4_xml(
     session: requests.Session, cik: int, accession: str, primary_doc: str,
 ) -> Optional[str]:
     """Holt das ownershipDocument-XML eines Filings.
 
-    primaryDocument ist meist bereits das XML (endet auf .xml). Falls nicht
-    (HTML-Wrapper), Fallback über das Directory-index.json: erstes
-    Nicht-Index-File mit .xml-Endung.
+    Reihenfolge: (1) Basename des primaryDocument (xsl-Prefix gestrippt),
+    (2) primaryDocument wie geliefert, (3) Directory-index.json — erstes
+    Nicht-Index-File mit .xml-Endung. Der index.json-Fallback läuft IMMER,
+    wenn die direkten Kandidaten scheitern (v1-Bug: lief nur bei
+    Nicht-.xml-Docs → 186/186 Fails, gefixt 2026-06-10).
     """
     acc_nodash = accession.replace("-", "")
     base = f"{SEC_ARCHIVES_BASE}/{cik}/{acc_nodash}"
 
-    candidates: list[str] = []
-    if primary_doc.lower().endswith(".xml"):
-        candidates.append(f"{base}/{primary_doc}")
-    else:
-        r = _get(session, f"{base}/index.json")
-        if r is not None:
-            try:
-                items = r.json()["directory"]["item"]
-                for it in items:
-                    name = str(it.get("name", ""))
-                    if name.lower().endswith(".xml") and "index" not in name.lower():
-                        candidates.append(f"{base}/{name}")
-            except (KeyError, json.JSONDecodeError):
-                pass
-    for url in candidates:
+    for url in _xml_url_candidates(base, primary_doc):
         r = _get(session, url)
-        if r is not None and b"ownershipDocument" in r.content[:2000]:
+        if r is not None and b"ownershipDocument" in r.content:
             return r.text
+
+    # Fallback: Directory-Listing nach Raw-XML absuchen
+    r = _get(session, f"{base}/index.json")
+    if r is not None:
+        try:
+            items = r.json()["directory"]["item"]
+        except (KeyError, json.JSONDecodeError):
+            items = []
+        for it in items:
+            name = str(it.get("name", ""))
+            if name.lower().endswith(".xml") and "index" not in name.lower():
+                rx = _get(session, f"{base}/{name}")
+                if rx is not None and b"ownershipDocument" in rx.content:
+                    return rx.text
     return None
 
 
