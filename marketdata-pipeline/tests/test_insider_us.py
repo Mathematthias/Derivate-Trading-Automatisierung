@@ -223,3 +223,20 @@ def test_renderer_sections_and_priority(monkeypatch):
 def test_renderer_empty():
     md = ius.render_markdown(ius.ScanResult(), dt.datetime(2026, 6, 10, 7, 0))
     assert "Keine Insider-Signale" in md
+
+
+def test_xml_url_candidates_strips_xsl_prefix():
+    base = "https://www.sec.gov/Archives/edgar/data/320193/000119312526265910"
+    c = ius._xml_url_candidates(base, "xslF345X05/wk-form4_123.xml")
+    assert c[0] == f"{base}/wk-form4_123.xml"   # Raw-XML zuerst
+    assert c[1] == f"{base}/xslF345X05/wk-form4_123.xml"
+
+
+def test_xml_url_candidates_plain_doc():
+    base = "https://x/1/2"
+    assert ius._xml_url_candidates(base, "form4.xml") == [f"{base}/form4.xml"]
+
+
+def test_xml_url_candidates_non_xml_doc_empty():
+    # HTML-Wrapper → keine Direktkandidaten, index.json-Fallback greift
+    assert ius._xml_url_candidates("https://x/1/2", "doc.html") == []
