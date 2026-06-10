@@ -443,6 +443,56 @@ Setup-getriggerte Stufe-2-Kandidaten aus dem systematischen Universe-Scan. Im Ge
 
 ---
 
+### INSIDER-US.md (seit 2026-06-10, Paket C1)
+
+SEC-EDGAR-Form-4-Scan fürs Tier-C-Universum (NASDAQ-100). Eigener Workflow
+`insider_us_sync.yml`, 1×/Tag Mo–Fr ~07:00 Berlin via cron-job.org —
+erfasst den kompletten US-Vortag, liegt vorm Morgen-Briefing. Filename:
+`INSIDER-US-YYYY-MM-DD-HHMM.md`, keep_count 10.
+
+```
+# INSIDER-US — 2026-06-10 07:00 CEST
+
+## 🟢 Insider-Kauf-Cluster (Trigger-Pfad Note #48)
+
+### 📅 Earnings-Nähe (±5 KT) — BEVORZUGT
+- **TICKER** (Issuer Name) — 2 Insider, Σ 370,000 USD, Fenster 2026-06-03→2026-06-06 · 📅 Earnings 2026-06-05 (last, ±5KT)
+  - Jane Doe (Director) — 2026-06-04 · 120,000 USD
+  - John Smith (Chief Financial Officer) — 2026-06-05 · 250,000 USD ⚙️10b5-1
+
+### Ohne Earnings-Nähe
+[gleiche Bullet-Form]
+
+## 🔴 Insider-Sell-Signale (Gegensignal-Check für Long-Kandidaten)
+[Cluster-Sells oder CEO/CFO-Einzel-Sell ≥500k USD + Earnings-Nähe]
+
+## ℹ️ Einzelkäufe ≥ Schwelle (kein Cluster — nur Kontext)
+[wird vom Parser bewusst ignoriert]
+```
+
+**Semantik und Routine-Verbrauch:**
+- Schwellen: 55.000 USD/Person (fix, kein FX-Bezug), Cluster ≥2 Organe,
+  Fenster 7 Kalendertage (≈ 5 HT). Nur transactionCode P (Open-Market).
+- **Earnings-Nähe = ±5 Kalendertage** (Obermenge von ±3 HT aus Note #48,
+  Entscheid 2026-06-10). Pipeline-Flag ist Vorfilter — die exakte
+  ±3-HT-Prüfung bleibt in der manuellen 7/7-Checkliste.
+- Earnings-nahe Buy-Cluster werden **bevorzugt** gerendert/behandelt
+  (eigene Sub-Sektion, Sortierung near-first).
+- ⚙️10b5-1 = Plan-Trade (maschinenlesbare Checkbox seit SEC-Amendment
+  2023). Markiert, nicht verworfen — Signalwert manuell abwerten.
+- Sells: nur Cluster bzw. CEO/CFO ≥500k USD **mit** Earnings-Nähe.
+  Einzel-Sells erscheinen gar nicht erst im File.
+- File ist **additiv** wie GAMECHANGER: bei `missing`/`ausfall` Bucket 1
+  ohne US-Teil rendern, kein Web-Fallback. Frische-Threshold sinnvoll:
+  ~26h (1×/Tag-Kadenz — NICHT die 30/60-Min-Thresholds anwenden).
+
+**Parse:** `pu.parse_insider_us(content)` → `InsiderUsSnapshot` mit
+`buy_clusters` / `sell_signals` (Listen von `InsiderUsSignal`), Methoden
+`.find(ticker)` und `.sell_counter_signal(ticker)` (Gegensignal-Check für
+Long-Kandidaten, Counter-These-Punkt 1).
+
+---
+
 ## pipeline_utils.py — API-Schnellreferenz
 
 | Funktion | Input | Output |
@@ -459,6 +509,7 @@ Setup-getriggerte Stufe-2-Kandidaten aus dem systematischen Universe-Scan. Im Ge
 | `ema200_meanrev_qualifies(td)` | TickerData | `bool` — alle vier EMA200-MeanRev-Bedingungen erfüllt? |
 | `list_ema200_meanrev_candidates(md)` | Marketdata-Dict | Liste TickerData-Objekte mit erfülltem EMA200-MeanRev-Setup |
 | `list_pead_window_candidates(md, max_days=5)` | Marketdata-Dict + max-Tage | Liste TickerData-Objekte mit Earnings ≤ `max_days` zurück |
+| `parse_insider_us(content)` | MD-Content (escaped/clean) | `InsiderUsSnapshot` (`.buy_clusters`, `.sell_signals`, `.find`, `.sell_counter_signal`) |
 
 **Konstanten:**
 - `FRESHNESS_THRESHOLDS_MIN = {'morning_check': 30, 'scan_afternoon': 30, 'scan_evening': 60}`
