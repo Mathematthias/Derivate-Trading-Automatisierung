@@ -146,18 +146,57 @@ def test_non_organ_owner_not_counted():
 
 
 def test_sell_single_small_is_dropped():
-    txs = [_mk_tx("A", "S", "2026-06-03", 80_000)]
+    txs = [_mk_tx("A", "S", "2026-06-03", 300_000)]
+    _, sell, _ = ius.evaluate_issuer("TST", "Test Corp", txs)
+    assert sell is None
+
+
+def test_sell_below_threshold_dropped_v12():
+    # v1.2: 80k/90k liegen unter der 250k-Sell-Schwelle
+    txs = [
+        _mk_tx("A", "S", "2026-06-03", 80_000),
+        _mk_tx("B", "S", "2026-06-04", 90_000),
+    ]
     _, sell, _ = ius.evaluate_issuer("TST", "Test Corp", txs)
     assert sell is None
 
 
 def test_sell_cluster_qualifies():
     txs = [
-        _mk_tx("A", "S", "2026-06-03", 80_000),
-        _mk_tx("B", "S", "2026-06-04", 90_000),
+        _mk_tx("A", "S", "2026-06-03", 300_000),
+        _mk_tx("B", "S", "2026-06-04", 400_000),
     ]
     _, sell, _ = ius.evaluate_issuer("TST", "Test Corp", txs)
     assert sell is not None and sell.is_cluster
+
+
+def test_sell_plan_only_cluster_dropped_v12():
+    # Beide Owner komplett 10b5-1 → keine Cluster-Qualifikation
+    txs = [
+        _mk_tx("A", "S", "2026-06-03", 3_000_000, plan=True),
+        _mk_tx("B", "S", "2026-06-04", 4_000_000, plan=True),
+    ]
+    _, sell, _ = ius.evaluate_issuer("TST", "Test Corp", txs)
+    assert sell is None
+
+
+def test_sell_mixed_cluster_renders_plan_owner_v12():
+    # 2 Nicht-Plan qualifizieren; Plan-Owner über Schwelle wird mitgerendert
+    txs = [
+        _mk_tx("A", "S", "2026-06-03", 300_000),
+        _mk_tx("B", "S", "2026-06-04", 400_000),
+        _mk_tx("C", "S", "2026-06-04", 5_000_000, plan=True),
+    ]
+    _, sell, _ = ius.evaluate_issuer("TST", "Test Corp", txs)
+    assert sell is not None and len(sell.owners) == 3
+    assert any(o.all_10b5_1 for o in sell.owners)
+
+
+def test_sell_ceo_plan_only_dropped_v12():
+    txs = [_mk_tx("CEO X", "S", "2026-06-03", 600_000, director=False,
+                  officer=True, title="Chief Executive Officer", plan=True)]
+    _, sell, _ = ius.evaluate_issuer("TST", "Test Corp", txs)
+    assert sell is None
 
 
 def test_sell_ceo_big_single_path():
