@@ -1010,6 +1010,133 @@ def select_latest_marketdata(
 
 
 # ---------------------------------------------------------------------------
+# INSIDER-US (SEC EDGAR Form 4) — Paket C1, seit 2026-06-10
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class InsiderUsSignal:
+    """Ein Signal aus INSIDER-US-{datetime}.md (Form-4-Scan, Tier-C-Universum).
+
+    direction='BUY' sind Kauf-Cluster (Trigger-Pfad Note #48, ≥2 Organe
+    ≥55k USD/Person im 7-KT-Fenster). direction='SELL' sind Gegensignale
+    (Sell-Cluster oder CEO/CFO-Einzel-Sell ≥500k mit Earnings-Nähe).
+    earnings_near=True ⇒ Trade-Datum ±5 KT um Earnings (Approximation für
+    ±3 HT, exakte Note-#48-Prüfung bleibt in der manuellen 7/7-Checkliste).
+    """
+
+    ticker: str
+    issuer_name: str
+    direction: str            # "BUY" | "SELL"
+    n_insiders: int           # 0 wenn CEO/CFO-Einzel-Sell-Pfad
+    total_usd: float
+    window_start: str         # ISO
+    window_end: str           # ISO
+    earnings_near: bool = False
+    earnings_date: Optional[str] = None  # ISO oder None
+    has_10b5_1: bool = False  # mind. ein Owner mit ⚙️-Flag
+    owners_raw: list[str] = field(default_factory=list)  # Owner-Zeilen wörtlich
+
+
+@dataclass
+class InsiderUsSnapshot:
+    """Ergebnis des INSIDER-US-Parses."""
+
+    timestamp: Optional[str] = None
+    buy_clusters: list[InsiderUsSignal] = field(default_factory=list)
+    sell_signals: list[InsiderUsSignal] = field(default_factory=list)
+
+    def find(self, ticker: str) -> Optional[InsiderUsSignal]:
+        """Sucht einen Ticker über Buy- und Sell-Signale (Buy zuerst)."""
+        t = ticker.upper().split(".")[0].split("-")[0]
+        for sig in self.buy_clusters + self.sell_signals:
+            if sig.ticker.upper().split(".")[0] == t:
+                return sig
+        return None
+
+    def sell_counter_signal(self, ticker: str) -> Optional[InsiderUsSignal]:
+        """Gegensignal-Check für Long-Kandidaten: nur Sell-Signale."""
+        t = ticker.upper().split(".")[0].split("-")[0]
+        for sig in self.sell_signals:
+            if sig.ticker.upper().split(".")[0] == t:
+                return sig
+        return None
+
+
+def parse_insider_us(content: str) -> InsiderUsSnapshot:
+    """Parst INSIDER-US-{datetime}.md zu InsiderUsSnapshot.
+
+    Format (insider_us_scanner.py::render_markdown):
+
+        # INSIDER-US — 2026-06-10 07:00 CEST
+        ## 🟢 Insider-Kauf-Cluster (Trigger-Pfad Note #48)
+        ### 📅 Earnings-Nähe (±5 KT) — BEVORZUGT
+        - **TICKER** (Issuer Name) — 3 Insider, Σ 1,234,567 USD,
+          Fenster 2026-06-03→2026-06-06 · 📅 Earnings 2026-06-05 (last, ±5KT)
+          - Jane Doe (Director) — 2026-06-04 · 120,000 USD ⚙️10b5-1
+        ### Ohne Earnings-Nähe
+        ...
+        ## 🔴 Insider-Sell-Signale (Gegensignal-Check ...)
+
+    Die Einzelkauf-Sektion (ℹ️, kein Cluster) wird bewusst NICHT geparst —
+    sie ist reiner Kontext und kein Trigger-Pfad.
+    """
+    content = _unescape_drive_markdown(content)
+    snap = InsiderUsSnapshot()
+
+    if m := re.search(r"#\s+INSIDER-US\s+—\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2})", content):
+        snap.timestamp = m.group(1)
+
+    sig_re = re.compile(
+        r"^- \*\*(?P<ticker>[A-Z0-9.\-]+)\*\* \((?P<issuer>[^)]*)\) — "
+        r"(?:(?P<n>\d+) Insider|(?P<single>CEO/CFO-Einzel-Sell)), "
+        r"Σ (?P<usd>[\d,.]+) USD, "
+        r"Fenster (?P<ws>\d{4}-\d{2}-\d{2})→(?P<we>\d{4}-\d{2}-\d{2})"
+        r"(?P<rest>.*)$",
+        re.MULTILINE,
+    )
+
+    def _collect(section_text: str, direction: str) -> list[InsiderUsSignal]:
+        out: list[InsiderUsSignal] = []
+        lines = section_text.split("\n")
+        current: Optional[InsiderUsSignal] = None
+        for line in lines:
+            if m := sig_re.match(line.strip() if line.startswith("- **") else line):
+                rest = m.group("rest") or ""
+                edate = None
+                if em := re.search(r"Earnings (\d{4}-\d{2}-\d{2})", rest):
+                    edate = em.group(1)
+                current = InsiderUsSignal(
+                    ticker=m.group("ticker"),
+                    issuer_name=m.group("issuer"),
+                    direction=direction,
+                    n_insiders=int(m.group("n")) if m.group("n") else 0,
+                    total_usd=float(m.group("usd").replace(",", "")),
+                    window_start=m.group("ws"),
+                    window_end=m.group("we"),
+                    earnings_near="📅" in rest or "Earnings" in rest,
+                    earnings_date=edate,
+                )
+                out.append(current)
+            elif current is not None and line.strip().startswith("- ") and "USD" in line:
+                current.owners_raw.append(line.strip()[2:])
+                if "10b5-1" in line:
+                    current.has_10b5_1 = True
+        return out
+
+    def _section(header_marker: str) -> str:
+        m = re.search(
+            rf"##\s+{header_marker}.*?\n(.*?)(?=\n##\s|\n---|\Z)",
+            content, re.DOTALL,
+        )
+        return m.group(1) if m else ""
+
+    snap.buy_clusters = _collect(_section("🟢 Insider-Kauf-Cluster"), "BUY")
+    snap.sell_signals = _collect(_section("🔴 Insider-Sell-Signale"), "SELL")
+    return snap
+
+
+# ---------------------------------------------------------------------------
 # Quick-Test (manuell ausführen)
 # ---------------------------------------------------------------------------
 

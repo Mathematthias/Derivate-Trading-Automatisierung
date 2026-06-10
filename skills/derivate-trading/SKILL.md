@@ -33,6 +33,7 @@ Operatives Handbuch für gehebelte Derivate-Trades auf Trade Republic und Smartb
 | „News-Scan" / „Skandal-Scan" / „aktuelle Thesen" | 8 | `references/news-scan.md` |
 | **„Hidden Scan"** / **„Randnotizen"** / **„was hat keiner auf dem Schirm"** | **8b** | `references/news-scan.md` |
 | **„Insider-Verkäufe"** / **„Sells-Check"** / **„Short-Dealings"** | **8c** | `references/news-scan.md` |
+| **„Wochen-Research"** / **„Thesen-Research"** | **9** | `references/deep-research-weekly.md` |
 | „Makro-Check" / „Nachrichtenlage" | Makro | unten |
 
 **🚨 AUSFÜHRUNGSREGEL — SOFORT HANDELN:** Bei den Codewörtern oben **nicht** fragen/erklären — Referenz lesen (wenn angegeben), Routine sofort ausführen. Bei „Trade eintragen" + vollständigen Daten → direkt Journal updaten. Bei „Morgen-Briefing" → direkt im Action-Layer-Format ausgeben (6 Buckets, siehe Routine 7), kein Kompakt/Detail-Dialog.
@@ -913,6 +914,7 @@ Kurzform (Journal-Layout v3, Stand 24.04.2026):
 | **6** TP/SL-Analyse .docx | „Analyse erstellen", „TP/SL-Übersicht" — proaktiv So/Mo, vor Earnings, nach > 3% Move | Journal + TradingView-Screenshots → `TP_SL_Analyse_YYYYMMDD.docx`: Makro + RSI/EMA farbkodiert + Einzelanalysen (SL/TP/R:R) + Gesamtübersicht + Handlungstabelle + Fazit. docx-SKILL.md lesen. |
 | **7** Morgen-Briefing | „Morgen-Briefing", „Tagescheck" — proaktiv bei offenen Positionen | **Pipeline-First + Action-Layer-Format (6 Buckets — siehe § Routine 7 — Action-Layer):** MARKETDATA-STD + CANDIDATES + GAMECHANGER aus Drive laden (`pu.select_latest_marketdata(files, universe="standard")`), Frische prüfen. **Direkt in Buckets rendern, keine Kompakt/Detail-Frage.** Reihenfolge: (1) Insider-Cluster (2) BEREIT (3) NAHE (4) Pitches (max 2–3, vorgefiltert) (5) Dringend (6) Offene Positionen. Bei Pipeline-Ausfall: Web-Fallback mit 🔴-Header. Makro/Ad-hoc-Drill nur auf explizite User-Nachfrage. |
 | **8 / 8b / 8c** | „News-Scan" / „Hidden Scan" / „Insider-Verkäufe" | **→ `references/news-scan.md`** (enthält alle drei Routinen inkl. 4-Schichten-Modell und Output-Formate) |
+| **9** Wochen-Research | „Wochen-Research" / „Thesen-Research" — Default-Slot Sa vormittags, optional | **→ `references/deep-research-weekly.md`** — 2–3 Sektor-Thesen aus Wochen-Pipeline-Daten destillieren, User wählt, Credit-Gate, dann Research-Feature mit Prompt-Template. Verwertung: 7/7-Vorcheck light → Watchlist-Frage → Thesen-Log im Notes-Sheet. Kein Trade-Signal, nur Thesen-Input. |
 
 ### Pro Routine benötigte Daten
 
@@ -974,7 +976,7 @@ Strukturell-archived-Einträge werden im Trigger-Feld mit `[STRUKTURELL-ARCHIVED
 
 **Briefing folgt strikt 6 Buckets in dieser Reihenfolge.** Jede Watchlist-Position muss in genau einem Bucket erscheinen (BEREIT / NAHE / Dringend-Wartung) oder unsichtbar bleiben (WATCH ≤5%/≤10%/passive). Makro und Ad-hoc laufen im Hintergrund (Pipeline + DGAP-Check), fließen nur sichtbar ein, wenn sie ein Bucket bewegen.
 
-**Bucket 1 — Insider-Cluster** (immer ganz oben). Datenquellen: EQS/DGAP-Auswertung der letzten 1–3 HT + Insider-Layer aus Pipeline. Trigger: ≥2 Org-Personen (Vorstand/AR), Volumen pro Person ≥100k€, zeitlich gebündelt (idealerweise ≤5 HT), bevorzugt um Earnings/Adhoc. Setup-Klasse Note #48 hat **eigene** Trigger-Logik (Trigger A/B), nicht in BEREIT/NAHE mischen.
+**Bucket 1 — Insider-Cluster** (immer ganz oben). Datenquellen: EQS/DGAP-Auswertung der letzten 1–3 HT + Insider-Layer aus Pipeline + **INSIDER-US-{datetime}.md** (SEC-EDGAR-Form-4-Scan, Tier-C-Universum, 1×/Tag ~07:00; Parse via `pu.parse_insider_us(content)` — Buy-Cluster mit `earnings_near=True` BEVORZUGT rendern, Sell-Signale als Gegensignal-Check für Long-Kandidaten via `snap.sell_counter_signal(ticker)`). Trigger: ≥2 Org-Personen (Vorstand/AR), Volumen pro Person ≥100k€, zeitlich gebündelt (idealerweise ≤5 HT), bevorzugt um Earnings/Adhoc. US-Pfad: ≥2 Organe ≥55k USD/Person im 7-KT-Fenster (Pipeline-Vorfilter; ⚙️10b5-1-Flags = Plan-Trades, Signalwert manuell abwerten). Setup-Klasse Note #48 hat **eigene** Trigger-Logik (Trigger A/B), nicht in BEREIT/NAHE mischen.
 
 **Bucket 2 — BEREIT** (CANDIDATES-Bucket `bereit`). Trigger vollständig erfüllt → volle 7/7-Checkliste + Pre-Trade-Plan + Hebel/Zertifikat-Vorschlag inline. Output-Template siehe `references/trade-plan-templates.md`.
 
