@@ -73,7 +73,11 @@ logger = logging.getLogger("insider_us_scanner")
 
 # Schwellen — fixe USD-Beträge (Design-Entscheidung 5, kein FX-Bezug)
 BUY_THRESHOLD_USD = 55_000        # je Insider, Summe P-Käufe im Fenster
-SELL_THRESHOLD_USD = 55_000       # je Insider, für Cluster-Sell-Zählung
+SELL_THRESHOLD_USD = 250_000      # je Insider, für Cluster-Sell-Zählung
+# v1.2 (2026-06-11, Rauschen-Tuning nach Erstlauf): Sell-Schwelle 55k→250k
+# UND reine 10b5-1-Owner (all_10b5_1) zählen NICHT für die Cluster-
+# Qualifikation — geplante Verkäufe sind kein Informationssignal. Sie werden
+# aber mitgerendert (⚙️-Flag), wenn der Cluster anderweitig qualifiziert.
 SELL_BIG_SINGLE_USD = 500_000     # CEO/CFO-Einzel-Sell gilt nur ab hier
 CLUSTER_MIN_INSIDERS = 2          # Note #48: ≥2 Organmitglieder
 
@@ -476,6 +480,8 @@ def evaluate_issuer(
     """
     buy_aggs = [o for o in _aggregate_owners(txs, "P") if o.total_usd >= BUY_THRESHOLD_USD]
     sell_aggs = [o for o in _aggregate_owners(txs, "S") if o.total_usd >= SELL_THRESHOLD_USD]
+    # Cluster-Qualifikation nur über Nicht-Plan-Verkäufer (v1.2)
+    sell_qualifying = [o for o in sell_aggs if not o.all_10b5_1]
 
     buy_cluster: Optional[IssuerSignal] = None
     single_buys: list[OwnerAggregate] = []
@@ -492,7 +498,7 @@ def evaluate_issuer(
         single_buys = buy_aggs  # 0 oder 1 Eintrag
 
     sell_signal: Optional[IssuerSignal] = None
-    if len(sell_aggs) >= CLUSTER_MIN_INSIDERS:
+    if len(sell_qualifying) >= CLUSTER_MIN_INSIDERS:
         sell_signal = IssuerSignal(
             ticker=ticker, issuer_name=issuer_name, direction="SELL",
             owners=sell_aggs,
@@ -504,7 +510,8 @@ def evaluate_issuer(
     else:
         # CEO/CFO-Einzel-Sell nur ab SELL_BIG_SINGLE_USD; Earnings-Nähe wird
         # nachgelagert geprüft und ist Pflichtbedingung (Memory-Regel).
-        big = [o for o in sell_aggs if o.is_ceo_cfo and o.total_usd >= SELL_BIG_SINGLE_USD]
+        big = [o for o in sell_qualifying
+               if o.is_ceo_cfo and o.total_usd >= SELL_BIG_SINGLE_USD]
         if big:
             sell_signal = IssuerSignal(
                 ticker=ticker, issuer_name=issuer_name, direction="SELL",
