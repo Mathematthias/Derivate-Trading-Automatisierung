@@ -1,0 +1,55 @@
+name: Insider US Scan (SEC EDGAR Form 4)
+
+# Paket C1 (2026-06-10). Trigger-Architektur wie Tier A/B/C:
+#   cron-job.org → workflow_dispatch via PAT. KEIN `on: schedule`.
+#
+# Kadenz-Empfehlung (Design-Entscheidung 2, Session 2026-06-10):
+#   1×/Tag Mo-Fr 07:00 Berlin-Zeit → Crontab in cron-job.org: 0 7 * * 1-5
+#   Begründung: Form-4-Filings laufen bis in den ET-Abend ein; ein Morgenlauf
+#   erfasst den kompletten US-Vortag und liegt rechtzeitig vorm
+#   Morgen-Briefing. 21:30-CEST-Slot (Tier C) wäre mitten in der US-Session.
+#
+# ⚠️ SETUP VOR ERSTEM LAUF (einmalig):
+#   1. Repo-Secret SEC_CONTACT anlegen: "Vorname Nachname email@domain.tld"
+#      (SEC Fair Access verlangt Kontakt im User-Agent; Secret statt
+#      Klartext, weil das Repo öffentlich ist → Spam-Schutz.)
+#   2. Neuen cron-job.org-Job anlegen (workflow_dispatch auf dieses File,
+#      gleicher PAT wie Tier A/B/C).
+#
+# ⚠️ PAT-Renewal 2026-07-21: dieser Job ist der VIERTE Header, in dem der
+#   neue Token eingetragen werden muss (Tier A + B + C + Insider-US).
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Insider-US-Scan
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          SEC_CONTACT: ${{ secrets.SEC_CONTACT }}
+          CONFIG_DIR: ./config
+          PYTHONPATH: ./src
+        run: |
+          python src/insider_us_scanner.py --window-days 7
