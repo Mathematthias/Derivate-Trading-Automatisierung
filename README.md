@@ -1,106 +1,139 @@
-# Derivate Trading Automation
+# marketdata-pipeline
 
-Automatisierte Morning- und Breaking-News-Scans für Matthias' Derivate-Trading
-(KO-Zertifikate / Turbos auf DAX/MDAX/SDAX + US-Einzelwerte), ausgeführt als
-Claude Code Routines auf Anthropic-Cloud.
+GitHub-Action-basierte Pipeline für Marktdaten-Sync und Setup-Vorauswahl.
 
-## Zweck dieses Repos
+## Was macht das?
 
-Dieses Repo ist **Skill-Host** für Claude Code Routines — es hält die
-Trading-Logik, die Helper-Bibliothek und die Routine-Prompts, die täglich
-automatisch ausgeführt werden.
+GitHub-Actions ziehen via yfinance Marktdaten für Watchlist + erweiterte Universen
+und schreiben Markdown-Dateien nach Workspace Shared Drive `Trading-Pipeline/Briefing/`.
 
-**Was NICHT im Repo liegt:**
-- Journal-Datei (`Trading_Journal_YYYYMMDD.xlsx`) — bleibt lokal
-- Portfolio-State (offene Positionen, Einstiegskurse, etc.) — liegt im
-  verknüpften Google Doc
-- Persönliche Daten jeglicher Art
+Architektur seit 2026-05-13 (siehe `docs/MIGRATION_NOTES.md` — Variante-A-Split):
 
-**Was im Repo liegt:**
-- Skill-Definition (`skills/derivate-trading/SKILL.md`)
-- Helper-Bibliothek (`journal_utils.py`)
-- Referenzmaterial (News-Scan, Technische Analyse, Produktkenntnis, etc.)
-- Routine-Prompts (Morning-Check, Afternoon-Scan, Evening-Scan)
+| Tier | Inhalt | Symbole | Frequenz (cron-job.org) |
+|------|--------|---------|---------------------------|
+| Tier A | Watchlist + Indizes/Rohstoffe/Krypto/Positionen | ~48 | alle 30 Min Mo-Fr 08-21h + Sa 10:00 |
+| Tier B | EU-Universum (DAX + MDAX + SDAX + EuroStoxx + SMI) | ~211 | Mo-Fr 08:30 + 15:00 |
+| Tier C | US-Universum (NASDAQ-100) | ~96 | Mo-Fr 14:30 + 21:30 |
 
-## Aufbau
+Output pro Lauf (zwei Dateien):
+
+| Tier | Marketdata-File | Candidates-File |
+|------|-----------------|------------------|
+| A | `MARKETDATA-FULL-STD-{datetime}.md` | `CANDIDATES-{datetime}.md` |
+| B | `MARKETDATA-FULL-EU-{datetime}.md`  | `GAMECHANGER-HUNT-EU-{datetime}.md` |
+| C | `MARKETDATA-FULL-US-{datetime}.md`  | `GAMECHANGER-HUNT-US-{datetime}.md` |
+
+Candidates-Files (Stufe 2 für alle Tiers) enthalten:
+- **Stufe 1:** Status der STATE-Watchlist-Trigger (nur Tier A)
+- **Stufe 2:** Neue Kandidaten aus Universe-Setup-Filter (Tier A: Watchlist-Vorfilter,
+  Tier B/C: echte Gamechanger-/PEAD-Suche über das jeweilige Geographie-Universum)
+- **Override-Werte:** priority_long/short Werte mit aktuellem Snapshot
+
+## Build-Status (Roadmap-Phase 1)
+
+Diese Pipeline ist Roadmap-Phase 1 („Pipeline-Foundation"). Build-Schritte
+nachfolgend. Roadmap-Übersicht: siehe Top-Repo-`README.md`.
+
+- [x] **Build 1.0:** Configs (yamls + STATE-Erweiterung + Architektur-Doku)
+- [x] **Build 1.1:** Drive-Service-Account + GitHub Secret `GDRIVE_SA_KEY`
+- [x] **Build 1.2:** Skript `marketdata_sync.py` (yfinance + zweistufige Filter-Engine)
+- [x] **Build 1.3:** GitHub Actions Workflows (tier_a + tier_b + tier_c)
+- [x] **Build 1.4:** V1.6-Routinen lesen Pipeline-Files (im Skill „Phase 4")
+- [x] **Build 1.5:** Auto-Load bei Session-Start (im Skill „Phase 5")
+- [x] **Build 1.6:** Variante-A-Split (Tier B → B + C) + SSL-Retry-Robustheit (2026-05-13)
+- [x] **Build 1.7:** Anomaly-Layer V1 — Gap, ATR-Z, Volumen-Z, NR7 (2026-05-15, Note #50)
+- [ ] **Build 1.8:** Earnings-Kalender-Sync + BaFin-Insider-Scrape (separate wöchentliche Action)
+- [ ] **Build 2.0:** Anomaly-Layer V2 — Peer-Divergenz (siehe `../ROADMAP.md`)
+
+> Der `derivate-trading`-Skill referenziert die Schritte 1.4 und 1.5 historisch
+> als „Phase 4" / „Phase 5". Das ist Skill-intern stabil dokumentiert und
+> bleibt erhalten — neue Doku verwendet das Build-Schema hier.
+
+## Files
 
 ```
-derivate-trading-automation/
-├── README.md                           ← diese Datei
-├── .gitignore                          ← blockt Excel, CSV, PDFs
-├── skills/
-│   └── derivate-trading/
-│       ├── SKILL.md                    ← Skill-Definition (YAML-Front + Anleitung)
-│       ├── journal_utils.py            ← openpyxl-Helper für Journal-I/O
-│       └── references/
-│           ├── journal-layout.md
-│           ├── journal-utils-api.md
-│           ├── news-scan.md
-│           ├── produktkenntnis.md
-│           ├── technische-analyse.md
-│           └── trade-plan-templates.md
-└── routines/
-    ├── morning-check-prompt.md         ← Prompt für 08:45 Routine
-    ├── scan-prompt-1545.md             ← Prompt für 15:45 Afternoon-Scan
-    ├── scan-prompt-2030.md             ← Prompt für 20:30 Evening-Scan
-    └── state-doc-template.md           ← Struktur + Pflege-Regeln des STATE-Docs
+Repo-Root/
+├── .github/workflows/                   ← Repo-Root, NICHT in marketdata-pipeline!
+│   ├── tier_a_sync.yml                  ← alle 30 Min Mo-Fr + Sa 10:00
+│   ├── tier_b_sync.yml                  ← EU-Universum, Mo-Fr 2× täglich
+│   └── tier_c_sync.yml                  ← US-Universum, Mo-Fr 2× täglich (seit 2026-05-13)
+└── marketdata-pipeline/
+    ├── README.md                        ← du bist hier
+    ├── requirements.txt                 ← Python-Dependencies
+    ├── config/
+    │   ├── tickers_tier_a.yaml          ← Indizes/Rohstoffe/Krypto/Positionen
+    │   ├── tickers_tier_b.yaml          ← EU-Universum
+    │   ├── tickers_tier_c.yaml          ← US-Universum (seit 2026-05-13)
+    │   ├── filter_config.yaml           ← Setup-Schwellwerte
+    │   ├── STATE_extensions.md          ← STATE-Doc-Erweiterungen
+    │   └── WATCHLIST_ARCHIV_template.md ← Vorlage für Drive-Archiv-Doc
+    ├── src/
+    │   ├── marketdata_sync.py           ← Main-Skript, Entry-Point
+    │   ├── state_parser.py              ← STATE-Doc lesen + Watchlist parsen
+    │   ├── market_data.py               ← yfinance-Pull + Indikatoren
+    │   ├── filter_engine.py             ← Stufe 1 + Stufe 2
+    │   ├── output_renderer.py           ← Markdown-Output erzeugen
+    │   └── drive_writer.py              ← Drive-Upload via Service-Account
+    └── docs/
+        └── architecture.md              ← Wie die Filter-Engine arbeitet
 ```
 
-## Claude Code Routines Setup
+## Single Source of Truth
 
-Drei scheduled Routines, alle Mo–Fr, Timezone Europe/Berlin:
+| Datenart | Pflege wo |
+|----------|-----------|
+| Indizes/Rohstoffe/Krypto | `tickers_tier_a.yaml` (selten ändern) |
+| Offene Positionen | `tickers_tier_a.yaml` (bei Trade-Eröffnung/Schluss) |
+| **Aktive Watchlist** | **STATE-Doc (Workspace Shared Drive)** — NICHT yaml |
+| **Watchlist-Archiv** | **WATCHLIST-ARCHIV-Doc (Drive)** — separates Doc |
+| Filter-Schwellwerte | `filter_config.yaml` (Tuning) |
+| Filter-Override | STATE-Doc Sektion 4 |
 
-| Routine | Cron | Prompt-Datei |
-|---------|------|--------------|
-| `trading-morning-check` | `45 8 * * 1-5` | `routines/morning-check-prompt.md` |
-| `trading-scan-afternoon` | `45 15 * * 1-5` | `routines/scan-prompt-1545.md` |
-| `trading-scan-evening` | `30 20 * * 1-5` | `routines/scan-prompt-2030.md` |
+## Anpassungen ohne Code-Push
 
-Seit Version 1.3 sind die beiden Scans separate Prompt-Files mit hartkodiertem
-Slot (statt einer parametrisierten Datei). Das ist Absicht: Routine-Prompts
-haben keine Variable-Substitution, und zwei getrennte Files eliminieren die
-Copy-Patch-Fehlerquelle beim Anlegen. Die Folder-ID des Ziel-Ordners ist
-ebenfalls direkt in jedem Prompt eingetragen.
+- Watchlist-Wert hinzufügen/ändern → STATE-Doc editieren
+- Filter-Schwellwert ändern → `filter_config.yaml` editieren + Repo-Push
+- Override aktivieren → STATE-Doc Sektion 4
 
-Connector-Anforderung:
-- **Google Drive** (Pflicht, Read+Write auf `Trading/Briefing/` Ordner)
-- Gmail (optional, für Phase 2 Push-Mail bei Gamechanger)
+## Manueller Test (nach Push)
 
-## Phase-Roadmap
+GitHub Action manuell auslösen:
+1. `https://github.com/Mathematthias/Derivate-Trading-Automatisierung/actions`
+2. Links den Workflow `Marketdata Sync Tier A` wählen
+3. Rechts oben **`Run workflow`** → **`Run workflow`**
+4. ~2 Minuten warten, dann in Drive `Trading-Pipeline/Briefing/` nachschauen
 
-Drei Feature-Phasen aus User-Sicht. Build-Schritte sind Sub-Items innerhalb
-einer Phase und in `marketdata-pipeline/README.md` detailliert nachverfolgt.
+## Wichtige Pipeline-Konstanten
 
-- **Phase 1 — Pipeline-Foundation** (aktuell, Build seit 2026-04-24):
-  Morning-Check + 2 Scans, Output ins Workspace-Drive-Briefing-Doc.
-  Gamechanger-Flag wird im CANDIDATES/GAMECHANGER-File markiert,
-  keine Push-Benachrichtigung. Build-Schritte 1.0–1.5 ✅, 1.6 (Earnings-
-  Kalender + BaFin-Insider-Scrape) noch offen.
+In den Workflows:
+- `STATE_DOC_ID = 1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp`
+- `BRIEFING_FOLDER_ID = 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht`
+- Health-Check-Threshold: 80% der Ticker müssen erfolgreich sein
 
-- **Phase 2 — Push-Notifications** (geplant, ab ~4–6 Wochen nach Phase-1-
-  Stabilität): Echte Push-Mail via Resend bei Gamechanger-Kriterien
-  (G1 Portfolio-Treffer / G2 Watchlist-Trigger / G3 Makro-Schock).
+Falls IDs sich ändern, in Workflow-Files updaten.
 
-- **Phase 3 — Krypto-Integration** (geplant): Paralleles Krypto-Briefing
-  mit `krypto-grid-trading` und `krypto-portfolio` Skills, Pipeline-Anbindung
-  für Krypto-Setup-Filter.
+## Insider-US-Layer (SEC EDGAR Form 4) — seit 2026-06-10 (Paket C1)
 
-> **Hinweis zur Nomenklatur:** Der `derivate-trading`-Skill referenziert
-> intern „Phase 4" (V1.6-Routinen lesen Pipeline) und „Phase 5" (Auto-Load).
-> Das sind die Build-Schritte 1.4 und 1.5 dieser Roadmap. Skill-Sprachgebrauch
-> bleibt aus historischen Gründen erhalten — neue Doku verwendet das Schema
-> hier.
+`src/insider_us_scanner.py` — eigener Workflow `insider_us_sync.yml`,
+1×/Tag Mo–Fr 07:00 Berlin via cron-job.org. Output:
+`INSIDER-US-YYYY-MM-DD-HHMM.md` im Briefing-Ordner (keep 10).
+Architektur: Tier-C-YAML → company_tickers.json (Ticker→CIK) →
+data.sec.gov/submissions je CIK → Form-4-XML aus Archives → Parse →
+Cluster-Logik → yfinance-Earnings-Check nur für Signal-Ticker.
 
-## Sicherheit
+**Setup vor erstem Lauf:** Repo-Secret `SEC_CONTACT` anlegen
+(`"Vorname Nachname email@domain.tld"`) + neuen cron-job.org-Job
+(workflow_dispatch, gleicher PAT). ⚠️ Beim PAT-Renewal 2026-07-21 ist das
+der **vierte** Cronjob-Header.
 
-- Repo ist privat, nur Matthias + Claude Code haben Zugriff.
-- Keine API-Keys oder Passwörter im Repo — alles über Claude Code
-  Cloud-Environment-Variables.
-- Branch-Protection: Claude pushed per Default nur auf `claude/*`-Branches.
+**Symptom-Tabelle (Endpoints beim Bau nicht live verifizierbar):**
 
-## Stand
-
-- **Phase 1 Build**: 2026-04-24 gestartet, Build-Schritte 1.0–1.5 ✅ am 2026-04-26
-- **Erste scharfe Routine**: ab Mo 2026-04-27 08:45 CET
-- **Filename-Schema** (seit 2026-04-26): `MARKETDATA-FULL-STD-…` und `MARKETDATA-FULL-GC-…` mit Universum-Tag
-- **Skill-Version**: 1.x (aktuelle Entwicklungsversion, Iterationen laufen)
+| Symptom im Action-Log | Vermutliche Ursache | Behandlung |
+|---|---|---|
+| `SEC_CONTACT env fehlt` (SystemExit) | Secret nicht angelegt | Repo-Secret setzen |
+| HTTP 403 auf alle SEC-Calls | User-Agent abgelehnt / Rate-Limit-Bann | SEC_CONTACT-Format prüfen, THROTTLE_SECONDS erhöhen |
+| `company_tickers.json nicht ladbar` | URL geändert | `SEC_TICKER_MAP_URL` prüfen (sec.gov/files/) |
+| 0/96 Ticker→CIK aufgelöst | JSON-Format geändert | `fetch_cik_map` an neues Format anpassen |
+| Viele `XML nicht ladbar` | primaryDocument-Konvention anders | `fetch_form4_xml`-Fallback (index.json) prüfen |
+| Filings geprüft >0, geparst 0 | XML-Schema-Drift | `parse_form4`-XPaths gegen echtes Filing abgleichen |
+| Earnings-Pull-Warnungen | yfinance-Hiccup | unkritisch — Signal erscheint ohne 📅-Flag |
