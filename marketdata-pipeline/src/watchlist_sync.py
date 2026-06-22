@@ -569,13 +569,16 @@ def main() -> int:
     state_text_after = _strip_markdown_escapes(state_text_after)
     after_count = _count_watchlist_entries(state_text_after)
     if after_count != len(entries):
-        raise RuntimeError(
-            f"STATE-Doc-Sanity-Check fehlgeschlagen: erwartet {len(entries)} "
-            f"WL-Einträge nach Write, gefunden {after_count}. "
-            f"Drive-API-Drift wahrscheinlich (siehe Note #68). "
-            f"Manuell prüfen: STATE_DOC_ID={state_doc_id}"
+        logger.warning(
+            "STATE-Doc-Sanity-Check: erwartet %d WL-Einträge nach Write, "
+            "gefunden %d. Sync NICHT abgebrochen (additive Intention — Tier-A "
+            "muss weiterlaufen). Manuell prüfen: STATE_DOC_ID=%s",
+            len(entries), after_count, state_doc_id,
         )
-    logger.info("Sanity-Check OK: %d Einträge im STATE-Doc bestätigt", after_count)
+    else:
+        logger.info(
+            "Sanity-Check OK: %d Einträge im STATE-Doc bestätigt", after_count
+        )
     return 0
 
 
@@ -596,8 +599,9 @@ def _count_watchlist_entries(state_text: str) -> int:
         s = line.strip()
         if not s.startswith("|"):
             continue
-        if "Kandidat" in s and "Symbol" in s:
-            continue  # Header-Zeile
+        cells = [c.strip() for c in s.strip("|").split("|")]
+        if len(cells) >= 2 and cells[0] == "Kandidat" and cells[1] == "Symbol":
+            continue  # Header-Zeile (nur echte Kopfzeile, nicht Trigger-Text)
         if re.match(r"^\|\s*[-:]+\s*\|", s):
             continue  # Separator
         count += 1
