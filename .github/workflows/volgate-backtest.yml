@@ -1,0 +1,43 @@
+name: volgate-backtest
+
+# Wöchentlicher Vol-Gate-Backtest. Liest die CANDIDATES-Abend-Files aus dem
+# Drive-Briefing-Folder, klassifiziert ausgelöste Breakouts in vol-geblockt vs.
+# durchgelassen, misst die Forward-Performance und legt ein Ergebnis-CSV im
+# selben Drive-Folder ab (VOLGATE-BACKTEST-YYYY-MM-DD.csv).
+#
+# Läuft als nativer GitHub-Actions-Cron — KEIN zusätzlicher cron-job.org-PAT nötig.
+
+on:
+  schedule:
+    - cron: "0 6 * * 0"     # Sonntag 06:00 UTC (Markt zu, Folge-Returns gereift)
+  workflow_dispatch: {}      # manueller Trigger über die Actions-UI
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install google-api-python-client google-auth google-auth-httplib2
+
+      - name: Service-Account-JSON schreiben
+        # ANPASSEN: secrets.<NAME> auf den SA-Secret-Namen setzen, den die
+        # bestehende Pipeline schon nutzt (gleiches SA, das CANDIDATES schreibt).
+        env:
+          SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+        run: |
+          echo "$SA_JSON" > "$RUNNER_TEMP/sa.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/sa.json" >> "$GITHUB_ENV"
+
+      - name: Backtest fahren + Ergebnis in Drive ablegen
+        run: |
+          python3 tools/volgate_backtest.py \
+            --source drive \
+            --folder-id 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht \
+            --horizons 5 10 20 \
+            --upload
