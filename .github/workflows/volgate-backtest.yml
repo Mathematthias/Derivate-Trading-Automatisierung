@@ -1,42 +1,51 @@
 name: volgate-backtest
 
-# Wöchentlicher Vol-Gate-Backtest. Liest die CANDIDATES-Abend-Files aus dem
-# Drive-Briefing-Folder, klassifiziert ausgelöste Breakouts in vol-geblockt vs.
+# Woechentlicher Vol-Gate-Backtest. Liest die CANDIDATES-Abend-Files aus dem
+# Drive-Briefing-Folder, klassifiziert ausgeloeste Breakouts in vol-geblockt vs.
 # durchgelassen, misst die Forward-Performance und legt ein Ergebnis-CSV im
 # selben Drive-Folder ab (VOLGATE-BACKTEST-YYYY-MM-DD.csv).
 #
-# Läuft als nativer GitHub-Actions-Cron — KEIN zusätzlicher cron-job.org-PAT nötig.
+# Trigger-Hinweis: Anders als die EOD-Pipeline (cron-job.org, da 30-Min-Takt
+# zuverlaessig feuern muss) nutzt dieser Job 'on: schedule'. Das ist hier
+# unkritisch: Der Backtest liest bei jedem Lauf die VOLLE CANDIDATES-Historie
+# neu aus dem Drive -- ein von GitHub ausgelassener Sonntag geht nicht verloren,
+# der naechste Lauf holt alles nach. Kein zusaetzlicher cron-job.org-PAT noetig
+# (haelt die Juli-Renewal-Liste bei vier Jobs). workflow_dispatch fuer manuell.
 
 on:
+  workflow_dispatch: {}
   schedule:
     - cron: "0 6 * * 0"     # Sonntag 06:00 UTC (Markt zu, Folge-Returns gereift)
-  workflow_dispatch: {}      # manueller Trigger über die Actions-UI
 
 jobs:
   backtest:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Install deps
-        run: pip install google-api-python-client google-auth google-auth-httplib2
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Service-Account-JSON schreiben
-        # ANPASSEN: secrets.<NAME> auf den SA-Secret-Namen setzen, den die
-        # bestehende Pipeline schon nutzt (gleiches SA, das CANDIDATES schreibt).
+      - name: Run volgate backtest
+        working-directory: marketdata-pipeline
         env:
-          SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
         run: |
-          echo "$SA_JSON" > "$RUNNER_TEMP/sa.json"
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/sa.json" >> "$GITHUB_ENV"
-
-      - name: Backtest fahren + Ergebnis in Drive ablegen
-        run: |
-          python3 tools/volgate_backtest.py \
+          python src/volgate_backtest.py \
             --source drive \
             --folder-id 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht \
             --horizons 5 10 20 \
