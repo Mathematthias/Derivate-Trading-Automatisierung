@@ -229,7 +229,10 @@ def load_from_drive(folder_id, tmpdir):
     token = None; n = 0
     while True:
         res = svc.files().list(q=q, pageSize=1000, fields="nextPageToken, files(id,name)",
-                               pageToken=token).execute()
+                               pageToken=token,
+                               supportsAllDrives=True,
+                               includeItemsFromAllDrives=True,
+                               corpora="allDrives").execute()
         for f in res.get("files", []):
             if not FNAME_RE.search(f["name"]):
                 continue
@@ -248,7 +251,8 @@ def upload_result(svc, folder_id, csv_path):
     name = f"VOLGATE-BACKTEST-{datetime.utcnow():%Y-%m-%d}.csv"
     media = MediaFileUpload(csv_path, mimetype="text/csv")
     svc.files().create(body={"name": name, "parents": [folder_id]},
-                       media_body=media, fields="id").execute()
+                       media_body=media, fields="id",
+                       supportsAllDrives=True).execute()
     print(f"[drive] Ergebnis hochgeladen: {name}")
 
 if __name__ == "__main__":
