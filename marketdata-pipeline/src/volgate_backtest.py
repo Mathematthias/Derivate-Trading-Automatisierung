@@ -213,10 +213,13 @@ def run(folder, horizons, evening_only=True):
     return rows
 
 # ---------- Drive-Modus (Pipeline) ----------
-def load_from_drive(folder_id, tmpdir):
-    """Laedt alle CANDIDATES-*.md aus dem Drive-Folder in tmpdir.
-    Auth identisch zu drive_writer.py: Service-Account-JSON als String in
-    $GDRIVE_SA_KEY (gleiches SA wie die bestehende Pipeline)."""
+def load_from_drive(folder_id, tmpdir, min_hhmm=2200, since_iso=None):
+    """Laedt pro Handelstag NUR das spaeteste Abend-File (Vol final) in tmpdir.
+
+    Wichtig fuer Laufzeit: erst alle Namen+IDs listen (billig, ein API-Call/Seite),
+    dann pro Tag genau ein File auswaehlen und NUR diese herunterladen. Ohne diese
+    Vorauswahl wuerden alle ~15-20 Intraday-Snapshots/Tag geladen (Timeout-Gefahr).
+    Auth identisch zu drive_writer.py (GDRIVE_SA_KEY als JSON-String)."""
     import json
     from google.oauth2 import service_account
     from googleapiclient.discovery import build
@@ -226,24 +229,41 @@ def load_from_drive(folder_id, tmpdir):
     svc = build("drive", "v3", credentials=creds)
     q = (f"'{folder_id}' in parents and name contains 'CANDIDATES-' "
          f"and trashed = false")
-    token = None; n = 0
+    if since_iso:
+        q += f" and modifiedTime > '{since_iso}'"
+    # 1) listen (kein Download)
+    entries = []; token = None
     while True:
         res = svc.files().list(q=q, pageSize=1000, fields="nextPageToken, files(id,name)",
                                pageToken=token,
                                supportsAllDrives=True,
                                includeItemsFromAllDrives=True,
                                corpora="allDrives").execute()
-        for f in res.get("files", []):
-            if not FNAME_RE.search(f["name"]):
-                continue
-            data = svc.files().get_media(fileId=f["id"]).execute()
-            with open(os.path.join(tmpdir, f["name"]), "wb") as out:
-                out.write(data)
-            n += 1
+        entries += res.get("files", [])
         token = res.get("nextPageToken")
         if not token:
             break
-    print(f"[drive] {n} CANDIDATES-Files geladen.")
+    # 2) pro Tag das spaeteste Abend-File (HHMM >= min_hhmm)
+    best = {}
+    for f in entries:
+        m = FNAME_RE.search(f["name"])
+        if not m:
+            continue
+        day, hhmm = m.group(1), int(m.group(2))
+        if hhmm < min_hhmm:
+            continue
+        if day not in best or hhmm > best[day][0]:
+            best[day] = (hhmm, f["id"], f["name"])
+    # 3) nur die ausgewaehlten herunterladen
+    n = 0
+    for day in sorted(best):
+        _, fid, name = best[day]
+        data = svc.files().get_media(fileId=fid).execute()
+        with open(os.path.join(tmpdir, name), "wb") as out:
+            out.write(data)
+        n += 1
+    print(f"[drive] {len(entries)} CANDIDATES gelistet, "
+          f"{n} Abend-Files (>= {min_hhmm}, 1/Tag) geladen.")
     return svc
 
 def upload_result(svc, folder_id, csv_path):
@@ -265,14 +285,22 @@ if __name__ == "__main__":
     ap.add_argument("--horizons", type=int, nargs="+", default=[5, 10, 20])
     ap.add_argument("--upload", action="store_true",
                     help="Ergebnis-CSV zurueck in den Drive-Folder schreiben")
+    ap.add_argument("--weeks", type=int, default=12,
+                    help="nur Files der letzten N Wochen laden (0 = ganze Historie). "
+                         "Default 12 deckt ~6 Wochen Signale + 20-HT-Folgetiefe.")
     ap.add_argument("--include-morning", action="store_true",
                     help="auch Morgen-Files (NICHT empfohlen, Vol unvollstaendig)")
     args = ap.parse_args()
 
     if args.source == "drive":
         import tempfile
+        from datetime import timedelta
         tmp = tempfile.mkdtemp(prefix="volgate_")
-        svc = load_from_drive(args.folder_id, tmp)
+        min_hhmm = 0 if args.include_morning else 2200
+        since_iso = None
+        if args.weeks:
+            since_iso = (datetime.utcnow() - timedelta(weeks=args.weeks)).strftime("%Y-%m-%dT00:00:00")
+        svc = load_from_drive(args.folder_id, tmp, min_hhmm=min_hhmm, since_iso=since_iso)
         run(tmp, args.horizons, evening_only=not args.include_morning)
         if args.upload:
             res_csv = os.path.join(tmp, "volgate_backtest_result.csv")
