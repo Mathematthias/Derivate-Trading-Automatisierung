@@ -665,6 +665,23 @@ def _evaluate_trigger(
 
         if hammer_match or engulfing_match:
             conditions_met.append(match_label)
+        elif trigger.reverse_tf == "4h":
+            # Verdeckt-BEREIT-Fix (Note #118, 2026-06-01; Regression repariert
+            # 2026-07-06): Der Reverse ist auf 4h spezifiziert, die Pipeline
+            # sieht aber nur Daily-OHLC. Statt den fehlenden DAILY-Reverse hart
+            # zu blocken (→ NAHE), wandert er in den pending-Kanal mit
+            # 4h-Handcheck-Hinweis (→ BEREIT*). Feuert der Reverse sogar auf
+            # Daily, greift bereits der conditions_met-Zweig oben — dieser Pfad
+            # wird dann nicht erreicht.
+            if not has_today:
+                reason = "keine Tages-OHLC"
+            elif snap.today_lower_wick_pct is not None:
+                reason = f"Daily-Kerze schwach (Close-Pos {close_pos:.0%}, Wick {snap.today_lower_wick_pct:.0f}%)"
+            else:
+                reason = f"Daily-Kerze schwach (Close-Pos {close_pos:.0%})"
+            conditions_pending.append(
+                "4h-Reverse offen — 4h manuell prüfen (" + reason + ")"
+            )
         elif not has_today:
             conditions_missing.append("keine Reverse-Kerze (keine Tages-OHLC)")
         else:
