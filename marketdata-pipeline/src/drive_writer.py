@@ -171,6 +171,45 @@ def write_markdown_file(
     return file_id
 
 
+def write_json_file(
+    drive_service,
+    parent_folder_id: str,
+    filename: str,
+    content: str,
+) -> str:
+    """Schreibt JSON-Content (bereits serialisierter String) als Datei in den
+    Drive-Ordner. Analog zu write_markdown_file, aber mimeType application/json.
+
+    Returns:
+        File-ID der neu erstellten Datei.
+    """
+    body = {
+        "name": filename,
+        "parents": [parent_folder_id],
+        "mimeType": "application/json",
+    }
+
+    media = MediaInMemoryUpload(
+        content.encode("utf-8"),
+        mimetype="application/json",
+        resumable=False,
+    )
+
+    result = _with_retry(
+        f"write_json_file({filename})",
+        lambda: drive_service.files().create(
+            body=body,
+            media_body=media,
+            fields="id,name,parents",
+            supportsAllDrives=True,
+        ).execute(),
+    )
+
+    file_id = result["id"]
+    logger.info(f"  Wrote {filename} → file_id {file_id}")
+    return file_id
+
+
 def cleanup_old_files(
     drive_service,
     parent_folder_id: str,

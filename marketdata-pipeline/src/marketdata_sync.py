@@ -45,9 +45,11 @@ from zoneinfo import ZoneInfo
 import yaml
 
 # Module aus diesem Repo importieren — werden in src/ gefunden
+from digest_renderer import build_briefing_digest
 from drive_writer import (
     build_drive_service,
     cleanup_old_files,
+    write_json_file,
     write_markdown_file,
 )
 from filter_engine import evaluate_universe, evaluate_watchlist
@@ -283,10 +285,23 @@ def main():
     write_markdown_file(drive_service, briefing_folder_id, marketdata_filename, md_content)
     write_markdown_file(drive_service, briefing_folder_id, candidates_filename, cand_content)
 
+    # === BRIEFING-DIGEST (nur Tier A, 2026-07-10) ===
+    # Kompaktes JSON aus denselben Objekten, aus denen oben Markdown gerendert
+    # wurde. Ersetzt im Morning Check den STD+CANDIDATES-Doppel-Pull durch einen
+    # kleinen Download. Läuft auf demselben Cronjob wie Tier A → kein neuer
+    # PAT-Header. Siehe digest_renderer.py.
+    if mode == "tier_a":
+        digest_filename = f"BRIEFING-DIGEST-{timestamp_str}.json"
+        digest_content = build_briefing_digest(
+            snapshots, watchlist_results, universe_matches, overrides, timestamp,
+        )
+        write_json_file(drive_service, briefing_folder_id, digest_filename, digest_content)
+
     # === CLEANUP ALTE FILES ===
     cleanup_old_files(drive_service, briefing_folder_id, f"MARKETDATA-FULL-{universe_tag}-", keep_count=20)
     if mode == "tier_a":
         cleanup_old_files(drive_service, briefing_folder_id, "CANDIDATES-", keep_count=20)
+        cleanup_old_files(drive_service, briefing_folder_id, "BRIEFING-DIGEST-", keep_count=10)
     else:
         cleanup_old_files(
             drive_service, briefing_folder_id,

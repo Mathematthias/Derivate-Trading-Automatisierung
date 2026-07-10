@@ -162,6 +162,82 @@ def render_marketdata_full(
 # CANDIDATES.md
 # ============================================================
 
+def classify_watchlist_results(
+    watchlist_results: list["WatchlistResult"],
+) -> dict[str, list["WatchlistResult"]]:
+    """Ordnet Watchlist-Ergebnisse in die Proximity-Buckets ein.
+
+    Reine Funktion ohne Seiteneffekte — Single Source of Truth für die
+    Bucket-Zuordnung. Sowohl render_candidates (Markdown) als auch
+    build_briefing_digest (JSON) rufen sie auf, damit beide Ausgaben
+    dieselben Kategorien liefern.
+
+    Rückgabe: dict mit Keys ready, in_zone_partial, very_close, close,
+    watching, pending, paused, no_data, far — jeweils Liste von
+    WatchlistResult in Eingabe-Reihenfolge.
+
+    Kategorisierungslogik (unverändert seit Paket B):
+      - overall_status pending/paused/no_data → eigener Bucket, keine
+        Trigger-Auswertung.
+      - Sonst bestes trigger_result: in_zone OHNE conditions_missing → ready;
+        in_zone MIT conditions_missing → in_zone_partial; sonst nach bester
+        Proximity very_close > close > watching > far.
+    """
+    buckets: dict[str, list["WatchlistResult"]] = {
+        "ready": [],
+        "in_zone_partial": [],
+        "very_close": [],
+        "close": [],
+        "watching": [],
+        "pending": [],
+        "paused": [],
+        "no_data": [],
+        "far": [],
+    }
+
+    for r in watchlist_results:
+        if r.overall_status == "pending":
+            buckets["pending"].append(r)
+            continue
+        if r.overall_status == "paused":
+            buckets["paused"].append(r)
+            continue
+        if r.overall_status == "no_data":
+            buckets["no_data"].append(r)
+            continue
+
+        best_proximity = "far"
+        best_ready = False
+        for ts in r.trigger_results:
+            if ts.proximity == "in_zone" and not ts.conditions_missing:
+                best_ready = True
+                best_proximity = "in_zone"
+                break
+            if ts.proximity == "in_zone" and best_proximity not in ("in_zone",):
+                best_proximity = "in_zone"
+            elif ts.proximity == "very_close" and best_proximity not in ("in_zone", "very_close"):
+                best_proximity = "very_close"
+            elif ts.proximity == "close" and best_proximity not in ("in_zone", "very_close", "close"):
+                best_proximity = "close"
+            elif ts.proximity == "watching" and best_proximity == "far":
+                best_proximity = "watching"
+
+        if best_ready:
+            buckets["ready"].append(r)
+        elif best_proximity == "in_zone":
+            buckets["in_zone_partial"].append(r)
+        elif best_proximity == "very_close":
+            buckets["very_close"].append(r)
+        elif best_proximity == "close":
+            buckets["close"].append(r)
+        elif best_proximity == "watching":
+            buckets["watching"].append(r)
+        else:
+            buckets["far"].append(r)
+
+    return buckets
+
+
 def render_candidates(
     watchlist_results: list[WatchlistResult],
     universe_matches: list[CandidateMatch],
@@ -206,57 +282,19 @@ def render_candidates(
     lines.append("## Stufe 1 — Watchlist-Trigger-Status")
     lines.append("")
 
-    # Bereit-Treffer (in_zone + alle Conditions met)
-    ready: list[WatchlistResult] = []
-    in_zone_partial: list[WatchlistResult] = []
-    very_close: list[WatchlistResult] = []
-    close_list: list[WatchlistResult] = []
-    watching: list[WatchlistResult] = []
-    pending: list[WatchlistResult] = []
-    paused: list[WatchlistResult] = []
-    no_data: list[WatchlistResult] = []
-    far: list[WatchlistResult] = []
-
-    for r in watchlist_results:
-        if r.overall_status == "pending":
-            pending.append(r)
-            continue
-        if r.overall_status == "paused":
-            paused.append(r)
-            continue
-        if r.overall_status == "no_data":
-            no_data.append(r)
-            continue
-
-        # Trigger-Auswertung kategorisieren
-        best_proximity = "far"
-        best_ready = False
-        for ts in r.trigger_results:
-            if ts.proximity == "in_zone" and not ts.conditions_missing:
-                best_ready = True
-                best_proximity = "in_zone"
-                break
-            if ts.proximity == "in_zone" and best_proximity not in ("in_zone",):
-                best_proximity = "in_zone"
-            elif ts.proximity == "very_close" and best_proximity not in ("in_zone", "very_close"):
-                best_proximity = "very_close"
-            elif ts.proximity == "close" and best_proximity not in ("in_zone", "very_close", "close"):
-                best_proximity = "close"
-            elif ts.proximity == "watching" and best_proximity == "far":
-                best_proximity = "watching"
-
-        if best_ready:
-            ready.append(r)
-        elif best_proximity == "in_zone":
-            in_zone_partial.append(r)
-        elif best_proximity == "very_close":
-            very_close.append(r)
-        elif best_proximity == "close":
-            close_list.append(r)
-        elif best_proximity == "watching":
-            watching.append(r)
-        else:
-            far.append(r)
+    # Klassifikation in eine reine Funktion ausgelagert (2026-07-10), damit
+    # der BRIEFING-DIGEST-Builder exakt dieselbe Bucket-Zuordnung nutzt und
+    # Markdown-Output und Digest nie auseinanderdriften (siehe digest_renderer).
+    _b = classify_watchlist_results(watchlist_results)
+    ready = _b["ready"]
+    in_zone_partial = _b["in_zone_partial"]
+    very_close = _b["very_close"]
+    close_list = _b["close"]
+    watching = _b["watching"]
+    pending = _b["pending"]
+    paused = _b["paused"]
+    no_data = _b["no_data"]
+    far = _b["far"]
 
     if ready:
         lines.append("### 🎯 BEREIT — Trigger erfüllt, Chart-Validierung empfohlen")
