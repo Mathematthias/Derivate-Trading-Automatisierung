@@ -112,12 +112,26 @@ gamechanger:
 # ============================================================
 watchlist_trigger_parsing:
   # Distanz zum Trigger-Korridor in % als Status-Kategorien
+  # ROHE %-SCHWELLEN — nur noch Fallback (wenn ATR fehlt oder ATR-Block aus).
   trigger_proximity:
     in_zone:           0.0   # Kurs IN der Trigger-Zone
     very_close:        2.0   # innerhalb 2% vor/nach
     close:             5.0   # innerhalb 5%
     watching:         10.0   # innerhalb 10% — auf Radar
     far:              99.0   # weiter als 10% — passive
+
+  # ATR-NORMALISIERTE SCHWELLEN (2026-07-12) — Vielfache von ATR14-1D.
+  # Aktiv wenn enabled=true UND ATR im Snapshot vorhanden. Macht die Buckets
+  # vola-adaptiv: 2% sind bei ruhigem Wert (ATR 1%) 2 ATR = weit, bei
+  # zappeligem (ATR 6%) 1/3-ATR = quasi in-zone. distance_pct bleibt als
+  # Anzeige-% erhalten; klassifiziert wird auf distance_atr.
+  trigger_proximity_atr:
+    enabled:        true
+    in_zone:         0.0    # Kurs IN der Trigger-Zone
+    very_close:      0.75   # innerhalb 0,75 ATR
+    close:           1.5    # innerhalb 1,5 ATR
+    watching:        3.0    # innerhalb 3,0 ATR — auf Radar
+    far:            99.0    # weiter — passive
 
   # Volumen-Validierung wenn Trigger "auf Vol ≥30D-Ø" enthält
   volume_validation:
