@@ -15,6 +15,7 @@ import yaml
 
 from filter_engine import (
     _classify_proximity,
+    _distance_in_atr,
     _get_vol_status,
     _evaluate_trigger,
     evaluate_watchlist,
@@ -39,6 +40,7 @@ class FakeSnap:
     symbol: str = "TEST"
     price: float = 100.0
     rsi14: Optional[float] = 50.0
+    atr14: Optional[float] = None  # None → %-Fallback (Alt-Tests unverändert)
     volume_multiplier_today: Optional[float] = None
     last_bar_date: Optional[str] = None
     today_lower_wick_pct: Optional[float] = None
@@ -551,3 +553,81 @@ class TestGateSkip:
         ts = _evaluate_trigger(self._price_trigger("🔴"), snap, "LONG",
                                config, now_utc_hour=14)
         assert ts.label == "A"
+
+
+# ============================================================
+# ATR-NORMALISIERTE PROXIMITY-BUCKETS (2026-07-12)
+# ============================================================
+
+class TestProximityATR:
+    """Proximity-Buckets ATR-normalisiert: very_close/close/watching über
+    Vielfache von ATR14 statt roher %-Schwellen. Fallback auf % wenn ATR
+    fehlt. distance_pct bleibt als Anzeige-% erhalten."""
+
+    # --- _distance_in_atr: exakte Umrechnung ---
+
+    def test_distance_in_atr_exact(self):
+        # ref = 108, price = 104 → distance_pct = -3.7037%, gap = -4.0, ATR 6
+        d = (104.0 - 108.0) / 108.0 * 100.0
+        val = _distance_in_atr(d, price=104.0, atr14=6.0)
+        assert val is not None
+        assert abs(val - (-4.0 / 6.0)) < 1e-6  # -0.6667
+
+    def test_distance_in_atr_none_when_atr_missing(self):
+        assert _distance_in_atr(2.0, price=100.0, atr14=None) is None
+        assert _distance_in_atr(2.0, price=100.0, atr14=0.0) is None
+        assert _distance_in_atr(2.0, price=None, atr14=5.0) is None
+
+    # --- Klassifizierung: ATR enger als % bei Hoch-Vola ---
+
+    def test_high_vola_atr_tighter_than_pct(self, config):
+        # -3.7% wäre unter %-Logik "close" (>2, <=5); bei ATR 6 sind das
+        # 0.67 ATR → very_close.
+        d = (104.0 - 108.0) / 108.0 * 100.0  # -3.7037%
+        prox = _classify_proximity(d, config, price=104.0, atr14=6.0)
+        assert prox == "very_close"
+        # Gegencheck: reiner %-Fallback (kein ATR) → close
+        assert _classify_proximity(d, config, price=104.0, atr14=None) == "close"
+
+    # --- Klassifizierung: ATR weiter als % bei Niedrig-Vola ---
+
+    def test_low_vola_atr_wider_than_pct(self, config):
+        # -1.96% wäre unter %-Logik "very_close" (<=2); bei ATR 1 sind das
+        # ~1.96 ATR → watching (>1.5, <=3.0).
+        d = (100.0 - 102.0) / 102.0 * 100.0  # -1.9608%
+        prox = _classify_proximity(d, config, price=100.0, atr14=1.0)
+        assert prox == "watching"
+        # Gegencheck: %-Fallback → very_close
+        assert _classify_proximity(d, config, price=100.0, atr14=None) == "very_close"
+
+    def test_fallback_to_pct_when_no_atr(self, config):
+        d = (100.0 - 102.0) / 102.0 * 100.0  # -1.96%
+        assert _classify_proximity(d, config, price=100.0, atr14=None) == "very_close"
+
+    def test_in_zone_regardless_of_atr(self, config):
+        assert _classify_proximity(0.0, config, price=100.0, atr14=6.0) == "in_zone"
+        assert _classify_proximity(0.0, config, price=100.0, atr14=None) == "in_zone"
+
+    # --- End-to-End: ATR wird durch _evaluate_trigger durchgereicht ---
+
+    def test_evaluate_trigger_threads_atr_high_vola(self, config):
+        trigger = _parse_triggers("Daily-Close >108€")[0]
+        snap = FakeSnap(price=104.0, atr14=6.0)  # -3.7% / 0.67 ATR
+        ts = _evaluate_trigger(trigger, snap, "LONG", config, now_utc_hour=14)
+        assert ts.proximity == "very_close"
+        assert ts.distance_atr is not None
+        assert abs(ts.distance_pct - (-3.7037)) < 0.01
+        assert "×ATR" in ts.summary
+
+    def test_evaluate_trigger_threads_atr_low_vola(self, config):
+        trigger = _parse_triggers("Daily-Close >102€")[0]
+        snap = FakeSnap(price=100.0, atr14=1.0)  # -1.96% / ~1.96 ATR
+        ts = _evaluate_trigger(trigger, snap, "LONG", config, now_utc_hour=14)
+        assert ts.proximity == "watching"
+
+    def test_evaluate_trigger_no_atr_uses_pct(self, config):
+        trigger = _parse_triggers("Daily-Close >102€")[0]
+        snap = FakeSnap(price=100.0)  # kein atr14 → %-Fallback → very_close
+        ts = _evaluate_trigger(trigger, snap, "LONG", config, now_utc_hour=14)
+        assert ts.proximity == "very_close"
+        assert ts.distance_atr is None
