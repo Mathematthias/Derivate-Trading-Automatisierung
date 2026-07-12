@@ -311,21 +311,21 @@ def render_candidates(
         lines.append("")
 
     if very_close:
-        lines.append("### 📍 Sehr nah am Trigger (≤2%)")
+        lines.append("### 📍 Sehr nah am Trigger (≤0,75 ATR)")
         lines.append("")
         for r in very_close:
             lines.extend(_render_watchlist_entry(r))
         lines.append("")
 
     if close_list:
-        lines.append("### Nah am Trigger (≤5%)")
+        lines.append("### Nah am Trigger (≤1,5 ATR)")
         lines.append("")
         for r in close_list:
             lines.extend(_render_watchlist_entry(r))
         lines.append("")
 
     if watching:
-        lines.append("### Auf Radar (≤10%)")
+        lines.append("### Auf Radar (≤3,0 ATR)")
         lines.append("")
         for r in watching:
             lines.extend(_render_watchlist_entry(r))

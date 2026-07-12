@@ -5,10 +5,10 @@ Stufe 1: Watchlist-Trigger-Status-Check
    Für jeden Watchlist-Eintrag aus dem STATE wird geprüft, ob seine
    konkreten Trigger-Bedingungen erfüllt sind. Output ist ein Status:
    - in_zone: Kurs IN der Trigger-Zone, alle Bedingungen erfüllt
-   - very_close: <= 2% entfernt
-   - close: <= 5%
-   - watching: <= 10%
-   - far: > 10%, passive
+   - very_close / close / watching / far: Distanz-Buckets, ATR-normalisiert
+     (Vielfache von ATR14-1D: <=0.75 / <=1.5 / <=3.0 / >3.0). Fallback auf
+     rohe %-Schwellen (2/5/10) wenn ATR fehlt. distance_pct bleibt als %
+     erhalten (Anzeige), distance_atr trägt das ATR-Vielfache.
    - pending: Datum-Constraint noch nicht erreicht
    - paused: Status im STATE ist 'paused' — Bedingung temporär weg
 
@@ -60,6 +60,7 @@ class TriggerStatus:
     label: str  # "A", "B", oder ""
     proximity: str  # "in_zone" | "very_close" | "close" | "watching" | "far"
     distance_pct: float  # signed: negativ = drunter, positiv = drüber
+    distance_atr: Optional[float] = None  # signed Distanz in ATR14-Vielfachen (None wenn ATR fehlt)
     conditions_met: list[str] = field(default_factory=list)  # erfüllte Sub-Bedingungen
     conditions_missing: list[str] = field(default_factory=list)  # fehlende (hart durchgefallen)
     conditions_pending: list[str] = field(default_factory=list)  # noch offen (Tagesvolumen, etc.)
@@ -329,10 +330,59 @@ def check_sl_lektion4(
     return ("ok", f"Fix-SL {ratio:.2f}×ATR — konform")
 
 
-def _classify_proximity(distance_pct: float, cfg: dict) -> str:
-    """Wandelt absolute Distanz in Proximity-Bucket."""
+def _distance_in_atr(
+    distance_pct: float, price: Optional[float], atr14: Optional[float]
+) -> Optional[float]:
+    """Signed Distanz in ATR14-Vielfachen. None wenn ATR/Preis fehlt oder <=0.
+
+    distance_pct ist relativ zum Trigger-Referenzpreis (ref):
+        distance_pct = (price - ref) / ref * 100
+    Daraus exakter Preis-Abstand: gap = price - ref = price * d / (1 + d),
+    mit d = distance_pct/100. Das ATR-Vielfache = gap / ATR14.
+    """
+    if atr14 is None or atr14 <= 0 or price is None or price <= 0:
+        return None
+    d = distance_pct / 100.0
+    denom = 1.0 + d
+    if denom == 0:
+        return None
+    gap = price * d / denom
+    return gap / atr14
+
+
+def _classify_proximity(
+    distance_pct: float,
+    cfg: dict,
+    price: Optional[float] = None,
+    atr14: Optional[float] = None,
+) -> str:
+    """Wandelt Distanz in Proximity-Bucket.
+
+    ATR-normalisiert (Vielfache von ATR14-1D) wenn ATR verfügbar und der
+    ATR-Block aktiv ist; sonst Fallback auf rohe %-Schwellen. Die
+    ATR-Normalisierung macht die Buckets vola-adaptiv: 2% sind bei einem
+    ruhigen Wert (ATR 1%) 2 ATR = weit weg, bei einem zappeligen (ATR 6%)
+    ein Drittel-ATR = praktisch in-zone.
+    """
+    wtp = cfg["watchlist_trigger_parsing"]
+    atr_cfg = wtp.get("trigger_proximity_atr")
+    dist_atr = _distance_in_atr(distance_pct, price, atr14)
+
+    if atr_cfg and atr_cfg.get("enabled", False) and dist_atr is not None:
+        a = abs(dist_atr)
+        if a <= atr_cfg["in_zone"] + 0.01:  # Toleranz für 0.0
+            return "in_zone"
+        if a <= atr_cfg["very_close"]:
+            return "very_close"
+        if a <= atr_cfg["close"]:
+            return "close"
+        if a <= atr_cfg["watching"]:
+            return "watching"
+        return "far"
+
+    # Fallback: rohe %-Schwellen (ATR fehlt oder Block deaktiviert)
     abs_dist = abs(distance_pct)
-    prox_cfg = cfg["watchlist_trigger_parsing"]["trigger_proximity"]
+    prox_cfg = wtp["trigger_proximity"]
     if abs_dist <= prox_cfg["in_zone"] + 0.01:  # Toleranz für 0.0
         return "in_zone"
     if abs_dist <= prox_cfg["very_close"]:
@@ -710,7 +760,9 @@ def _evaluate_trigger(
             rsi_str = f"{snap.rsi14:.1f}" if snap.rsi14 is not None else "n/a"
             conditions_missing.append(f"RSI {rsi_str} ≤ {trigger.rsi_min:.0f}")
 
-    proximity = _classify_proximity(distance_pct, config)
+    _atr14 = getattr(snap, "atr14", None)
+    proximity = _classify_proximity(distance_pct, config, price=price, atr14=_atr14)
+    distance_atr = _distance_in_atr(distance_pct, price, _atr14)
     if blown_through:
         # Durchgelaufener Breakout darf NICHT als very_close/close erscheinen —
         # die R:R-Erosion macht das Setup untauglich. Hart auf "far".
@@ -740,9 +792,11 @@ def _evaluate_trigger(
     elif proximity == "in_zone":
         summary = f"⚠️ in Zone, aber Bedingungen offen: {', '.join(conditions_missing)}"
     elif proximity in ("very_close", "close"):
-        summary = f"📍 {proximity} ({distance_pct:+.2f}%)"
+        _atr_str = f", {abs(distance_atr):.1f}×ATR" if distance_atr is not None else ""
+        summary = f"📍 {proximity} ({distance_pct:+.2f}%{_atr_str})"
     else:
-        summary = f"… {proximity} ({distance_pct:+.2f}%)"
+        _atr_str = f", {abs(distance_atr):.1f}×ATR" if distance_atr is not None else ""
+        summary = f"… {proximity} ({distance_pct:+.2f}%{_atr_str})"
 
     # Lektion-4-SL-Guard (Note #88/#89/#92): SL-Abstand ÷ ATR an der
     # ungünstigen Zonenkante. Rein diagnostisch — verändert proximity/Bucket
@@ -753,6 +807,7 @@ def _evaluate_trigger(
         label=trigger.label,
         proximity=proximity,
         distance_pct=distance_pct,
+        distance_atr=distance_atr,
         conditions_met=conditions_met,
         conditions_missing=conditions_missing,
         conditions_pending=conditions_pending,
