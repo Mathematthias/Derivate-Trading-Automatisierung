@@ -913,6 +913,36 @@ def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
 
 
 
+def _rr_proxy(
+    snap: TickerSnapshot, direction: str, config: dict
+) -> tuple[Optional[float], bool]:
+    """Numerischer R:R-Proxy + ENG-Flag. (None, False) wenn nicht berechenbar.
+
+    Reward = 20d-Hoch (Long) bzw. 20d-Tief (Short), Risk = atr_mult × ATR14.
+    eng=True heißt strukturell enger Fall (rr < min_rr) — Warnflag, kein
+    Disqualifikator im Rendering. Der Pitch-Payload filtert eng=True separat.
+    """
+    cfg = config.get("rr_proxy", {})
+    if not cfg.get("enabled", False):
+        return None, False
+    if snap.atr14 is None or snap.atr14 <= 0 or snap.price is None:
+        return None, False
+    risk = cfg.get("atr_mult", 1.5) * snap.atr14
+    if direction == "long":
+        if snap.high_20d is None:
+            return None, False
+        reward = snap.high_20d - snap.price
+    else:
+        if snap.low_20d is None:
+            return None, False
+        reward = snap.price - snap.low_20d
+    if risk <= 0:
+        return None, False
+    rr = reward / risk
+    eng = rr < cfg.get("min_rr", 1.4)
+    return rr, eng
+
+
 def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
     """R:R-Vorfilter (Paket A, 2026-06-09): Reward-Proxy / Lektion-4-Mindest-SL.
 
@@ -924,25 +954,65 @@ def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
     Anlass: 2026-06-09 starben 4 von 6 manuell geprueften Stufe-2-Kandidaten
     (ROST, ORLY, DDOG, BKNG) an genau dieser Stelle.
     """
-    cfg = config.get("rr_proxy", {})
-    if not cfg.get("enabled", False):
+    rr, eng = _rr_proxy(snap, direction, config)
+    if rr is None:
         return ""
-    if snap.atr14 is None or snap.atr14 <= 0 or snap.price is None:
-        return ""
-    risk = cfg.get("atr_mult", 1.5) * snap.atr14
-    if direction == "long":
-        if snap.high_20d is None:
-            return ""
-        reward = snap.high_20d - snap.price
-    else:
-        if snap.low_20d is None:
-            return ""
-        reward = snap.price - snap.low_20d
-    if risk <= 0:
-        return ""
-    rr = reward / risk
-    flag = " ⚠️ENG" if rr < cfg.get("min_rr", 1.4) else ""
+    flag = " ⚠️ENG" if eng else ""
     return f"  RRprox={rr:.2f}{flag}"
+
+_PITCH_LONG_BUCKETS = {"long_trend_pullback", "breakout_long", "reversal_long"}
+
+
+def build_pitches_payload(
+    universe_matches: list[CandidateMatch],
+    config: dict,
+    source_tag: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    """Rankt Stufe-2-Kandidaten zu Bucket-4-Pitches für den Digest.
+
+    Nur Kandidaten mit belastbarem R:R-Proxy (Trend-Pullbacks) kommen rein;
+    ⚠️ENG und ethik-ausgeschlossene fliegen raus, trendlose (|30d| < Schwelle)
+    auch. Kein OHLC/ATR im Payload — Entry/SL/TP bleiben chart-zu-verifizieren.
+    Gereiht nach rrprox absteigend, Top-N.
+    """
+    pcfg = config.get("pitches", {})
+    top_n = pcfg.get("top_n", 8)
+    min_abs_move = pcfg.get("min_abs_move30d", 1.0)
+    exclude = set(pcfg.get("ethics_exclude", []))
+    grenz = set(pcfg.get("ethics_grenzfall", []))
+
+    out: list[dict[str, Any]] = []
+    for m in universe_matches:
+        sym = m.symbol
+        if sym in exclude:
+            continue
+        snap = m.snapshot
+        direction = "long" if m.bucket in _PITCH_LONG_BUCKETS else "short"
+        rr, eng = _rr_proxy(snap, direction, config)
+        if rr is None or eng:
+            continue
+        move30 = snap.move_30d_pct
+        if move30 is None or abs(move30) < min_abs_move:
+            continue
+        if snap.ema20 is None or snap.price is None:
+            continue
+        dist_pct = (snap.price - snap.ema20) / snap.ema20 * 100
+        out.append({
+            "symbol": sym,
+            "dir": direction,
+            "setup": m.bucket,
+            "price": round(snap.price, 4),
+            "ema20": round(snap.ema20, 4),
+            "dist_pct": round(dist_pct, 2),
+            "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
+            "move30d": round(move30, 1),
+            "rrprox": round(rr, 2),
+            "ethics": "grenzfall" if sym in grenz else "ok",
+            "tier": source_tag,
+        })
+    out.sort(key=lambda d: d["rrprox"], reverse=True)
+    return out[:top_n]
+
 
 def _check_bucket(
     snap: TickerSnapshot,

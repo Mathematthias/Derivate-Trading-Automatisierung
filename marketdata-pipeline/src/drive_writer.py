@@ -17,6 +17,7 @@ yfinance-Pull war erfolgreich (305/306), Crash erst beim Drive-Upload.
 
 from __future__ import annotations
 
+import io
 import json
 import logging
 import os
@@ -29,7 +30,7 @@ from typing import Callable, Optional, TypeVar
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaInMemoryUpload
+from googleapiclient.http import MediaInMemoryUpload, MediaIoBaseDownload
 
 logger = logging.getLogger(__name__)
 
@@ -274,3 +275,52 @@ def cleanup_old_files(
             f"(idempotent — listing was stale)"
         )
     return deleted
+
+
+def read_latest_json_file(
+    drive_service,
+    parent_folder_id: str,
+    filename_prefix: str,
+) -> Optional[dict]:
+    """Liest das neueste JSON-File mit gegebenem Prefix und gibt es als dict.
+
+    Für den Tier-A-Digest-Lauf, der die frischesten PITCHES-{EU,US}.json aus
+    den Tier-B/C-Läufen einliest. Robust: fehlt das File oder schlägt der
+    Download fehl, wird None zurückgegeben (Digest läuft dann ohne Pitches,
+    Chat fällt auf GAMECHANGER-Fetch zurück).
+    """
+    query = (
+        f"'{parent_folder_id}' in parents "
+        f"and name contains '{filename_prefix}' "
+        f"and trashed = false"
+    )
+    try:
+        results = _with_retry(
+            f"read_latest_json_file.list({filename_prefix})",
+            lambda: drive_service.files().list(
+                q=query,
+                orderBy="createdTime desc",
+                fields="files(id,name)",
+                pageSize=5,
+                supportsAllDrives=True,
+                includeItemsFromAllDrives=True,
+                corpora="allDrives",
+            ).execute(),
+        )
+        files = results.get("files", [])
+        if not files:
+            logger.info(f"read_latest_json_file: kein File fuer Prefix {filename_prefix}")
+            return None
+        file_id = files[0]["id"]
+        buf = io.BytesIO()
+        downloader = MediaIoBaseDownload(
+            buf,
+            drive_service.files().get_media(fileId=file_id, supportsAllDrives=True),
+        )
+        done = False
+        while not done:
+            _, done = downloader.next_chunk()
+        return json.loads(buf.getvalue().decode("utf-8"))
+    except Exception as e:  # noqa: BLE001 — bewusst tolerant, Digest darf nicht crashen
+        logger.warning(f"read_latest_json_file({filename_prefix}) fehlgeschlagen: {e}")
+        return None

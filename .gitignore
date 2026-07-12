@@ -59,3 +59,6 @@ desktop.ini
 .env*
 secrets.yml
 credentials.json
+
+# Skill wird in Claude (Customize > Skills) gepflegt, nicht im Repo
+skills/

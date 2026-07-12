@@ -35,6 +35,7 @@ EMA200-MeanRev + PEAD-Window-Erweiterung (2026-05-08, Note #47/#49):
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import sys
@@ -49,10 +50,15 @@ from digest_renderer import build_briefing_digest
 from drive_writer import (
     build_drive_service,
     cleanup_old_files,
+    read_latest_json_file,
     write_json_file,
     write_markdown_file,
 )
-from filter_engine import evaluate_universe, evaluate_watchlist
+from filter_engine import (
+    build_pitches_payload,
+    evaluate_universe,
+    evaluate_watchlist,
+)
 from market_data import fetch_ticker_data
 from output_renderer import render_candidates, render_marketdata_full
 from state_parser import (
@@ -285,15 +291,49 @@ def main():
     write_markdown_file(drive_service, briefing_folder_id, marketdata_filename, md_content)
     write_markdown_file(drive_service, briefing_folder_id, candidates_filename, cand_content)
 
+    # === PITCHES (nur Tier B/C, 2026-07-12) ===
+    # Gerankte Stufe-2-Kandidaten als kleines JSON, damit der Tier-A-Digest sie
+    # in Bucket 4 falten kann (Morning-Check = ein Fetch statt GAMECHANGER-Zweit-
+    # download). Die Objekte liegen hier schon vor → kein Markdown-Reparse.
+    if mode in ("tier_b", "tier_c"):
+        pitches_payload = build_pitches_payload(
+            universe_matches, filter_config, source_tag=universe_tag
+        )
+        pitches_filename = f"PITCHES-{universe_tag}-{timestamp_str}.json"
+        pitches_content = json.dumps(
+            {
+                "generated": timestamp.isoformat(),
+                "from": candidates_filename,
+                "ranked": pitches_payload,
+            },
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        write_json_file(drive_service, briefing_folder_id, pitches_filename, pitches_content)
+
     # === BRIEFING-DIGEST (nur Tier A, 2026-07-10) ===
     # Kompaktes JSON aus denselben Objekten, aus denen oben Markdown gerendert
     # wurde. Ersetzt im Morning Check den STD+CANDIDATES-Doppel-Pull durch einen
     # kleinen Download. Läuft auf demselben Cronjob wie Tier A → kein neuer
     # PAT-Header. Siehe digest_renderer.py.
     if mode == "tier_a":
+        # Pitches (Bucket 4) aus den letzten Tier-B/C-Läufen einlesen und mergen.
+        # Fehlen die Files (noch kein B/C-Lauf), bleibt pitches leer → Chat fällt
+        # sauber auf den GAMECHANGER-Fetch zurück.
+        merged_pitches: list[dict] = []
+        for prefix in ("PITCHES-EU-", "PITCHES-US-"):
+            data = read_latest_json_file(drive_service, briefing_folder_id, prefix)
+            if data:
+                merged_pitches.extend(data.get("ranked", []))
+        merged_pitches.sort(key=lambda d: d.get("rrprox", 0.0), reverse=True)
+        top_n = filter_config.get("pitches", {}).get("top_n", 8)
+        merged_pitches = merged_pitches[:top_n]
+        logger.info(f"Digest: {len(merged_pitches)} Pitches gemergt (Bucket 4).")
+
         digest_filename = f"BRIEFING-DIGEST-{timestamp_str}.json"
         digest_content = build_briefing_digest(
             snapshots, watchlist_results, universe_matches, overrides, timestamp,
+            pitches=merged_pitches,
         )
         write_json_file(drive_service, briefing_folder_id, digest_filename, digest_content)
 
@@ -306,6 +346,10 @@ def main():
         cleanup_old_files(
             drive_service, briefing_folder_id,
             f"GAMECHANGER-HUNT-{universe_tag}-", keep_count=10,
+        )
+        cleanup_old_files(
+            drive_service, briefing_folder_id,
+            f"PITCHES-{universe_tag}-", keep_count=10,
         )
 
     logger.info("Pipeline done.")

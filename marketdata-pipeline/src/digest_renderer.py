@@ -203,6 +203,8 @@ def _bucket_entry(r: Any) -> dict[str, Any]:
         out["label"] = ts.label
         out["proximity"] = ts.proximity
         out["distance_pct"] = _r(ts.distance_pct, 2)
+        if getattr(ts, "distance_atr", None) is not None:
+            out["distance_atr"] = _r(ts.distance_atr, 2)
         out["blown_through"] = ts.blown_through
         if ts.conditions_met:
             out["met"] = ts.conditions_met
@@ -262,6 +264,7 @@ def build_briefing_digest(
     overrides: list[Any],
     timestamp: datetime,
     expiry_window_days: int = 14,
+    pitches: Optional[list[dict[str, Any]]] = None,
 ) -> str:
     """Baut den BRIEFING-DIGEST als JSON-String.
 
@@ -352,5 +355,6 @@ def build_briefing_digest(
         "position_monitors": position_monitors,
         "overrides": ovr,
         "watchlist_expiry": expiry,
+        "pitches": pitches or [],
     }
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))

@@ -171,6 +171,19 @@ rr_proxy:
   atr_mult: 1.5
   min_rr: 1.4
 
+# Bucket-4-Pitches im BRIEFING-DIGEST (2026-07-12). Tier B/C schreiben je ein
+# PITCHES-{EU,US}.json (gerankte Stufe-2-Kandidaten), Tier A faltet die Top-N
+# in den Digest → Morning-Check deckt alle 6 Buckets in einem Fetch ab. Nur
+# Trend-Pullbacks mit R:R-Proxy; ⚠️ENG und trendlose raus; Ethik gefiltert.
+pitches:
+  top_n: 8
+  min_abs_move30d: 1.0          # Trend-Gate: |30d-Move| muss >= 1% sein
+  ethics_exclude:               # Angriffswaffen-Kerngeschaeft, nie als Pitch
+    - RHM.DE                     # Rheinmetall
+    - BA.L                       # BAE Systems
+  ethics_grenzfall:             # bleiben drin, im Chat bewerten
+    - HAG.DE                     # Hensoldt (Defense-lastig, Sensorik)
+
 output:
   # Stufe 1: Watchlist-Status — IMMER im Output, sortiert nach Trigger-Nähe
   watchlist_status_always_visible: true
