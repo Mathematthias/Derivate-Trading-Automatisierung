@@ -19,10 +19,10 @@ Lies:
 
 ## STEP 1 — STATE holen
 
-**Hartkodierte STATE-Doc-ID:** `17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks`
+**Hartkodierte STATE-Doc-ID:** `1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp`
 
 Aufruf: `Google Drive:read_file_content` mit
-`fileId = "17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks"`.
+`fileId = "1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp"`.
 
 Parse den Block zwischen `# STATE START` und `# STATE END`. Bei Fehlen:
 Scan trotzdem machen, Warnung im Header.
@@ -74,7 +74,7 @@ Ad-hoc-Move ≥5% intraday auf HDAX-Aktie.
 **Dateiname:** `Scan-YYYY-MM-DD-2030.md` — **Europe/Berlin-Datum**
 (Cron 20:30 CET = 18:30/19:30 UTC → gleicher Kalendertag).
 
-**Zielordner-ID (hart):** `1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA`
+**Zielordner-ID (hart):** `1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht`
 
 **🚨 HARTE CONTENT-REGEL — Timeout-Vermeidung:**
 - Maximale Länge Scan-Text: **1200 Zeichen UTF-8**. Nicht mehr.
@@ -87,7 +87,7 @@ Ad-hoc-Move ≥5% intraday auf HDAX-Aktie.
 ```
 Google Drive:create_file(
   title                         = "Scan-YYYY-MM-DD-2030.md",
-  parentId                      = "1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA",
+  parentId                      = "1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht",
   mimeType                      = "text/markdown",
   disableConversionToGoogleType = true,
   content                       = <base64-Encoding des UTF-8-Scan-Texts aus STEP 5>
@@ -106,7 +106,7 @@ und rissen Stream-Idle-Timeouts. `.md`-File ist pure Storage, keine Engine.
 
 **Falls Name-Kollision** (Re-Run): Suffix vor `.md`, also
 `Scan-YYYY-MM-DD-2030-v2.md`. Erkennung per `search_files` mit
-`title = 'Scan-YYYY-MM-DD-2030.md' and parentId = '1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA'`.
+`title = 'Scan-YYYY-MM-DD-2030.md' and parentId = '1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht'`.
 
 ## STEP 5 — Content-Format
 
