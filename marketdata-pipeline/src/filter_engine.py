@@ -497,13 +497,20 @@ def _evaluate_trigger(
             conditions_missing=["🚦 🔴 — Trigger im Journal als tot markiert"],
             summary="🔴 Gate tot — übersprungen",
         )
-    if trigger.gate == "⏳":
+    if trigger.gate == "⏳" and trigger.price_op is None:
+        # ⏳ NUR überspringen, wenn der Trigger keinen auswertbaren Preis hat
+        # (echte "warte auf Datum/Bedingung/Event"-Trigger, z.B. PEAD-Event-Legs).
+        # Ein ⏳ MIT konkretem Preis-Op ist der stale-Fall (Blindfleck-Fix
+        # 2026-07-23): normal auswerten — das Datum wird ohnehin entry-seitig
+        # über earliest_date → pending gehandhabt, ein zweiter blinder Skip
+        # versteckte sonst NAHE-Setups (Anlassfall MRK: 0,2 ATR am Trigger,
+        # aber ⏳ → nie gebucketet). Preislose ⏳ bleiben 'far' wie 🔴.
         return TriggerStatus(
             label=trigger.label,
             proximity="far",
             distance_pct=0.0,
-            conditions_pending=["🚦 ⏳ — Trigger wartet (Datum/Bedingung nicht erreicht)"],
-            summary="⏳ Gate wartet — übersprungen",
+            conditions_pending=["🚦 ⏳ — Trigger wartet (kein Preis-Level, Datum/Event)"],
+            summary="⏳ Gate wartet (preislos) — übersprungen",
         )
 
     # Edge case: leerer Trigger ohne Preis-Op und ohne Modifier
