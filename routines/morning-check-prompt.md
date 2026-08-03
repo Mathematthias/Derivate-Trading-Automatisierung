@@ -26,9 +26,9 @@ Lies vollständig:
 
 ## STEP 1 — STATE holen
 
-**Hartkodierte STATE-Doc-ID:** `17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks`
+**Hartkodierte STATE-Doc-ID:** `1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp`
 
-Aufruf: `Google Drive:read_file_content` mit `fileId = "17KgjCjFiy15JsSRD8h_EK5lL_PitkOJIC7ou1LYOcks"`.
+Aufruf: `Google Drive:read_file_content` mit `fileId = "1ZVmRDY1vQdw_5dv6X7GtqSym5MSnPlvp"`.
 
 **Nicht verwenden:** `search_files`, `parentId`-Filter, Titel-Suche. Die direkte
 fileId-Abfrage ist deterministisch und kostet einen Tool-Call weniger.
@@ -126,7 +126,7 @@ Bei Cron 08:45 CET sind UTC und Berlin am selben Kalendertag; bei manuellen
 Re-Runs um andere Zeiten: wenn Unklarheit, in bash kurz `TZ=Europe/Berlin date +%Y-%m-%d`
 prüfen.
 
-**Zielordner-ID (hart):** `1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA`
+**Zielordner-ID (hart):** `1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht`
 (entspricht `Trading/Briefing/`)
 
 **🚨 HARTE CONTENT-REGEL — Timeout-Vermeidung:**
@@ -142,7 +142,7 @@ prüfen.
 ```
 Google Drive:create_file(
   title                         = "Briefing-YYYY-MM-DD.md",
-  parentId                      = "1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA",
+  parentId                      = "1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht",
   mimeType                      = "text/markdown",
   disableConversionToGoogleType = true,
   content                       = <base64-Encoding des UTF-8-Briefing-Texts aus STEP 6>
@@ -170,7 +170,7 @@ inline als Text an, und der Chat-Reader liest sie ohnehin per
 **Falls Doc mit gleichem Namen existiert** (Re-Run): Suffix vor `.md`,
 also `Briefing-YYYY-MM-DD-v2.md`. Nicht überschreiben. Erkennung per
 `search_files` mit
-`title = 'Briefing-YYYY-MM-DD.md' and parentId = '1jKuyo12c38sg8Ff4ZHFXHqsU_Nl2D4AA'`.
+`title = 'Briefing-YYYY-MM-DD.md' and parentId = '1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht'`.
 
 ## STEP 6 — Content-Format des Daily-Doc
 
