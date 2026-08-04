@@ -1,0 +1,82 @@
+name: Catalyst Calendar Sync (Termin-Radar)
+
+# Thesen-Zufuhr-Layer (angelegt 2026-08-04, Journal-Notes #234/#241).
+# Trigger-Architektur wie Tier A/B/C und Insider-US:
+#   cron-job.org -> workflow_dispatch via PAT. KEIN `on: schedule`.
+#
+# HINTERGRUND: Zwischen 2026-06-30 und 2026-08-04 entstand fuenf Wochen lang
+#   keine neue These. Ursache war kein Ideenmangel, sondern dass die Pipeline
+#   strukturell keine liefern kann: sie kennt ATR-Distanzen, RRprox und
+#   Setup-Flags, aber kein Feld fuer "warum sollte das steigen". Dieser Job
+#   liefert den fehlenden Input — datierte Ereignisse als Thesen-Rohstoff.
+#
+# KADENZ-EMPFEHLUNG: 1x/Woche, Samstag frueh.
+#   cron-job.org: 0 6 * * 6
+#   Begruendung: Der Kalender aendert sich langsam (Regulierung, Auktionen,
+#   Lockups). Ein Wochenlauf reicht und liegt vor dem Routine-9-Slot am
+#   Samstagvormittag, der den Output verarbeitet. Haeufiger waere Verschwendung
+#   — anders als bei Tier A gibt es hier keine Intraday-Dynamik.
+#
+# SETUP VOR ERSTEM LAUF:
+#   1. Neuen cron-job.org-Job anlegen (workflow_dispatch auf dieses File,
+#      gleicher PAT wie Tier A/B/C/Insider-US).
+#   2. SEC_CONTACT-Secret existiert bereits (Insider-US) — wird hier fuer den
+#      Lockup-Collector wiederverwendet. Fehlt es, wird der Collector
+#      uebersprungen, der Job laeuft trotzdem durch.
+#
+# ⚠️ PAT-Renewal: dieser Job ist der FUENFTE Header, in dem ein neuer Token
+#   eingetragen werden muss (Tier A + B + C + Insider-US + Catalyst-Calendar).
+#
+# ⚠️ ERSTER LAUF: Die HTTP-Endpoints (federalregister.gov, efts.sec.gov) sind
+#   beim Bau nicht live verifiziert worden — gleiche Einschraenkung wie bei
+#   insider_us_scanner.py (Paket C1). Im Action-Log die Zeilen
+#   "collector <name>: N Events" bzw. "FEHLER" pruefen. Die deterministischen
+#   Collectoren (index_reviews, seeds) laufen garantiert; faellt ein
+#   Netz-Collector aus, ist der Output kleiner, aber gueltig.
+
+on:
+  workflow_dispatch:
+    inputs:
+      horizon_days:
+        description: 'Horizont in Tagen (default 210 = ~7 Monate)'
+        required: false
+        default: '210'
+      offline:
+        description: 'Nur deterministische Collectoren (true/false)'
+        required: false
+        default: 'false'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Catalyst-Calendar-Sync
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          SEC_CONTACT: ${{ secrets.SEC_CONTACT }}
+          CONFIG_DIR: ./config
+          PYTHONPATH: ./src
+        run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.offline }}" = "true" ]; then EXTRA="--offline"; fi
+          python src/catalyst_calendar_sync.py \
+            --horizon-days "${{ github.event.inputs.horizon_days || 210 }}" $EXTRA
