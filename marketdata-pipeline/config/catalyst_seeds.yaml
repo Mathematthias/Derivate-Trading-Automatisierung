@@ -1,0 +1,201 @@
+# catalyst_seeds.yaml — kuratierte Termine fuer catalyst_calendar_sync.py
+#
+# Handgepflegte Ereignisse mit Datum. Dieser Collector ueberlebt jeden
+# API-Ausfall und ist die Single Source of Truth fuer alles, was recherchiert
+# und geprueft wurde. Erstbefuellung 2026-08-04 aus dem Termin-Radar-Aufbau
+# (Journal-Note #241, Sheet "Termin-Radar").
+#
+# FELDER je Eintrag:
+#   date        Pflicht, ISO JJJJ-MM-TT
+#   date_to     optional, ISO — nur bei Zeitfenstern
+#   kat         1=Regulierung/Frist 2=Auktion/Vergabe 3=IPO-Lockup
+#               4=Index-Umstellung 5=Kapazitaet/Zulassung
+#   titel       Pflicht, ein Satz
+#   tickers     kommagetrennt
+#   wirkung     mechanische Wirkrichtung, KEINE Kurserwartung
+#   quelle      Kurzname + Abrufdatum
+#   url         optional
+#   confidence  verified | heuristic | unverified   (default verified)
+#
+# PFLEGE: abgelaufene Eintraege NICHT loeschen — der Renderer sortiert sie
+# nach "Abgelaufen" und der Aging-Block macht sichtbar, was durchgelaufen ist.
+# Kategorie 4 (Index) bewusst NICHT hier pflegen: das rechnet der Collector
+# index_reviews deterministisch aus.
+
+events:
+  - date: 2026-08-07
+    kat: 2
+    titel: "UK CfD Allocation Round 8: Bewerbungsfenster schliesst (>17 GW Offshore ausgeschrieben); NESO-Pruefung 10.08.-16.09."
+    tickers: "ORSTED, SSE, VWS, ENR.DE"
+    wirkung: "Volumen-Signal Offshore-Pipeline 2030+; Richtung offen bis Ergebnis"
+    quelle: "windtech-international.com, Abruf 2026-08-04"
+
+  - date: 2026-08-12
+    kat: 1
+    titel: "EU-Verpackungsverordnung PPWR (VO 2025/40) anwendbar: Rezyklatquoten, Design-for-Recycling, Verbot bestimmter Einwegformate"
+    tickers: "SIGN, HUH1V, SW, MNDI, AMCR, KRN.DE, GXI.DE"
+    wirkung: "+ Faser-/Rezyklat-Verpacker und Abfuellanlagenbau / - Kunststoff-Einweg-Exposure"
+    quelle: "gleisslutz.com, Abruf 2026-08-04"
+
+  - date: 2026-08-20
+    date_to: 2026-09-20
+    kat: 1
+    titel: "Entscheidungsfenster zweier Section-232-Verfahren: Windturbinen/-komponenten und Robotik/Industriemaschinen"
+    tickers: "VWS, NDX1.DE, ENR.DE, ABBN.SW, DUE.DE, KGX.DE"
+    wirkung: "- EU-Exporteure bei Zollverhaengung / + US-Fertiger"
+    quelle: "cov.com, Abruf 2026-08-04"
+    confidence: heuristic
+
+  - date: 2026-08-21
+    date_to: 2026-10-25
+    kat: 3
+    titel: "SpaceX gestaffelte Lockup-Tranchen je ~7% im 15-Tage-Rhythmus (Tag 70/90/105/120/135 nach IPO 2026-06-12)"
+    tickers: "SPCX"
+    wirkung: "- laufender Angebotsdruck bei nur ~5% Streubesitz zum IPO"
+    quelle: "modernfp.com / investing.com, Abruf 2026-08-04"
+    confidence: heuristic
+
+  - date: 2026-09-08
+    date_to: 2026-11-03
+    kat: 2
+    titel: "ERSTE deutsche Kapazitaetsmarkt-Auktion (StromVKG): Gebotsschluss 08.09. 24:00, 4.500 MW, Hoechstpreis 244.000 EUR/MW*a; Zuschlagsbekanntgabe 03.11."
+    tickers: "ENR.DE, RWE.DE, UN01.DE, VOW3.DE"
+    wirkung: "+ Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher faktisch ausgeschlossen (10-h-Kriterium)"
+    quelle: "solarbranche.de / boersen-zeitung.de, Abruf 2026-08-04"
+
+  - date: 2026-09-24
+    kat: 1
+    titel: "Trump-Xi-Gipfel in Washington — wenige Wochen vor Ablauf des Zoll-Waffenstillstands; Weichenstellung fuer den 10.11.-Cluster"
+    tickers: "MP, LYC.AX, IFX.DE, CON.DE, VOW3.DE"
+    wirkung: "Richtung offen — Deeskalation entwertet den Cluster, Scheitern schaerft ihn"
+    quelle: "NTD / S&P Global, Abruf 2026-08-04"
+
+  - date: 2026-10-01
+    kat: 2
+    titel: "BNetzA Solar 2. Segment (Dach): Gebotstermin; Volumen noch nicht publiziert (gesetzl. Basis 367 MW), Hoechstwert 10,00 ct/kWh"
+    tickers: "SMA-Komplex, Projektierer"
+    wirkung: "Aufdach-Segment war 3x in Folge UNTERZEICHNET -> schwaches Nachfragesignal"
+    quelle: "bundesnetzagentur.de, Abruf 2026-08-04"
+
+  - date: 2026-10-10
+    kat: 5
+    titel: "FDA-PDUFA Ifinatamab Deruxtecan (I-DXd) bei vorbehandeltem ES-SCLC, Priority Review"
+    tickers: "MRK, 4568.T"
+    wirkung: "+ bei Zulassung; fuer MRK klein, fuer Daiichi Sankyo material"
+    quelle: "merck.com, Abruf 2026-08-04"
+
+  - date: 2026-11-01
+    kat: 2
+    titel: "BNetzA Wind an Land: Gebotstermin (Basis 2.500 MW, Hoechstwert 7,25 ct/kWh). Mai-Runde deutlich ueberzeichnet: 6.409 MW Gebote auf 2.495 MW, Ø-Zuschlag 5,06 ct/kWh"
+    tickers: "NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE"
+    wirkung: "+ Projektierer bei erneuter Ueberzeichnung"
+    quelle: "bundesnetzagentur.de, Abruf 2026-08-04"
+
+  - date: 2026-11-10
+    kat: 1
+    titel: "ANKER-TERMIN: Chinas 12-monatige Aussetzung der erweiterten SE-Exportkontrollen laeuft aus (Notice 61 inkl. extraterritorialer 0,1%-Regel)"
+    tickers: "MP, LYC.AX, ILU.AX, IFX.DE, CON.DE, VOW3.DE"
+    wirkung: "+ Nicht-China-Foerderer bei Nichtverlaengerung / - europaeische Magnet-Abnehmer"
+    quelle: "mining-technology.com, Abruf 2026-08-04"
+
+  - date: 2026-11-10
+    kat: 1
+    titel: "ZEITGLEICH mit dem SE-Termin: 178 US-Section-301-Ausnahmen laufen aus (164 produktspezifisch + 14 Solarfertigungs-Equipment), keine neue Antragsrunde offen"
+    tickers: "FSLR, SEDG, WCH.DE, NXT"
+    wirkung: "+ US-Solarfertiger ohne China-Equipment / - Ausbauprojekte mit chinesischer Anlagentechnik"
+    quelle: "greatlakescustomslaw.com, Abruf 2026-08-04"
+
+  - date: 2026-11-27
+    kat: 1
+    titel: "Aussetzung Announcement 72/2025 laeuft aus (Gallium, Germanium, Antimon, Graphit)"
+    tickers: "Halbleiter- und Batterie-Lieferkette"
+    wirkung: "- Abnehmer bei Reaktivierung der Kontrollen"
+    quelle: "Clark Hill / CarraGlobe, Abruf 2026-08-04"
+
+  - date: 2026-11-29
+    kat: 1
+    titel: "Euro 7 (VO (EU) 2024/1257) gilt fuer neue Typgenehmigungen Pkw/leichte Nutzfahrzeuge — erstmals Brems- und Reifenabriebgrenzwerte"
+    tickers: "UMI.BR, JMAT.L, BAS.DE, CON.DE, ML.PA, TYRES.HE"
+    wirkung: "+ Abgasnachbehandlung/Bremsbelag-Spezialisten / - Kostenbelastung OEM und Reifenhersteller"
+    quelle: "EUR-Lex 2024/1257, Abruf 2026-08-04"
+
+  - date: 2026-12-01
+    kat: 2
+    titel: "BNetzA Solar 1. Segment (Freiflaeche): Gebotstermin, Basis 3.300 MW (Maerz-Runde auf ~2.300 MW gesenkt)"
+    tickers: "Projektierer, SMA-Komplex"
+    wirkung: "Volumenkuerzungen der BNetzA beobachten"
+    quelle: "bundesnetzagentur.de, Abruf 2026-08-04"
+
+  - date: 2026-12-08
+    kat: 2
+    titel: "Zweite Kapazitaetsmarkt-Auktion, weitere 4.500 MW (dritte Runde 2027-05-18 mit 2.000 MW)"
+    tickers: "ENR.DE, RWE.DE, UN01.DE"
+    wirkung: "wie erste Runde; Preisniveau der ersten Runde als Anker"
+    quelle: "boersen-zeitung.de, Abruf 2026-08-04"
+
+  - date: 2026-12-09
+    kat: 3
+    titel: "SpaceX 180-Tage-Lockup laeuft vollstaendig ab; alle Restbeschraenkungen ausser der 366-Tage-Gruppe um Musk (2027-06-13) fallen"
+    tickers: "SPCX"
+    wirkung: "- groesster Einzel-Unlock, Float waechst von ~5% Richtung Mehrheit"
+    quelle: "modernfp.com, Abruf 2026-08-04"
+
+  - date: 2026-12-30
+    kat: 1
+    titel: "EU-Entwaldungsverordnung EUDR fuer grosse und mittlere Unternehmen anwendbar (Kakao, Kaffee, Palmoel, Kautschuk, Holz, Rind, Soja)"
+    tickers: "NESN.SW, BARN.SW, STERV.HE, UPM.HE, ML.PA, SY1.DE"
+    wirkung: "- Compliance-Kosten und Lieferkettenrisiko / + zertifizierte, rueckverfolgbare Anbieter"
+    quelle: "consilium.europa.eu, Abruf 2026-08-04"
+
+  - date: 2027-01-01
+    kat: 1
+    titel: "EU-Importverbot fuer russisches LNG unter Langfristvertraegen (19. Sanktionspaket); Pipelinegas folgt Herbst 2027"
+    tickers: "TTE.PA, SHEL.L, ENGI.PA, UN01.DE, LNG, VG"
+    wirkung: "+ US-LNG-Exporteure und EU-Terminalbetreiber / - Kontraktinhaber mit Yamal-Exposure"
+    quelle: "energy.ec.europa.eu, Abruf 2026-08-04"
+
+  - date: 2027-01-01
+    kat: 1
+    titel: "Medicare-Verhandlungspreise Runde 2 wirksam: 15 Wirkstoffe, im Schnitt -44% ggue. 2024-Listenpreis (Semaglutid ca. -70%)"
+    tickers: "NOVO-B.CO, GSK.L, AZN.L, PFE, ABBV, AMGN, MRK, TEVA"
+    wirkung: "- am staerksten Novo Nordisk (Semaglutid) und GSK (Trelegy + Breo)"
+    quelle: "biopharmadive.com, Abruf 2026-08-04"
+
+  - date: 2027-02-01
+    kat: 1
+    titel: "CBAM-Zertifikatsverkauf startet (um 13 Monate verschoben); Importeure erwerben Zertifikate fuer 2026er-Importe"
+    tickers: "MT.AS, TKA.DE, SZG.DE, VOE.VI, HEI.DE, NHY.OL"
+    wirkung: "+ EU-Produzenten (Importkostenaufschlag) / - importabhaengige Verarbeiter"
+    quelle: "cbamguide.com, Abruf 2026-08-04"
+
+  - date: 2027-02-15
+    date_to: 2027-02-17
+    kat: 2
+    titel: "UK CfD AR8: Ergebnisbekanntgabe an Bieter; Vertragsunterzeichnung bis 2027-03-17"
+    tickers: "ORSTED, SSE, VWS, ENR.DE"
+    wirkung: "+ Turbinen- und Kabel-Lieferkette bei hohem Zuschlagsvolumen"
+    quelle: "windtech-international.com, Abruf 2026-08-04"
+
+  # --- UNSICHER: Datum nicht sauber verifiziert, vor Nutzung pruefen ---
+  - date: 2026-09-21
+    kat: 5
+    titel: "WINREVAIR (Sotatercept) sNDA — Datum nur aus PDUFA-Aggregator, KEINE Merck-Pressemitteilung als Bestaetigung"
+    tickers: "MRK"
+    wirkung: "+ bei Zulassung"
+    quelle: "pdufa.bio, Abruf 2026-08-04"
+    confidence: unverified
+
+  - date: 2026-12-15
+    kat: 5
+    titel: "CagriSema (Novo Nordisk) US-Zulassungsentscheidung — NDA 2025-12-18, Novo nennt nur ein 'Q4-2026-Fenster', kein oeffentlicher PDUFA-Termin"
+    tickers: "NOVO-B.CO"
+    wirkung: "+ bei Zulassung; Datum ist ein Platzhalter in der Mitte des genannten Fensters"
+    quelle: "remypeptides / biospace, Abruf 2026-08-04"
+    confidence: unverified
+
+# --- WEGGEFALLEN, bewusst dokumentiert ---
+# Wind auf See 2026: ALLE Offshore-Ausschreibungen wurden auf 2027 verschoben
+# (Aenderung Flaechenentwicklungsplan 2026-01-30, Kabinettsbeschluss 2026-01-28,
+# WindSeeG-Novelle geplant; Flaechen N-10.1/10.2/12.4/12.5/13.1/13.2).
+# Wer auf Offshore-Auktions-News 2026 spekuliert, wartet auf ein Event, das es
+# nicht gibt. Quelle: bundesnetzagentur.de, Abruf 2026-08-04.
