@@ -65,6 +65,7 @@ Repo-Root/
     │   ├── tickers_tier_b.yaml          ← EU-Universum
     │   ├── tickers_tier_c.yaml          ← US-Universum (seit 2026-05-13)
     │   ├── filter_config.yaml           ← Setup-Schwellwerte
+    │   ├── catalyst_seeds.yaml          ← kuratierte Termine für den Termin-Radar
     │   ├── STATE_extensions.md          ← STATE-Doc-Erweiterungen
     │   └── WATCHLIST_ARCHIV_template.md ← Vorlage für Drive-Archiv-Doc
     ├── src/
@@ -73,7 +74,9 @@ Repo-Root/
     │   ├── market_data.py               ← yfinance-Pull + Indikatoren
     │   ├── filter_engine.py             ← Stufe 1 + Stufe 2
     │   ├── output_renderer.py           ← Markdown-Output erzeugen
-    │   └── drive_writer.py              ← Drive-Upload via Service-Account
+    │   ├── drive_writer.py              ← Drive-Upload via Service-Account
+    │   ├── insider_us_scanner.py        ← SEC-EDGAR-Form-4-Layer (Paket C1)
+    │   └── catalyst_calendar_sync.py    ← Termin-Radar (Thesen-Zufuhr, seit 2026-08-04)
     └── docs/
         └── architecture.md              ← Wie die Filter-Engine arbeitet
 ```
@@ -87,6 +90,7 @@ Repo-Root/
 | **Aktive Watchlist** | **STATE-Doc (Workspace Shared Drive)** — NICHT yaml |
 | **Watchlist-Archiv** | **WATCHLIST-ARCHIV-Doc (Drive)** — separates Doc |
 | Filter-Schwellwerte | `filter_config.yaml` (Tuning) |
+| **Kuratierte Termine** | **`catalyst_seeds.yaml`** — handgepflegt, überlebt jeden API-Ausfall |
 | Filter-Override | STATE-Doc Sektion 4 |
 
 ## Anpassungen ohne Code-Push
@@ -103,6 +107,56 @@ GitHub Action manuell auslösen:
 3. Rechts oben **`Run workflow`** → **`Run workflow`**
 4. ~2 Minuten warten, dann in Drive `Trading-Pipeline/Briefing/` nachschauen
 
+## Termin-Radar (catalyst_calendar_sync.py, seit 2026-08-04)
+
+**Warum es das gibt.** Zwischen 2026-06-30 und 2026-08-04 entstand fünf Wochen lang keine
+neue Handels-These. Die Ursache war strukturell: Die Pipeline liefert ATR-Distanzen, RRprox
+und Setup-Flags — sie hat **kein Feld für „warum sollte das steigen"** und kann keins haben.
+Die belastbarste These im Journal (#156, China/Seltene Erden) ist dagegen ein *Kalendereintrag*:
+Sie lebt von einem Datum, nicht von einer Meinung, und hatte deshalb als einzige eine
+terminierte Aktion. Dieser Job liefert genau diesen Rohstoff.
+
+**Was er ausdrücklich NICHT tut:** bewerten. Ein Termin ist keine These. Konviktions-Gate und
+Crowdedness-Messung bleiben manuell (Skill `references/deep-research-weekly.md`, Routine 9).
+
+**Vier Collectoren, absteigend nach Verlässlichkeit:**
+
+| Collector | Netz? | Confidence | Liefert |
+|---|---|---|---|
+| `index_reviews` | nein | `verified` | DAX/Nasdaq-100/MSCI-Termine aus publizierten Kalenderregeln — rechenbar, nicht recherchierbar |
+| `seeds` | nein | aus YAML | kuratierte Termine aus `config/catalyst_seeds.yaml` |
+| `federal_register` | ja | `verified`/`heuristic` | US-Regulierung mit `effective_on` (freie JSON-API, kein Key) |
+| `sec_lockups` | ja | `heuristic` | IPO-Lockups aus 424B4 — Datum = Filing + 180 Tage, **geschätzt** |
+
+Jeder Collector ist einzeln gekapselt: Fällt einer aus, wird das im Log als
+`collector <name>: FEHLER` protokolliert und der Job läuft mit den übrigen weiter
+(additiv wie GAMECHANGER, kein globaler Fallback).
+
+**Output:** `CATALYST-CALENDAR-{datetime}.md` und `.json` im Briefing-Ordner, `keep_count=10`.
+Der Markdown-Output ist in drei Aging-Blöcke gegliedert — **Einrückend** (≤28 Tage,
+Bucket-0-relevant), **Horizont**, **Abgelaufen**. Der Abgelaufen-Block ist die Aging-Kontrolle:
+Er verhindert, dass der Radar so verrottet, wie es dem Thesen-Log passiert ist
+(zwei Re-Check-Termine verstrichen unbemerkt, Journal-Note #234).
+
+**Lokal testen (ohne Drive, ohne Netz):**
+
+```bash
+cd marketdata-pipeline
+CONFIG_DIR=./config PYTHONPATH=./src python src/catalyst_calendar_sync.py \
+    --offline --output /tmp/cal.md --json-output /tmp/cal.json
+```
+
+**Erreichbarkeit der Netz-Collectoren prüfen:**
+
+```bash
+CONFIG_DIR=./config PYTHONPATH=./src python src/catalyst_calendar_sync.py --smoke-test
+```
+
+⚠️ **Vor dem ersten produktiven Lauf:** Die HTTP-Endpoints (federalregister.gov,
+efts.sec.gov) wurden beim Bau **nicht live verifiziert** — gleiche Einschränkung wie bei
+`insider_us_scanner.py` (Paket C1). Die deterministischen Collectoren laufen garantiert;
+im Action-Log die Zeilen `collector <name>: N Events` prüfen.
+
 ## Wichtige Pipeline-Konstanten
 
 In den Workflows:
@@ -111,29 +165,3 @@ In den Workflows:
 - Health-Check-Threshold: 80% der Ticker müssen erfolgreich sein
 
 Falls IDs sich ändern, in Workflow-Files updaten.
-
-## Insider-US-Layer (SEC EDGAR Form 4) — seit 2026-06-10 (Paket C1)
-
-`src/insider_us_scanner.py` — eigener Workflow `insider_us_sync.yml`,
-1×/Tag Mo–Fr 07:00 Berlin via cron-job.org. Output:
-`INSIDER-US-YYYY-MM-DD-HHMM.md` im Briefing-Ordner (keep 10).
-Architektur: Tier-C-YAML → company_tickers.json (Ticker→CIK) →
-data.sec.gov/submissions je CIK → Form-4-XML aus Archives → Parse →
-Cluster-Logik → yfinance-Earnings-Check nur für Signal-Ticker.
-
-**Setup vor erstem Lauf:** Repo-Secret `SEC_CONTACT` anlegen
-(`"Vorname Nachname email@domain.tld"`) + neuen cron-job.org-Job
-(workflow_dispatch, gleicher PAT). ⚠️ Beim PAT-Renewal 2026-07-21 ist das
-der **vierte** Cronjob-Header.
-
-**Symptom-Tabelle (Endpoints beim Bau nicht live verifizierbar):**
-
-| Symptom im Action-Log | Vermutliche Ursache | Behandlung |
-|---|---|---|
-| `SEC_CONTACT env fehlt` (SystemExit) | Secret nicht angelegt | Repo-Secret setzen |
-| HTTP 403 auf alle SEC-Calls | User-Agent abgelehnt / Rate-Limit-Bann | SEC_CONTACT-Format prüfen, THROTTLE_SECONDS erhöhen |
-| `company_tickers.json nicht ladbar` | URL geändert | `SEC_TICKER_MAP_URL` prüfen (sec.gov/files/) |
-| 0/96 Ticker→CIK aufgelöst | JSON-Format geändert | `fetch_cik_map` an neues Format anpassen |
-| Viele `XML nicht ladbar` | primaryDocument-Konvention anders | `fetch_form4_xml`-Fallback (index.json) prüfen |
-| Filings geprüft >0, geparst 0 | XML-Schema-Drift | `parse_form4`-XPaths gegen echtes Filing abgleichen |
-| Earnings-Pull-Warnungen | yfinance-Hiccup | unkritisch — Signal erscheint ohne 📅-Flag |
