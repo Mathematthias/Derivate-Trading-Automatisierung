@@ -124,3 +124,28 @@ categories:
     Xcel_Energy: "XEL"  # [H]
     Zoom: "ZM"  # [H]
     Zscaler: "ZS"  # [H]
+    Texas_Instruments: "TXN"  # [M] NACHTRAG 2026-08-28 — fehlte in der Quellliste
+                              #     vom 29.04., ist aber NASDAQ-100-Mitglied.
+
+  # ============================================================
+  # NYSE-TECH — Strukturluecke, geschlossen 2026-08-28
+  #
+  # BEFUND: Tier C ist als "NASDAQ-100" definiert. Damit fehlt der gesamte
+  # an der NYSE gelistete US-Tech-Komplex, unabhaengig von Groesse und
+  # Liquiditaet. Das ist keine Namensluecke, sondern eine Indexgrenze, die
+  # als Universumsgrenze wirkt.
+  #
+  # Auswahl: Mega-/Large-Cap, KO-Abdeckung bei SB+ vorhanden, saubere
+  # Trendstruktur (Momentum-Continuation-Long v0.1 lebt davon).
+  # Alle non-Quanto USD -> FX-adjustiertes R:R pruefen (Lektion 1 v2).
+  #
+  # Ethik: keine Defense-Pure-Plays in dieser Liste.
+  # ============================================================
+  nyse_tech:
+    Oracle: "ORCL"  # [H] Enterprise-Software/Cloud
+    ServiceNow: "NOW"  # [H] Enterprise-Workflow
+    Salesforce: "CRM"  # [H] CRM/Enterprise — Achtung: frueher als Short gehandelt (#38)
+    Arista_Networks: "ANET"  # [H] Netzwerk/AI-Infrastruktur
+    Snowflake: "SNOW"  # [H] Data-Cloud — erfahrungsgemaess hohe ATR, Filter beachten
+    IBM: "IBM"  # [H] Hybrid-Cloud/Consulting, defensiveres Tech-Profil
+    Accenture: "ACN"  # [M] IT-Services, NYSE, irisches Domizil

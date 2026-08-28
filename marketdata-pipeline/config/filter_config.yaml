@@ -41,6 +41,27 @@ universal_disqualifier:
   # Short: <-15% in 30 Tagen disqualifiziert für neuen Short-Einstieg
   thirty_day_move_max_pct: 15.0
 
+  # ATR-Deckel (neu 2026-08-28) — Volatilitaets-Obergrenze fuer NEUE Kandidaten.
+  # Gemessen als ATR-14 in Prozent vom Schlusskurs.
+  #
+  # WARUM UEBERHAUPT: Bei sehr hoher relativer ATR ist der Lektion-4-Stop
+  # (1,5 x ATR) so weit, dass die Position winzig wird und die Zone im
+  # Tagesrauschen verschwindet. Solche Werte sind nicht "riskant", sie sind
+  # mit dieser Methode schlicht nicht sinnvoll handelbar.
+  #
+  # WARUM 8,0 UND NICHT 5,5: Die 5,5%-Schwelle aus Journal-Note #184
+  # (Iron-Coupling) sagt "anders behandeln", nicht "nicht handeln" — sie wird
+  # skill-seitig als FLAG im Briefing gefuehrt, nicht hier als Ausschluss.
+  # Dieser Deckel greift erst, wo auch eine angepasste Methode nicht mehr traegt.
+  # Strenger einstellen: 6.5 waere die konservative Alternative.
+  #
+  # GILT NUR FUER STUFE 2 (Universe-Scan / neue Kandidaten). Watchlist-Eintraege
+  # laufen ueber Stufe 1 und sind NICHT betroffen — eine eigene Setup-
+  # Entscheidung wird nicht nachtraeglich von einem Schwellwert kassiert.
+  # ATR schwankt: ein Wert faellt automatisch wieder unter den Deckel und ist
+  # dann wieder Kandidat. Deshalb Filter statt Universums-Ausschluss.
+  max_atr_pct: 8.0
+
 # ============================================================
 # LONG-TREND-PULLBACK (höchste Häufigkeit deiner Trades)
 # Setup: Aufwärtstrend intakt, Kurs zieht zur EMA20/50, Bounce-Bereich

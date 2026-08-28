@@ -228,6 +228,28 @@ categories:
     Vivendi: "VIV.PA"  # [H] Frankreich
     Wolters_Kluwer: "WKL.AS"  # [H] Niederlande
 
+  # ============================================================
+  # EURONEXT-TECH — Strukturluecke, geschlossen 2026-08-28
+  #
+  # BEFUND: Amsterdam und Paris sind bisher NUR ueber die EuroStoxx-50-
+  # Mitgliedschaft abgedeckt. Wer knapp darunter liegt, faellt komplett aus
+  # dem Universum — auch bei guter Liquiditaet und KO-Abdeckung.
+  #
+  # Alle fuenf EUR-direkt: kein FX-Drag, damit gegenueber US-Tech im Vorteil
+  # (Lektion 1 v2 entfaellt).
+  #
+  # KORRELATIONSHINWEIS: ASM.AS und BESI.AS sind Halbleiter-Equipment und
+  # laufen faktisch mit ASML.AS als EIN Block (Lektion 7). Nicht als drei
+  # unabhaengige Ausdruecke behandeln — siehe SEMI-Cluster-Budget im Skill.
+  # ============================================================
+  euronext_tech:
+    ASM_International: "ASM.AS"  # [M] Halbleiter-Equipment, AEX
+    BE_Semiconductor: "BESI.AS"  # [M] Halbleiter-Equipment, AEX — hohe ATR erwartet
+    STMicroelectronics: "STMPA.PA"  # [M] Halbleiter, Euronext Paris
+                                    #     Fallback bei Datenausfall: "STM" (NYSE-ADR, dann USD)
+    Dassault_Systemes: "DSY.PA"  # [H] Software/PLM, CAC 40
+    Capgemini: "CAP.PA"  # [H] IT-Services, CAC 40
+
   smi_20:
     ABB: "ABBN.SW"  # [H]
     Alcon: "ALC.SW"  # [H]
