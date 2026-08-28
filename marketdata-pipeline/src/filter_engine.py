@@ -915,6 +915,15 @@ def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
         if abs(snap.move_30d_pct) > cfg["thirty_day_move_max_pct"]:
             return False
 
+    # ATR-Deckel (2026-08-28): relative Volatilitaet zu hoch fuer die Methode.
+    # Fehlt der Schluessel in der Config, ist der Filter inaktiv — damit bleibt
+    # eine aeltere filter_config.yaml lauffaehig.
+    max_atr_pct = cfg.get("max_atr_pct")
+    if max_atr_pct is not None:
+        if snap.atr14 is not None and snap.price is not None and snap.price > 0:
+            if (snap.atr14 / snap.price) * 100.0 > max_atr_pct:
+                return False
+
     return True
 
 
