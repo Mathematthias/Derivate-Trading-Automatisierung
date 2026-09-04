@@ -518,13 +518,29 @@ class TestGateSkip:
         assert "🔴" in ts.summary
         assert ts.conditions_missing  # Skip-Grund vermerkt
 
-    def test_gate_sanduhr_skipped(self, config):
-        snap = FakeSnap(price=100.0)
+    def test_gate_sanduhr_MIT_preis_wird_normal_ausgewertet(self, config):
+        """⏳-Blindfleck-Fix (2026-06-01): Ein ⏳-Trigger MIT auswertbarem Preis
+        wird NICHT mehr übersprungen.
+
+        Der Test prüfte bis 2026-09-04 das Verhalten VOR diesem Fix und war
+        seither rot — unbemerkt, weil kein CI-Workflow pytest aufgerufen hat
+        (Repo-Audit 2026-09-01). Anlassfall des Fixes war MRK: 0,2 ATR am
+        Trigger, aber durch ⏳ nie gebucketet. Übersprungen werden seither nur
+        noch PREISLOSE ⏳-Trigger (echte Datums-/Event-Warteschleifen).
+        """
+        snap = FakeSnap(price=100.0)  # mitten in der Zone 95–105
         ts = _evaluate_trigger(self._price_trigger("⏳"), snap, "LONG",
+                               config, now_utc_hour=14)
+        assert ts.proximity == "in_zone"
+
+    def test_gate_sanduhr_OHNE_preis_wird_uebersprungen(self, config):
+        """Die Gegenprobe: preislose ⏳-Trigger bleiben 'far'."""
+        from state_parser import ParsedTrigger
+        pt = ParsedTrigger(label="A", raw="wartet auf FDA-Entscheid", gate="⏳")
+        ts = _evaluate_trigger(pt, FakeSnap(price=100.0), "LONG",
                                config, now_utc_hour=14)
         assert ts.proximity == "far"
         assert "⏳" in ts.summary
-        assert ts.conditions_pending  # wartet, nicht hart durchgefallen
 
     def test_gate_gruen_evaluated_normally(self, config):
         """🟢 → Trigger wird ausgewertet, In-Zone bleibt In-Zone."""

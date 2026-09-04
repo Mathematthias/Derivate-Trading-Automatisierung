@@ -33,7 +33,16 @@ from watchlist_sync import (
 )
 from state_parser import parse_watchlist
 from output_renderer import _expiry_flag
-from pipeline_utils import parse_candidates
+
+# pipeline_utils lebt im SKILL-Verzeichnis (skills/derivate-trading), nicht im
+# Repo. Ist es nicht auffindbar — etwa im CI-Checkout, der nur die Pipeline
+# enthält —, wird dieser Contract-Test übersprungen statt die gesamte
+# Collection abzubrechen. Vor dem 2026-09-04 riss der fehlende Import die
+# komplette Suite mit; aufgefallen ist es nie, weil kein Workflow pytest rief.
+parse_candidates = pytest.importorskip(
+    "pipeline_utils",
+    reason="pipeline_utils liegt im Skill-Verzeichnis und ist hier nicht im Pfad",
+).parse_candidates
 
 
 # ---------------------------------------------------------------------------
