@@ -201,6 +201,7 @@ class TickerSnapshot:
     # Indikatoren auf Daily-Basis
     ema20: Optional[float] = None
     ema50: Optional[float] = None
+    ema100: Optional[float] = None
     ema200: Optional[float] = None
     rsi14: Optional[float] = None
     atr14: Optional[float] = None  # absoluter ATR-Wert in EUR/USD
@@ -555,6 +556,8 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         snap.ema20 = float(closes.ewm(span=20, adjust=False).mean().iloc[-1])
     if len(closes) >= 50:
         snap.ema50 = float(closes.ewm(span=50, adjust=False).mean().iloc[-1])
+    if len(closes) >= 100:
+        snap.ema100 = float(closes.ewm(span=100, adjust=False).mean().iloc[-1])
     if len(closes) >= 200:
         snap.ema200 = float(closes.ewm(span=200, adjust=False).mean().iloc[-1])
 

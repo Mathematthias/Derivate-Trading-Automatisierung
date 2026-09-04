@@ -89,6 +89,7 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "chg": _r(snap.change_pct, 2),
         "ema20": _r(snap.ema20, 4),
         "ema50": _r(snap.ema50, 4),
+        "ema100": _r(snap.ema100, 4),
         "ema200": _r(snap.ema200, 4),
         "stack": _stack(snap),
         "rsi": _r(snap.rsi14, 1),
@@ -161,6 +162,15 @@ def _trigger_levels(pt: Any) -> dict[str, Any]:
         "sl_value": _r(pt.sl_value, 4),
         "sl_kind": pt.sl_kind,
     }
+    # Relative Zone (2026-09-04): zone_low/zone_high oben tragen die AUFGELÖSTEN
+    # Absolutwerte dieses Laufs; die Spezifikation dahinter gehört mit in den
+    # Digest, damit im Briefing sichtbar bleibt, dass die Zone mitwandert.
+    if pt.rel_anchor:
+        lvl["rel_zone"] = {
+            "anchor": pt.rel_anchor,
+            "lo_atr": pt.rel_lo_atr,
+            "hi_atr": pt.rel_hi_atr,
+        }
     # Zusatzbedingungen nur, wenn gesetzt (spart Platz)
     flags: list[str] = []
     if pt.require_bounce:

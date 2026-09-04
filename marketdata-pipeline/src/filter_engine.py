@@ -32,6 +32,7 @@ from state_parser import (
     FilterOverride,
     ParsedTrigger,
     WatchlistEntry,
+    resolve_relative_zone,
 )
 
 logger = logging.getLogger(__name__)
@@ -512,6 +513,34 @@ def _evaluate_trigger(
             conditions_pending=["🚦 ⏳ — Trigger wartet (kein Preis-Level, Datum/Event)"],
             summary="⏳ Gate wartet (preislos) — übersprungen",
         )
+
+    # === Relative Zone auflösen (2026-09-04, Note #527) ===
+    # Eine Zone der Form "Touch EMA20-1D ±0,30 ATR" trägt beim Parsen noch keine
+    # Zahlen — sie wird HIER, mit den Daten dieses Laufs, in price_low/price_high
+    # geschrieben. Damit läuft die gesamte nachfolgende Logik (Distanz, Buckets,
+    # Durchgelaufen-Check, Digest-Ausgabe) unverändert weiter, und die Zone wandert
+    # automatisch mit ihrer Anker-EMA mit, statt zu veralten.
+    if trigger.rel_anchor is not None:
+        _emas = {
+            "EMA20": snap.ema20,
+            "EMA50": snap.ema50,
+            "EMA100": getattr(snap, "ema100", None),
+            "EMA200": snap.ema200,
+        }
+        if not resolve_relative_zone(trigger, _emas, snap.atr14):
+            # Nicht auflösbar (Anker-EMA oder ATR fehlt) → ehrlich als preislos
+            # ausweisen statt mit halb gefüllter Zone weiterzurechnen.
+            trigger.price_op = None
+            _fehlt = "ATR-14" if not snap.atr14 else f"{trigger.rel_anchor}-1D"
+            return TriggerStatus(
+                label=trigger.label,
+                proximity="far",
+                distance_pct=0.0,
+                conditions_missing=[
+                    f"relative Zone nicht auflösbar — {_fehlt} fehlt für {snap.symbol}"
+                ],
+                summary=f"⚠️ relative Zone ({trigger.rel_anchor}) nicht auflösbar",
+            )
 
     # Edge case: leerer Trigger ohne Preis-Op und ohne Modifier
     # (z.B. "ONBERG-Story — Setup ergänzen wenn relevant")

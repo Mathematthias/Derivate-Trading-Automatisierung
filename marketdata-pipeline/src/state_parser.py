@@ -98,6 +98,28 @@ class ParsedTrigger:
     sl_kind: Optional[str] = None
     sl_value: Optional[float] = None
 
+    # Relative Zonen (2026-09-04): Eine Zone, die nicht als fester Preisbereich
+    # notiert ist, sondern als Offset zu einer gleitenden Linie —
+    #   "Touch EMA20-1D ±0,30 ATR"        → symmetrisch
+    #   "Touch EMA50-1D -0,50/+0,20 ATR"  → asymmetrisch
+    # Motiv (Note #527): Ein absoluter Preisbereich wird EINMAL geschrieben und
+    # veraltet, sobald die Anker-EMA weiterwandert. Bei einem stetig steigenden
+    # Wert kommt der Kurs nie zurück — die Zone hängt dann an einer Linie, die
+    # es dort nicht mehr gibt (Halbzeit-Check: 5 von 10 abgelaufenen Zeilen am
+    # 2026-09-02, MAERSK 4,83 ATR Drift).
+    #
+    # rel_anchor  : "EMA20" | "EMA50" | "EMA100" | "EMA200"
+    # rel_lo_atr  : unteres Offset in ATR-Einheiten (i.d.R. negativ)
+    # rel_hi_atr  : oberes  Offset in ATR-Einheiten
+    #
+    # Aufgelöst wird NICHT beim Parsen (dort fehlen Kurs/EMA/ATR), sondern zur
+    # Laufzeit über resolve_relative_zone() — die Funktion schreibt price_low/
+    # price_high/price_op, sodass die gesamte bestehende Evaluations-, Bucket-
+    # und Digest-Logik unverändert weiterläuft.
+    rel_anchor: Optional[str] = None
+    rel_lo_atr: Optional[float] = None
+    rel_hi_atr: Optional[float] = None
+
 
 @dataclass
 class FilterOverride:
@@ -634,6 +656,29 @@ def _parse_single_trigger(label: str, content: str, gate: str = "") -> ParsedTri
     if ema_match:
         pt.ema_ref = f"EMA{ema_match.group(1)}"
 
+    # === Relative Zone (2026-09-04) — hat Vorrang vor den Absolut-Heuristiken ===
+    # Nur im Bedingungsteil VOR 'SL' suchen, damit eine ATR-Notation in der
+    # SL-Definition keine Zone erzeugt (gleiche Vorsichtsmaßnahme wie bei
+    # reverse_tf, Anlassfall HEN3 2026-09-01).
+    rel = _REL_ZONE_RE.search(_cond_part)
+    if rel:
+        pt.rel_anchor = rel.group(1).upper().replace(" ", "")
+        if rel.group(2) is not None:                      # ±d
+            d = _parse_eu_number(rel.group(2))
+            pt.rel_lo_atr, pt.rel_hi_atr = -abs(d), abs(d)
+        else:                                             # -a/+b
+            lo = _parse_eu_number(rel.group(3).lstrip("+"))
+            hi = _parse_eu_number(rel.group(4).lstrip("+"))
+            if rel.group(3).startswith("-"):
+                lo = -abs(lo)
+            if rel.group(4).startswith("-"):
+                hi = -abs(hi)
+            pt.rel_lo_atr, pt.rel_hi_atr = min(lo, hi), max(lo, hi)
+        pt.price_op = "in_range"       # Zonen-Semantik steht fest, die Zahlen kommen zur Laufzeit
+        if pt.ema_ref is None:
+            pt.ema_ref = pt.rel_anchor
+        return pt
+
     # === Preis-Heuristiken auf SL/TP-bereinigter Variante ===
     price_text = _strip_sl_tp(content)
 
@@ -689,6 +734,46 @@ def _parse_single_trigger(label: str, content: str, gate: str = "") -> ParsedTri
             return pt
 
     return pt
+
+
+_REL_ZONE_RE = re.compile(
+    r"\b(EMA\s?\d{1,3})(?:-?1D)?\s*"
+    r"(?:±\s*(\d+(?:[.,]\d+)?)"                                     # ±d
+    r"|([-+]\d+(?:[.,]\d+)?)\s*/\s*([-+]\d+(?:[.,]\d+)?))"        # -a/+b
+    r"\s*[x×*]?\s*ATR\b",
+    re.IGNORECASE,
+)
+
+
+def resolve_relative_zone(
+    pt: "ParsedTrigger",
+    ema_values: dict,
+    atr: Optional[float],
+) -> bool:
+    """Löst eine relative Zone zur Laufzeit in absolute price_low/price_high auf.
+
+    `ema_values` ist ein Mapping {"EMA20": 24.17, "EMA50": ..., ...}; fehlende
+    oder None-Werte führen dazu, dass NICHT aufgelöst wird — der Trigger bleibt
+    dann preislos und erscheint im Hygiene-Check als solcher, statt still eine
+    falsche Zone zu tragen.
+
+    Rückgabe: True, wenn aufgelöst wurde.
+
+    Bewusst idempotent: mehrfacher Aufruf mit denselben Werten ändert nichts,
+    mit neuen Werten rechnet er die Zone frisch — genau das ist der Zweck.
+    """
+    if pt.rel_anchor is None or pt.rel_lo_atr is None or pt.rel_hi_atr is None:
+        return False
+    if atr is None or atr <= 0:
+        return False
+    anchor = (ema_values or {}).get(pt.rel_anchor)
+    if anchor is None:
+        return False
+    lo = anchor + pt.rel_lo_atr * atr
+    hi = anchor + pt.rel_hi_atr * atr
+    pt.price_low, pt.price_high = min(lo, hi), max(lo, hi)
+    pt.price_op = "in_range"
+    return True
 
 
 def _parse_eu_number(s: str) -> float:
