@@ -1008,6 +1008,119 @@ def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
 _PITCH_LONG_BUCKETS = {"long_trend_pullback", "breakout_long", "reversal_long"}
 
 
+def build_grinders_payload(
+    snapshots: dict[str, Any],
+    config: dict,
+    source_tag: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    """Zweiter Pitch-Block: rankt GRINDER nach Trendqualität statt nach Fallhöhe.
+
+    ANLASS (User-Frage 2026-09-04, Journal-Note #527): Die RRprox-Rangliste
+    vergräbt genau die Werte, die stetig nach oben laufen. Die Kennzahl misst
+    den Abstand Kurs ↔ Zielzone — ein Wert, der an seiner EMA20 entlanggrindet,
+    hat per Definition einen kleinen Abstand und landet immer hinten. Messung
+    der Pitch-Liste vom 2026-09-04: Plätze 1–4 counter-trend mit 4,1–7,8 %
+    Abstand zur EMA20, Plätze 5–7 trendkonform mit +0,36 / +0,81 / −0,73 %.
+    Bei "max. 2–3 Pitches zeigen" fällt der Grinder strukturell heraus.
+
+    Dieser Block rankt deshalb nach einer anderen Größe — und screent das
+    GESAMTE Universum, nicht nur die Setup-Bucket-Treffer: ein Grinder erzeugt
+    ja gerade kein klassisches Setup-Signal, das ist sein Wesen.
+
+    AUFNAHME (alle vier müssen gelten):
+      - sauberer EMA-Stack (bullisch für Long, bearisch für Short)
+      - ATR% ≤ max_atr_pct — der Stop ist billig
+      - |Kurs − EMA20| ≤ max_dist_atr × ATR — er klebt an der Linie
+      - 30d-Move ≥ min_move_atr, gemessen in ATR-EINHEITEN (move30d% ÷ ATR%)
+        und trendkonform zum Stack — es passiert überhaupt etwas
+      - weekly_higher_highs_lows (optional abschaltbar)
+
+    RANKING über das "Tempo" — wie oft hat der Trend in 30 Tagen die Strecke
+    geliefert, die ein R:R von 2,0 braucht:
+
+        ziel_pct = 2,0 × 1,5 × ATR%      (Lektion 4: SL = 1,5×ATR)
+        tempo    = |30d-Move| / ziel_pct
+
+    Ein Tempo von 2,0 heißt: der Wert hat in 30 Tagen zweimal die Strecke
+    gemacht, die für R:R 2,0 nötig wäre. Das ist die Größe, die bei niedriger
+    ATR die Entry-Präzision zweitrangig macht — der enge Stop wird vom Trend
+    schnell überholt (§ Pullback-Monokultur).
+    """
+    gcfg = config.get("grinders", {})
+    if not gcfg.get("enabled", True):
+        return []
+    top_n = gcfg.get("top_n", 3)
+    max_atr_pct = gcfg.get("max_atr_pct", 2.5)
+    max_dist_atr = gcfg.get("max_dist_atr", 0.5)
+    # 🆕 In ATR-Einheiten, nicht in Prozent (Kalibrierung 2026-09-04): 3 % sind
+    # bei ^GDAXI (ATR 0,96 %) gut drei ATR und bei RACE.MI (2,25 %) nur 1,3 —
+    # eine Prozentschwelle vergleicht Unvergleichbares. Der Screen gegen das
+    # STD-Universum fiel damit von 14 auf 1 Treffer, und zwar aus dem falschen
+    # Grund. move30d% ÷ ATR% ist die Größe, die das System überall sonst nutzt.
+    min_move_atr = gcfg.get("min_move_atr", 1.0)
+    need_hhll = gcfg.get("require_weekly_hhll", True)
+    rr_ziel = gcfg.get("rr_ziel", 2.0)
+
+    pcfg = config.get("pitches", {})
+    exclude = set(pcfg.get("ethics_exclude", []))
+    grenz = set(pcfg.get("ethics_grenzfall", []))
+
+    out: list[dict[str, Any]] = []
+    for sym, snap in (snapshots or {}).items():
+        if sym in exclude:
+            continue
+        if snap is None or snap.price is None or not snap.price:
+            continue
+        if snap.atr14 is None or snap.atr14 <= 0 or snap.ema20 is None:
+            continue
+        if snap.move_30d_pct is None:
+            continue
+
+        bull, bear = snap.has_bullish_stack, snap.has_bearish_stack
+        if not (bull or bear):
+            continue
+        direction = "long" if bull else "short"
+        atr_pct = snap.atr14 / snap.price * 100.0
+        if atr_pct > max_atr_pct or atr_pct <= 0:
+            continue
+
+        # Der Trend muss in die Richtung des Stacks zeigen — ein bullischer
+        # Stack mit -4 % in 30 Tagen ist kein Grinder, sondern eine Konsolidierung
+        # (Anlassfall MRK.DE/GIVN.SW im Screen vom 2026-09-04).
+        move_atr = snap.move_30d_pct / atr_pct
+        if direction == "long" and move_atr < min_move_atr:
+            continue
+        if direction == "short" and move_atr > -min_move_atr:
+            continue
+
+        dist_atr = (snap.price - snap.ema20) / snap.atr14
+        if abs(dist_atr) > max_dist_atr:
+            continue
+        if need_hhll and direction == "long" and not snap.weekly_higher_highs_lows:
+            continue
+
+        ziel_pct = rr_ziel * 1.5 * atr_pct
+        tempo = abs(snap.move_30d_pct) / ziel_pct if ziel_pct else 0.0
+        out.append({
+            "symbol": sym,
+            "dir": direction,
+            "setup": "grinder",
+            "price": round(snap.price, 4),
+            "ema20": round(snap.ema20, 4),
+            "dist_atr": round(dist_atr, 2),
+            "atr_pct": round(atr_pct, 2),
+            "ziel_pct": round(ziel_pct, 2),
+            "move30d": round(snap.move_30d_pct, 1),
+            "move_atr": round(move_atr, 2),
+            "tempo": round(tempo, 2),
+            "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
+            "ethics": "grenzfall" if sym in grenz else "ok",
+            "tier": source_tag,
+        })
+    out.sort(key=lambda d: d["tempo"], reverse=True)
+    return out[:top_n]
+
+
 def build_pitches_payload(
     universe_matches: list[CandidateMatch],
     config: dict,

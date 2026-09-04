@@ -275,6 +275,7 @@ def build_briefing_digest(
     timestamp: datetime,
     expiry_window_days: int = 14,
     pitches: Optional[list[dict[str, Any]]] = None,
+    grinders: Optional[list[dict[str, Any]]] = None,
 ) -> str:
     """Baut den BRIEFING-DIGEST als JSON-String.
 
@@ -366,5 +367,8 @@ def build_briefing_digest(
         "overrides": ovr,
         "watchlist_expiry": expiry,
         "pitches": pitches or [],
+        # Zweiter Pitch-Block (2026-09-04): nach Trendqualität gereiht, nicht
+        # nach Fallhöhe. Leer, solange kein Tier-B/C-Lauf gelaufen ist.
+        "grinders": grinders or [],
     }
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))

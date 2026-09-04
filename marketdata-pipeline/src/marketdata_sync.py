@@ -56,6 +56,7 @@ from drive_writer import (
 )
 from filter_engine import (
     build_pitches_payload,
+    build_grinders_payload,
     evaluate_universe,
     evaluate_watchlist,
 )
@@ -299,12 +300,19 @@ def main():
         pitches_payload = build_pitches_payload(
             universe_matches, filter_config, source_tag=universe_tag
         )
+        # Zweiter Block (2026-09-04): Grinder aus dem GESAMTEN Universum, nicht
+        # nur aus den Bucket-Treffern — ein Grinder erzeugt gerade kein
+        # klassisches Setup-Signal (§ Pullback-Monokultur).
+        grinders_payload = build_grinders_payload(
+            snapshots, filter_config, source_tag=universe_tag
+        )
         pitches_filename = f"PITCHES-{universe_tag}-{timestamp_str}.json"
         pitches_content = json.dumps(
             {
                 "generated": timestamp.isoformat(),
                 "from": candidates_filename,
                 "ranked": pitches_payload,
+                "grinders": grinders_payload,
             },
             ensure_ascii=False,
             separators=(",", ":"),
@@ -321,19 +329,29 @@ def main():
         # Fehlen die Files (noch kein B/C-Lauf), bleibt pitches leer → Chat fällt
         # sauber auf den GAMECHANGER-Fetch zurück.
         merged_pitches: list[dict] = []
+        merged_grinders: list[dict] = []
         for prefix in ("PITCHES-EU-", "PITCHES-US-"):
             data = read_latest_json_file(drive_service, briefing_folder_id, prefix)
             if data:
                 merged_pitches.extend(data.get("ranked", []))
+                merged_grinders.extend(data.get("grinders", []))
         merged_pitches.sort(key=lambda d: d.get("rrprox", 0.0), reverse=True)
         top_n = filter_config.get("pitches", {}).get("top_n", 8)
         merged_pitches = merged_pitches[:top_n]
-        logger.info(f"Digest: {len(merged_pitches)} Pitches gemergt (Bucket 4).")
+        # Grinder werden nach TEMPO gereiht, nicht nach RRprox — das ist der
+        # ganze Zweck des zweiten Blocks (Note #527).
+        merged_grinders.sort(key=lambda d: d.get("tempo", 0.0), reverse=True)
+        g_top = filter_config.get("grinders", {}).get("top_n", 3)
+        merged_grinders = merged_grinders[:g_top]
+        logger.info(
+            f"Digest: {len(merged_pitches)} Pitches (Bucket 4) + "
+            f"{len(merged_grinders)} Grinder gemergt."
+        )
 
         digest_filename = f"BRIEFING-DIGEST-{timestamp_str}.json"
         digest_content = build_briefing_digest(
             snapshots, watchlist_results, universe_matches, overrides, timestamp,
-            pitches=merged_pitches,
+            pitches=merged_pitches, grinders=merged_grinders,
         )
         write_json_file(drive_service, briefing_folder_id, digest_filename, digest_content)
 
