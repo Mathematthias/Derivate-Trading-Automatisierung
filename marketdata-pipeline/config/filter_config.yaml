@@ -203,7 +203,7 @@ rr_proxy:
 # Werte hier = die Defaults aus dem Code, damit sich das Verhalten NICHT aendert.
 grinders:
   enabled: true
-  top_n: 3
+  top_n: 5            # 3 -> 5 (User-Wunsch 2026-09-07)
   max_atr_pct: 2.5        # der Stop muss billig sein
   max_dist_atr: 0.5       # Kurs klebt an der EMA20
   min_move_atr: 1.0       # Trendstaerke in ATR-Einheiten, NICHT in Prozent
