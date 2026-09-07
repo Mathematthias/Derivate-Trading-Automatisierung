@@ -196,8 +196,34 @@ rr_proxy:
 # PITCHES-{EU,US}.json (gerankte Stufe-2-Kandidaten), Tier A faltet die Top-N
 # in den Digest → Morning-Check deckt alle 6 Buckets in einem Fetch ab. Nur
 # Trend-Pullbacks mit R:R-Proxy; ⚠️ENG und trendlose raus; Ethik gefiltert.
+# --- GRINDER-BLOCK (Bucket 4, erster Block) ---------------------------------
+# FEHLTE bis 2026-09-07 komplett in dieser Datei: build_grinders_payload lief
+# seit dem 2026-09-04 ausschliesslich auf seinen Hardcode-Defaults, und die
+# beiden Tests in tests/test_grinders.py, die die Sektion lesen, waren rot.
+# Werte hier = die Defaults aus dem Code, damit sich das Verhalten NICHT aendert.
+grinders:
+  enabled: true
+  top_n: 3
+  max_atr_pct: 2.5        # der Stop muss billig sein
+  max_dist_atr: 0.5       # Kurs klebt an der EMA20
+  min_move_atr: 1.0       # Trendstaerke in ATR-Einheiten, NICHT in Prozent
+  require_weekly_hhll: true
+  rr_ziel: 2.0            # Zielweite = rr_ziel * 1,5 * ATR%
+
 pitches:
-  top_n: 8
+  # Bucket-4-Quote (User-Entscheid 2026-09-07): 6 trendkonforme + 4 Counter-Trend.
+  # Die Reihenfolge im Briefing IST die Suchbudget-Zuteilung, deshalb getrennte
+  # Toepfe statt eines gemeinsamen Top-N — sonst belegen Counter-Trend-Setups die
+  # vorderen Plaetze (RRprox misst Fallhoehe, und Fallhoehe entsteht durch
+  # Extension) und verbrauchen das Budget der trendkonformen.
+  quota:
+    trend: 6
+    counter: 4
+  top_n: 10          # historischer Gesamtdeckel, = trend + counter
+  # GILT NUR FUER DIE COUNTER-TREND-LANE. Fuer ein Reversal ist die Bewegung die
+  # These; fuer einen Trend-Pullback ist sie ein Ausschlusskriterium ohne Bezug
+  # zum Setup (Befund 2026-09-07: 4 von 10 trendkonformen Kandidaten fielen hier
+  # heraus, darunter ENI.MI mit +0,2 %).
   min_abs_move30d: 1.0          # Trend-Gate: |30d-Move| muss >= 1% sein
   ethics_exclude:               # Angriffswaffen-Kerngeschaeft, nie als Pitch
     - RHM.DE                     # Rheinmetall
