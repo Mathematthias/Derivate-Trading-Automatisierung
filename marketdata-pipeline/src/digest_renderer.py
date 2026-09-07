@@ -92,6 +92,12 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "ema100": _r(snap.ema100, 4),
         "ema200": _r(snap.ema200, 4),
         "stack": _stack(snap),
+        # Datum des letzten Balkens (2026-09-07). Lag schon auf dem Snapshot,
+        # wurde nur nie zugestellt — und genau deshalb hat der Morning-Check am
+        # US-Feiertag 2026-09-07 vierzig Ticker mit Freitagsdaten als taggenau
+        # gerendert. Die Frische-Pruefung misst sonst den Behaelter, nicht den
+        # Inhalt.
+        "bar_date": snap.last_bar_date,
         "rsi": _r(snap.rsi14, 1),
         "atr": _r(snap.atr14, 4),
         "ext_gate": _ext_gate(snap),
@@ -267,6 +273,42 @@ def _setup_class_flags(snapshots: dict[str, Any]) -> dict[str, list[Any]]:
     return {"ema200_meanrev": ema200, "pead_window": pead, "anomaly": anomaly}
 
 
+def _data_freshness(universe: dict[str, Any], timestamp: Any) -> dict[str, Any]:
+    """Fasst die bar_date-Verteilung des Universums zusammen.
+
+    Ein Nicht-Handelstag erzeugt keinen neuen Balken — Wochenende, Feiertag und
+    ein einzelner haengender Feed sehen hier gleich aus, und das ist gewollt:
+    der Befund lautet "diese Ticker sind nicht von heute", nicht "warum".
+    Damit braucht es keinen Handelskalender und keine Feiertagsliste, und der
+    Fall, den eine Feiertagsliste NICHT faengt (ein einzelner Ticker mit
+    haengendem Feed, Anlassfall G1A.DE/AOF.DE am 2026-09-07), ist mit drin.
+    """
+    try:
+        today = timestamp.date().isoformat()
+    except AttributeError:
+        today = None
+    by_date: dict[str, int] = {}
+    stale: list[str] = []
+    unknown: list[str] = []
+    for sym, entry in universe.items():
+        bd = entry.get("bar_date") if isinstance(entry, dict) else None
+        if bd is None:
+            unknown.append(sym)
+            continue
+        by_date[bd] = by_date.get(bd, 0) + 1
+        if today is not None and bd != today:
+            stale.append(sym)
+    latest = max(by_date) if by_date else None
+    return {
+        "as_of": today,
+        "latest_bar": latest,
+        "by_date": dict(sorted(by_date.items(), reverse=True)),
+        "stale_count": len(stale),
+        "stale": sorted(stale),
+        "unknown": sorted(unknown),
+    }
+
+
 def build_briefing_digest(
     snapshots: dict[str, Any],
     watchlist_results: list[Any],
@@ -360,6 +402,10 @@ def build_briefing_digest(
                 "watching", "pending", "paused", "no_data", "far")},
         },
         "macro": macro_present,
+        # Aggregierter Datenstand: welcher Balken steckt in wie vielen Tickern.
+        # Der Morning-Check liest 'stale' und schreibt eine Kopfzeile, statt die
+        # Staleness aus 99 Einzelfeldern zu rekonstruieren.
+        "data_freshness": _data_freshness(universe, timestamp),
         "universe": universe,
         "buckets": buckets,
         "setup_class_flags": _setup_class_flags(snapshots),

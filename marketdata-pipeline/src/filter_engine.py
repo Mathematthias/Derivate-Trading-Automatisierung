@@ -1007,6 +1007,112 @@ def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
 
 _PITCH_LONG_BUCKETS = {"long_trend_pullback", "breakout_long", "reversal_long"}
 
+# --- Bucket-4-Lanes (2026-09-07, User-Auftrag: Quote 6 trendkonform / 4 counter) ---
+# Trendkonform = die Handelsrichtung laeuft MIT dem Daily-EMA-Stack. Counter-Trend =
+# gegen ihn. Die Trennung ist nicht Kosmetik: an ihr haengen der 1%-Sizing-Deckel
+# (Journal-L12), die Ausloeser-Frage und die Reihenfolge der Suchbudget-Vergabe.
+_PITCH_TREND_BUCKETS = {
+    "long_trend_pullback", "short_trend_pullback",
+    "breakout_long", "breakdown_short",
+}
+_PITCH_COUNTER_BUCKETS = {"reversal_long", "reversal_short"}
+
+
+def _stack_label(snap: Any) -> str:
+    """EMA-Stack wie in MARKETDATA-FULL / digest_renderer._stack."""
+    e20 = getattr(snap, "ema20", None)
+    e50 = getattr(snap, "ema50", None)
+    e200 = getattr(snap, "ema200", None)
+    if e20 is None or e50 is None or e200 is None:
+        return "neutral"
+    if e20 > e50 > e200:
+        return "bullish"
+    if e20 < e50 < e200:
+        return "bearish"
+    return "neutral"
+
+
+def _fan_below(snap: Any) -> Optional[int]:
+    """Wie viele der vier 1D-EMAs liegen UEBER dem Kurs (0..4).
+
+    Note #542 (Anlassfall AMV0.DE): Der Stack ist ein Ordnungsmerkmal der EMAs
+    untereinander und sagt nichts darueber, wo der Kurs relativ zu ihnen steht.
+    Ein bearischer Stack mit einem Kurs ueber EMA20/50/100 ist ein Stack-Reclaim,
+    kein laufender Abwaertstrend. None, wenn eine EMA fehlt.
+    """
+    price = getattr(snap, "price", None)
+    emas = [getattr(snap, f"ema{n}", None) for n in (20, 50, 100, 200)]
+    if price is None or any(e is None for e in emas):
+        return None
+    return sum(1 for e in emas if price < e)
+
+
+def _fan_span_atr(snap: Any) -> Optional[float]:
+    """Spannweite EMA20/50/100 in ATR-14 (Note #545).
+
+    Unter rund 1,0 ATR liegen die drei EMAs innerhalb einer Tagesbewegung — die
+    Reihenfolge, aus der der "Stack" abgeleitet wird, ist dann Rauschen und kein
+    Trendbefund. Die EMA200 bleibt draussen, weil sie traege ist und die Spanne
+    kuenstlich aufblaeht.
+    """
+    emas = [getattr(snap, f"ema{n}", None) for n in (20, 50, 100)]
+    atr = getattr(snap, "atr14", None)
+    if any(e is None for e in emas) or not atr:
+        return None
+    return (max(emas) - min(emas)) / atr
+
+
+def _pitch_lane(bucket: str, direction: str, snap: Any) -> tuple[str, Optional[str]]:
+    """Bestimmt die Lane und begruendet eine Herabstufung.
+
+    Erst die Setup-Klasse, dann die Faecher-Gegenprobe: ein trendkonformes Label
+    auf einem Wert, der den Faecher bereits zurueckerobert hat, ist keins
+    (Note #542). LONG trendkonform bei <=1 EMA ueber dem Kurs, SHORT bei >=3.
+    Der Grenzfall (2 von 4) faellt bewusst in die Counter-Lane — im Zweifel
+    Counter-Trend behandeln.
+    """
+    if bucket in _PITCH_COUNTER_BUCKETS:
+        return "counter", None
+    if bucket not in _PITCH_TREND_BUCKETS:
+        return "counter", "unbekannte Setup-Klasse"
+    below = _fan_below(snap)
+    if below is None:
+        return "trend", None
+    if direction == "long" and below > 1:
+        return "counter", f"Kurs unter {below} von 4 EMAs — Faecher nicht trendkonform"
+    if direction == "short" and below < 3:
+        return "counter", f"Kurs unter nur {below} von 4 EMAs — Stack-Reclaim"
+    return "trend", None
+
+
+def _pitch_quota(config: dict) -> dict[str, int]:
+    pcfg = config.get("pitches", {}) or {}
+    q = pcfg.get("quota") or {}
+    return {
+        "trend": int(q.get("trend", 6)),
+        "counter": int(q.get("counter", 4)),
+    }
+
+
+def apply_pitch_quota(pitches: list[dict], config: dict) -> list[dict]:
+    """Setzt die Bucket-4-Quote auf einer fertigen Pitch-Liste durch.
+
+    Wird beim Tier-A-Merge gebraucht, wo EU- und US-Payload zusammenlaufen und
+    eine globale RRprox-Sortierung die Counter-Trend-Lane vorn einsortiert —
+    RRprox misst Fallhoehe, und Fallhoehe entsteht durch Extension. Innerhalb
+    jeder Lane wird nach rrprox gereiht, dann je Lane gekappt. Trend zuerst,
+    weil die Reihenfolge im Briefing zugleich die Suchbudget-Zuteilung ist.
+    """
+    quota = _pitch_quota(config)
+    lanes: dict[str, list[dict]] = {"trend": [], "counter": []}
+    for p in pitches:
+        lanes.setdefault(p.get("lane", "counter"), lanes["counter"]).append(p)
+    out: list[dict] = []
+    for lane in ("trend", "counter"):
+        rows = sorted(lanes.get(lane, []), key=lambda d: d.get("rrprox", 0.0), reverse=True)
+        out.extend(rows[: quota[lane]])
+    return out
+
 
 def build_grinders_payload(
     snapshots: dict[str, Any],
@@ -1134,10 +1240,10 @@ def build_pitches_payload(
     Gereiht nach rrprox absteigend, Top-N.
     """
     pcfg = config.get("pitches", {})
-    top_n = pcfg.get("top_n", 8)
     min_abs_move = pcfg.get("min_abs_move30d", 1.0)
     exclude = set(pcfg.get("ethics_exclude", []))
     grenz = set(pcfg.get("ethics_grenzfall", []))
+    quota = _pitch_quota(config)
 
     out: list[dict[str, Any]] = []
     for m in universe_matches:
@@ -1149,27 +1255,46 @@ def build_pitches_payload(
         rr, eng = _rr_proxy(snap, direction, config)
         if rr is None or eng:
             continue
-        move30 = snap.move_30d_pct
-        if move30 is None or abs(move30) < min_abs_move:
-            continue
         if snap.ema20 is None or snap.price is None:
             continue
+        lane, fan_note = _pitch_lane(m.bucket, direction, snap)
+        move30 = snap.move_30d_pct
+        # Der 30d-Move-Filter gilt AUSSCHLIESSLICH fuer die Counter-Trend-Lane.
+        # Fuer ein Reversal IST die Bewegung die These — ohne sie gibt es nichts
+        # umzukehren. Ein Trend-Pullback ist dagegen per Konstruktion ein Wert,
+        # der gerade NICHT stark bewegt ist; die Schwelle hat dort nichts zu
+        # suchen und hat am 2026-09-07 vier von zehn trendkonformen Kandidaten
+        # aussortiert, darunter ENI.MI (+0,2 %) und DUE.DE (-0,8 %).
+        if lane == "counter":
+            if move30 is None or abs(move30) < min_abs_move:
+                continue
         dist_pct = (snap.price - snap.ema20) / snap.ema20 * 100
+        below = _fan_below(snap)
+        span = _fan_span_atr(snap)
         out.append({
             "symbol": sym,
             "dir": direction,
             "setup": m.bucket,
+            "lane": lane,
             "price": round(snap.price, 4),
             "ema20": round(snap.ema20, 4),
+            "ema50": round(snap.ema50, 4) if getattr(snap, "ema50", None) is not None else None,
+            "ema100": round(snap.ema100, 4) if getattr(snap, "ema100", None) is not None else None,
+            "ema200": round(snap.ema200, 4) if getattr(snap, "ema200", None) is not None else None,
+            "stack": _stack_label(snap),
+            "below_emas": below,
+            "fan_span_atr": round(span, 2) if span is not None else None,
+            "fan_note": fan_note,
             "dist_pct": round(dist_pct, 2),
             "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
-            "move30d": round(move30, 1),
+            "move30d": round(move30, 1) if move30 is not None else None,
             "rrprox": round(rr, 2),
             "ethics": "grenzfall" if sym in grenz else "ok",
             "tier": source_tag,
         })
-    out.sort(key=lambda d: d["rrprox"], reverse=True)
-    return out[:top_n]
+    # Je Lane ranken und kappen. Die Quote gilt pro Tier; der Tier-A-Merge setzt
+    # sie ueber EU+US hinweg noch einmal durch (apply_pitch_quota).
+    return apply_pitch_quota(out, config)
 
 
 def _check_bucket(

@@ -56,6 +56,7 @@ from drive_writer import (
 )
 from filter_engine import (
     build_pitches_payload,
+    apply_pitch_quota,
     build_grinders_payload,
     evaluate_universe,
     evaluate_watchlist,
@@ -335,9 +336,12 @@ def main():
             if data:
                 merged_pitches.extend(data.get("ranked", []))
                 merged_grinders.extend(data.get("grinders", []))
-        merged_pitches.sort(key=lambda d: d.get("rrprox", 0.0), reverse=True)
-        top_n = filter_config.get("pitches", {}).get("top_n", 8)
-        merged_pitches = merged_pitches[:top_n]
+        # Quote statt globalem RRprox-Top-N (2026-09-07). Eine gemeinsame
+        # Sortierung ueber EU+US sortiert die Counter-Trend-Lane nach vorn, weil
+        # RRprox den Abstand zur Zielzone misst und dieser Abstand durch
+        # Extension entsteht. Gemessen am Lauf 2026-09-07 18:31: 8 von 8
+        # zugestellten Pitches waren Reversals, 0 trendkonform.
+        merged_pitches = apply_pitch_quota(merged_pitches, filter_config)
         # Grinder werden nach TEMPO gereiht, nicht nach RRprox — das ist der
         # ganze Zweck des zweiten Blocks (Note #527).
         merged_grinders.sort(key=lambda d: d.get("tempo", 0.0), reverse=True)
