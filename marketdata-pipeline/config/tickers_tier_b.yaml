@@ -284,3 +284,140 @@ categories:
 #  nasdaq_growth:      # 21 Werte, durch nasdaq_100 ersetzt - kann weg
 #  ma_hot_list:        # 6 Werte
 #  ai_quantum:         # 5 Werte
+
+  # =====================================================================
+  # PATCH 2026-09-07 — Universums-Erweiterung
+  # Anlass: Lauf 2026-09-07 11:31/11:33 — GAMECHANGER-HUNT-EU fuehrte
+  # 18 Stufe-2-Treffer, im Digest kamen 6 an, davon 0 von 5 trend-
+  # konformen Shorts. Zusaetzlich null US-Pitches (Tier C war
+  # NASDAQ-100 + 7 NYSE-Tech). Details: SKILL.md § Pitch-Zustellung.
+  # Alle Ticker nach Wissensstand Mai 2026, NICHT live verifiziert —
+  # Konfidenz [M] heisst: beim ersten Pull gegenlesen.
+  # =====================================================================
+  # UK / LSE — FTSE 100, sektorbreit. Patch 2026-09-07.
+  # Ethik: BA.L, BAB.L, CHG.L, QQ.L bewusst NICHT enthalten.
+  # RR.L (Rolls-Royce) ausgelassen — Defence-Anteil im Grenzbereich der
+  # 30-%-Schwelle, Aufnahme waere eine bewusste Entscheidung.
+  # FX GBP -> Quanto-KO Default (Lektion 1 v2).
+  # 57 Symbole.
+  uk_ftse100:
+    Shell:                        "SHEL.L"  # [H]
+    BP:                           "BP.L"  # [H]
+    Rio_Tinto:                    "RIO.L"  # [H]
+    Anglo_American:               "AAL.L"  # [H]
+    Glencore:                     "GLEN.L"  # [H]
+    Antofagasta:                  "ANTO.L"  # [H]
+    HSBC:                         "HSBA.L"  # [H]
+    Barclays:                     "BARC.L"  # [H]
+    Lloyds:                       "LLOY.L"  # [H]
+    NatWest:                      "NWG.L"  # [H]
+    Standard_Chartered:           "STAN.L"  # [H]
+    Prudential:                   "PRU.L"  # [H]
+    Legal_and_General:            "LGEN.L"  # [H]
+    Aviva:                        "AV.L"  # [M]
+    3i_Group:                     "III.L"  # [H]
+    London_Stock_Exchange_Group:  "LSEG.L"  # [H]
+    AstraZeneca:                  "AZN.L"  # [H]
+    GSK:                          "GSK.L"  # [H]
+    Haleon:                       "HLN.L"  # [H]
+    Smith_and_Nephew:             "SN.L"  # [M]
+    Unilever:                     "ULVR.L"  # [H]
+    Diageo:                       "DGE.L"  # [H]
+    British_American_Tobacco:     "BATS.L"  # [H]
+    Imperial_Brands:              "IMB.L"  # [H]
+    Reckitt:                      "RKT.L"  # [H]
+    Tesco:                        "TSCO.L"  # [H]
+    Sainsbury:                    "SBRY.L"  # [H]
+    Next:                         "NXT.L"  # [H]
+    JD_Sports:                    "JD.L"  # [M]
+    Whitbread:                    "WTB.L"  # [H]
+    Compass_Group:                "CPG.L"  # [H]
+    Smiths_Group:                 "SMIN.L"  # [H]
+    IMI:                          "IMI.L"  # [H]
+    Melrose_Industries:           "MRO.L"  # [M]
+    Bunzl:                        "BNZL.L"  # [H]
+    Diploma:                      "DPLM.L"  # [H]
+    Halma:                        "HLMA.L"  # [H]
+    Spirax_Group:                 "SPX.L"  # [M]
+    Barratt_Redrow:               "BDEV.L"  # [M]
+    Persimmon:                    "PSN.L"  # [H]
+    Taylor_Wimpey:                "TW.L"  # [M]
+    CRH:                          "CRH.L"  # [M]
+    Ashtead:                      "AHT.L"  # [H]
+    Vodafone:                     "VOD.L"  # [H]
+    BT_Group:                     "BT-A.L"  # [M]
+    National_Grid:                "NG.L"  # [M]
+    SSE:                          "SSE.L"  # [H]
+    Severn_Trent:                 "SVT.L"  # [H]
+    United_Utilities:             "UU.L"  # [M]
+    International_Airlines_Group: "IAG.L"  # [H]
+    RELX:                         "REL.L"  # [H]
+    Experian:                     "EXPN.L"  # [H]
+    Informa:                      "INF.L"  # [H]
+    Flutter_Entertainment:        "FLTR.L"  # [M]
+    Sage_Group:                   "SGE.L"  # [H]
+    Auto_Trader:                  "AUTO.L"  # [H]
+    Rightmove:                    "RMV.L"  # [H]
+
+  # UK / LSE — FTSE 250, nur liquide Mid Caps. Patch 2026-09-07.
+  # 8 Symbole.
+  uk_ftse250_liquid:
+    Genus:            "GNS.L"  # [M]
+    Grafton_Group:    "GFTU.L"  # [M]
+    Hays:             "HAS.L"  # [M]
+    PageGroup:        "PAGE.L"  # [M]
+    Quilter:          "QLT.L"  # [M]
+    Rentokil_Initial: "RTO.L"  # [H]
+    Safestore:        "SAFE.L"  # [M]
+    Weir_Group:       "WEIR.L"  # [H]
+
+  # Nordics — OMX Stockholm 30. Patch 2026-09-07. FX SEK -> Quanto.
+  # Ethik: SAAB-B.ST nicht enthalten.
+  # 18 Symbole.
+  nordics_stockholm:
+    Atlas_Copco_A:   "ATCO-A.ST"  # [H]
+    Volvo_B:         "VOLV-B.ST"  # [H]
+    Sandvik:         "SAND.ST"  # [H]
+    SKF_B:           "SKF-B.ST"  # [H]
+    Alfa_Laval:      "ALFA.ST"  # [H]
+    Epiroc_A:        "EPI-A.ST"  # [M]
+    Hexagon_B:       "HEXA-B.ST"  # [H]
+    Assa_Abloy_B:    "ASSA-B.ST"  # [H]
+    Ericsson_B:      "ERIC-B.ST"  # [H]
+    Investor_B:      "INVE-B.ST"  # [H]
+    SEB_A:           "SEB-A.ST"  # [M]
+    Handelsbanken_A: "SHB-A.ST"  # [M]
+    Swedbank_A:      "SWED-A.ST"  # [M]
+    Nordea_SE:       "NDA-SE.ST"  # [M]
+    H_und_M_B:       "HM-B.ST"  # [H]
+    Essity_B:        "ESSITY-B.ST"  # [M]
+    Telia:           "TELIA.ST"  # [H]
+    Boliden:         "BOL.ST"  # [H]
+
+  # Nordics — Oslo Boers / OBX. Patch 2026-09-07. FX NOK -> Quanto.
+  # ACHTUNG Rohstoff-Korrelation (Lektion 1 v2): EQNR/AKRBP und die
+  # norwegische Krone haengen beide am Oelpreis — ein Non-Quanto-KO
+  # darauf ist eine doppelte Oelwette.
+  # Ethik: KOG.OL (Kongsberg) nicht enthalten.
+  # 8 Symbole.
+  nordics_oslo:
+    Equinor:            "EQNR.OL"  # [H]
+    Aker_BP:            "AKRBP.OL"  # [H]
+    DNB_Bank:           "DNB.OL"  # [M]
+    Norsk_Hydro:        "NHY.OL"  # [H]
+    Yara_International: "YAR.OL"  # [H]
+    Mowi:               "MOWI.OL"  # [H]
+    SalMar:             "SALM.OL"  # [M]
+    Frontline:          "FRO.OL"  # [M]
+
+  # Nordics — Helsinki / OMXH. Patch 2026-09-07. EUR-direkt, kein FX-Drag.
+  # 8 Symbole.
+  nordics_helsinki:
+    Nokia:        "NOKIA.HE"  # [H]
+    Neste:        "NESTE.HE"  # [H]
+    UPM_Kymmene:  "UPM.HE"  # [H]
+    Stora_Enso_R: "STERV.HE"  # [M]
+    Kone_B:       "KNEBV.HE"  # [M]
+    Waertsilae:   "WRT1V.HE"  # [M]
+    Fortum:       "FORTUM.HE"  # [H]
+    Sampo:        "SAMPO.HE"  # [M]

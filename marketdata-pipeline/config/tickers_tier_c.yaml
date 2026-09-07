@@ -149,3 +149,125 @@ categories:
     Snowflake: "SNOW"  # [H] Data-Cloud — erfahrungsgemaess hohe ATR, Filter beachten
     IBM: "IBM"  # [H] Hybrid-Cloud/Consulting, defensiveres Tech-Profil
     Accenture: "ACN"  # [M] IT-Services, NYSE, irisches Domizil
+
+  # =====================================================================
+  # PATCH 2026-09-07 — Universums-Erweiterung
+  # Anlass: Lauf 2026-09-07 11:31/11:33 — GAMECHANGER-HUNT-EU fuehrte
+  # 18 Stufe-2-Treffer, im Digest kamen 6 an, davon 0 von 5 trend-
+  # konformen Shorts. Zusaetzlich null US-Pitches (Tier C war
+  # NASDAQ-100 + 7 NYSE-Tech). Details: SKILL.md § Pitch-Zustellung.
+  # Alle Ticker nach Wissensstand Mai 2026, NICHT live verifiziert —
+  # Konfidenz [M] heisst: beim ersten Pull gegenlesen.
+  # =====================================================================
+  # NYSE Industrials. Patch 2026-09-07.
+  # Ethik: LMT, NOC, GD, RTX, LHX, HII, BA (Boeing) nicht enthalten.
+  # 23 Symbole.
+  nyse_industrials:
+    Caterpillar:           "CAT"  # [H]
+    Deere:                 "DE"  # [H]
+    GE_Aerospace:          "GE"  # [H]
+    Emerson_Electric:      "EMR"  # [H]
+    Eaton:                 "ETN"  # [H]
+    Parker_Hannifin:       "PH"  # [H]
+    Illinois_Tool_Works:   "ITW"  # [H]
+    3M:                    "MMM"  # [H]
+    Cummins:               "CMI"  # [H]
+    Rockwell_Automation:   "ROK"  # [H]
+    Dover:                 "DOV"  # [H]
+    Ingersoll_Rand:        "IR"  # [H]
+    Johnson_Controls:      "JCI"  # [H]
+    Carrier:               "CARR"  # [H]
+    Trane_Technologies:    "TT"  # [H]
+    Union_Pacific:         "UNP"  # [H]
+    Norfolk_Southern:      "NSC"  # [H]
+    United_Parcel_Service: "UPS"  # [H]
+    FedEx:                 "FDX"  # [H]
+    Waste_Management:      "WM"  # [H]
+    Republic_Services:     "RSG"  # [H]
+    United_Rentals:        "URI"  # [H]
+    Quanta_Services:       "PWR"  # [H]
+
+  # NYSE Healthcare / Pharma / MedTech. Patch 2026-09-07.
+  # ACHTUNG Ticker-Kollision: MRK = Merck & Co. (US), NICHT MRK.DE
+  # (Merck KGaA) aus Tier B. Verschiedene Unternehmen.
+  # 19 Symbole.
+  nyse_healthcare:
+    UnitedHealth:         "UNH"  # [H]
+    Johnson_and_Johnson:  "JNJ"  # [H]
+    Eli_Lilly:            "LLY"  # [H]
+    AbbVie:               "ABBV"  # [H]
+    Merck_and_Co:         "MRK"  # [H]
+    Pfizer:               "PFE"  # [H]
+    Thermo_Fisher:        "TMO"  # [H]
+    Danaher:              "DHR"  # [H]
+    Abbott:               "ABT"  # [H]
+    Bristol_Myers_Squibb: "BMY"  # [H]
+    CVS_Health:           "CVS"  # [H]
+    Cigna:                "CI"  # [H]
+    Elevance_Health:      "ELV"  # [H]
+    McKesson:             "MCK"  # [H]
+    Becton_Dickinson:     "BDX"  # [H]
+    Stryker:              "SYK"  # [H]
+    Boston_Scientific:    "BSX"  # [H]
+    Medtronic:            "MDT"  # [H]
+    Zoetis:               "ZTS"  # [H]
+
+  # NYSE Consumer Staples + Discretionary. Patch 2026-09-07.
+  # PEP, WMT: NASDAQ-gelistet bzw. bereits in nasdaq_100 — nicht hier.
+  # 18 Symbole.
+  nyse_consumer:
+    Procter_and_Gamble: "PG"  # [H]
+    Coca_Cola:          "KO"  # [H]
+    Philip_Morris:      "PM"  # [H]
+    Altria:             "MO"  # [H]
+    Colgate_Palmolive:  "CL"  # [H]
+    Kimberly_Clark:     "KMB"  # [H]
+    General_Mills:      "GIS"  # [H]
+    Kellanova:          "K"  # [M]
+    Hershey:            "HSY"  # [H]
+    McDonalds:          "MCD"  # [H]
+    Nike:               "NKE"  # [H]
+    Home_Depot:         "HD"  # [H]
+    Lowes:              "LOW"  # [H]
+    Target:             "TGT"  # [H]
+    TJX_Companies:      "TJX"  # [H]
+    Dollar_General:     "DG"  # [H]
+    Yum_Brands:         "YUM"  # [H]
+    Chipotle:           "CMG"  # [H]
+
+  # NYSE Financials / Payments. Patch 2026-09-07.
+  # 17 Symbole.
+  nyse_financials:
+    JPMorgan_Chase:     "JPM"  # [H]
+    Bank_of_America:    "BAC"  # [H]
+    Wells_Fargo:        "WFC"  # [H]
+    Goldman_Sachs:      "GS"  # [H]
+    Morgan_Stanley:     "MS"  # [H]
+    Citigroup:          "C"  # [H]
+    BlackRock:          "BLK"  # [H]
+    S_and_P_Global:     "SPGI"  # [H]
+    Moodys:             "MCO"  # [H]
+    American_Express:   "AXP"  # [H]
+    Visa:               "V"  # [H]
+    Mastercard:         "MA"  # [H]
+    Chubb:              "CB"  # [H]
+    Progressive:        "PGR"  # [H]
+    Travelers:          "TRV"  # [H]
+    Aon:                "AON"  # [H]
+    Marsh_and_McLennan: "MMC"  # [H]
+
+  # NYSE Energy + Materials. Patch 2026-09-07.
+  # LIN (Linde) NASDAQ-gelistet und in nasdaq_100 — nicht hier.
+  # 11 Symbole.
+  nyse_energy_materials:
+    Exxon_Mobil:      "XOM"  # [H]
+    Chevron:          "CVX"  # [H]
+    ConocoPhillips:   "COP"  # [H]
+    EOG_Resources:    "EOG"  # [H]
+    Schlumberger:     "SLB"  # [H]
+    Phillips_66:      "PSX"  # [H]
+    Valero_Energy:    "VLO"  # [H]
+    Sherwin_Williams: "SHW"  # [H]
+    Air_Products:     "APD"  # [H]
+    Newmont:          "NEM"  # [H]
+    Freeport_McMoRan: "FCX"  # [H]
