@@ -223,7 +223,6 @@ categories:
     Colgate_Palmolive:  "CL"  # [H]
     Kimberly_Clark:     "KMB"  # [H]
     General_Mills:      "GIS"  # [H]
-    Kellanova:          "K"  # [M]
     Hershey:            "HSY"  # [H]
     McDonalds:          "MCD"  # [H]
     Nike:               "NKE"  # [H]
@@ -234,6 +233,8 @@ categories:
     Dollar_General:     "DG"  # [H]
     Yum_Brands:         "YUM"  # [H]
     Chipotle:           "CMG"  # [H]
+    # aus tier_b uebernommen 2026-09-07 — Primaerlisting NYSE seit 2024.
+    Flutter_Entertainment: "FLUT"  # [H] geprueft 2026-09-07 (100,11)
 
   # NYSE Financials / Payments. Patch 2026-09-07.
   # 17 Symbole.
@@ -271,3 +272,9 @@ categories:
     Air_Products:     "APD"  # [H]
     Newmont:          "NEM"  # [H]
     Freeport_McMoRan: "FCX"  # [H]
+    # aus tier_b uebernommen 2026-09-07 — Primaerlisting NYSE, gehoert
+    # damit ins US-Zeitfenster.
+    CRH:                  "CRH"  # [H] geprueft 2026-09-07 (94,26)
+
+  # ENTFERNT 2026-09-07: Kellanova ("K") — Mars-Uebernahme abgeschlossen,
+  #   K und KLG liefern beide 404.

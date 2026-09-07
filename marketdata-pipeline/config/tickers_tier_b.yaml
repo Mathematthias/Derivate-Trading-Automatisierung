@@ -339,11 +339,9 @@ categories:
     Diploma:                      "DPLM.L"  # [H]
     Halma:                        "HLMA.L"  # [H]
     Spirax_Group:                 "SPX.L"  # [M]
-    Barratt_Redrow:               "BDEV.L"  # [M]
+    Barratt_Redrow:               "BTRW.L"  # [H] Ticker nach der Fusion, geprueft 2026-09-07 (301,00)
     Persimmon:                    "PSN.L"  # [H]
     Taylor_Wimpey:                "TW.L"  # [M]
-    CRH:                          "CRH.L"  # [M]
-    Ashtead:                      "AHT.L"  # [H]
     Vodafone:                     "VOD.L"  # [H]
     BT_Group:                     "BT-A.L"  # [M]
     National_Grid:                "NG.L"  # [M]
@@ -354,7 +352,6 @@ categories:
     RELX:                         "REL.L"  # [H]
     Experian:                     "EXPN.L"  # [H]
     Informa:                      "INF.L"  # [H]
-    Flutter_Entertainment:        "FLTR.L"  # [M]
     Sage_Group:                   "SGE.L"  # [H]
     Auto_Trader:                  "AUTO.L"  # [H]
     Rightmove:                    "RMV.L"  # [H]
@@ -421,3 +418,10 @@ categories:
     Waertsilae:   "WRT1V.HE"  # [M]
     Fortum:       "FORTUM.HE"  # [H]
     Sampo:        "SAMPO.HE"  # [M]
+
+  # AUS DIESER DATEI ENTFERNT 2026-09-07 nach dem yfinance-Recheck:
+  #   CRH.L, FLTR.L -> Primaerlisting NYSE, verschoben nach tickers_tier_c.yaml.
+  #     In Tier B haetten sie im EU-Zeitfenster nur den Vortagesschluss gesehen
+  #     (dieselbe Fehlerklasse wie Journal-Notes #219/#228).
+  #   AHT.L (Ashtead) -> AHT.L und ASHTY beide 404, ersatzlos entfernt.
+  #   BDEV.L -> BTRW.L (Barratt Redrow nach der Fusion).
