@@ -207,8 +207,36 @@ grinders:
   max_atr_pct: 2.5        # der Stop muss billig sein
   max_dist_atr: 0.5       # Kurs klebt an der EMA20
   min_move_atr: 1.0       # Trendstaerke in ATR-Einheiten, NICHT in Prozent
+  # 🆕 GRINDER-CONTINUATION v0.1 (User-Entscheid 2026-09-08): Tempo ist ab jetzt
+  # GATE, nicht nur Rangfolge. Begruendung: tempo = |30d-Move| / ziel_pct sagt,
+  # wie oft der Trend in 30 Tagen die fuer R:R 2,0 noetige Strecke geliefert hat.
+  # Die Klasse verspricht "R:R >= 2 in rund 30 HT" — dann muss genau diese Groesse
+  # ueber der Schwelle liegen. min_move_atr allein laesst Tempo 0,54 durch (JNJ,
+  # Lauf 2026-09-08 18:05), was einem Horizont von rund 55 HT entspraeche.
+  # 0,9 statt 1,0, weil der Wert tagesweise schwankt: KNIN.SW stand am 2026-09-08
+  # um 09:33 bei 1,15, um 14:33 bei 1,05 und um 18:05 bei 0,94 — eine harte
+  # 1,0-Kante wuerde denselben Wert dreimal am Tag rein- und rauswerfen.
+  min_tempo: 0.9
   require_weekly_hhll: true
   rr_ziel: 2.0            # Zielweite = rr_ziel * 1,5 * ATR%
+
+# === 4h-LAYER (v0.1, 2026-09-08) =============================================
+# Schliesst die Luecke, aus der der Verdeckt-BEREIT-Mechanismus entstanden ist:
+# Die Trigger verlangen "4h-Bullish-Reverse-Close" und "RSI-4h Cross", das
+# Universum fuehrte aber nur 1D. Zusaetzlich braucht Grinder-Continuation eine
+# 4h-Warnstufe (§ SKILL.md).
+#
+# ⚠️ evaluate_reverse SCHALTET DAS BUCKET-VERHALTEN UM. Steht es auf true,
+# wird ein 4h-Reverse maschinell entschieden statt als Handcheck gemeldet —
+# aus BEREIT* wird BEREIT oder NAHE. Erst nach einem verifizierten Live-Lauf
+# einschalten: scripts/verify_4h_coverage.py. Der Layer wurde am 2026-09-08
+# gegen synthetische Daten getestet, NICHT gegen echte Yahoo-Intradaydaten.
+intraday_4h:
+  enabled: true             # Indikatoren ziehen und im Digest ausweisen
+  evaluate_reverse: false   # 🔴 Bucket-Verhalten: bis zur Live-Verifikation AUS
+  period: "60d"             # 1h-Historie; 60d = ~120 4h-Balken bei XETRA
+  rsi_signal_len: 14        # SMA auf dem RSI, wie im TradingView-Setup
+  bars_per_block: 4         # 1h -> 4h, session-verankert
 
 pitches:
   # Bucket-4-Quote (User-Entscheid 2026-09-07): 6 trendkonforme + 4 Counter-Trend.
