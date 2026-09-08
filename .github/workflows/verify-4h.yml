@@ -1,0 +1,72 @@
+# Prueft die 4h-Abdeckung bei Yahoo — MANUELL, per Klick im Actions-Tab.
+#
+# WARUM ALS WORKFLOW UND NICHT NUR ALS LOKALES SKRIPT:
+# Das Skript braucht Yahoo-Zugriff. Die Action hat ihn (die sechs uebrigen
+# Workflows ziehen dort taeglich Kursdaten), eine beliebige Entwicklungs-
+# umgebung nicht — der Layer selbst wurde am 2026-09-08 deshalb gegen
+# synthetische Daten gebaut. Ausserdem: ein manuelles Skript, das nie laeuft,
+# ist ein Skript, das es nicht gibt. Genau dieses Muster hat im Repo schon
+# einmal zugeschlagen (kein Workflow rief je pytest auf -> zwei rote Tests,
+# drei Monate unbemerkt).
+#
+# KEIN CRON. Das Ergebnis ist eine einmalige Entscheidungsgrundlage fuer
+# intraday_4h.evaluate_reverse / evaluate_rsi_cross, kein Dauerbetrieb.
+
+name: verify-4h-coverage
+
+on:
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: "Universum (a = Tier A, b = EU, c = US)"
+        required: true
+        default: "b"
+        type: choice
+        options: ["a", "b", "c"]
+      limit:
+        description: "Max. Symbole (0 = alle; klein anfangen spart Laufzeit)"
+        required: false
+        default: "40"
+      period:
+        description: "1h-Historie (60d reicht fuer EMA50-4h)"
+        required: false
+        default: "60d"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: marketdata-pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: marketdata-pipeline/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run coverage check
+        run: |
+          python scripts/verify_4h_coverage.py \
+            --tier "${{ inputs.tier }}" \
+            --limit "${{ inputs.limit }}" \
+            --period "${{ inputs.period }}" \
+            | tee coverage.txt
+
+      - name: Summary
+        run: |
+          echo '## 4h-Abdeckung — tier ${{ inputs.tier }}, limit ${{ inputs.limit }}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat coverage.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 4h-coverage-tier-${{ inputs.tier }}
+          path: marketdata-pipeline/coverage.txt
