@@ -234,6 +234,13 @@ grinders:
 intraday_4h:
   enabled: true             # Indikatoren ziehen und im Digest ausweisen
   evaluate_reverse: false   # 🔴 Bucket-Verhalten: bis zur Live-Verifikation AUS
+  # 🆕 Zweiter, UNABHAENGIGER Schalter (2026-09-08): der RSI-Cross ueber die
+  # Signallinie. Bis dahin hat der Parser diese Bedingung gar nicht gesehen —
+  # sie stand in 21 von 38 aktiven Triggern und existierte fuer die Pipeline
+  # nicht. Seit 2026-09-08 wird sie mindestens als Handcheck gemeldet; auf true
+  # entscheidet sie mit. Getrennt vom Reverse-Schalter, weil es zwei
+  # unabhaengige Entscheidungen mit verschiedenem Risiko sind.
+  evaluate_rsi_cross: false
   period: "60d"             # 1h-Historie; 60d = ~120 4h-Balken bei XETRA
   rsi_signal_len: 14        # SMA auf dem RSI, wie im TradingView-Setup
   bars_per_block: 4         # 1h -> 4h, session-verankert

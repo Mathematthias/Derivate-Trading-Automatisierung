@@ -134,7 +134,7 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
     if tf:
         d["tf4h"] = {
             k: tf.get(k) for k in (
-                "bar_time", "close", "ema20", "ema50", "rsi14",
+                "bar_time", "close", "ema9", "ema20", "ema50", "rsi14",
                 "rsi14_signal", "atr14", "stack",
                 "reverse_bullish", "reverse_bearish", "reverse_reason",
             ) if tf.get(k) is not None

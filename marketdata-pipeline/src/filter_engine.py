@@ -794,18 +794,45 @@ def _evaluate_trigger(
             )
 
     if trigger.rsi_max is not None:
-        if snap.rsi14 is not None and snap.rsi14 < trigger.rsi_max:
-            conditions_met.append(f"RSI {snap.rsi14:.1f} < {trigger.rsi_max:.0f}")
+        val, lbl, missing_data = _rsi_for_tf(snap, trigger.rsi_max_tf)
+        if missing_data:
+            conditions_pending.append(
+                f"{lbl} manuell prüfen — keine 4h-Daten (Schwelle <{trigger.rsi_max:.0f})")
+        elif val is not None and val < trigger.rsi_max:
+            conditions_met.append(f"{lbl} {val:.1f} < {trigger.rsi_max:.0f}")
         else:
-            rsi_str = f"{snap.rsi14:.1f}" if snap.rsi14 is not None else "n/a"
-            conditions_missing.append(f"RSI {rsi_str} ≥ {trigger.rsi_max:.0f}")
+            rsi_str = f"{val:.1f}" if val is not None else "n/a"
+            conditions_missing.append(f"{lbl} {rsi_str} ≥ {trigger.rsi_max:.0f}")
 
     if trigger.rsi_min is not None:
-        if snap.rsi14 is not None and snap.rsi14 > trigger.rsi_min:
-            conditions_met.append(f"RSI {snap.rsi14:.1f} > {trigger.rsi_min:.0f}")
+        val, lbl, missing_data = _rsi_for_tf(snap, trigger.rsi_min_tf)
+        if missing_data:
+            conditions_pending.append(
+                f"{lbl} manuell prüfen — keine 4h-Daten (Schwelle >{trigger.rsi_min:.0f})")
+        elif val is not None and val > trigger.rsi_min:
+            conditions_met.append(f"{lbl} {val:.1f} > {trigger.rsi_min:.0f}")
         else:
-            rsi_str = f"{snap.rsi14:.1f}" if snap.rsi14 is not None else "n/a"
-            conditions_missing.append(f"RSI {rsi_str} ≤ {trigger.rsi_min:.0f}")
+            rsi_str = f"{val:.1f}" if val is not None else "n/a"
+            conditions_missing.append(f"{lbl} {rsi_str} ≤ {trigger.rsi_min:.0f}")
+
+    # 🆕 RSI-Cross ueber/unter die Signallinie (2026-09-08). Bis dahin hat der
+    # Parser diese Bedingung gar nicht gesehen — sie stand im Trigger und wurde
+    # weder geprueft noch gemeldet. Drei Zustaende wie beim 4h-Reverse:
+    # Schalter aus -> Handcheck; an mit Daten -> Entscheidung; an ohne Daten
+    # -> Handcheck. Ein fehlender Datenpunkt ist kein verletztes Kriterium.
+    if trigger.rsi_cross_dir is not None:
+        tf = trigger.rsi_cross_tf or "1D"
+        want_above = trigger.rsi_cross_dir == "above"
+        pfeil = "über" if want_above else "unter"
+        if not _rsi_cross_can_decide(snap, trigger, config):
+            conditions_pending.append(
+                f"RSI-{tf}-Cross {pfeil} Signallinie — manuell prüfen")
+        else:
+            val, sig = _rsi_cross_values(snap, tf)
+            ok = (val > sig) if want_above else (val < sig)
+            txt = f"RSI-{tf} {val:.1f} {'>' if val > sig else '<'} Signal {sig:.1f}"
+            (conditions_met if ok else conditions_missing).append(
+                txt + ("" if ok else f" — verlangt {pfeil}"))
 
     _atr14 = getattr(snap, "atr14", None)
     proximity = _classify_proximity(distance_pct, config, price=price, atr14=_atr14)
@@ -1123,6 +1150,48 @@ def apply_pitch_quota(pitches: list[dict], config: dict) -> list[dict]:
         rows = sorted(lanes.get(lane, []), key=lambda d: d.get("rrprox", 0.0), reverse=True)
         out.extend(rows[: quota[lane]])
     return out
+
+
+def _rsi_for_tf(snap: Any, tf: Optional[str]) -> tuple[Optional[float], str, bool]:
+    """RSI-Wert fuer die im Trigger genannte Zeitebene.
+
+    Rueckgabe: (Wert, Anzeigelabel, fehlende_4h_Daten). Das dritte Feld
+    unterscheidet "4h sagt nein" von "es gibt kein 4h" — nur der erste Fall
+    ist ein verletztes Kriterium.
+
+    Bis zum 2026-09-08 wurde JEDE RSI-Schwelle gegen den Daily-RSI geprueft,
+    auch eine ausdruecklich als "RSI-4h >40" geschriebene. Stiller
+    Zeitebenen-Fehler, keine Meldung.
+    """
+    if tf != "4h":
+        return (getattr(snap, "rsi14", None), "RSI", False)
+    tf4h = getattr(snap, "tf4h", None) or {}
+    val = tf4h.get("rsi14")
+    if val is None:
+        return (None, "RSI-4h", True)
+    return (float(val), "RSI-4h", False)
+
+
+def _rsi_cross_values(snap: Any, tf: str) -> tuple[Optional[float], Optional[float]]:
+    """(RSI, Signallinie) fuer die Zeitebene. 1D hat keine Signallinie im
+    Snapshot — dort bleibt der Cross deshalb Handarbeit."""
+    if tf == "4h":
+        tf4h = getattr(snap, "tf4h", None) or {}
+        return tf4h.get("rsi14"), tf4h.get("rsi14_signal")
+    return getattr(snap, "rsi14", None), None
+
+
+def _rsi_cross_can_decide(snap: Any, trigger: Any, config: Optional[dict]) -> bool:
+    """Darf der RSI-Cross maschinell entschieden werden?
+
+    Eigener Schalter, nicht derselbe wie beim Reverse: Es sind zwei
+    unabhaengige Entscheidungen mit unterschiedlichem Risiko, und der User
+    soll sie einzeln freischalten koennen.
+    """
+    if not (config or {}).get("intraday_4h", {}).get("evaluate_rsi_cross", False):
+        return False
+    val, sig = _rsi_cross_values(snap, trigger.rsi_cross_tf or "1D")
+    return val is not None and sig is not None
 
 
 def _tf4h_can_decide(snap: Any, config: Optional[dict]) -> bool:

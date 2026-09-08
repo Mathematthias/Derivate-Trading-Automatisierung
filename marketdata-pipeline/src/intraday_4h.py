@@ -60,6 +60,10 @@ class Indicators4h:
     close: Optional[float] = None
     prev_open: Optional[float] = None
     prev_close: Optional[float] = None
+    ema9: Optional[float] = None
+    """Fuer das vierte L18-Gate-2-Muster (Micro-Pullback auf steigende
+    EMA9/20). Es war bis 2026-09-08 nicht auswertbar, weil es die EMA9
+    nirgends gab (§ Pullback-Monokultur)."""
     ema20: Optional[float] = None
     ema50: Optional[float] = None
     ema100: Optional[float] = None
@@ -225,6 +229,7 @@ def compute_4h(df_1h: pd.DataFrame, rsi_signal_len: int = 14,
         ind.prev_open, ind.prev_close = float(df["Open"].iloc[-2]), float(df["Close"].iloc[-2])
 
     closes = df["Close"]
+    ind.ema9 = _ema(closes, 9)
     ind.ema20, ind.ema50 = _ema(closes, 20), _ema(closes, 50)
     ind.ema100, ind.ema200 = _ema(closes, 100), _ema(closes, 200)
     rsi = _rsi_series(closes, 14)

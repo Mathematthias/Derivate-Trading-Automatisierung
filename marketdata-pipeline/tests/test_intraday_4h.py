@@ -301,3 +301,130 @@ class TestFilterVerdrahtung:
             Snap4h(tf4h={"reverse_bullish": False}), _cfg(config, True)) is True
         assert _tf4h_can_decide(
             Snap4h(tf4h={"reverse_bullish": True}), _cfg(config, False)) is False
+
+
+# ============================================================
+# RSI-ZEITEBENE UND RSI-CROSS (2026-09-08)
+# ============================================================
+# Zwei Befunde desselben Tages: (1) "RSI-4h >40" wurde still gegen den
+# DAILY-RSI geprueft — die Regex "RSI[^<>]*>" frisst das "-4h" mit.
+# (2) "RSI-4h Cross ueber die Signallinie" wurde vom Parser UEBERHAUPT
+# NICHT erkannt: weder geprueft noch als pending gemeldet. Die Bedingung
+# stand in 21 von 38 aktiven Triggern und existierte fuer die Pipeline nicht.
+
+from state_parser import _parse_triggers  # noqa: E402
+
+
+class TestRsiParsing:
+    def _p(self, txt):
+        return _parse_triggers("Touch 100-110€ [pullback] + " + txt)[0]
+
+    def test_zeitebene_der_schwelle_wird_erkannt(self):
+        assert self._p("RSI-4h >40.").rsi_min_tf == "4h"
+        assert self._p("RSI-1D >50.").rsi_min_tf == "1D"
+        assert self._p("RSI-1D <60.").rsi_max_tf == "1D"
+
+    def test_schwellenwert_unveraendert(self):
+        """Regression: die Werte selbst duerfen sich NICHT geaendert haben."""
+        assert self._p("RSI-4h >40.").rsi_min == 40.0
+        assert self._p("RSI-1D <60.").rsi_max == 60.0
+
+    def test_schwelle_ohne_zeitebene_bleibt_daily(self):
+        p = self._p("RSI >50.")
+        assert p.rsi_min == 50.0 and p.rsi_min_tf is None
+
+    @pytest.mark.parametrize("txt,d", [
+        ("RSI-4h Cross ueber die Signallinie.", "above"),
+        ("RSI-4h ueber Signallinie.", "above"),
+        ("RSI-4h ueber die Signallinie.", "above"),
+        ("RSI-4h Cross unter die Signallinie.", "below"),
+        ("RSI-4h unter die Signallinie.", "below"),
+    ])
+    def test_alle_belegten_schreibweisen(self, txt, d):
+        """Die fuenf Varianten aus der echten Watchlist, Stand 2026-09-08."""
+        p = self._p(txt)
+        assert p.rsi_cross_tf == "4h" and p.rsi_cross_dir == d
+
+    def test_1d_cross_wird_auch_erkannt(self):
+        p = self._p("RSI-1D Cross ueber die Signallinie.")
+        assert p.rsi_cross_tf == "1D" and p.rsi_cross_dir == "above"
+
+    def test_kein_cross_kein_feld(self):
+        assert self._p("RSI-1D >50.").rsi_cross_dir is None
+
+
+class TestRsiAuswertung:
+    def _trg(self, **kw):
+        t = ParsedTrigger(label="A", raw="x", price_low=374.0, price_high=385.0,
+                          price_op="in_range", zone_kind="pullback")
+        for k, v in kw.items():
+            setattr(t, k, v)
+        return t
+
+    def test_4h_schwelle_liest_4h_rsi_nicht_daily(self, config):
+        """Der Kern des Fixes: Daily 55 wuerde >40 erfuellen, 4h 30 nicht."""
+        snap = Snap4h(rsi14=55.0, tf4h={"rsi14": 30.0, "rsi14_signal": 35.0})
+        ts = _evaluate_trigger(self._trg(rsi_min=40.0, rsi_min_tf="4h"), snap,
+                               "LONG", config, now_utc_hour=14)
+        assert any("RSI-4h 30.0 ≤ 40" in c for c in ts.conditions_missing)
+        assert not any("RSI 55" in c for c in ts.conditions_met)
+
+    def test_daily_schwelle_unveraendert(self, config):
+        snap = Snap4h(rsi14=55.0, tf4h=None)
+        ts = _evaluate_trigger(self._trg(rsi_min=50.0, rsi_min_tf="1D"), snap,
+                               "LONG", config, now_utc_hour=14)
+        assert any("RSI 55.0 > 50" in c for c in ts.conditions_met)
+
+    def test_4h_schwelle_ohne_daten_ist_pending_nicht_missing(self, config):
+        snap = Snap4h(rsi14=55.0, tf4h=None)
+        ts = _evaluate_trigger(self._trg(rsi_min=40.0, rsi_min_tf="4h"), snap,
+                               "LONG", config, now_utc_hour=14)
+        assert any("RSI-4h manuell" in c for c in ts.conditions_pending)
+        assert not ts.conditions_missing
+
+    def test_cross_default_ist_handcheck(self, config):
+        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0})
+        ts = _evaluate_trigger(self._trg(rsi_cross_tf="4h", rsi_cross_dir="above"),
+                               snap, "LONG", config, now_utc_hour=14)
+        assert any("RSI-4h-Cross über Signallinie — manuell" in c
+                   for c in ts.conditions_pending)
+
+    def test_cross_an_und_erfuellt(self, config):
+        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0})
+        cfg = dict(config)
+        cfg["intraday_4h"] = dict(config["intraday_4h"], evaluate_rsi_cross=True)
+        ts = _evaluate_trigger(self._trg(rsi_cross_tf="4h", rsi_cross_dir="above"),
+                               snap, "LONG", cfg, now_utc_hour=14)
+        assert any("RSI-4h 55.0 > Signal 50.0" in c for c in ts.conditions_met)
+
+    def test_cross_an_und_verletzt(self, config):
+        snap = Snap4h(tf4h={"rsi14": 44.1, "rsi14_signal": 48.0})   # NET, 08.09.
+        cfg = dict(config)
+        cfg["intraday_4h"] = dict(config["intraday_4h"], evaluate_rsi_cross=True)
+        ts = _evaluate_trigger(self._trg(rsi_cross_tf="4h", rsi_cross_dir="above"),
+                               snap, "LONG", cfg, now_utc_hour=14)
+        assert any("verlangt über" in c for c in ts.conditions_missing)
+
+    def test_cross_an_ohne_daten_faellt_auf_handcheck_zurueck(self, config):
+        cfg = dict(config)
+        cfg["intraday_4h"] = dict(config["intraday_4h"], evaluate_rsi_cross=True)
+        ts = _evaluate_trigger(self._trg(rsi_cross_tf="4h", rsi_cross_dir="above"),
+                               Snap4h(tf4h=None), "LONG", cfg, now_utc_hour=14)
+        assert any("manuell prüfen" in c for c in ts.conditions_pending)
+        assert not ts.conditions_missing
+
+    def test_beide_schalter_default_aus(self, config):
+        assert config["intraday_4h"]["evaluate_reverse"] is False
+        assert config["intraday_4h"]["evaluate_rsi_cross"] is False
+
+
+class TestEma9:
+    def test_ema9_wird_berechnet(self):
+        parts, base = [], 100.0
+        for d in range(40):
+            day = (datetime(2026, 7, 1) + timedelta(days=d)).strftime("%Y-%m-%d")
+            parts.append(bars(f"{day} 09:00", 8, base=base, drift=0.2))
+            base += 1.6
+        ind = compute_4h(pd.concat(parts))
+        assert ind.ema9 is not None and ind.ema20 is not None
+        assert ind.ema9 > ind.ema20          # Aufwaertsdrift

@@ -81,6 +81,16 @@ class ParsedTrigger:
     is_touch: bool = False  # "Daily-Touch ...", "Touch EMA50 ..." — Punkt-Touch-Logik
     rsi_max: Optional[float] = None  # "RSI<60"
     rsi_min: Optional[float] = None
+    # 🆕 2026-09-08: Zeitebene der RSI-SCHWELLE. Vorher wurde "RSI-4h >40"
+    # still gegen den DAILY-RSI geprueft — die Regex "RSI[^<>]*>" frisst das
+    # "-4h" mit. Falsche Zeitebene, keine Fehlermeldung. None = 1D.
+    rsi_min_tf: Optional[str] = None
+    rsi_max_tf: Optional[str] = None
+    # 🆕 2026-09-08: "RSI-4h Cross ueber die Signallinie" wurde vom Parser
+    # UEBERHAUPT NICHT erkannt — weder geprueft noch als pending gemeldet.
+    # Die Bedingung stand im Trigger und existierte fuer die Pipeline nicht.
+    rsi_cross_tf: Optional[str] = None    # "4h" | "1D"
+    rsi_cross_dir: Optional[str] = None   # "above" | "below"
 
     # Zonen-Semantik (Task 5, 2026-05-22): wie ist eine Trigger-Zone zu lesen,
     # wenn der Kurs ÜBER der Obergrenze steht?
@@ -574,6 +584,19 @@ def _extract_sl(content: str) -> tuple[Optional[str], Optional[float]]:
     return ("pattern", None)
 
 
+def _rsi_tf_of(fragment: str) -> Optional[str]:
+    """Liest die Zeitebene aus einem RSI-Textfragment. None = Daily.
+
+    Der Aufrufer uebergibt den GEMATCHTEN Teilstring, nicht den ganzen
+    Trigger — sonst wuerde ein "RSI-4h"-Vorkommen an anderer Stelle die
+    Zeitebene einer 1D-Schwelle verfaelschen.
+    """
+    m = re.search(r"RSI-?(4h|1D)", fragment, re.IGNORECASE)
+    if not m:
+        return None
+    return "4h" if m.group(1).lower() == "4h" else "1D"
+
+
 def _parse_single_trigger(label: str, content: str, gate: str = "") -> ParsedTrigger:
     """Parst einen einzelnen Trigger-Text in ParsedTrigger.
 
@@ -647,9 +670,23 @@ def _parse_single_trigger(label: str, content: str, gate: str = "") -> ParsedTri
     rsi_max_match = re.search(r"RSI[^<>]*<\s*(\d+)", content)
     if rsi_max_match:
         pt.rsi_max = float(rsi_max_match.group(1))
+        pt.rsi_max_tf = _rsi_tf_of(rsi_max_match.group(0))
     rsi_min_match = re.search(r"RSI[^<>]*>\s*(\d+)", content)
     if rsi_min_match:
         pt.rsi_min = float(rsi_min_match.group(1))
+        pt.rsi_min_tf = _rsi_tf_of(rsi_min_match.group(0))
+
+    # Cross ueber/unter die Signallinie. Belegte Schreibweisen aus der
+    # Watchlist (Stand 2026-09-08, 21 Zeilen): "RSI-4h Cross ueber die
+    # Signallinie", "RSI-4h ueber Signallinie", "RSI-4h Cross unter die
+    # Signallinie", "RSI-4h ueber die Signallinie", "RSI-4h unter die
+    # Signallinie". Das Wort "Cross" und der Artikel sind beide optional.
+    cross = re.search(
+        r"RSI-?(4h|1D)\s*(?:Cross\s*)?(ueber|über|unter)\s+(?:die\s+)?Signallinie",
+        content, re.IGNORECASE)
+    if cross:
+        pt.rsi_cross_tf = cross.group(1).lower().replace("1d", "1D")
+        pt.rsi_cross_dir = "below" if cross.group(2).lower() == "unter" else "above"
 
     # EMA-Referenzen
     ema_match = re.search(r"\bEMA\s*(\d+)\b", content)
