@@ -127,6 +127,18 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         d["gap"] = _r(snap.gap_pct, 2)
     if snap.atr_zscore_60d is not None:
         d["atr_z"] = _r(snap.atr_zscore_60d, 2)
+    # 🆕 4h-Layer (2026-09-08): kompakt, nur was im Briefing gebraucht wird.
+    # Fehlt der Layer fuer ein Symbol, steht der Key gar nicht da — der
+    # Konsument unterscheidet damit "kein 4h-Signal" von "4h sagt nein".
+    tf = getattr(snap, "tf4h", None)
+    if tf:
+        d["tf4h"] = {
+            k: tf.get(k) for k in (
+                "bar_time", "close", "ema20", "ema50", "rsi14",
+                "rsi14_signal", "atr14", "stack",
+                "reverse_bullish", "reverse_bearish", "reverse_reason",
+            ) if tf.get(k) is not None
+        }
     return d
 
 
@@ -318,6 +330,7 @@ def build_briefing_digest(
     expiry_window_days: int = 14,
     pitches: Optional[list[dict[str, Any]]] = None,
     grinders: Optional[list[dict[str, Any]]] = None,
+    grinders_meta: Optional[dict[str, Any]] = None,
 ) -> str:
     """Baut den BRIEFING-DIGEST als JSON-String.
 
@@ -416,5 +429,8 @@ def build_briefing_digest(
         # Zweiter Pitch-Block (2026-09-04): nach Trendqualität gereiht, nicht
         # nach Fallhöhe. Leer, solange kein Tier-B/C-Lauf gelaufen ist.
         "grinders": grinders or [],
+        # 🆕 2026-09-08: sagt, wie viele Treffer der Screen WIRKLICH hatte —
+        # der Block selbst ist bei grinders.top_n abgeschnitten.
+        "grinders_meta": grinders_meta or {},
     }
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))

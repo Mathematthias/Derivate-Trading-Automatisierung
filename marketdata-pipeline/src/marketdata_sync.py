@@ -57,10 +57,12 @@ from drive_writer import (
 from filter_engine import (
     build_pitches_payload,
     apply_pitch_quota,
-    build_grinders_payload,
+    build_grinders_report,
+    dedupe_grinders,
     evaluate_universe,
     evaluate_watchlist,
 )
+from intraday_4h import pull_4h
 from market_data import fetch_ticker_data
 from output_renderer import render_candidates, render_marketdata_full
 from state_parser import (
@@ -219,6 +221,30 @@ def main():
     # === YFINANCE PULL ===
     snapshots = fetch_ticker_data(sorted(all_symbols))
 
+    # === 4h-LAYER (v0.1, 2026-09-08) ===
+    # Zweiter, getrennter Pull auf 1h-Balken; die Aggregation zu session-
+    # verankerten 4h-Kerzen macht intraday_4h.py. Additiv: schlaegt der Pull
+    # fehl, bleibt snap.tf4h None und ALLES laeuft wie vorher weiter — der
+    # Reverse-Check faellt dann auf den pending-Pfad zurueck (BEREIT* mit
+    # Handcheck), nicht auf "Bedingung verletzt".
+    tf4h_cfg = filter_config.get("intraday_4h", {})
+    if tf4h_cfg.get("enabled", False):
+        try:
+            tf4h = pull_4h(
+                sorted(all_symbols),
+                period=tf4h_cfg.get("period", "60d"),
+                rsi_signal_len=tf4h_cfg.get("rsi_signal_len", 14),
+            )
+            attached = 0
+            for sym, ind in tf4h.items():
+                snap = snapshots.get(sym)
+                if snap is not None and ind.bars_available:
+                    snap.tf4h = ind.as_dict()
+                    attached += 1
+            logger.info(f"4h-Layer: {attached}/{len(all_symbols)} Snapshots angereichert.")
+        except Exception as exc:
+            logger.warning(f"4h-Layer uebersprungen: {exc}")
+
     # === FILTER-EVALUATION ===
     timestamp = datetime.now(ZoneInfo("Europe/Berlin"))
     today = timestamp.date()
@@ -304,9 +330,10 @@ def main():
         # Zweiter Block (2026-09-04): Grinder aus dem GESAMTEN Universum, nicht
         # nur aus den Bucket-Treffern — ein Grinder erzeugt gerade kein
         # klassisches Setup-Signal (§ Pullback-Monokultur).
-        grinders_payload = build_grinders_payload(
+        grinders_report = build_grinders_report(
             snapshots, filter_config, source_tag=universe_tag
         )
+        grinders_payload = grinders_report["items"]
         pitches_filename = f"PITCHES-{universe_tag}-{timestamp_str}.json"
         pitches_content = json.dumps(
             {
@@ -314,6 +341,12 @@ def main():
                 "from": candidates_filename,
                 "ranked": pitches_payload,
                 "grinders": grinders_payload,
+                # 🆕 2026-09-08: ohne die ungedeckelte Trefferzahl kalibriert man
+                # die Klasse gegen eine bei top_n abgeschnittene Liste und haelt
+                # den Deckel faelschlich fuer den Marktzustand.
+                "grinders_total": grinders_report["total"],
+                "grinders_dropped_by_tempo": grinders_report["dropped_by_tempo"],
+                "grinders_min_tempo": grinders_report["min_tempo"],
             },
             ensure_ascii=False,
             separators=(",", ":"),
@@ -331,11 +364,14 @@ def main():
         # sauber auf den GAMECHANGER-Fetch zurück.
         merged_pitches: list[dict] = []
         merged_grinders: list[dict] = []
+        grinders_total_by_tier: dict[str, int] = {}
         for prefix in ("PITCHES-EU-", "PITCHES-US-"):
             data = read_latest_json_file(drive_service, briefing_folder_id, prefix)
             if data:
                 merged_pitches.extend(data.get("ranked", []))
                 merged_grinders.extend(data.get("grinders", []))
+                tag = prefix.split("-")[1]
+                grinders_total_by_tier[tag] = data.get("grinders_total", 0)
         # Quote statt globalem RRprox-Top-N (2026-09-07). Eine gemeinsame
         # Sortierung ueber EU+US sortiert die Counter-Trend-Lane nach vorn, weil
         # RRprox den Abstand zur Zielzone misst und dieser Abstand durch
@@ -345,17 +381,33 @@ def main():
         # Grinder werden nach TEMPO gereiht, nicht nach RRprox — das ist der
         # ganze Zweck des zweiten Blocks (Note #527).
         merged_grinders.sort(key=lambda d: d.get("tempo", 0.0), reverse=True)
+        # 🆕 DEDUPE (2026-09-08): Die Tier-Labels EU/US bezeichnen den JOB, nicht
+        # das Universum — beide Laeufe ueberlappen. Am 2026-09-08 stand KNIN.SW in
+        # beiden PITCHES-Files (212,10 gegen 212,90, verschiedene Datenstaende) und
+        # AD.AS ebenfalls. Bei top_n=5 frisst jedes Duplikat einen Platz. Die Liste
+        # ist nach Tempo sortiert, das erste Vorkommen ist also das beste.
+        deduped = dedupe_grinders(merged_grinders)
+        dupes = len(merged_grinders) - len(deduped)
+        merged_grinders = deduped
+        grinders_unique_total = len(merged_grinders)
         g_top = filter_config.get("grinders", {}).get("top_n", 3)
         merged_grinders = merged_grinders[:g_top]
         logger.info(
             f"Digest: {len(merged_pitches)} Pitches (Bucket 4) + "
-            f"{len(merged_grinders)} Grinder gemergt."
+            f"{len(merged_grinders)} Grinder gemergt "
+            f"({dupes} Duplikate entfernt, Screen-Treffer je Lauf: {grinders_total_by_tier})."
         )
 
         digest_filename = f"BRIEFING-DIGEST-{timestamp_str}.json"
         digest_content = build_briefing_digest(
             snapshots, watchlist_results, universe_matches, overrides, timestamp,
             pitches=merged_pitches, grinders=merged_grinders,
+            grinders_meta={
+                "total_by_tier": grinders_total_by_tier,
+                "unique_after_dedupe": grinders_unique_total,
+                "shown": len(merged_grinders),
+                "duplicates_removed": dupes,
+            },
         )
         write_json_file(drive_service, briefing_folder_id, digest_filename, digest_content)
 

@@ -235,6 +235,13 @@ class TickerSnapshot:
     today_close: Optional[float] = None
     today_lower_wick_pct: Optional[float] = None  # untere Wick als % der Range
 
+    # === 4h-Layer (v0.1, 2026-09-08) ===
+    tf4h: Optional[dict] = None
+    """Indikatoren auf dem letzten GESCHLOSSENEN 4h-Balken (intraday_4h.py).
+    None = Layer aus, kein Yahoo-Intraday fuer das Symbol, oder zu kurze
+    Historie. Konsumenten muessen mit None umgehen koennen — fehlende
+    4h-Daten sind der Normalfall, nicht der Fehlerfall."""
+
     # === EMA200-MeanRev-Felder (Note #49, 2026-05-08) ===
     ema200_distance_pct: Optional[float] = None
     """Distanz zum EMA200 in % — (close - ema200) / ema200 × 100. Negativ = unter EMA200."""

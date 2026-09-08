@@ -751,6 +751,17 @@ def _evaluate_trigger(
 
         if hammer_match or engulfing_match:
             conditions_met.append(match_label)
+        elif trigger.reverse_tf == "4h" and _tf4h_can_decide(snap, config):
+            # 🆕 4h-Layer aktiv: der Reverse wird ENTSCHIEDEN statt gemeldet.
+            tf = snap.tf4h or {}
+            want_bull = str(direction).upper().startswith("LONG")
+            got = tf.get("reverse_bullish") if want_bull else tf.get("reverse_bearish")
+            why = tf.get("reverse_reason") or "kein Reverse-Muster"
+            bar = tf.get("bar_time", "?")
+            if got:
+                conditions_met.append(f"4h-Reverse ✓ ({why}, Balken {bar})")
+            else:
+                conditions_missing.append(f"4h-Reverse fehlt ({why}, Balken {bar})")
         elif trigger.reverse_tf == "4h":
             # Verdeckt-BEREIT-Fix (Note #118, 2026-06-01; Regression repariert
             # 2026-07-06): Der Reverse ist auf 4h spezifiziert, die Pipeline
@@ -1114,11 +1125,39 @@ def apply_pitch_quota(pitches: list[dict], config: dict) -> list[dict]:
     return out
 
 
-def build_grinders_payload(
+def _tf4h_can_decide(snap: Any, config: Optional[dict]) -> bool:
+    """Darf der 4h-Reverse maschinell entschieden werden?
+
+    Zwei Bedingungen, und beide muessen halten: der Schalter steht auf true
+    UND fuer dieses Symbol liegen ueberhaupt 4h-Daten vor. Fehlt das Zweite,
+    faellt die Zeile auf den bisherigen pending-Pfad zurueck (BEREIT* mit
+    Handcheck) — NICHT auf "Bedingung verletzt". Ein fehlender Datenpunkt ist
+    kein verletztes Kriterium (Verdeckt-BEREIT, Note #118/#294).
+    """
+    if not (config or {}).get("intraday_4h", {}).get("evaluate_reverse", False):
+        return False
+    tf = getattr(snap, "tf4h", None)
+    if not tf:
+        return False
+    return tf.get("reverse_bullish") is not None or tf.get("reverse_bearish") is not None
+
+
+def _grinder_4h_warning(snap: Any, direction: str) -> Optional[bool]:
+    """True, wenn der 4h-Stack gegen die Grinder-Richtung zeigt."""
+    tf = getattr(snap, "tf4h", None) or {}
+    stack = tf.get("stack")
+    if not stack:
+        return None
+    if str(direction).upper().startswith("LONG"):
+        return stack == "bearish"
+    return stack == "bullish"
+
+
+def build_grinders_report(
     snapshots: dict[str, Any],
     config: dict,
     source_tag: Optional[str] = None,
-) -> list[dict[str, Any]]:
+) -> dict[str, Any]:
     """Zweiter Pitch-Block: rankt GRINDER nach Trendqualität statt nach Fallhöhe.
 
     ANLASS (User-Frage 2026-09-04, Journal-Note #527): Die RRprox-Rangliste
@@ -1154,7 +1193,8 @@ def build_grinders_payload(
     """
     gcfg = config.get("grinders", {})
     if not gcfg.get("enabled", True):
-        return []
+        return {"items": [], "total": 0, "dropped_by_tempo": 0,
+                "top_n": 0, "min_tempo": 0.0}
     top_n = gcfg.get("top_n", 3)
     max_atr_pct = gcfg.get("max_atr_pct", 2.5)
     max_dist_atr = gcfg.get("max_dist_atr", 0.5)
@@ -1164,6 +1204,8 @@ def build_grinders_payload(
     # STD-Universum fiel damit von 14 auf 1 Treffer, und zwar aus dem falschen
     # Grund. move30d% ÷ ATR% ist die Größe, die das System überall sonst nutzt.
     min_move_atr = gcfg.get("min_move_atr", 1.0)
+    # 🆕 Tempo als GATE (Grinder-Continuation v0.1, 2026-09-08) — s. filter_config.
+    min_tempo = gcfg.get("min_tempo", 0.0)
     need_hhll = gcfg.get("require_weekly_hhll", True)
     rr_ziel = gcfg.get("rr_ziel", 2.0)
 
@@ -1172,6 +1214,7 @@ def build_grinders_payload(
     grenz = set(pcfg.get("ethics_grenzfall", []))
 
     out: list[dict[str, Any]] = []
+    dropped_tempo = 0
     for sym, snap in (snapshots or {}).items():
         if sym in exclude:
             continue
@@ -1207,6 +1250,9 @@ def build_grinders_payload(
 
         ziel_pct = rr_ziel * 1.5 * atr_pct
         tempo = abs(snap.move_30d_pct) / ziel_pct if ziel_pct else 0.0
+        if tempo < min_tempo:
+            dropped_tempo += 1
+            continue
         out.append({
             "symbol": sym,
             "dir": direction,
@@ -1222,9 +1268,55 @@ def build_grinders_payload(
             "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
             "ethics": "grenzfall" if sym in grenz else "ok",
             "tier": source_tag,
+            # 🆕 4h-Warnstufe der Klasse Grinder-Continuation: dreht der 4h-Stack
+            # gegen die Handelsrichtung, ist das die Vorstufe zum Zustands-
+            # Invalidator (1D-Stack). None = kein 4h-Layer fuer das Symbol.
+            "warn_4h": _grinder_4h_warning(snap, direction),
         })
     out.sort(key=lambda d: d["tempo"], reverse=True)
-    return out[:top_n]
+    return {
+        "items": out[:top_n],
+        "total": len(out),
+        "dropped_by_tempo": dropped_tempo,
+        "top_n": top_n,
+        "min_tempo": min_tempo,
+    }
+
+
+def dedupe_grinders(grinders: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Entfernt Symbol-Duplikate aus einer nach Tempo sortierten Grinder-Liste.
+
+    Die Tier-Labels EU/US bezeichnen den JOB, nicht das Universum — beide
+    Laeufe ueberlappen. Am 2026-09-08 stand KNIN.SW in beiden PITCHES-Files
+    (Kurs 212,10 gegen 212,90, also verschiedene Datenstaende) und AD.AS
+    ebenfalls. Bei top_n=5 frisst jedes Duplikat einen Platz im Block.
+
+    Erwartet eine bereits absteigend nach Tempo sortierte Liste — dann ist das
+    erste Vorkommen je Symbol der frischeste bzw. staerkste Eintrag.
+    """
+    seen: set = set()
+    out: list[dict[str, Any]] = []
+    for g in grinders or []:
+        sym = g.get("symbol")
+        if sym in seen:
+            continue
+        seen.add(sym)
+        out.append(g)
+    return out
+
+
+def build_grinders_payload(
+    snapshots: dict[str, Any],
+    config: dict,
+    source_tag: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    """Rueckwaertskompatible Huelle: nur die gedeckelte Liste.
+
+    Wer die ungedeckelte Trefferzahl braucht (und die braucht man, sonst
+    kalibriert man gegen eine abgeschnittene Liste — Befund 2026-09-08),
+    ruft ``build_grinders_report``.
+    """
+    return build_grinders_report(snapshots, config, source_tag=source_tag)["items"]
 
 
 def build_pitches_payload(
