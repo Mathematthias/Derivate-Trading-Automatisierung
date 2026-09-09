@@ -996,14 +996,53 @@ def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
 
 
 
+# Buckets, deren Reward NICHT am 20d-Extrem gemessen werden darf — dort ist das
+# Extrem der EINSTIEG, nicht das Ziel (Fix 2026-09-09, siehe _rr_proxy).
+_RR_MEASURED_MOVE_DEFAULT = ("breakout_long", "breakdown_short")
+_RR_EXEMPT_DEFAULT = ("reversal_long", "reversal_short")
+
+
 def _rr_proxy(
-    snap: TickerSnapshot, direction: str, config: dict
+    snap: TickerSnapshot,
+    direction: str,
+    config: dict,
+    bucket: Optional[str] = None,
 ) -> tuple[Optional[float], bool]:
     """Numerischer R:R-Proxy + ENG-Flag. (None, False) wenn nicht berechenbar.
 
-    Reward = 20d-Hoch (Long) bzw. 20d-Tief (Short), Risk = atr_mult × ATR14.
-    eng=True heißt strukturell enger Fall (rr < min_rr) — Warnflag, kein
-    Disqualifikator im Rendering. Der Pitch-Payload filtert eng=True separat.
+    Risk ist immer `atr_mult × ATR14` (Lektion-4-Minimum). Der Reward haengt
+    seit 2026-09-09 an der SETUP-KLASSE — vorher galt fuer alle Buckets die
+    Pullback-Definition, und das war fuer zwei von ihnen arithmetisch toedlich:
+
+      Pullback (long/short_trend_pullback)
+        Reward = 20d-Hoch − Kurs (long) bzw. Kurs − 20d-Tief (short).
+        Unveraendert; fuer diese Klasse wurde der Proxy gebaut.
+
+      Measured Move (breakout_long/breakdown_short)
+        Ein Ausbruchs-Setup steht per Bucket-Gate hoechstens 1 % vom 20d-Extrem
+        entfernt — mit der Pullback-Definition ist der Reward also <= 1 % des
+        Kurses. Zusammen mit `rr >= min_rr` verlangt das `ATR <= 0,476 %` vom
+        Kurs; im Universum vom 2026-09-09 erfuellten das 2 von 102 Werten, keine
+        Einzelaktie. Ergebnis: breakout_long und breakdown_short konnten den
+        ENG-Filter MATHEMATISCH NICHT passieren und standen in drei
+        aufeinanderfolgenden Digests bei exakt null Pitches — obwohl der
+        GAMECHANGER-Lauf 22:47 zwei Breakdown-Kandidaten erzeugt hatte.
+        Der Reward ist hier die klassische Measured-Move-Projektion: die Hoehe
+        der 20-Tage-Range, ab dem Ausbruchsniveau weitergezeichnet.
+
+      Ausgenommen (reversal_long/reversal_short)
+        Fuer ein Reversal ist das 20d-Extrem weder Einstieg noch Ziel; eine
+        belastbare Zielstrecke ist an diesem Material nicht gemessen. Statt eine
+        Zahl zu erfinden, laeuft die Klasse ohne ENG-Vorfilter (Anti-Ratschen).
+        Sie kam als einzige der vier Nicht-Pullback-Klassen ohnehin durch.
+
+    Wichtig: Die Ausnahme gilt dem FILTER, nicht der ZAHL. Auch ausgenommene
+    Buckets bekommen hier einen berechneten `rr` — das Payload-Schema fuehrt
+    `rrprox` als Pflichtfeld und rankt danach. Ob `eng` disqualifiziert,
+    entscheidet der Aufrufer ueber `_rr_exempt()`.
+
+    `bucket=None` faellt auf die Pullback-Definition zurueck (Backward-Compat).
+    Rueckgabe (None, False) heisst ausschliesslich "nicht berechenbar".
     """
     cfg = config.get("rr_proxy", {})
     if not cfg.get("enabled", False):
@@ -1011,7 +1050,24 @@ def _rr_proxy(
     if snap.atr14 is None or snap.atr14 <= 0 or snap.price is None:
         return None, False
     risk = cfg.get("atr_mult", 1.5) * snap.atr14
-    if direction == "long":
+    if risk <= 0:
+        return None, False
+
+    mm_buckets = tuple(cfg.get("measured_move_buckets", _RR_MEASURED_MOVE_DEFAULT))
+    if bucket and bucket in mm_buckets:
+        if snap.high_20d is None or snap.low_20d is None:
+            return None, False
+        range_hoehe = snap.high_20d - snap.low_20d
+        if range_hoehe <= 0:
+            return None, False
+        # Ziel = Ausbruchsniveau ∓ Range-Hoehe, gemessen ab dem aktuellen Kurs.
+        if direction == "long":
+            ziel = snap.high_20d + range_hoehe
+            reward = ziel - snap.price
+        else:
+            ziel = snap.low_20d - range_hoehe
+            reward = snap.price - ziel
+    elif direction == "long":
         if snap.high_20d is None:
             return None, False
         reward = snap.high_20d - snap.price
@@ -1019,14 +1075,26 @@ def _rr_proxy(
         if snap.low_20d is None:
             return None, False
         reward = snap.price - snap.low_20d
-    if risk <= 0:
-        return None, False
+
     rr = reward / risk
     eng = rr < cfg.get("min_rr", 1.4)
     return rr, eng
 
 
-def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
+def _rr_exempt(bucket: Optional[str], config: dict) -> bool:
+    """True, wenn dieser Bucket bewusst ohne ENG-Vorfilter laeuft."""
+    cfg = config.get("rr_proxy", {})
+    return bool(bucket) and bucket in tuple(
+        cfg.get("exempt_buckets", _RR_EXEMPT_DEFAULT)
+    )
+
+
+def _rr_proxy_suffix(
+    snap: TickerSnapshot,
+    direction: str,
+    config: dict,
+    bucket: Optional[str] = None,
+) -> str:
     """R:R-Vorfilter (Paket A, 2026-06-09): Reward-Proxy / Lektion-4-Mindest-SL.
 
     Konservativ gerechnet: Entry = aktueller Kurs, TP1-Proxy = 20d-Hoch (Long)
@@ -1037,7 +1105,7 @@ def _rr_proxy_suffix(snap: TickerSnapshot, direction: str, config: dict) -> str:
     Anlass: 2026-06-09 starben 4 von 6 manuell geprueften Stufe-2-Kandidaten
     (ROST, ORLY, DDOG, BKNG) an genau dieser Stelle.
     """
-    rr, eng = _rr_proxy(snap, direction, config)
+    rr, eng = _rr_proxy(snap, direction, config, bucket=bucket)
     if rr is None:
         return ""
     flag = " ⚠️ENG" if eng else ""
@@ -1413,8 +1481,14 @@ def build_pitches_payload(
             continue
         snap = m.snapshot
         direction = "long" if m.bucket in _PITCH_LONG_BUCKETS else "short"
-        rr, eng = _rr_proxy(snap, direction, config)
-        if rr is None or eng:
+        rr, eng = _rr_proxy(snap, direction, config, bucket=m.bucket)
+        if rr is None:
+            continue
+        # Die Ausnahme gilt dem FILTER, nicht der Zahl: reversal_* behaelt sein
+        # rrprox fuers Ranking, wird davon aber nicht disqualifiziert. Vor dem
+        # Fix 2026-09-09 stand hier `if rr is None or eng: continue` — fuer alle
+        # Klassen gleich, mit der Pullback-Reward-Definition fuer alle.
+        if eng and not _rr_exempt(m.bucket, config):
             continue
         if snap.ema20 is None or snap.price is None:
             continue
@@ -1493,7 +1567,7 @@ def _check_bucket(
             f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
             f"30d={snap.move_30d_pct:+.1f}%"
         )
-        summary += _rr_proxy_suffix(snap, "long", config)
+        summary += _rr_proxy_suffix(snap, "long", config, bucket=bucket)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,
@@ -1523,7 +1597,7 @@ def _check_bucket(
             f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
             f"30d={snap.move_30d_pct:+.1f}%"
         )
-        summary += _rr_proxy_suffix(snap, "short", config)
+        summary += _rr_proxy_suffix(snap, "short", config, bucket=bucket)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,
@@ -1550,6 +1624,7 @@ def _check_bucket(
             f"({dist_to_high:+.2f}%)  Vol={snap.volume_multiplier_today:.1f}×  "
             f"RSI={snap.rsi14:.0f}"
         )
+        summary += _rr_proxy_suffix(snap, "long", config, bucket=bucket)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,
@@ -1582,6 +1657,7 @@ def _check_bucket(
             f"({dist_to_low:+.2f}%)  Vol={snap.volume_multiplier_today:.1f}×  "
             f"RSI={snap.rsi14:.0f}"
         )
+        summary += _rr_proxy_suffix(snap, "short", config, bucket=bucket)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,

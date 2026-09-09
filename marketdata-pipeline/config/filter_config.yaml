@@ -192,6 +192,28 @@ rr_proxy:
   atr_mult: 1.5
   min_rr: 1.4
 
+  # --- Klassenabhaengige Reward-Definition (Fix 2026-09-09) ------------------
+  # Die Pullback-Definition (Reward = Abstand zum 20d-Extrem) war fuer die
+  # Ausbruchs-Buckets arithmetisch toedlich: deren Gate verlangt <= 1 % Abstand
+  # zum Extrem, der ENG-Test verlangt rr >= min_rr — zusammen ATR <= 0,476 %
+  # vom Kurs. Das erfuellten am 2026-09-09 zwei von 102 Universumswerten, keine
+  # Einzelaktie. Folge: breakout_long und breakdown_short standen in drei
+  # aufeinanderfolgenden Digests bei null Pitches, obwohl Kandidaten erzeugt
+  # wurden. Hier greift stattdessen die Measured-Move-Projektion: Ziel =
+  # Ausbruchsniveau +/- Hoehe der 20-Tage-Range.
+  measured_move_buckets:
+    - "breakout_long"
+    - "breakdown_short"
+
+  # Fuer ein Reversal ist das 20d-Extrem weder Einstieg noch Ziel, und eine
+  # belastbare Zielstrecke ist nicht gemessen. Statt eine Zahl zu erfinden,
+  # laeuft die Klasse ohne ENG-Vorfilter. Sie kam als einzige der vier
+  # Nicht-Pullback-Klassen ohnehin durch (digest 07.-09.09.: reversal_long 1-3,
+  # reversal_short 1-3 Pitches je Lauf).
+  exempt_buckets:
+    - "reversal_long"
+    - "reversal_short"
+
 # Bucket-4-Pitches im BRIEFING-DIGEST (2026-07-12). Tier B/C schreiben je ein
 # PITCHES-{EU,US}.json (gerankte Stufe-2-Kandidaten), Tier A faltet die Top-N
 # in den Digest → Morning-Check deckt alle 6 Buckets in einem Fetch ab. Nur
