@@ -938,3 +938,45 @@ def parse_ticker_map(state_text: str) -> dict[str, str]:
             continue
         mapping[cols[0]] = cols[1]
     return mapping
+
+
+# ===========================================================================
+# Gate-Semantik fuer die Stufe-2-Ausnahme (Fix 2026-09-09)
+# ===========================================================================
+
+GATE_DEAD = "🔴"
+
+
+def has_live_trigger(entry: "WatchlistEntry") -> bool:
+    """True, wenn der Eintrag mindestens einen NICHT-toten Trigger traegt.
+
+    'Tot' ist ausschliesslich 🔴. ⏳ (wartet) und 🟡 (beobachten) sind lebendig
+    — sie werden im filter_engine zwar nicht inhaltlich ausgewertet, die Zeile
+    wird aber weiterverfolgt und soll deshalb nicht neu entdeckt werden.
+
+    Ein Eintrag ohne Trigger oder ohne Gate-Emoji (Alt-STATE-Dokumente,
+    ·-Fallback) gilt als lebendig — konservativ, damit der Fix kein altes
+    Dokument still aus der Auswertung kippt.
+    """
+    if not entry.triggers:
+        return True
+    return any(t.gate != GATE_DEAD for t in entry.triggers)
+
+
+def active_watchlist_symbols(entries: list["WatchlistEntry"]) -> set[str]:
+    """Symbole, die Stufe 2 ausschliessen duerfen.
+
+    Hintergrund (Befund 2026-09-09): `evaluate_universe` bekam bisher ALLE
+    Watchlist-Symbole als `excluded_symbols`, weil `watchlist_sync` jede
+    Journal-Zeile mit Trigger-Text nach STATE schreibt — auch archivierte.
+    Zusammen mit dem 🔴-Skip in `evaluate_trigger` und
+    `gamechanger_include_watchlist: false` fiel ein archiviertes Symbol damit
+    VOLLSTAENDIG aus der Pipeline: weder ausgewertet noch neu entdeckt, und
+    zwar dauerhaft. Am Journal-Stand 2026-09-09 betraf das 28 von 71 Symbolen.
+
+    Die Symbole bleiben bewusst in der PULL-Liste (`build_pull_universe` zieht
+    ebenfalls aus `watchlist_entries`) — ohne ihre Kurse koennte der
+    Re-Eval-Check archivierte Zeilen nicht mehr auf Wiedervorlage pruefen.
+    Geaendert wird nur, wer Stufe 2 blockieren darf.
+    """
+    return {e.symbol for e in entries if e.symbol and has_live_trigger(e)}

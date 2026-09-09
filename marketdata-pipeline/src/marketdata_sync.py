@@ -66,6 +66,7 @@ from intraday_4h import pull_4h
 from market_data import fetch_ticker_data
 from output_renderer import render_candidates, render_marketdata_full
 from state_parser import (
+    active_watchlist_symbols,
     fetch_state_doc,
     parse_filter_overrides,
     parse_ticker_map,
@@ -259,7 +260,21 @@ def main():
     # Jeder Tier wertet jetzt die volle Watchlist gegen seine frischesten
     # Snapshots aus; der Skill pickt ohnehin die jüngste Ergebnisdatei, also
     # gewinnt für US-Werte der tier_c-Lauf mit echten US-Session-Daten.
-    watchlist_symbols_set = {e.symbol for e in watchlist_entries if e.symbol}
+    # Stufe-2-Ausnahme nur fuer LEBENDE Zeilen (Fix 2026-09-09).
+    # Vorher standen hier ALLE Watchlist-Symbole. Weil watchlist_sync auch
+    # archivierte Zeilen nach STATE schreibt, blockierte eine 🔴-Zeile das
+    # Symbol dauerhaft in Stufe 2 — waehrend Stufe 1 es wegen des 🔴-Skips
+    # ohnehin nicht auswertete. Ergebnis: das Symbol fiel komplett aus der
+    # Pipeline (28 von 71 am Journal-Stand 2026-09-09). Der Pull bleibt
+    # unveraendert (Z145 zieht weiter aus watchlist_entries), damit der
+    # Re-Eval-Check die Kurse archivierter Zeilen behaelt.
+    watchlist_symbols_set = active_watchlist_symbols(watchlist_entries)
+    _tote = len([e for e in watchlist_entries if e.symbol]) - len(watchlist_symbols_set)
+    if _tote:
+        logger.info(
+            f"  Stufe-2-Ausnahme: {len(watchlist_symbols_set)} lebende Symbole "
+            f"blockieren, {_tote} archivierte wieder aufnahmefaehig"
+        )
 
     watchlist_results = evaluate_watchlist(
         watchlist_entries, snapshots, filter_config, today, now_utc_hour,
