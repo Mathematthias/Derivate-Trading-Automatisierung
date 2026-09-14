@@ -31,7 +31,61 @@ from typing import Any, Optional
 
 from output_renderer import classify_watchlist_results
 
-SCHEMA_VERSION = "briefing-digest/v1"
+SCHEMA_VERSION = "briefing-digest/v2"
+# v2 seit 2026-09-14. Der Sprung ist ueberfaellig: unter "v1" sind seit dem
+# 2026-09-04 drei Top-Level-Felder dazugekommen (data_freshness, grinders,
+# grinders_meta), ohne dass die Versionsnummer es gesagt haette. Eine
+# Schema-Version, die sich nie aendert, ist fuer den Leser wertlos.
+
+# Die vollstaendige Liste der Top-Level-Keys, die ein Digest traegt.
+# WER HIER EIN FELD HINZUFUEGT, MUSS ES EINTRAGEN — _assert_schema() unten
+# bricht den Lauf sonst ab. Das ist Absicht: Die Alternative war, dass ein
+# neues Feld still im Digest landet und jede Leseseite es ignoriert, weil
+# sie es nicht kennt. Genau so sind data_freshness und grinders zehn Tage
+# lang an der Skill-Seite vorbeigelaufen.
+SCHEMA_FIELDS: tuple[str, ...] = (
+    "schema",
+    "generated",
+    "tier",
+    "counts",
+    "macro",
+    "data_freshness",
+    "universe",
+    "buckets",
+    "setup_class_flags",
+    "position_monitors",
+    "overrides",
+    "watchlist_expiry",
+    "pitches",
+    "grinders",
+    "grinders_meta",
+)
+
+
+def _assert_schema(digest: dict) -> None:
+    """Bricht ab, wenn der gebaute Digest von SCHEMA_FIELDS abweicht.
+
+    Zwei Richtungen, beide sind Fehler:
+      * ein Feld im Digest, das nicht deklariert ist -> Leseseiten kennen es
+        nicht und ignorieren es stillschweigend.
+      * ein deklariertes Feld fehlt im Digest -> Leseseiten rechnen damit.
+    """
+    ist, soll = set(digest), set(SCHEMA_FIELDS)
+    if ist == soll:
+        return
+    zuviel = sorted(ist - soll)
+    zuwenig = sorted(soll - ist)
+    teile = []
+    if zuviel:
+        teile.append(
+            f"nicht deklariert: {zuviel} — in SCHEMA_FIELDS eintragen "
+            "UND die Leseseite (pipeline_utils.BriefingDigest) nachziehen"
+        )
+    if zuwenig:
+        teile.append(f"deklariert, aber nicht gebaut: {zuwenig}")
+    raise ValueError(
+        "Digest-Schema weicht von SCHEMA_FIELDS ab — " + "; ".join(teile)
+    )
 
 # Makro-Header-Symbole: Indizes/FX/Commodities/Krypto, die im Briefing-Kopf als
 # kompakte Lage-Zeile erscheinen (nicht als Trade-Kandidaten). Der Client rendert
@@ -433,4 +487,5 @@ def build_briefing_digest(
         # der Block selbst ist bei grinders.top_n abgeschnitten.
         "grinders_meta": grinders_meta or {},
     }
+    _assert_schema(digest)
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))
