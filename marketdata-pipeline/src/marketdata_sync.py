@@ -345,8 +345,13 @@ def main():
         # Zweiter Block (2026-09-04): Grinder aus dem GESAMTEN Universum, nicht
         # nur aus den Bucket-Treffern — ein Grinder erzeugt gerade kein
         # klassisches Setup-Signal (§ Pullback-Monokultur).
+        # today/now_utc_hour: der harte Tempo-Boden greift nur auf einem
+        # ABGESCHLOSSENEN Tagesbalken (Variante C, 2026-09-15). Ohne diese
+        # beiden Argumente faellt build_grinders_report auf das alte harte
+        # Gate zurueck — sie sind hier also nicht optional-kosmetisch.
         grinders_report = build_grinders_report(
-            snapshots, filter_config, source_tag=universe_tag
+            snapshots, filter_config, source_tag=universe_tag,
+            today=today, now_utc_hour=now_utc_hour,
         )
         grinders_payload = grinders_report["items"]
         pitches_filename = f"PITCHES-{universe_tag}-{timestamp_str}.json"
@@ -362,6 +367,10 @@ def main():
                 "grinders_total": grinders_report["total"],
                 "grinders_dropped_by_tempo": grinders_report["dropped_by_tempo"],
                 "grinders_min_tempo": grinders_report["min_tempo"],
+                # 🆕 2026-09-15: Schwelle, unterhalb derer ein Grinder nur
+                # kleiner gesizt wird statt auszufallen. Ohne diesen Wert im
+                # File kann der Morning-Check die Sizing-Stufe nicht rendern.
+                "grinders_daempfer_tempo": grinders_report["daempfer_tempo"],
             },
             ensure_ascii=False,
             separators=(",", ":"),

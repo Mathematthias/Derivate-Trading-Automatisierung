@@ -1077,6 +1077,55 @@ def _rr_proxy(
         reward = snap.price - snap.low_20d
 
     rr = reward / risk
+
+    # 🆕 2026-09-15 — ZWEISTUFIGER ENG-TEST FUER PULLBACKS (Variante C).
+    #
+    # BEFUND: Am 2026-09-15 fielen 8 von 10 Trend-Pullbacks am ENG-Filter aus,
+    # darunter ALLE 5 Short-Pullbacks. Die Trend-Spur hatte danach 2 Kandidaten
+    # fuer 6 Quotenplaetze. Ursache ist nicht die Schwelle, sondern die
+    # Reward-Definition: das 20d-Extrem ist fuer einen Pullback, der GERADE
+    # ERST beginnt, das naechstliegende Ziel — nicht das einzige. Wer nach
+    # einem Ruecksetzer in einen intakten Trend einsteigt, handelt auf einen
+    # Runner, und Lektion 5/23 misst das R:R ausdruecklich AM RUNNER.
+    # Der Filter mass bis hier gegen TP1 und disqualifizierte damit gegen eine
+    # Groesse, die die Regel gar nicht meint — Divergenz Lektion<->Code,
+    # dieselbe Klasse wie der Measured-Move-Fall vom 2026-09-09 darueber.
+    #
+    # NEU: zwei Stufen, ENG nur wenn BEIDE reissen.
+    #   Stufe 1 (TP1)    = 20d-Extrem, wie bisher, gegen min_rr.
+    #   Stufe 2 (Runner) = 20d-Extrem +/- Hoehe der 20-Tage-Range, also
+    #                      dieselbe Measured-Move-Projektion wie bei den
+    #                      Ausbruchs-Buckets, gegen min_rr_runner.
+    #
+    # ZURUECKGEGEBEN wird weiterhin der TP1-Wert. Das ist Absicht: `rrprox`
+    # ist Pflichtfeld im Payload UND Ranking-Schluessel. Gaebe man hier den
+    # Runner-Wert zurueck, wanderten die Pullbacks geschlossen an die Spitze
+    # der Rangliste und verdraengten die Measured-Move-Buckets, deren Zahl
+    # schon die Runner-Definition benutzt — man haette die Pitch-Liste
+    # umsortiert, ohne das zu entscheiden.
+    #
+    # SCHWELLE min_rr_runner (Evidenzklasse nach L24: Empirie, n=8 -> HYPOTHESE,
+    # nicht belastbar): Der Runner-Reward enthaelt die Range-Hoehe als additive
+    # Konstante; gemessen am EU-Universum vom 2026-09-15 (n=340) betraegt der
+    # Median von range/(1,5 x ATR) 2,91 R-Einheiten. Ein Runner-Test gegen
+    # min_rr (1,4) waere deshalb WIRKUNGSLOS: die ENG-Quote faellt von 87,9 %
+    # auf unter 2 %. 3,0 ist der Wert, bei dem die Stufe noch beisst (27,1 %
+    # ENG im Gesamtuniversum) und gleichzeitig 6 der 8 konkreten Blocker vom
+    # 2026-09-15 freigibt. Die Zahl ist gewaehlt, nicht gemessen — sie gehoert
+    # in die naechste Kalibrierrunde, nicht in den Zementsack.
+    pullback_runner = cfg.get("pullback_runner_enabled", True)
+    if pullback_runner and rr < cfg.get("min_rr", 1.4):
+        if snap.high_20d is not None and snap.low_20d is not None:
+            range_hoehe = snap.high_20d - snap.low_20d
+            if range_hoehe > 0:
+                if direction == "long":
+                    reward_runner = (snap.high_20d + range_hoehe) - snap.price
+                else:
+                    reward_runner = snap.price - (snap.low_20d - range_hoehe)
+                rr_runner = reward_runner / risk
+                if rr_runner >= cfg.get("min_rr_runner", 3.0):
+                    return rr, False
+
     eng = rr < cfg.get("min_rr", 1.4)
     return rr, eng
 
@@ -1294,6 +1343,8 @@ def build_grinders_report(
     snapshots: dict[str, Any],
     config: dict,
     source_tag: Optional[str] = None,
+    today: Optional[date] = None,
+    now_utc_hour: Optional[int] = None,
 ) -> dict[str, Any]:
     """Zweiter Pitch-Block: rankt GRINDER nach Trendqualität statt nach Fallhöhe.
 
@@ -1341,10 +1392,43 @@ def build_grinders_report(
     # STD-Universum fiel damit von 14 auf 1 Treffer, und zwar aus dem falschen
     # Grund. move30d% ÷ ATR% ist die Größe, die das System überall sonst nutzt.
     min_move_atr = gcfg.get("min_move_atr", 1.0)
-    # 🆕 Tempo als GATE (Grinder-Continuation v0.1, 2026-09-08) — s. filter_config.
-    min_tempo = gcfg.get("min_tempo", 0.0)
+    # 🆕 2026-09-15 — TEMPO IST KEIN GATE MEHR, SONDERN RANGFOLGE + DAEMPFER.
+    # Die Spec sagt es selbst (Grinder-Continuation, Evidenzklasse): Tempo-Gate
+    # 0,9 ist "Empirie, Hypothese bei n<5" und soll "als Sizing-Daempfer, NIE
+    # als Veto" wirken. Im Code war es ein hartes Veto — Divergenz Skill<->Code,
+    # dieselbe Klasse wie der Sanduhr-Gate-Fall (01.09.) und der Stop-Buy-
+    # Irrtum (04.09.).
+    #
+    # WARUM DAS NOETIG IST — die Sensitivitaet ist gerechnet, nicht vermutet:
+    #   tempo = |M| / (3 x ATR%)   ->   dTempo/dMove = 1 / (3 x ATR%)
+    # Bei ATR 1,72 % sind das 0,194 Tempo je Prozentpunkt Move. Gemessen an
+    # FPE3.DE am 2026-09-15: Digest 11:31 move30d 4,7 -> Tempo 0,911 (drin);
+    # Lauf 11:35 move30d 4,5 -> 0,872 (draussen). 0,2 PP Move = 8 Cent Kurs.
+    # Die Sensitivitaet ist am hoechsten, wo die Klasse lebt: die ATR steht im
+    # Nenner, und ein Grinder hat per Definition eine NIEDRIGE ATR.
+    # Zweite Zitterquelle: der 30d-Move ist ein ROLLIERENDES Fenster — faellt
+    # hinten ein starker Tag heraus, sinkt er schlagartig (Basiseffekt). Dazu
+    # die ATR selbst: CWC.DE von 2,050 auf 2,328 (+13,6 %) senkt das Tempo
+    # ALLEIN DADURCH um 11,9 %.
+    #
+    # NEU (User-Entscheid 2026-09-15, Varianten B+C):
+    #   min_tempo       = HARTER Boden, Default 0.6 (= dokumentiertes
+    #                     Ausstiegs-Tempo der Klasse, ~50 HT Horizont).
+    #                     Haelt JNJ mit 0,54 weiterhin draussen.
+    #   daempfer_tempo  = Default 0.9. Darunter fliegt NICHTS raus, der Eintrag
+    #                     bekommt sizing_daempfer=True und wird im Briefing eine
+    #                     Sizing-Stufe tiefer gehandelt.
+    min_tempo = gcfg.get("min_tempo", 0.6)
+    daempfer_tempo = gcfg.get("daempfer_tempo", 0.9)
     need_hhll = gcfg.get("require_weekly_hhll", True)
     rr_ziel = gcfg.get("rr_ziel", 2.0)
+    # Fuer die Vorlaeufig-Markierung unten: dieselbe Hard-Hour, die schon
+    # _get_vol_status/_last_bar_is_forming benutzen. Ohne Zeit-Kontext
+    # (today/now_utc_hour None) faellt die Logik auf das alte harte Gate
+    # zurueck — Backward-Compat fuer Aufrufer ohne Zeitangabe.
+    hard_hour = config.get("watchlist_trigger_parsing", {}).get(
+        "hard_evaluation_utc_hour", 20
+    )
 
     pcfg = config.get("pitches", {})
     exclude = set(pcfg.get("ethics_exclude", []))
@@ -1387,7 +1471,16 @@ def build_grinders_report(
 
         ziel_pct = rr_ziel * 1.5 * atr_pct
         tempo = abs(snap.move_30d_pct) / ziel_pct if ziel_pct else 0.0
-        if tempo < min_tempo:
+
+        # 🆕 2026-09-15 (Variante C): DER HARTE BODEN GILT NUR AUF EINEM
+        # ABGESCHLOSSENEN TAGESBALKEN. Solange der Balken von heute laeuft, ist
+        # das Tempo eine Momentaufnahme — genau die, die FPE3 zwischen 11:31 und
+        # 11:35 gekippt hat. Auf einem laufenden Balken wird deshalb nur
+        # markiert, nicht ausgeschlossen: eine Antwort pro Handelstag statt
+        # acht. Dieselbe Logik, die collapse_runs() in der Streak-Zaehlung
+        # bereits anwendet (Journal-Note #563) — nur benutzte das Gate sie nie.
+        vorlaeufig = _last_bar_is_forming(snap, today, now_utc_hour, hard_hour)
+        if tempo < min_tempo and not vorlaeufig:
             dropped_tempo += 1
             continue
         out.append({
@@ -1402,6 +1495,12 @@ def build_grinders_report(
             "move30d": round(snap.move_30d_pct, 1),
             "move_atr": round(move_atr, 2),
             "tempo": round(tempo, 2),
+            # 🆕 2026-09-15: unter daempfer_tempo wird KLEINER gehandelt, nicht
+            # ausgeschlossen. Das Briefing rendert daraus die Sizing-Stufe.
+            "sizing_daempfer": tempo < daempfer_tempo,
+            # True = Tempo auf einem laufenden Tagesbalken gemessen, also noch
+            # nicht entschieden. Der harte Boden greift dann nicht.
+            "tempo_vorlaeufig": vorlaeufig,
             "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
             "ethics": "grenzfall" if sym in grenz else "ok",
             "tier": source_tag,
@@ -1415,6 +1514,7 @@ def build_grinders_report(
         "items": out[:top_n],
         "total": len(out),
         "dropped_by_tempo": dropped_tempo,
+        "daempfer_tempo": daempfer_tempo,
         "top_n": top_n,
         "min_tempo": min_tempo,
     }
@@ -1446,6 +1546,8 @@ def build_grinders_payload(
     snapshots: dict[str, Any],
     config: dict,
     source_tag: Optional[str] = None,
+    today: Optional[date] = None,
+    now_utc_hour: Optional[int] = None,
 ) -> list[dict[str, Any]]:
     """Rueckwaertskompatible Huelle: nur die gedeckelte Liste.
 
@@ -1453,7 +1555,10 @@ def build_grinders_payload(
     kalibriert man gegen eine abgeschnittene Liste — Befund 2026-09-08),
     ruft ``build_grinders_report``.
     """
-    return build_grinders_report(snapshots, config, source_tag=source_tag)["items"]
+    return build_grinders_report(
+        snapshots, config, source_tag=source_tag,
+        today=today, now_utc_hour=now_utc_hour,
+    )["items"]
 
 
 def build_pitches_payload(

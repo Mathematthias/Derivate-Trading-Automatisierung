@@ -205,6 +205,28 @@ rr_proxy:
     - "breakout_long"
     - "breakdown_short"
 
+  # --- ZWEISTUFIGER ENG-TEST FUER PULLBACKS (Variante C, 2026-09-15) ---------
+  # Anlass: Am 2026-09-15 fielen 8 von 10 Trend-Pullbacks am ENG-Filter aus,
+  # darunter ALLE 5 Short-Pullbacks — die Trend-Spur hatte danach 2 Kandidaten
+  # fuer 6 Quotenplaetze. Das 20d-Extrem ist fuer einen gerade erst
+  # beginnenden Pullback aber TP1, nicht das Ziel; Lektion 5/23 misst das R:R
+  # ausdruecklich AM RUNNER. Der Filter disqualifizierte also gegen eine
+  # Groesse, die die Regel nicht meint.
+  # NEU: ENG nur, wenn BEIDE Stufen reissen — TP1 (20d-Extrem) gegen min_rr
+  # UND Runner (20d-Extrem +/- Range-Hoehe) gegen min_rr_runner.
+  #
+  # min_rr_runner ist GEWAEHLT, NICHT GEMESSEN (L24: Empirie n=8 -> Hypothese).
+  # Der Runner-Reward traegt die Range-Hoehe als additive Konstante; Median von
+  # range/(1,5 x ATR) im EU-Universum 2026-09-15 (n=340) = 2,91 R-Einheiten.
+  # Ein Runner-Test gegen 1,4 waere daher wirkungslos (ENG-Quote 87,9 % -> <2 %).
+  # Messreihe ueber dasselbe Universum, eng = rr_tp1 < 1,4 UND rr_run < S:
+  #   S=2,0 -> 1,8 %   S=2,5 -> 9,7 %   S=3,0 -> 27,1 %   S=3,5 -> 50,0 %
+  #   S=4,0 -> 68,2 %  S=4,5 -> 78,8 %  S=5,0 -> 85,3 %   (ALT: 87,9 %)
+  # 3,0 beisst noch und gibt 6 der 8 konkreten Blocker vom 2026-09-15 frei.
+  # Gehoert in die naechste Kalibrierrunde, nicht in Zement.
+  min_rr_runner: 3.0
+  pullback_runner_enabled: true
+
   # Fuer ein Reversal ist das 20d-Extrem weder Einstieg noch Ziel, und eine
   # belastbare Zielstrecke ist nicht gemessen. Statt eine Zahl zu erfinden,
   # laeuft die Klasse ohne ENG-Vorfilter. Sie kam als einzige der vier
@@ -238,7 +260,20 @@ grinders:
   # 0,9 statt 1,0, weil der Wert tagesweise schwankt: KNIN.SW stand am 2026-09-08
   # um 09:33 bei 1,15, um 14:33 bei 1,05 und um 18:05 bei 0,94 — eine harte
   # 1,0-Kante wuerde denselben Wert dreimal am Tag rein- und rauswerfen.
-  min_tempo: 0.9
+  # 🆕 2026-09-15 (User-Entscheid, Varianten B+C): Das Gate war ein VETO,
+  # obwohl die Spec der Klasse Grinder-Continuation selbst sagt, die Groesse
+  # sei "Empirie, Hypothese bei n<5" und wirke "als Sizing-Daempfer, NIE als
+  # Veto". Divergenz Skill<->Code, dieselbe Klasse wie der Sanduhr-Gate-Fall
+  # (01.09.) und der Stop-Buy-Irrtum (04.09.).
+  # Gerechnete Sensitivitaet: dTempo/dMove = 1 / (3 x ATR%). Bei ATR 1,72 %
+  # sind das 0,194 Tempo je Prozentpunkt Move — FPE3.DE kippte am 2026-09-15
+  # zwischen 11:31 (Tempo 0,911) und 11:35 (0,872) durch 8 Cent Kurs.
+  # min_tempo      = harter Boden, nur auf ABGESCHLOSSENEM Tagesbalken (C).
+  #                  0,6 = dokumentiertes Ausstiegs-Tempo der Klasse (~50 HT).
+  #                  Haelt JNJ mit 0,54 weiterhin draussen.
+  # daempfer_tempo = alter 0,9-Wert, jetzt als Sizing-Stufe statt Rauswurf (B).
+  min_tempo: 0.6
+  daempfer_tempo: 0.9
   require_weekly_hhll: true
   rr_ziel: 2.0            # Zielweite = rr_ziel * 1,5 * ATR%
 

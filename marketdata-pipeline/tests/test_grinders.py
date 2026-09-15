@@ -12,6 +12,7 @@ statt nur der Bucket-Treffer — ein Grinder erzeugt gerade kein Setup-Signal.
 """
 
 from dataclasses import dataclass
+from datetime import date
 from typing import Optional
 
 import pytest
@@ -46,6 +47,9 @@ class Snap:
     rsi14: Optional[float] = 55.0
     move_30d_pct: Optional[float] = 6.0
     weekly_higher_highs_lows: Optional[bool] = True
+    # Fuer die Vorlaeufig-Markierung (Variante C, 2026-09-15): ISO YYYY-MM-DD
+    # des letzten OHLC-Balkens. None + fehlender Zeitkontext = altes Verhalten.
+    last_bar_date: Optional[str] = None
 
     @property
     def has_bullish_stack(self) -> bool:
@@ -169,36 +173,115 @@ class TestKonfiguration:
 
 
 class TestTempoGate:
-    """Tempo ist seit dem 2026-09-08 GATE, nicht nur Rangfolge.
+    """Tempo ist seit dem 2026-09-15 ZWEISTUFIG (User-Entscheid, Var. B+C).
 
-    Grinder-Continuation v0.1 verspricht "R:R >= 2 in rund 30 HT". Genau das
-    misst tempo = |30d-Move| / ziel_pct. Vorher lief nur min_move_atr, und
-    damit standen Werte mit Tempo 0,54 im Block (JNJ, Lauf 2026-09-08 18:05) —
-    das entspraeche einem Horizont von rund 55 HT.
+    Vorher war Tempo ein hartes Veto bei 0,9 — obwohl die Spec der Klasse
+    Grinder-Continuation selbst sagt, die Groesse sei "Empirie, Hypothese bei
+    n<5" und wirke "als Sizing-Daempfer, NIE als Veto". Divergenz Skill<->Code.
+    Jetzt:
+      min_tempo (0,6)      = harter Boden, aber NUR auf abgeschlossenem Balken.
+      daempfer_tempo (0,9) = darunter kleiner sizen statt rauswerfen.
+    ATR% 1,0 -> ziel_pct = 2,0 x 1,5 x 1,0 = 3,0, also Tempo = Move / 3.
     """
 
-    def test_unter_der_schwelle_faellt_raus(self, config):
-        # ATR% 1,0 → ziel_pct 3,0 → Move 2,5 % = Tempo 0,83 < 0,9
-        assert run(config, atr14=1.0, move_30d_pct=2.5) == []
+    def test_unter_dem_boden_faellt_raus(self, config):
+        # Move 1,5 % -> Tempo 0,50 < min_tempo 0,60
+        assert run(config, atr14=1.0, move_30d_pct=1.5) == []
 
-    def test_auf_der_schwelle_kommt_durch(self, config):
-        # ATR% 1,0 → ziel_pct 3,0 → Move 2,7 % = Tempo 0,90
-        out = run(config, atr14=1.0, move_30d_pct=2.7)
-        assert len(out) == 1 and out[0]["tempo"] == pytest.approx(0.90)
+    def test_jnj_regression_054_bleibt_draussen(self, config):
+        """JNJ, Lauf 2026-09-08 18:05: Tempo 0,54 = Horizont rund 55 HT.
+
+        Der Anlassfall fuer das Gate ueberhaupt. Der neue, tiefere Boden darf
+        ihn nicht wieder hereinlassen — sonst haette man das Gate abgeschafft
+        statt es zu korrigieren.
+        """
+        out = run(config, atr14=1.0, move_30d_pct=1.62)   # Tempo 0,54
+        assert out == []
+
+    def test_zwischen_boden_und_daempfer_kommt_durch_aber_gedaempft(self, config):
+        # Move 2,4 % -> Tempo 0,80: ueber 0,60, unter 0,90.
+        out = run(config, atr14=1.0, move_30d_pct=2.4)
+        assert len(out) == 1
+        assert out[0]["tempo"] == pytest.approx(0.80)
+        assert out[0]["sizing_daempfer"] is True
+
+    def test_ueber_dem_daempfer_voll_gesizt(self, config):
+        # Move 3,0 % -> Tempo 1,00.
+        out = run(config, atr14=1.0, move_30d_pct=3.0)
+        assert len(out) == 1
+        assert out[0]["tempo"] == pytest.approx(1.00)
+        assert out[0]["sizing_daempfer"] is False
+
+    def test_der_alte_09_fall_fliegt_nicht_mehr_raus(self, config):
+        """FPE3.DE kippte am 2026-09-15 zwischen 11:31 und 11:35 aus dem Block.
+
+        Tempo 0,911 -> 0,872 bei 0,2 PP Move (= 8 Cent Kurs). Unter dem alten
+        harten 0,9-Gate war das Rauswurf, jetzt nur noch Sizing-Stufe.
+        """
+        out = run(config, atr14=1.0, move_30d_pct=2.616)   # Tempo 0,872
+        assert len(out) == 1 and out[0]["sizing_daempfer"] is True
 
     def test_gilt_auch_short(self, config):
         kw = dict(ema20=99.5, ema50=105.0, ema200=115.0, price=100.0,
                   atr14=1.0, weekly_higher_highs_lows=False)
-        assert run(config, move_30d_pct=-2.5, **kw) == []
-        assert len(run(config, move_30d_pct=-2.7, **kw)) == 1
+        assert run(config, move_30d_pct=-1.5, **kw) == []
+        out = run(config, move_30d_pct=-2.4, **kw)
+        assert len(out) == 1 and out[0]["sizing_daempfer"] is True
 
     def test_schwelle_abschaltbar(self, config):
         cfg = dict(config)
         cfg["grinders"] = dict(config["grinders"], min_tempo=0.0)
-        assert len(run(cfg, atr14=1.0, move_30d_pct=2.5)) == 1
+        assert len(run(cfg, atr14=1.0, move_30d_pct=1.5)) == 1
 
-    def test_default_ist_konfiguriert(self, config):
-        assert config["grinders"]["min_tempo"] == pytest.approx(0.9)
+    def test_defaults_sind_konfiguriert(self, config):
+        assert config["grinders"]["min_tempo"] == pytest.approx(0.6)
+        assert config["grinders"]["daempfer_tempo"] == pytest.approx(0.9)
+
+
+class TestTempoAufLaufendemBalken:
+    """Variante C: der harte Boden greift nur auf ABGESCHLOSSENEM Tagesbalken.
+
+    Solange der Balken von heute laeuft, ist das Tempo eine Momentaufnahme —
+    genau die, die FPE3 zwischen 11:31 und 11:35 gekippt hat. Auf einem
+    laufenden Balken wird deshalb nur markiert, nicht ausgeschlossen: eine
+    Antwort pro Handelstag statt acht.
+    """
+
+    HEUTE = date(2026, 9, 15)
+
+    def _run(self, config, bar_datum, stunde, move):
+        snaps = {"TEST": Snap(atr14=1.0, move_30d_pct=move,
+                              last_bar_date=bar_datum)}
+        return build_grinders_report(
+            snaps, config, today=self.HEUTE, now_utc_hour=stunde,
+        )["items"]
+
+    def test_laufender_balken_uebersteht_den_boden(self, config):
+        # Balken von heute, 11 UTC (< hard_evaluation_utc_hour 20) -> laeuft.
+        out = self._run(config, "2026-09-15", 11, move=1.5)   # Tempo 0,50
+        assert len(out) == 1
+        assert out[0]["tempo_vorlaeufig"] is True
+        # Vorlaeufig heisst nicht folgenlos: unter dem Daempfer bleibt es klein.
+        assert out[0]["sizing_daempfer"] is True
+
+    def test_abgeschlossener_balken_wird_hart_verworfen(self, config):
+        # Balken von gestern -> Sitzung final, der Boden greift.
+        assert self._run(config, "2026-09-12", 11, move=1.5) == []
+
+    def test_nach_hard_hour_ist_der_heutige_balken_final(self, config):
+        assert self._run(config, "2026-09-15", 21, move=1.5) == []
+
+    def test_ueber_dem_boden_ist_nichts_vorlaeufig_relevant(self, config):
+        out = self._run(config, "2026-09-15", 11, move=3.0)   # Tempo 1,00
+        assert len(out) == 1
+        assert out[0]["tempo_vorlaeufig"] is True
+        assert out[0]["sizing_daempfer"] is False
+
+    def test_ohne_zeitkontext_gilt_das_harte_gate(self, config):
+        """Backward-Compat: Aufrufer ohne today/now_utc_hour bekommen das
+        alte Verhalten. Sonst haette die Huelle build_grinders_payload
+        stillschweigend die Semantik gewechselt."""
+        assert run(config, atr14=1.0, move_30d_pct=1.5) == []
 
 
 class TestReport:
@@ -233,8 +316,9 @@ class TestReport:
         snaps = {
             "GUT": Snap(symbol="GUT", atr14=2.0, price=100.0, ema20=99.5,
                         move_30d_pct=6.0),                      # Tempo 1,00
+            # Tempo 0,50 — unter dem neuen Boden 0,60 (vorher 0,67/0,9).
             "LAHM": Snap(symbol="LAHM", atr14=2.0, price=100.0, ema20=99.5,
-                         move_30d_pct=4.0),                     # Tempo 0,67
+                         move_30d_pct=3.0),
         }
         rep = build_grinders_report(snaps, config)
         assert rep["total"] == 1 and rep["dropped_by_tempo"] == 1
