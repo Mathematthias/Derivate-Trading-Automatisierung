@@ -82,6 +82,99 @@ logging.basicConfig(
 logger = logging.getLogger("pipeline")
 
 
+def load_merged_pitches(
+    drive_service,
+    briefing_folder_id: str,
+    filter_config: dict,
+) -> dict:
+    """Liest die frischesten PITCHES-{EU,US}.json und merged sie zum Bucket-4-Satz.
+
+    Vorgezogen vor den Pull (2026-09-15). Vorher lief dieser Block erst beim
+    Digest-Rendern, also HINTER fetch_ticker_data — mit der Folge, dass ein
+    Pitch-Symbol, das nicht ohnehin im Tier-A-Universum steht, keinen
+    `universe`-Eintrag bekam. Gemessen am Digest 2026-09-15 15:32: 6 von 10
+    Pitches ohne Kurs, ATR, Earnings und bar_date, also nicht rechenbar — weder
+    SL noch Stückzahl noch R:R noch die Fächer-Prüfung. Dazu trugen die vier
+    Symbole, die in beiden Blöcken standen, ZWEI verschiedene Kurse im selben
+    Dokument (bis 1,15 % Abweichung, EU-Pitchlauf 11:35 gegen Digest 15:32).
+
+    Weil der Drive-Service schon ab dem Start von main() verfügbar ist, kann der
+    Merge vor den Pull. Die gemergten Symbole werden dort ins Pull-Universum
+    aufgenommen und bekommen damit einen vollen, taggleichen Snapshot inklusive
+    4h-Layer. Kosten: höchstens quota(trend)+quota(counter) Symbole, beim
+    aktuellen 6/4 also 10 auf ~113 (+8,8 % Pull).
+
+    Jeder Pitch bekommt zusätzlich `as_of` — den `generated`-Zeitstempel seiner
+    Quelldatei. Auch nach dem Fix bleibt sichtbar, aus welchem Lauf die
+    Rangfolge stammt; ohne das Feld wäre ein künftiger Zeitversatz wieder
+    unsichtbar (dieselbe Lehre wie bei `bar_date`, Note #540-Klasse).
+
+    Pure Lese-Funktion: fehlen die Files (noch kein B/C-Lauf), kommen leere
+    Listen zurück und der Digest läuft ohne Pitches — Chat fällt dann wie
+    bisher auf den GAMECHANGER-Fetch zurück.
+    """
+    merged_pitches: list[dict] = []
+    merged_grinders: list[dict] = []
+    grinders_total_by_tier: dict[str, int] = {}
+
+    for prefix in ("PITCHES-EU-", "PITCHES-US-"):
+        data = read_latest_json_file(drive_service, briefing_folder_id, prefix)
+        if not data:
+            continue
+        generated = data.get("generated")
+        rows = data.get("ranked", []) or []
+        for row in rows:
+            # setdefault: ein bereits gesetztes as_of (kuenftige Payload-
+            # Versionen koennten es selbst schreiben) gewinnt.
+            if generated and isinstance(row, dict):
+                row.setdefault("as_of", generated)
+        merged_pitches.extend(rows)
+        merged_grinders.extend(data.get("grinders", []) or [])
+        tag = prefix.split("-")[1]
+        grinders_total_by_tier[tag] = data.get("grinders_total", 0)
+
+    # Quote statt globalem RRprox-Top-N (2026-09-07). Eine gemeinsame
+    # Sortierung ueber EU+US sortiert die Counter-Trend-Lane nach vorn, weil
+    # RRprox den Abstand zur Zielzone misst und dieser Abstand durch
+    # Extension entsteht. Gemessen am Lauf 2026-09-07 18:31: 8 von 8
+    # zugestellten Pitches waren Reversals, 0 trendkonform.
+    merged_pitches = apply_pitch_quota(merged_pitches, filter_config)
+
+    # Grinder werden nach TEMPO gereiht, nicht nach RRprox — das ist der
+    # ganze Zweck des zweiten Blocks (Note #527).
+    merged_grinders.sort(key=lambda d: d.get("tempo", 0.0), reverse=True)
+    # DEDUPE (2026-09-08): Die Tier-Labels EU/US bezeichnen den JOB, nicht
+    # das Universum — beide Laeufe ueberlappen. Am 2026-09-08 stand KNIN.SW in
+    # beiden PITCHES-Files (212,10 gegen 212,90, verschiedene Datenstaende) und
+    # AD.AS ebenfalls. Bei top_n=5 frisst jedes Duplikat einen Platz. Die Liste
+    # ist nach Tempo sortiert, das erste Vorkommen ist also das beste.
+    deduped = dedupe_grinders(merged_grinders)
+    dupes = len(merged_grinders) - len(deduped)
+    grinders_unique_total = len(deduped)
+    g_top = filter_config.get("grinders", {}).get("top_n", 3)
+
+    return {
+        "pitches": merged_pitches,
+        "grinders": deduped[:g_top],
+        "meta": {
+            "total_by_tier": grinders_total_by_tier,
+            "unique_after_dedupe": grinders_unique_total,
+            "shown": len(deduped[:g_top]),
+            "duplicates_removed": dupes,
+        },
+    }
+
+
+def pitch_symbols(bundle: dict | None) -> set[str]:
+    """Symbole des gemergten Pitch-Satzes — das, was zusaetzlich gepullt wird."""
+    if not bundle:
+        return set()
+    return {
+        p["symbol"] for p in bundle.get("pitches", [])
+        if isinstance(p, dict) and p.get("symbol")
+    }
+
+
 def build_pull_universe(
     mode: str,
     ticker_config: dict,
@@ -217,6 +310,34 @@ def main():
     all_symbols, excluded_symbols, excluded_category_symbols = build_pull_universe(
         mode, ticker_config, watchlist_entries,
     )
+
+    # === PITCH-MERGE VOR DEM PULL (2026-09-15) ===
+    # Der Merge stand bis heute HINTER fetch_ticker_data, beim Digest-Rendern.
+    # Ein Pitch-Symbol, das nicht ohnehin im Tier-A-Universum steht, bekam
+    # dadurch keinen `universe`-Eintrag: 6 von 10 Pitches waren am 2026-09-15
+    # ohne Kurs, ATR, Earnings und bar_date, also nicht rechenbar. Und die
+    # Symbole, die in beiden Bloecken standen, trugen zwei verschiedene Kurse
+    # im selben Dokument. Beides faellt weg, wenn die Symbole mitgepullt werden.
+    pitch_bundle = None
+    if mode == "tier_a":
+        pitch_bundle = load_merged_pitches(
+            drive_service, briefing_folder_id, filter_config,
+        )
+        extra = pitch_symbols(pitch_bundle)
+        # Ethik gewinnt immer — auch gegen einen gerankten Pitch.
+        extra -= excluded_symbols
+        neu = extra - all_symbols
+        all_symbols |= extra
+        # Nicht doppelt scannen: die Pitch-Symbole kommen bereits als Stufe-2-
+        # Treffer aus Tier B/C. Ohne diese Zeile erschiene derselbe Wert zweimal
+        # — einmal als Pitch, einmal als frischer Universe-Match des Tier-A-
+        # Laufs — und die Bucket-4-Quote waere de facto ausgehebelt.
+        excluded_category_symbols |= extra
+        logger.info(
+            f"  Pitch-Merge vorgezogen: {len(pitch_bundle['pitches'])} Pitches, "
+            f"{len(extra)} Symbole ({len(neu)} neu im Pull): {sorted(neu)}"
+        )
+
     logger.info(f"Total symbols to fetch: {len(all_symbols)}")
 
     # === YFINANCE PULL ===
@@ -383,55 +504,41 @@ def main():
     # kleinen Download. Läuft auf demselben Cronjob wie Tier A → kein neuer
     # PAT-Header. Siehe digest_renderer.py.
     if mode == "tier_a":
-        # Pitches (Bucket 4) aus den letzten Tier-B/C-Läufen einlesen und mergen.
-        # Fehlen die Files (noch kein B/C-Lauf), bleibt pitches leer → Chat fällt
-        # sauber auf den GAMECHANGER-Fetch zurück.
-        merged_pitches: list[dict] = []
-        merged_grinders: list[dict] = []
-        grinders_total_by_tier: dict[str, int] = {}
-        for prefix in ("PITCHES-EU-", "PITCHES-US-"):
-            data = read_latest_json_file(drive_service, briefing_folder_id, prefix)
-            if data:
-                merged_pitches.extend(data.get("ranked", []))
-                merged_grinders.extend(data.get("grinders", []))
-                tag = prefix.split("-")[1]
-                grinders_total_by_tier[tag] = data.get("grinders_total", 0)
-        # Quote statt globalem RRprox-Top-N (2026-09-07). Eine gemeinsame
-        # Sortierung ueber EU+US sortiert die Counter-Trend-Lane nach vorn, weil
-        # RRprox den Abstand zur Zielzone misst und dieser Abstand durch
-        # Extension entsteht. Gemessen am Lauf 2026-09-07 18:31: 8 von 8
-        # zugestellten Pitches waren Reversals, 0 trendkonform.
-        merged_pitches = apply_pitch_quota(merged_pitches, filter_config)
-        # Grinder werden nach TEMPO gereiht, nicht nach RRprox — das ist der
-        # ganze Zweck des zweiten Blocks (Note #527).
-        merged_grinders.sort(key=lambda d: d.get("tempo", 0.0), reverse=True)
-        # 🆕 DEDUPE (2026-09-08): Die Tier-Labels EU/US bezeichnen den JOB, nicht
-        # das Universum — beide Laeufe ueberlappen. Am 2026-09-08 stand KNIN.SW in
-        # beiden PITCHES-Files (212,10 gegen 212,90, verschiedene Datenstaende) und
-        # AD.AS ebenfalls. Bei top_n=5 frisst jedes Duplikat einen Platz. Die Liste
-        # ist nach Tempo sortiert, das erste Vorkommen ist also das beste.
-        deduped = dedupe_grinders(merged_grinders)
-        dupes = len(merged_grinders) - len(deduped)
-        merged_grinders = deduped
-        grinders_unique_total = len(merged_grinders)
-        g_top = filter_config.get("grinders", {}).get("top_n", 3)
-        merged_grinders = merged_grinders[:g_top]
+        # Pitches/Grinder wurden oben VOR dem Pull gelesen (load_merged_pitches),
+        # damit ihre Symbole im Pull-Universum landen. Hier wird das Ergebnis nur
+        # noch verwendet — kein zweiter Drive-Roundtrip, keine zweite Quote.
+        bundle = pitch_bundle or {"pitches": [], "grinders": [], "meta": {}}
+        merged_pitches = bundle["pitches"]
+        merged_grinders = bundle["grinders"]
+        g_meta = bundle["meta"]
+
+        # Sync-Kontrolle: jedes Pitch-Symbol MUSS jetzt einen Snapshot haben.
+        # Faellt ein Symbol im Pull aus (Ticker bei Yahoo verschwunden, Timeout),
+        # ist das kein Grund den Lauf zu kippen — aber es gehoert ins Log, sonst
+        # ist es wieder still. Der Skill-seitige digest_konsistenz_check meldet
+        # denselben Fall im Briefing.
+        fehlend = sorted(
+            p["symbol"] for p in merged_pitches
+            if p.get("symbol") and p["symbol"] not in snapshots
+        )
+        if fehlend:
+            logger.warning(
+                f"Digest: {len(fehlend)} Pitch-Symbole ohne Snapshot "
+                f"(nicht rechenbar im Briefing): {fehlend}"
+            )
+
         logger.info(
             f"Digest: {len(merged_pitches)} Pitches (Bucket 4) + "
-            f"{len(merged_grinders)} Grinder gemergt "
-            f"({dupes} Duplikate entfernt, Screen-Treffer je Lauf: {grinders_total_by_tier})."
+            f"{len(merged_grinders)} Grinder "
+            f"({g_meta.get('duplicates_removed', 0)} Duplikate entfernt, "
+            f"Screen-Treffer je Lauf: {g_meta.get('total_by_tier', {})})."
         )
 
         digest_filename = f"BRIEFING-DIGEST-{timestamp_str}.json"
         digest_content = build_briefing_digest(
             snapshots, watchlist_results, universe_matches, overrides, timestamp,
             pitches=merged_pitches, grinders=merged_grinders,
-            grinders_meta={
-                "total_by_tier": grinders_total_by_tier,
-                "unique_after_dedupe": grinders_unique_total,
-                "shown": len(merged_grinders),
-                "duplicates_removed": dupes,
-            },
+            grinders_meta=g_meta,
         )
         write_json_file(drive_service, briefing_folder_id, digest_filename, digest_content)
 

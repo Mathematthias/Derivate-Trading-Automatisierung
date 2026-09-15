@@ -1570,8 +1570,20 @@ def build_pitches_payload(
 
     Nur Kandidaten mit belastbarem R:R-Proxy (Trend-Pullbacks) kommen rein;
     ⚠️ENG und ethik-ausgeschlossene fliegen raus, trendlose (|30d| < Schwelle)
-    auch. Kein OHLC/ATR im Payload — Entry/SL/TP bleiben chart-zu-verifizieren.
-    Gereiht nach rrprox absteigend, Top-N.
+    auch. Gereiht nach rrprox absteigend, Top-N je Lane.
+
+    ATR/bar_date/Earnings im Payload (2026-09-15) — vorher stand hier "Kein
+    OHLC/ATR im Payload, Entry/SL/TP bleiben chart-zu-verifizieren". Die Absicht
+    war richtig: ein Pitch ist ein Hinweis, kein Trade-Plan. Inzwischen rechnet
+    das Briefing aber die Bucket-2-Uebersicht, das Kapital-Gate und den
+    L25-konstruierten SL — alles an der ATR. Ohne sie war ein Pitch ausserhalb
+    des Tier-A-Universums nicht rechenbar (6 von 10 am 2026-09-15).
+
+    Diese drei Felder sind der FALLBACK, nicht der Hauptweg: seit demselben Tag
+    zieht der Tier-A-Lauf die Pitch-Symbole in seinen eigenen Pull
+    (load_merged_pitches vor build_pull_universe), sie bekommen also einen
+    vollen, taggleichen universe-Eintrag. Faellt ein Symbol dort aus, traegt der
+    Payload wenigstens die Groessen, ohne die gar nichts geht.
     """
     pcfg = config.get("pitches", {})
     min_abs_move = pcfg.get("min_abs_move30d", 1.0)
@@ -1631,6 +1643,14 @@ def build_pitches_payload(
             "rrprox": round(rr, 2),
             "ethics": "grenzfall" if sym in grenz else "ok",
             "tier": source_tag,
+            # --- Fallback-Felder (2026-09-15), s. Docstring -------------------
+            # atr: ohne sie kein SL, keine Stueckzahl, kein Einsatz, kein R:R.
+            # last_bar_date: sonst kann die Datenstand-Pruefung einen Pitch gar
+            #   nicht erfassen (Kehrseite des bar_date-Blindflecks vom 07.09.).
+            # earn_next: Earnings <=5 HT ist hartes Veto (L23 Nr. 2, 7/7-Pkt. 5).
+            "atr": round(snap.atr14, 4) if getattr(snap, "atr14", None) is not None else None,
+            "bar_date": getattr(snap, "last_bar_date", None),
+            "earn_next": getattr(snap, "next_earnings_date", None),
         })
     # Je Lane ranken und kappen. Die Quote gilt pro Tier; der Tier-A-Merge setzt
     # sie ueber EU+US hinweg noch einmal durch (apply_pitch_quota).
