@@ -223,3 +223,52 @@ class TestSyncKontrolle:
         snapshots = {"TGT": object()}
         fehlend = [p["symbol"] for p in pitches if p["symbol"] not in snapshots]
         assert fehlend == []
+
+
+class TestPitchDedupe:
+    """Ein Symbol, ein Pitch — Befund aus dem ersten Lauf nach dem Merge-Fix.
+
+    Am 2026-09-15 17:02 stand SY1.DE zweimal im Pitch-Block (as_of 16:57 und
+    16:59, identische Zahlen). Die Grinder haben seit dem 2026-09-08 einen
+    Dedupe, die Pitches nicht — obwohl dort dasselbe Argument gilt und bei
+    einer Quote von 6/4 jedes Duplikat einen von zehn Plaetzen frisst.
+    """
+
+    def test_duplikat_wird_entfernt(self):
+        p = [{"symbol": "SY1.DE", "rrprox": 1.66, "lane": "trend"},
+             {"symbol": "SY1.DE", "rrprox": 1.66, "lane": "trend"},
+             {"symbol": "DHR", "rrprox": 1.66, "lane": "trend"}]
+        out = ms.dedupe_pitches(p)
+        assert [x["symbol"] for x in out] == ["SY1.DE", "DHR"]
+
+    def test_bestes_rrprox_gewinnt(self):
+        p = [{"symbol": "X", "rrprox": 1.2, "tier": "EU"},
+             {"symbol": "X", "rrprox": 2.4, "tier": "US"}]
+        out = ms.dedupe_pitches(p)
+        assert len(out) == 1 and out[0]["rrprox"] == 2.4 and out[0]["tier"] == "US"
+
+    def test_reihenfolge_der_ersten_vorkommen_bleibt(self):
+        p = [{"symbol": "A", "rrprox": 1.0}, {"symbol": "B", "rrprox": 9.0},
+             {"symbol": "A", "rrprox": 5.0}]
+        assert [x["symbol"] for x in ms.dedupe_pitches(p)] == ["A", "B"]
+
+    def test_leer_und_kaputt(self):
+        assert ms.dedupe_pitches([]) == []
+        assert ms.dedupe_pitches(["murks", {}, {"symbol": None}]) == []
+
+    def test_dedupe_laeuft_vor_der_quote(self, config, monkeypatch):
+        """In der anderen Reihenfolge belegen Duplikate noch Plaetze."""
+        viele = [{"symbol": f"T{i}", "lane": "trend", "rrprox": 2.0 - i * 0.1} for i in range(6)]
+        eu = {"generated": "2026-09-15T16:59:00+02:00",
+              "ranked": [{"symbol": "DUP", "lane": "trend", "rrprox": 5.0}] + viele,
+              "grinders": [], "grinders_total": 0}
+        us = {"generated": "2026-09-15T16:57:00+02:00",
+              "ranked": [{"symbol": "DUP", "lane": "trend", "rrprox": 5.0}],
+              "grinders": [], "grinders_total": 0}
+        monkeypatch.setattr(ms, "read_latest_json_file", _fake_files(eu, us))
+        b = ms.load_merged_pitches(None, "folder", config)
+        syms = [p["symbol"] for p in b["pitches"]]
+        assert syms.count("DUP") == 1
+        assert b["pitch_duplicates_removed"] == 1
+        # Quote trend=6: DUP + die fünf besten T-Werte, T5 faellt raus
+        assert len(syms) == 6 and "T5" not in syms

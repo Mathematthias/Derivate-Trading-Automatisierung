@@ -82,6 +82,47 @@ logging.basicConfig(
 logger = logging.getLogger("pipeline")
 
 
+def dedupe_pitches(pitches: list[dict]) -> list[dict]:
+    """Ein Symbol, ein Pitch — bestes rrprox gewinnt.
+
+    Die Tier-Labels EU/US bezeichnen den JOB, nicht das Universum: beide Laeufe
+    ueberlappen. Fuer die GRINDER wurde das am 2026-09-08 behoben
+    (dedupe_grinders), fuer die Pitches nicht — obwohl dort dasselbe Argument
+    gilt und sogar schwerer wiegt: bei einer Quote von 6/4 frisst jedes
+    Duplikat einen von zehn Plaetzen.
+
+    Gemessen am Digest 2026-09-15 17:02, dem ersten Lauf nach dem
+    Pitch-Merge-Fix: SY1.DE stand zweimal im Block (as_of 16:57 und 16:59,
+    identische Zahlen), ein Platz war verschenkt.
+
+    Laeuft VOR apply_pitch_quota — sonst kappt die Quote auf einer Liste, in
+    der Duplikate noch Plaetze belegen, und der Effekt bliebe bestehen.
+    """
+    best: dict[str, dict] = {}
+    for p in pitches:
+        if not isinstance(p, dict):
+            continue
+        sym = p.get("symbol")
+        if not sym:
+            continue
+        cur = best.get(sym)
+        if cur is None or (p.get("rrprox") or 0.0) > (cur.get("rrprox") or 0.0):
+            best[sym] = p
+    # Reihenfolge der ersten Vorkommen erhalten — apply_pitch_quota sortiert
+    # anschliessend ohnehin je Lane nach rrprox.
+    gesehen: set[str] = set()
+    out: list[dict] = []
+    for p in pitches:
+        if not isinstance(p, dict):
+            continue
+        sym = p.get("symbol")
+        if not sym or sym in gesehen:
+            continue
+        gesehen.add(sym)
+        out.append(best[sym])
+    return out
+
+
 def load_merged_pitches(
     drive_service,
     briefing_folder_id: str,
@@ -133,6 +174,12 @@ def load_merged_pitches(
         tag = prefix.split("-")[1]
         grinders_total_by_tier[tag] = data.get("grinders_total", 0)
 
+    # DEDUPE VOR DER QUOTE (2026-09-15). Zuerst ein Symbol je Zeile, dann
+    # kappen — in der anderen Reihenfolge belegen Duplikate noch Plaetze.
+    vor = len(merged_pitches)
+    merged_pitches = dedupe_pitches(merged_pitches)
+    pitch_dupes = vor - len(merged_pitches)
+
     # Quote statt globalem RRprox-Top-N (2026-09-07). Eine gemeinsame
     # Sortierung ueber EU+US sortiert die Counter-Trend-Lane nach vorn, weil
     # RRprox den Abstand zur Zielzone misst und dieser Abstand durch
@@ -156,6 +203,7 @@ def load_merged_pitches(
     return {
         "pitches": merged_pitches,
         "grinders": deduped[:g_top],
+        "pitch_duplicates_removed": pitch_dupes,
         "meta": {
             "total_by_tier": grinders_total_by_tier,
             "unique_after_dedupe": grinders_unique_total,
@@ -528,7 +576,8 @@ def main():
             )
 
         logger.info(
-            f"Digest: {len(merged_pitches)} Pitches (Bucket 4) + "
+            f"Digest: {len(merged_pitches)} Pitches (Bucket 4, "
+            f"{bundle.get('pitch_duplicates_removed', 0)} Duplikate entfernt) + "
             f"{len(merged_grinders)} Grinder "
             f"({g_meta.get('duplicates_removed', 0)} Duplikate entfernt, "
             f"Screen-Treffer je Lauf: {g_meta.get('total_by_tier', {})})."
