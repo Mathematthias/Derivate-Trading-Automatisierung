@@ -49,4 +49,5 @@ jobs:
             --source drive \
             --folder-id 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht \
             --horizons 5 10 20 \
+            --include-gamechanger \
             --upload
