@@ -94,15 +94,51 @@ short_trend_pullback:
 # BREAKOUT (Long) / BREAKDOWN (Short)
 # Setup: Kurs durchbricht 20d-Hoch (Long) bzw. 20d-Tief (Short) mit Volumen
 # ============================================================
+# --- ZWEISTUFIGES VOLUMEN-GATE (User-Entscheid 2026-09-18) -------------------
+# ANLASS: Chart-Blick des Users auf NFLX, danach zwei Messungen.
+#
+# (1) QUERSCHNITT, 7 Handelstage, 1.717 Ticker-Tage (US-Post-Close-Files
+#     2026-09-09..17): Median Tagesvolumen/Avg-20d = 0,96x, P90 = 1,42x.
+#     Ueber 1,5x liegen 7,7 % — die Schwelle sass also bei rund dem 92.
+#     Perzentil. Entscheidend ist aber die Trennschaerfe: Am 20-Tage-Tief
+#     steigt der Anteil >=1,5x nur von 7,7 % auf 10,7 %, der Median von 0,96
+#     auf 1,03. Die Schwelle selektiert in beiden Gruppen fast dasselbe
+#     oberste Zehntel — sie misst "heute ist etwas passiert", nicht "der
+#     Breakdown traegt". Long/Short-Asymmetrie NICHT nachweisbar (am 20d-Hoch
+#     Median 1,07x, Anteil >=1,5x 7,3 %).
+#
+# (2) VOLGATE-BACKTEST, 236 Signale 2026-05-25..08-26, Schwellen 0,8/1,0/1,2:
+#     Richtungsadjustiert lagen die GEBLOCKTEN (vol < Schwelle, also grob
+#     < 1,0x) bei Horizont 5 und 10 unter den Durchgelassenen; auf der
+#     Short-Seite katastrophal (n=30, Median -2,44 %, Trefferquote 3,3 %).
+#     -> DER BODEN BEI 1,0x IST DAMIT GESTUETZT. Zum Band 1,0-1,5 sagt der
+#        Backtest NICHTS, weil dort nie geblockt wurde (Schwellen <= 1,2).
+#
+# KONSEQUENZ, analog zum Tempo-Gate der Grinder (2026-09-15):
+#   volume_multiplier_min      = harter Boden. Darunter kein Kandidat.
+#   volume_multiplier_daempfer = Sizing-Stufe statt Rauswurf. Zwischen Boden
+#                                und Daempfer ist der Kandidat sichtbar, wird
+#                                aber kleiner gehandelt.
+# Das Band 1,0-1,5 ist damit AB SOFORT MESSBAR (vorher existierten diese
+# Kandidaten nirgends). volgate_backtest.py wertet es als eigenes Band aus.
 breakout_long:
   distance_to_20d_high_pct: 1.0     # innerhalb 1% vom 20d-Hoch
-  volume_multiplier_min: 1.5        # heute mindestens 1.5× avg-Volumen
+  volume_multiplier_min: 1.0        # harter Boden (war 1.5)
+  volume_multiplier_daempfer: 1.5   # darunter: eine Sizing-Stufe tiefer
   require_bullish_ema_stack: true
   rsi_max: 70
 
 breakdown_short:
   distance_to_20d_low_pct: 1.0
-  volume_multiplier_min: 1.5
+  volume_multiplier_min: 1.0
+  volume_multiplier_daempfer: 1.5
+  # SHORT-HAERTE (User-Entscheid 2026-09-18, Punkt 3). Nicht weil die
+  # Asymmetrie belegt waere — sie ist es ausdruecklich NICHT (s. Messung 1) —
+  # sondern weil die Stichprobe auf der Short-Seite das schlechteste Bild
+  # zeigt, das sie zu bieten hat, und ein 1-%-Sizing nichts kostet, falls die
+  # Skepsis unbegruendet war. Ein gedaempfter SHORT geht nicht eine Stufe
+  # tiefer, sondern auf den 1-%-Floor.
+  daempfer_sizing: floor_1pct       # long: "eine_stufe"
   require_bearish_ema_stack: true
   rsi_min: 30
 
@@ -309,9 +345,32 @@ pitches:
   # vorderen Plaetze (RRprox misst Fallhoehe, und Fallhoehe entsteht durch
   # Extension) und verbrauchen das Budget der trendkonformen.
   quota:
-    trend: 6
+    trend: 10         # 6 -> 10 (User-Entscheid 2026-09-18): 5 Range + 5 Pullback
     counter: 4
-  top_n: 10          # historischer Gesamtdeckel, = trend + counter
+    # --- SUB-QUOTE INNERHALB DER TREND-LANE (User-Entscheid 2026-09-18) -------
+    # ANLASS: Simulation des Morning-Checks vom 2026-09-18 mit abgesenktem
+    # Volumen-Boden. Die Trend-Lane kippte vollstaendig zu den Range-Buckets:
+    # ALLE sechs Trend-Pitches des Tages fielen aus den Top 6 (TMUS von Rang 1
+    # auf 29, COP auf 62 von 62). Ursache ist KEINE Marktqualitaet, sondern
+    # eine Metrik-Verwechslung: Range-Buckets rechnen ihr rrprox als
+    # Measured Move (volle 20-Tage-Range-Hoehe), Pullbacks als Abstand zum
+    # 20d-Extrem. Median im EU/US-Universum 2026-09-17: Range 2,93 gegen
+    # Pullback 1,74 — Faktor 1,68.
+    #
+    # WARUM QUOTE UND NICHT NORMIERUNG: Eine Normierung auf den Klassenmedian
+    # korrigiert die SKALA, nicht die ANZAHL. Gemessen am selben Tag: 57 Range-
+    # gegen 5 Pullback-Kandidaten; der beste Range-Wert steht bei 1,56x seines
+    # Klassenmedians, der beste Pullback bei 1,15x. Pullbacks in den Top 10:
+    # roh 0, normiert 0. Der grosse Topf gewinnt auch nach eigenen Massstaeben,
+    # weil er mehr Ziehungen hat. Nur eine Quote teilt nach Anzahl zu.
+    #
+    # KEIN UEBERTRAG zwischen den Sub-Toepfen — dieselbe Begruendung wie bei
+    # trend/counter: ein Rest-Budget koppelt die Lanes wieder aneinander.
+    # Ein leerer Pullback-Sub-Block ist ein Befund, kein zu fuellendes Loch.
+    trend_sub:
+      range: 5        # breakout_long + breakdown_short
+      pullback: 5     # long_trend_pullback + short_trend_pullback
+  top_n: 14          # historischer Gesamtdeckel, = trend + counter
   # GILT NUR FUER DIE COUNTER-TREND-LANE. Fuer ein Reversal ist die Bewegung die
   # These; fuer einen Trend-Pullback ist sie ein Ausschlusskriterium ohne Bezug
   # zum Setup (Befund 2026-09-07: 4 von 10 trendkonformen Kandidaten fielen hier

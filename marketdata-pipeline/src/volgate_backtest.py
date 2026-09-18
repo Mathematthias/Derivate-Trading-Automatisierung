@@ -26,6 +26,21 @@ ENTSCHEIDUNGSREGEL:
   - Liegen die GEBLOCKTEN im Schnitt <= 0 oder klar unter den DURCHGELASSENEN
     -> Gate verdient seinen Platz.
 
+ERWEITERUNG 2026-09-18 — BAND-AUSWERTUNG (User-Entscheid, Punkt 4):
+  Die geblockt/durchgelassen-Achse haengt an der Trigger-Schwelle, und die
+  variiert (0,8 / 1,0 / 1,2). Das Band, um das es seit dem 2026-09-18 geht —
+  1,0 bis 1,5, also der neue Daempfer-Bereich der Range-Buckets — war damit
+  NICHT messbar: geblockt hiess immer "unter 0,8/1,0/1,2".
+  Neu wird deshalb zusaetzlich nach ABSOLUTEM Vol-Band ausgewertet, unabhaengig
+  von der Schwelle des jeweiligen Triggers. Zwei Konsequenzen:
+    - Spalte `band` in der Detail-CSV, Roll-up `VOLGATE-BANDS-*.csv`.
+    - `--include-gamechanger` erntet zusaetzlich die Range-Bucket-Kandidaten
+      aus GAMECHANGER-HUNT-*.md (Spalte `source`). Diese Population ist der
+      Universe-Scan, nicht die Watchlist — und erst SEIT dem Absenken des
+      Bodens auf 1,0 enthaelt sie ueberhaupt Kandidaten im Band 1,0-1,5.
+      Vor dem 2026-09-18 existieren diese Zeilen nirgends; die Messreihe
+      beginnt also mit dem Deploy, nicht rueckwirkend.
+
 EINSATZ:
   A) Lokal:  alle CANDIDATES-Abend-Files in einen Ordner legen, dann:
              python3 volgate_backtest.py /pfad/zu/files --horizons 5 10 20
@@ -137,6 +152,83 @@ def parse_file(path):
                                     label=label, **a))
     return day, prices, signals
 
+# ---------- Vol-Baender (2026-09-18) ----------
+# Grenzen bewusst an den beiden Schwellen ausgerichtet, die im Betrieb
+# vorkommen: 1,0 (harter Boden) und 1,5 (Daempfer). Die Baender darunter sind
+# feiner, weil dort die Backtest-Masse liegt.
+VOL_BANDS = [
+    ("<0.6",    0.0, 0.6),
+    ("0.6-0.8", 0.6, 0.8),
+    ("0.8-1.0", 0.8, 1.0),
+    ("1.0-1.2", 1.0, 1.2),
+    ("1.2-1.5", 1.2, 1.5),
+    (">=1.5",   1.5, float("inf")),
+]
+
+def band_of(vol):
+    """Absolutes Vol-Band, unabhaengig von der Trigger-Schwelle."""
+    if vol is None:
+        return None
+    for label, lo, hi in VOL_BANDS:
+        if lo <= vol < hi:
+            return label
+    return None
+
+# GAMECHANGER-Range-Bullet, z.B.:
+#   - TMUS: 166.45  20d-Low=166.35 (+0.06%)  Vol=1.7×  RSI=34  RRprox=2.94
+# Achtung: Feldtrenner sind ZWEI Leerzeichen, das Mal-Zeichen ist U+00D7, und
+# das Vorzeichen in der Klammer ist bei Short-Bullets nicht erzwungen
+# (Format-Fallen aus Note #556).
+GC_FNAME_RE = re.compile(r"GAMECHANGER-HUNT-(?:EU|US)-(\d{4}-\d{2}-\d{2})-(\d{4})\.md$")
+GC_RANGE_RE = re.compile(
+    r"^-\s*(?P<tic>[A-Z0-9.\-]+):\s*(?P<kurs>[\d.]+)\s+"
+    r"20d-(?P<seite>High|Low)=(?P<lvl>[\d.]+)\s*\(([+\-]?[\d.]+)%\)\s+"
+    r"Vol=(?P<vol>[\d.]+)\u00d7", re.M)
+
+def parse_gamechanger_file(path):
+    """Range-Bucket-Kandidaten aus einem GAMECHANGER-HUNT-File.
+
+    Liefert (day, prices, signals). `geblockt` ist hier immer False — im File
+    stehen nur Kandidaten, die das damals geltende Gate passiert haben. Der
+    Erkenntniswert liegt im BAND, nicht in der Gate-Entscheidung.
+    """
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    m = GC_FNAME_RE.search(os.path.basename(path))
+    if not m:
+        return None, {}, []
+    day = m.group(1)
+    prices, signals = {}, []
+    for mm in GC_RANGE_RE.finditer(text):
+        tic = mm.group("tic")
+        kurs = float(mm.group("kurs"))
+        vol = float(mm.group("vol"))
+        direction = "LONG" if mm.group("seite") == "High" else "SHORT"
+        prices[tic] = kurs
+        signals.append(dict(day=day, ticker=tic, direction=direction, label="GC",
+                            is_breakout=True, preis_erfuellt=True,
+                            vol_final=vol, vol_schwelle=None, vol_erfuellt=True,
+                            source="gamechanger"))
+    return day, prices, signals
+
+def pick_gc_files(folder, min_hhmm=1800):
+    """Pro Tag und Tier das spaeteste GAMECHANGER-File (Vol am vollstaendigsten)."""
+    best = {}
+    for p in glob.glob(os.path.join(folder, "GAMECHANGER-HUNT-*.md")):
+        base = os.path.basename(p)
+        m = GC_FNAME_RE.search(base)
+        if not m:
+            continue
+        tier = "EU" if "-EU-" in base else "US"
+        day, hhmm = m.group(1), int(m.group(2))
+        if hhmm < min_hhmm:
+            continue
+        key = (day, tier)
+        if key not in best or hhmm > best[key][1]:
+            best[key] = (p, hhmm)
+    return [v[0] for v in best.values()]
+
+
 # ---------- Backtest ----------
 def trading_days_index(days):
     return {d: i for i, d in enumerate(sorted(days))}
@@ -158,9 +250,10 @@ def forward_return(panel, idx_by_day, ticker, day, horizon, tol=2):
                     return (p1 - p0) / p0
     return None
 
-def run(folder, horizons, evening_only=True):
+def run(folder, horizons, evening_only=True, include_gamechanger=False):
     files = pick_files(folder, evening_only=evening_only)
-    if not files:
+    gc_files = pick_gc_files(folder) if include_gamechanger else []
+    if not files and not gc_files:
         print("Keine passenden Files gefunden. (Abend-Files noetig: HHMM>=2100)"); return
     panel = {}; all_days = set(); all_signals = []
     for p in files:
@@ -168,6 +261,18 @@ def run(folder, horizons, evening_only=True):
         all_days.add(day)
         for t, pr in prices.items():
             panel[(t, day)] = pr
+        for s in signals:
+            s.setdefault("source", "watchlist")
+        all_signals += signals
+    for p in gc_files:
+        day, prices, signals = parse_gamechanger_file(p)
+        if day is None:
+            continue
+        all_days.add(day)
+        for t, pr in prices.items():
+            # Watchlist-Preis gewinnt: dieselbe Zahl, aber aus dem Kanal, der
+            # den Panel-Index ohnehin traegt.
+            panel.setdefault((t, day), pr)
         all_signals += signals
     idx = trading_days_index(all_days)
 
@@ -178,7 +283,9 @@ def run(folder, horizons, evening_only=True):
     for s in all_signals:
         rec = dict(day=s["day"], ticker=s["ticker"], direction=s["direction"],
                    vol=s["vol_final"], schwelle=s["vol_schwelle"],
-                   geblockt=(not s["vol_erfuellt"]))
+                   geblockt=(not s["vol_erfuellt"]),
+                   band=band_of(s["vol_final"]),
+                   source=s.get("source", "watchlist"))
         for h in horizons:
             r = forward_return(panel, idx, s["ticker"], s["day"], h)
             rec[f"ret{h}"] = None if r is None else round(dir_adj(r, s["direction"])*100, 2)
@@ -203,7 +310,45 @@ def run(folder, horizons, evening_only=True):
                 print(f"{h:<10}{name:<16}{a['n']:>4}{a['median']:>10}{a['mean']:>9}{a['hit']:>12}")
         print()
 
+    # --- BAND-AUSWERTUNG (2026-09-18) ---------------------------------------
+    # Unabhaengig von der Trigger-Schwelle, damit das Daempfer-Band 1,0-1,5
+    # als eigene Gruppe sichtbar wird. Getrennt nach Richtung, weil genau dort
+    # die Frage offen ist.
+    print(f"\n=== Vol-BAENDER (absolut, schwellenunabhaengig) ===\n")
+    band_rows = []
+    for h in horizons:
+        for richtung, sub in (("ALLE", rows),
+                              ("LONG", [r for r in rows if r["direction"] == "LONG"]),
+                              ("SHORT", [r for r in rows if r["direction"] == "SHORT"])):
+            for label, _lo, _hi in VOL_BANDS:
+                grp = [r for r in sub if r["band"] == label]
+                a = agg(grp, h)
+                if not a:
+                    continue
+                band_rows.append(dict(horizont=h, richtung=richtung, band=label,
+                                      n=a["n"], median=a["median"],
+                                      mean=a["mean"], trefferquote=a["hit"]))
+    if band_rows:
+        print(f"{'H':<4}{'Richtung':<10}{'Band':<10}{'N':>4}{'Median%':>10}"
+              f"{'Mean%':>9}{'Trefferq.%':>12}")
+        for b in band_rows:
+            warn = "   (n<10)" if b["n"] < 10 else ""
+            print(f"{b['horizont']:<4}{b['richtung']:<10}{b['band']:<10}{b['n']:>4}"
+                  f"{b['median']:>10}{b['mean']:>9}{b['trefferquote']:>12}{warn}")
+    else:
+        print("  (keine Baender mit Folgerenditen)")
+    print("\nHinweis: Das Band 1,0-1,5 ist auf der Universe-Scan-Seite erst ab dem"
+          "\nDeploy vom 2026-09-18 besetzt — davor hat das Gate diese Kandidaten"
+          "\ngar nicht erst erzeugt. Kleine n dort sind erwartet, kein Fehler.")
+
     # CSV
+    band_csv = os.path.join(folder, "volgate_bands_result.csv")
+    if band_rows:
+        with open(band_csv, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(band_rows[0].keys()))
+            w.writeheader(); w.writerows(band_rows)
+        print("Band-CSV:", band_csv)
+
     out_csv = os.path.join(folder, "volgate_backtest_result.csv")
     if rows:
         with open(out_csv, "w", newline="", encoding="utf-8") as f:
@@ -213,7 +358,8 @@ def run(folder, horizons, evening_only=True):
     return rows
 
 # ---------- Drive-Modus (Pipeline) ----------
-def load_from_drive(folder_id, tmpdir, min_hhmm=2200, since_iso=None):
+def load_from_drive(folder_id, tmpdir, min_hhmm=2200, since_iso=None,
+                    name_contains='CANDIDATES-', fname_re=None):
     """Laedt pro Handelstag NUR das spaeteste Abend-File (Vol final) in tmpdir.
 
     Wichtig fuer Laufzeit: erst alle Namen+IDs listen (billig, ein API-Call/Seite),
@@ -227,7 +373,7 @@ def load_from_drive(folder_id, tmpdir, min_hhmm=2200, since_iso=None):
         json.loads(os.environ["GDRIVE_SA_KEY"]),
         scopes=["https://www.googleapis.com/auth/drive"])
     svc = build("drive", "v3", credentials=creds)
-    q = (f"'{folder_id}' in parents and name contains 'CANDIDATES-' "
+    q = (f"'{folder_id}' in parents and name contains '{name_contains}' "
          f"and trashed = false")
     if since_iso:
         q += f" and modifiedTime > '{since_iso}'"
@@ -244,16 +390,20 @@ def load_from_drive(folder_id, tmpdir, min_hhmm=2200, since_iso=None):
         if not token:
             break
     # 2) pro Tag das spaeteste Abend-File (HHMM >= min_hhmm)
+    rx = fname_re or FNAME_RE
     best = {}
     for f in entries:
-        m = FNAME_RE.search(f["name"])
+        m = rx.search(f["name"])
         if not m:
             continue
         day, hhmm = m.group(1), int(m.group(2))
         if hhmm < min_hhmm:
             continue
-        if day not in best or hhmm > best[day][0]:
-            best[day] = (hhmm, f["id"], f["name"])
+        # GAMECHANGER gibt es je Tag zweimal (EU/US) — beide behalten.
+        tier = "EU" if "-EU-" in f["name"] else ("US" if "-US-" in f["name"] else "")
+        key = (day, tier)
+        if key not in best or hhmm > best[key][0]:
+            best[key] = (hhmm, f["id"], f["name"])
     # 3) nur die ausgewaehlten herunterladen
     n = 0
     for day in sorted(best):
@@ -262,13 +412,13 @@ def load_from_drive(folder_id, tmpdir, min_hhmm=2200, since_iso=None):
         with open(os.path.join(tmpdir, name), "wb") as out:
             out.write(data)
         n += 1
-    print(f"[drive] {len(entries)} CANDIDATES gelistet, "
-          f"{n} Abend-Files (>= {min_hhmm}, 1/Tag) geladen.")
+    print(f"[drive] {len(entries)} '{name_contains}' gelistet, "
+          f"{n} Abend-Files (>= {min_hhmm}) geladen.")
     return svc
 
-def upload_result(svc, folder_id, csv_path):
+def upload_result(svc, folder_id, csv_path, prefix="VOLGATE-BACKTEST"):
     from googleapiclient.http import MediaFileUpload
-    name = f"VOLGATE-BACKTEST-{datetime.utcnow():%Y-%m-%d}.csv"
+    name = f"{prefix}-{datetime.utcnow():%Y-%m-%d}.csv"
     media = MediaFileUpload(csv_path, mimetype="text/csv")
     svc.files().create(body={"name": name, "parents": [folder_id]},
                        media_body=media, fields="id",
@@ -290,6 +440,9 @@ if __name__ == "__main__":
                          "Default 12 deckt ~6 Wochen Signale + 20-HT-Folgetiefe.")
     ap.add_argument("--include-morning", action="store_true",
                     help="auch Morgen-Files (NICHT empfohlen, Vol unvollstaendig)")
+    ap.add_argument("--include-gamechanger", action="store_true",
+                    help="zusaetzlich Range-Bucket-Kandidaten aus GAMECHANGER-HUNT-*.md "
+                         "(Universe-Scan statt Watchlist; noetig fuer das Band 1,0-1,5)")
     args = ap.parse_args()
 
     if args.source == "drive":
@@ -301,10 +454,18 @@ if __name__ == "__main__":
         if args.weeks:
             since_iso = (datetime.utcnow() - timedelta(weeks=args.weeks)).strftime("%Y-%m-%dT00:00:00")
         svc = load_from_drive(args.folder_id, tmp, min_hhmm=min_hhmm, since_iso=since_iso)
-        run(tmp, args.horizons, evening_only=not args.include_morning)
+        if args.include_gamechanger:
+            load_from_drive(args.folder_id, tmp, min_hhmm=1800, since_iso=since_iso,
+                            name_contains="GAMECHANGER-HUNT-", fname_re=GC_FNAME_RE)
+        run(tmp, args.horizons, evening_only=not args.include_morning,
+            include_gamechanger=args.include_gamechanger)
         if args.upload:
             res_csv = os.path.join(tmp, "volgate_backtest_result.csv")
             if os.path.exists(res_csv):
                 upload_result(svc, args.folder_id, res_csv)
+            band_csv = os.path.join(tmp, "volgate_bands_result.csv")
+            if os.path.exists(band_csv):
+                upload_result(svc, args.folder_id, band_csv, prefix="VOLGATE-BANDS")
     else:
-        run(args.folder, args.horizons, evening_only=not args.include_morning)
+        run(args.folder, args.horizons, evening_only=not args.include_morning,
+            include_gamechanger=args.include_gamechanger)

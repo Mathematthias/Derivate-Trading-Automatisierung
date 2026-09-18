@@ -106,14 +106,16 @@ class TestBuildPitchesPayload:
         assert p["dir"] in ("long", "short")
 
     def test_trend_quota_cappt(self, config):
-        # 12 gültige Trend-Kandidaten → Trend-Quote (6) cappt, nicht top_n
+        # 12 gueltige Pullback-Kandidaten -> der Pullback-Sub-Topf (5) cappt,
+        # nicht top_n und nicht die Gesamt-Trend-Quote (10).
         uni = []
         for i in range(12):
             uni.append(_match(f"T{i}", "long_trend_pullback", 100, 99.5,
                               5.0, +5.0, high_20d=110 + i))  # steigendes rr
         payload = build_pitches_payload(uni, config, source_tag="EU")
-        assert len(payload) == config["pitches"]["quota"]["trend"]
+        assert len(payload) == config["pitches"]["quota"]["trend_sub"]["pullback"]
         assert all(p["lane"] == "trend" for p in payload)
+        assert all(p["trend_sub"] == "pullback" for p in payload)
 
     def test_empty_universe(self, config):
         assert build_pitches_payload([], config) == []
@@ -138,7 +140,15 @@ class TestDigestPitches:
 
 
 class TestLanesUndQuote:
-    """Bucket-4-Quote 6/4 und die Lane-Zuordnung (User-Entscheid 2026-09-07)."""
+    """Bucket-4-Quote und Lane-Zuordnung.
+
+    2026-09-07: Quote 6 trend / 4 counter.
+    2026-09-18: Trend-Lane auf 10 erweitert und in zwei Sub-Toepfe geteilt —
+    5 Range (breakout_long/breakdown_short) + 5 Pullback. Die Tests hier
+    arbeiten mit long_trend_pullback, belegen also den Pullback-Topf; ihre
+    Obergrenze ist damit 5, nicht 10. Das ist die Aussage, nicht ein
+    abgeschwaechter Test: ohne Sub-Quote wuerde EINE Sorte die ganze Lane
+    fuellen, und genau das soll nicht mehr passieren."""
 
     def _trend(self, i):
         # high_20d ab 112, damit T0 nicht am ⚠️ENG-Filter (rr < 1,4) hängenbleibt
@@ -165,11 +175,14 @@ class TestLanesUndQuote:
         uni = [self._trend(i) for i in range(9)] + [self._counter(i) for i in range(9)]
         payload = build_pitches_payload(uni, config, source_tag="EU")
         q = config["pitches"]["quota"]
+        pull_cap = q["trend_sub"]["pullback"]
         lanes = [p["lane"] for p in payload]
-        assert lanes.count("trend") == q["trend"]
+        # Nur Pullback-Kandidaten im Universum -> der Range-Topf bleibt leer
+        # und wird NICHT aufgefuellt (kein Uebertrag, wie bei trend/counter).
+        assert lanes.count("trend") == pull_cap
         assert lanes.count("counter") == q["counter"]
         # Reihenfolge IST die Suchbudget-Zuteilung: Trend zuerst
-        assert lanes == ["trend"] * q["trend"] + ["counter"] * q["counter"]
+        assert lanes == ["trend"] * pull_cap + ["counter"] * q["counter"]
 
     def test_counter_verdraengt_trend_nicht(self, config):
         """Der Kern des Auftrags: hoher RRprox auf Counter darf Trend nicht kicken."""
@@ -177,7 +190,10 @@ class TestLanesUndQuote:
         stark = _match("XX", "reversal_long", 100, 112.0, 5.0, -15.0, high_20d=160)
         uni = [stark] + [self._trend(i) for i in range(6)]
         syms = [p["symbol"] for p in build_pitches_payload(uni, config)]
-        assert len([s for s in syms if s.startswith("T")]) == 6
+        # 6 angeboten, 5 Pullback-Plaetze -> 5 kommen durch; entscheidend ist,
+        # dass der starke Counter-Kandidat KEINEN davon wegnimmt.
+        assert len([s for s in syms if s.startswith("T")]) == \
+            config["pitches"]["quota"]["trend_sub"]["pullback"]
         assert "XX" in syms
 
     def test_faecher_stuft_short_herab(self, config):
@@ -207,7 +223,10 @@ class TestLanesUndQuote:
     def test_apply_pitch_quota_auf_fertiger_liste(self, config):
         """Der Tier-A-Merge-Pfad (EU+US zusammen)."""
         rows = ([{"lane": "counter", "rrprox": 5.0 - i} for i in range(6)]
-                + [{"lane": "trend", "rrprox": 1.5 - i * 0.1} for i in range(8)])
+                + [{"lane": "trend", "setup": "long_trend_pullback",
+                    "rrprox": 1.5 - i * 0.1} for i in range(8)])
         out = apply_pitch_quota(rows, config)
-        assert [r["lane"] for r in out] == ["trend"] * 6 + ["counter"] * 4
+        q = config["pitches"]["quota"]
+        assert [r["lane"] for r in out] == \
+            ["trend"] * q["trend_sub"]["pullback"] + ["counter"] * q["counter"]
         assert out[0]["rrprox"] == pytest.approx(1.5)   # bester Trend zuerst

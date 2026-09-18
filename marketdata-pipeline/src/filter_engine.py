@@ -93,6 +93,14 @@ class CandidateMatch:
     snapshot: TickerSnapshot
     score: float  # höher = besser, je nach Bucket-Heuristik
     summary: str
+    # --- Zweistufiges Volumen-Gate (2026-09-18) ---------------------------
+    # Nur die Range-Buckets setzen das. vol_daempfer=True heisst: der
+    # Kandidat liegt zwischen hartem Boden und Daempfer-Schwelle, ist also
+    # sichtbar, wird aber kleiner gehandelt. sizing_hint sagt WIE VIEL
+    # kleiner ("eine_stufe" | "floor_1pct"); die Sizing-Entscheidung selbst
+    # faellt im Briefing, nicht hier.
+    vol_daempfer: bool = False
+    sizing_hint: str = "voll"
 
 
 # ============================================================
@@ -1172,6 +1180,20 @@ _PITCH_TREND_BUCKETS = {
 }
 _PITCH_COUNTER_BUCKETS = {"reversal_long", "reversal_short"}
 
+# --- Sub-Lanes INNERHALB der Trend-Lane (2026-09-18) ------------------------
+# Die beiden Sorten rechnen ihr rrprox verschieden: Range = Measured Move
+# (volle 20-Tage-Range-Hoehe), Pullback = Abstand zum 20d-Extrem. Median im
+# EU/US-Universum 2026-09-17: 2,93 gegen 1,74. In EINER Rangliste verdraengt
+# die erste Sorte die zweite vollstaendig — am 2026-09-18 fielen alle sechs
+# Trend-Pitches aus den Top 6. Deshalb getrennte Toepfe, kein Uebertrag.
+_PITCH_RANGE_BUCKETS = {"breakout_long", "breakdown_short"}
+_PITCH_PULLBACK_BUCKETS = {"long_trend_pullback", "short_trend_pullback"}
+
+
+def _trend_sub(bucket: str) -> str:
+    """Sub-Lane innerhalb der Trend-Lane: 'range' oder 'pullback'."""
+    return "range" if bucket in _PITCH_RANGE_BUCKETS else "pullback"
+
 
 def _stack_label(snap: Any) -> str:
     """EMA-Stack wie in MARKETDATA-FULL / digest_renderer._stack."""
@@ -1217,6 +1239,30 @@ def _fan_span_atr(snap: Any) -> Optional[float]:
     return (max(emas) - min(emas)) / atr
 
 
+def _vol_stufe(snap: Any, cfg: dict) -> Optional[tuple[bool, str]]:
+    """Zweistufiges Volumen-Gate fuer die Range-Buckets (2026-09-18).
+
+    Rueckgabe: None  -> harter Boden gerissen, kein Kandidat.
+               (False, "voll")        -> >= Daempfer-Schwelle, volle Groesse.
+               (True,  <sizing_hint>) -> zwischen Boden und Daempfer.
+
+    Der Daempfer ersetzt den frueheren harten Ausschluss bei 1,5x. Begruendung
+    und Messreihen: config/filter_config.yaml, Block ueber breakout_long.
+    Fehlt volume_multiplier_daempfer in der Config, verhaelt sich die Funktion
+    exakt wie vorher (Boden = einzige Schwelle).
+    """
+    vol = snap.volume_multiplier_today
+    if vol is None:
+        return None
+    boden = cfg.get("volume_multiplier_min")
+    if boden is not None and vol < boden:
+        return None
+    daempfer = cfg.get("volume_multiplier_daempfer")
+    if daempfer is None or vol >= daempfer:
+        return False, "voll"
+    return True, cfg.get("daempfer_sizing", "eine_stufe")
+
+
 def _pitch_lane(bucket: str, direction: str, snap: Any) -> tuple[str, Optional[str]]:
     """Bestimmt die Lane und begruendet eine Herabstufung.
 
@@ -1243,10 +1289,17 @@ def _pitch_lane(bucket: str, direction: str, snap: Any) -> tuple[str, Optional[s
 def _pitch_quota(config: dict) -> dict[str, int]:
     pcfg = config.get("pitches", {}) or {}
     q = pcfg.get("quota") or {}
-    return {
+    sub = q.get("trend_sub") or {}
+    out = {
         "trend": int(q.get("trend", 6)),
         "counter": int(q.get("counter", 4)),
     }
+    # Sub-Quote ist optional: fehlt sie, laeuft die Trend-Lane wie vor dem
+    # 2026-09-18 als eine gemeinsame Rangliste.
+    if sub:
+        out["trend_range"] = int(sub.get("range", 0))
+        out["trend_pullback"] = int(sub.get("pullback", 0))
+    return out
 
 
 def apply_pitch_quota(pitches: list[dict], config: dict) -> list[dict]:
@@ -1262,10 +1315,25 @@ def apply_pitch_quota(pitches: list[dict], config: dict) -> list[dict]:
     lanes: dict[str, list[dict]] = {"trend": [], "counter": []}
     for p in pitches:
         lanes.setdefault(p.get("lane", "counter"), lanes["counter"]).append(p)
+
+    def _by_rr(rows: list[dict]) -> list[dict]:
+        return sorted(rows, key=lambda d: d.get("rrprox", 0.0), reverse=True)
+
     out: list[dict] = []
-    for lane in ("trend", "counter"):
-        rows = sorted(lanes.get(lane, []), key=lambda d: d.get("rrprox", 0.0), reverse=True)
-        out.extend(rows[: quota[lane]])
+    # TREND: mit Sub-Quote getrennt kappen, sonst wie bisher als eine Liste.
+    trend_rows = lanes.get("trend", [])
+    if "trend_range" in quota:
+        subs: dict[str, list[dict]] = {"range": [], "pullback": []}
+        for p in trend_rows:
+            subs[_trend_sub(p.get("setup", ""))].append(p)
+        # Reihenfolge im Briefing: erst Range, dann Pullback — die Sub-Bloecke
+        # werden getrennt gerendert, die Sortierung innerhalb bleibt rrprox.
+        # KEIN Uebertrag: unbesetzte Plaetze der einen Sorte verfallen.
+        for sub in ("range", "pullback"):
+            out.extend(_by_rr(subs[sub])[: quota[f"trend_{sub}"]])
+    else:
+        out.extend(_by_rr(trend_rows)[: quota["trend"]])
+    out.extend(_by_rr(lanes.get("counter", []))[: quota["counter"]])
     return out
 
 
@@ -1641,6 +1709,14 @@ def build_pitches_payload(
             "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
             "move30d": round(move30, 1) if move30 is not None else None,
             "rrprox": round(rr, 2),
+            # Sub-Lane, damit das Briefing die beiden Trend-Bloecke trennen
+            # kann, ohne die Bucket-Namen selbst zu kennen.
+            "trend_sub": _trend_sub(m.bucket) if lane == "trend" else None,
+            # Zweistufiges Volumen-Gate (nur Range-Buckets setzen das).
+            "vol_mult": (round(snap.volume_multiplier_today, 2)
+                         if getattr(snap, "volume_multiplier_today", None) is not None else None),
+            "vol_daempfer": bool(getattr(m, "vol_daempfer", False)),
+            "sizing_hint": getattr(m, "sizing_hint", "voll"),
             "ethics": "grenzfall" if sym in grenz else "ok",
             "tier": source_tag,
             # --- Fallback-Felder (2026-09-15), s. Docstring -------------------
@@ -1739,8 +1815,10 @@ def _check_bucket(
             return None
         if dist_to_high < -1.0:  # zu weit drüber = nicht mehr Breakout
             return None
-        if snap.volume_multiplier_today is None or snap.volume_multiplier_today < cfg["volume_multiplier_min"]:
+        stufe = _vol_stufe(snap, cfg)
+        if stufe is None:
             return None
+        gedaempft, sizing_hint = stufe
         if snap.rsi14 is None or snap.rsi14 > cfg["rsi_max"]:
             return None
         score = snap.volume_multiplier_today + 1.0 / max(0.1, dist_to_high)
@@ -1750,9 +1828,15 @@ def _check_bucket(
             f"RSI={snap.rsi14:.0f}"
         )
         summary += _rr_proxy_suffix(snap, "long", config, bucket=bucket)
+        # Marker ans ENDE, hinter den rr-Suffix: der Skill-Parser liest
+        # 'Vol=1.7×' mit nachfolgendem Feld in festem Abstand — ein Einschub
+        # dazwischen wuerde ihn brechen (Format-Falle vom 2026-09-09).
+        if gedaempft:
+            summary += "  ⚠️VOL-DÄMPFER"
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,
+            vol_daempfer=gedaempft, sizing_hint=sizing_hint,
         )
 
     # Breakdown Short
@@ -1772,8 +1856,10 @@ def _check_bucket(
             return None
         if dist_to_low < -1.0:
             return None
-        if snap.volume_multiplier_today is None or snap.volume_multiplier_today < cfg["volume_multiplier_min"]:
+        stufe = _vol_stufe(snap, cfg)
+        if stufe is None:
             return None
+        gedaempft, sizing_hint = stufe
         if snap.rsi14 is None or snap.rsi14 < cfg["rsi_min"]:
             return None
         score = snap.volume_multiplier_today + 1.0 / max(0.1, dist_to_low)
@@ -1783,9 +1869,12 @@ def _check_bucket(
             f"RSI={snap.rsi14:.0f}"
         )
         summary += _rr_proxy_suffix(snap, "short", config, bucket=bucket)
+        if gedaempft:
+            summary += "  ⚠️VOL-DÄMPFER"
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
             score=score, summary=summary,
+            vol_daempfer=gedaempft, sizing_hint=sizing_hint,
         )
 
     # Reversal Long

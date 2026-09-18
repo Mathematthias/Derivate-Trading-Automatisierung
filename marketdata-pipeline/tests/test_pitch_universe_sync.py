@@ -258,17 +258,23 @@ class TestPitchDedupe:
 
     def test_dedupe_laeuft_vor_der_quote(self, config, monkeypatch):
         """In der anderen Reihenfolge belegen Duplikate noch Plaetze."""
-        viele = [{"symbol": f"T{i}", "lane": "trend", "rrprox": 2.0 - i * 0.1} for i in range(6)]
+        viele = [{"symbol": f"T{i}", "lane": "trend",
+                  "setup": "long_trend_pullback", "rrprox": 2.0 - i * 0.1}
+                 for i in range(6)]
+        dup = {"symbol": "DUP", "lane": "trend",
+               "setup": "long_trend_pullback", "rrprox": 5.0}
         eu = {"generated": "2026-09-15T16:59:00+02:00",
-              "ranked": [{"symbol": "DUP", "lane": "trend", "rrprox": 5.0}] + viele,
+              "ranked": [dict(dup)] + viele,
               "grinders": [], "grinders_total": 0}
         us = {"generated": "2026-09-15T16:57:00+02:00",
-              "ranked": [{"symbol": "DUP", "lane": "trend", "rrprox": 5.0}],
+              "ranked": [dict(dup)],
               "grinders": [], "grinders_total": 0}
         monkeypatch.setattr(ms, "read_latest_json_file", _fake_files(eu, us))
         b = ms.load_merged_pitches(None, "folder", config)
         syms = [p["symbol"] for p in b["pitches"]]
         assert syms.count("DUP") == 1
         assert b["pitch_duplicates_removed"] == 1
-        # Quote trend=6: DUP + die fünf besten T-Werte, T5 faellt raus
-        assert len(syms) == 6 and "T5" not in syms
+        # Pullback-Sub-Quote 5 (2026-09-18): DUP + die vier besten T-Werte.
+        # In der anderen Reihenfolge haette das Duplikat einen Platz belegt.
+        cap = config["pitches"]["quota"]["trend_sub"]["pullback"]
+        assert len(syms) == cap and "T4" not in syms and "T5" not in syms
