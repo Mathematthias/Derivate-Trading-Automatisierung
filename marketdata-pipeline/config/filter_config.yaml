@@ -346,7 +346,7 @@ pitches:
   # Extension) und verbrauchen das Budget der trendkonformen.
   quota:
     trend: 10         # 6 -> 10 (User-Entscheid 2026-09-18): 5 Range + 5 Pullback
-    counter: 4
+    counter: 0
     # --- SUB-QUOTE INNERHALB DER TREND-LANE (User-Entscheid 2026-09-18) -------
     # ANLASS: Simulation des Morning-Checks vom 2026-09-18 mit abgesenktem
     # Volumen-Boden. Die Trend-Lane kippte vollstaendig zu den Range-Buckets:
