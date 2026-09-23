@@ -1432,25 +1432,33 @@ def build_grinders_report(
       - sauberer EMA-Stack (bullisch für Long, bearisch für Short)
       - ATR% ≤ max_atr_pct — der Stop ist billig
       - |Kurs − EMA20| ≤ max_dist_atr × ATR — er klebt an der Linie
-      - 30d-Move ≥ min_move_atr, gemessen in ATR-EINHEITEN (move30d% ÷ ATR%)
+      - Trend-Move ≥ min_move_atr, gemessen in ATR-EINHEITEN (move% ÷ ATR%),
+        seit 2026-09-24 auf der Tempo-Basis (trend20, Rueckfall move30d)
         und trendkonform zum Stack — es passiert überhaupt etwas
       - weekly_higher_highs_lows (optional abschaltbar)
 
-    RANKING über das "Tempo" — wie oft hat der Trend in 30 Tagen die Strecke
-    geliefert, die ein R:R von 2,0 braucht:
+    RANKING über das "Tempo" — wie oft liefert der Trend in 20 HT die Strecke,
+    die ein R:R von 2,0 braucht:
 
         ziel_pct = 2,0 × 1,5 × ATR%      (Lektion 4: SL = 1,5×ATR)
-        tempo    = |30d-Move| / ziel_pct
+        tempo    = |trend20_move_pct| / ziel_pct
 
-    Ein Tempo von 2,0 heißt: der Wert hat in 30 Tagen zweimal die Strecke
-    gemacht, die für R:R 2,0 nötig wäre. Das ist die Größe, die bei niedriger
+    🆕 2026-09-24 (User-Entscheid Variante B): Basis ist die log-lineare
+    Regressionssteigung der letzten 20 Schlusskurse, hochgerechnet auf 20 HT
+    (market_data._compute_trend_regression) — nicht mehr der Endpunkt-Move
+    move_30d_pct. Der war 21 Balken lang (~30 KALENDERtage), die Doku sprach
+    von "30 HT"; Horizont und Messfenster sind jetzt beide 20 HT.
+    Tempo 1,0 = eine weitere identische 20-HT-Etappe erreicht R:R 2,0.
+    Rueckfall auf move_30d_pct nur, wenn trend20 fehlt (tempo_basis im Payload),
+    oder per Config grinders.tempo_basis: move30d. Das ist die Größe, die bei niedriger
     ATR die Entry-Präzision zweitrangig macht — der enge Stop wird vom Trend
     schnell überholt (§ Pullback-Monokultur).
     """
     gcfg = config.get("grinders", {})
     if not gcfg.get("enabled", True):
         return {"items": [], "total": 0, "dropped_by_tempo": 0,
-                "top_n": 0, "min_tempo": 0.0}
+                "top_n": 0, "min_tempo": 0.0,
+                "tempo_basis": gcfg.get("tempo_basis", "trend20")}
     top_n = gcfg.get("top_n", 3)
     max_atr_pct = gcfg.get("max_atr_pct", 2.5)
     max_dist_atr = gcfg.get("max_dist_atr", 0.5)
@@ -1481,7 +1489,10 @@ def build_grinders_report(
     #
     # NEU (User-Entscheid 2026-09-15, Varianten B+C):
     #   min_tempo       = HARTER Boden, Default 0.6 (= dokumentiertes
-    #                     Ausstiegs-Tempo der Klasse, ~50 HT Horizont).
+    #                     Ausstiegs-Tempo der Klasse; seit 2026-09-24 bei
+    #                     20-HT-Basis = 20/0,6 ~ 33 HT Horizont. Die alte
+    #                     Angabe "~50 HT" rechnete mit 30 HT Fenster, das
+    #                     Fenster war aber 21 Balken -> real ~35 HT.)
     #                     Haelt JNJ mit 0,54 weiterhin draussen.
     #   daempfer_tempo  = Default 0.9. Darunter fliegt NICHTS raus, der Eintrag
     #                     bekommt sizing_daempfer=True und wird im Briefing eine
@@ -1490,6 +1501,9 @@ def build_grinders_report(
     daempfer_tempo = gcfg.get("daempfer_tempo", 0.9)
     need_hhll = gcfg.get("require_weekly_hhll", True)
     rr_ziel = gcfg.get("rr_ziel", 2.0)
+    # 🆕 2026-09-24: Tempo-Basis. "trend20" = Regressionssteigung 20 HT (Default),
+    # "move30d" = alter Endpunkt-Move (Rollback-Schalter, eine YAML-Zeile).
+    tempo_basis_cfg = gcfg.get("tempo_basis", "trend20")
     # Fuer die Vorlaeufig-Markierung unten: dieselbe Hard-Hour, die schon
     # _get_vol_status/_last_bar_is_forming benutzen. Ohne Zeit-Kontext
     # (today/now_utc_hour None) faellt die Logik auf das alte harte Gate
@@ -1511,7 +1525,17 @@ def build_grinders_report(
             continue
         if snap.atr14 is None or snap.atr14 <= 0 or snap.ema20 is None:
             continue
-        if snap.move_30d_pct is None:
+        # 🆕 2026-09-24: Tempo-Basis waehlen. getattr, weil aeltere Snapshots
+        # und Test-Stubs das Feld nicht tragen.
+        move = None
+        basis_used = "move30d"
+        if tempo_basis_cfg == "trend20":
+            move = getattr(snap, "trend20_move_pct", None)
+            basis_used = "trend20"
+        if move is None:
+            move = snap.move_30d_pct
+            basis_used = "move30d" if tempo_basis_cfg == "move30d" else "move30d_fallback"
+        if move is None:
             continue
 
         bull, bear = snap.has_bullish_stack, snap.has_bearish_stack
@@ -1525,7 +1549,7 @@ def build_grinders_report(
         # Der Trend muss in die Richtung des Stacks zeigen — ein bullischer
         # Stack mit -4 % in 30 Tagen ist kein Grinder, sondern eine Konsolidierung
         # (Anlassfall MRK.DE/GIVN.SW im Screen vom 2026-09-04).
-        move_atr = snap.move_30d_pct / atr_pct
+        move_atr = move / atr_pct
         if direction == "long" and move_atr < min_move_atr:
             continue
         if direction == "short" and move_atr > -min_move_atr:
@@ -1538,7 +1562,7 @@ def build_grinders_report(
             continue
 
         ziel_pct = rr_ziel * 1.5 * atr_pct
-        tempo = abs(snap.move_30d_pct) / ziel_pct if ziel_pct else 0.0
+        tempo = abs(move) / ziel_pct if ziel_pct else 0.0
 
         # 🆕 2026-09-15 (Variante C): DER HARTE BODEN GILT NUR AUF EINEM
         # ABGESCHLOSSENEN TAGESBALKEN. Solange der Balken von heute laeuft, ist
@@ -1560,7 +1584,16 @@ def build_grinders_report(
             "dist_atr": round(dist_atr, 2),
             "atr_pct": round(atr_pct, 2),
             "ziel_pct": round(ziel_pct, 2),
-            "move30d": round(snap.move_30d_pct, 1),
+            "move30d": (round(snap.move_30d_pct, 1)
+                        if snap.move_30d_pct is not None else None),
+            # 🆕 2026-09-24: die Groesse, auf der Tempo und Richtung gerechnet
+            # sind, plus R^2 der Regression (nur informativ, kein Gate).
+            "trend20": (round(getattr(snap, "trend20_move_pct"), 2)
+                        if getattr(snap, "trend20_move_pct", None) is not None
+                        else None),
+            "r2": (round(getattr(snap, "trend20_r2"), 2)
+                   if getattr(snap, "trend20_r2", None) is not None else None),
+            "tempo_basis": basis_used,
             "move_atr": round(move_atr, 2),
             "tempo": round(tempo, 2),
             # 🆕 2026-09-15: unter daempfer_tempo wird KLEINER gehandelt, nicht
@@ -1585,6 +1618,7 @@ def build_grinders_report(
         "daempfer_tempo": daempfer_tempo,
         "top_n": top_n,
         "min_tempo": min_tempo,
+        "tempo_basis": tempo_basis_cfg,
     }
 
 

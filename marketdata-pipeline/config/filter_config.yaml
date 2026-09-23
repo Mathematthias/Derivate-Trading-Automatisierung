@@ -287,7 +287,17 @@ grinders:
   max_atr_pct: 2.5        # der Stop muss billig sein
   max_dist_atr: 0.5       # Kurs klebt an der EMA20
   min_move_atr: 1.0       # Trendstaerke in ATR-Einheiten, NICHT in Prozent
-  # 🆕 GRINDER-CONTINUATION v0.1 (User-Entscheid 2026-09-08): Tempo ist ab jetzt
+  # 🆕 2026-09-24 (User-Entscheid Variante B): Tempo-Basis = Regressionssteigung
+  # der letzten 20 Schlusskurse (log), hochgerechnet auf 20 HT
+  # (market_data.trend20_move_pct). Horizont und Messfenster sind damit beide
+  # 20 HT. Vorher: move_30d_pct = Endpunkt 21 Balken (~30 KALENDERtage), die
+  # Doku sprach faelschlich von "30 HT". Schwellen 0,6/0,9 bleiben numerisch:
+  # bei linearem Trend skaliert der neue Wert mit 20/21 = 0,95 gegen den alten,
+  # die Horizonte (0,9 -> ~22 HT, 0,6 -> ~33 HT) bleiben praktisch gleich.
+  # Rollback: tempo_basis: move30d
+  tempo_basis: trend20
+  # [HISTORISCH 2026-09-08 — "30 Tage/30 HT" unten ist seit 2026-09-24 ueberholt, s.o.]
+  # GRINDER-CONTINUATION v0.1 (User-Entscheid 2026-09-08): Tempo ist ab jetzt
   # GATE, nicht nur Rangfolge. Begruendung: tempo = |30d-Move| / ziel_pct sagt,
   # wie oft der Trend in 30 Tagen die fuer R:R 2,0 noetige Strecke geliefert hat.
   # Die Klasse verspricht "R:R >= 2 in rund 30 HT" — dann muss genau diese Groesse
@@ -305,7 +315,8 @@ grinders:
   # sind das 0,194 Tempo je Prozentpunkt Move — FPE3.DE kippte am 2026-09-15
   # zwischen 11:31 (Tempo 0,911) und 11:35 (0,872) durch 8 Cent Kurs.
   # min_tempo      = harter Boden, nur auf ABGESCHLOSSENEM Tagesbalken (C).
-  #                  0,6 = dokumentiertes Ausstiegs-Tempo der Klasse (~50 HT).
+  #                  0,6 = dokumentiertes Ausstiegs-Tempo der Klasse
+  #                  (20-HT-Basis: ~33 HT; alte Angabe "~50 HT" war falsch).
   #                  Haelt JNJ mit 0,54 weiterhin draussen.
   # daempfer_tempo = alter 0,9-Wert, jetzt als Sizing-Stufe statt Rauswurf (B).
   min_tempo: 0.6

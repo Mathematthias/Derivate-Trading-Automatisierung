@@ -27,6 +27,7 @@ Earnings-Termin (optional, 2026-05-08):
 from __future__ import annotations
 
 import logging
+import math
 import os
 import random
 import socket
@@ -37,6 +38,7 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
+import numpy as np
 import pandas as pd
 import yfinance as yf
 
@@ -207,7 +209,21 @@ class TickerSnapshot:
     atr14: Optional[float] = None  # absoluter ATR-Wert in EUR/USD
 
     # Range / Bewegung
-    move_30d_pct: Optional[float] = None  # Kurs heute vs. Kurs vor 30 Tagen
+    move_30d_pct: Optional[float] = None
+    """Kurs heute vs. Schluss vor 21 Balken (closes.iloc[-22]) = ~30 KALENDERtage
+    = 21 Handelstage. Der Name sagt Tage, gemeint sind Kalendertage — NICHT 30 HT
+    (Abgleich 2026-09-24). Reife-Mass fuer Late-Entry (L8), Counter-Lane u.a."""
+    trend20_move_pct: Optional[float] = None
+    """🆕 2026-09-24 — Grinder-Tempo-Basis (User-Entscheid Variante B):
+    log-lineare Regression ueber die letzten TREND_WINDOW_HT = 20 Schlusskurse,
+    Steigung hochgerechnet auf 20 HT: (exp(b x 20) - 1) x 100. Gegenueber dem
+    Endpunkt-Move: Tagesjitter 0,76 statt 1,41 sigma (Random-Walk-Simulation),
+    Gewichtsschwerpunkt 9,5 HT zurueck, erkennt einen erlahmenden Trend am
+    schnellsten. Vorzeichen = Trendrichtung."""
+    trend20_r2: Optional[float] = None
+    """Bestimmtheitsmass derselben Regression (0..1): wie sauber der Wert
+    'grindet'. NUR INFORMATIV — kein Gate, bis es gegen echte Trades kalibriert
+    ist (L24)."""
     high_52w: Optional[float] = None
     low_52w: Optional[float] = None
     distance_from_52w_high_pct: Optional[float] = None  # negativ = drunter
@@ -577,10 +593,15 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         snap.atr14 = _compute_atr(df, period=14)
 
     # 30d-Move
-    if len(closes) >= 22:  # ~30 Kalendertage = ~22 Handelstage
+    if len(closes) >= 22:  # iloc[-22] = 21 Balken zurueck = ~30 Kalendertage
         ref_price = float(closes.iloc[-22])
         if ref_price > 0:
             snap.move_30d_pct = (price - ref_price) / ref_price * 100
+
+    # 🆕 2026-09-24: Trend-20 (Grinder-Tempo-Basis), siehe Feld-Docstring
+    snap.trend20_move_pct, snap.trend20_r2 = _compute_trend_regression(
+        closes, TREND_WINDOW_HT
+    )
 
     # 52W-Range (252 Handelstage)
     lookback = min(252, len(df))
@@ -1010,6 +1031,41 @@ def _normalize_price_units(symbol: str, df: pd.DataFrame) -> pd.DataFrame:
                     df[col] = df[col] / divisor
             return df
     return df
+
+
+TREND_WINDOW_HT = 20
+"""Fenster UND Hochrechnungshorizont der Trend-Regression in Handelstagen."""
+
+
+def _compute_trend_regression(
+    closes: pd.Series, window: int = TREND_WINDOW_HT
+) -> tuple[Optional[float], Optional[float]]:
+    """Log-lineare Regression ueber die letzten `window` Schlusskurse.
+
+    Rueckgabe (move_pct, r2): move_pct = Steigung pro Balken, hochgerechnet auf
+    `window` Balken, als Prozent: (exp(b x window) - 1) x 100. Ein linear
+    (log-linear) laufender Trend liefert genau seinen 20-HT-Zuwachs; ein Trend,
+    der in den letzten Tagen stehen bleibt, wird deutlich schneller abgewertet
+    als vom Endpunkt-Move (Modellfall 30 T Anstieg + 10 T flach: 46 % statt 67 %
+    der alten Geschwindigkeit).
+
+    (None, None) bei zu wenig Daten, NaN oder nicht-positiven Kursen.
+    """
+    if closes is None or len(closes) < window:
+        return None, None
+    tail = pd.to_numeric(closes.iloc[-window:], errors="coerce")
+    if tail.isna().any() or (tail <= 0).any():
+        return None, None
+    y = np.log(tail.to_numpy(dtype=float))
+    x = np.arange(window, dtype=float) - (window - 1) / 2.0
+    sxx = float((x * x).sum())
+    b = float((x * (y - y.mean())).sum() / sxx)
+    move_pct = (math.exp(b * window) - 1.0) * 100.0
+    resid = y - (y.mean() + b * x)
+    ss_tot = float(((y - y.mean()) ** 2).sum())
+    # ss_tot ~ 0 (flacher Kurs, Rundungsrest) -> R^2 undefiniert
+    r2 = (1.0 - float((resid ** 2).sum()) / ss_tot) if ss_tot > 1e-14 else None
+    return move_pct, (max(0.0, min(1.0, r2)) if r2 is not None else None)
 
 
 def _compute_rsi(closes: pd.Series, period: int = 14) -> float:

@@ -156,6 +156,11 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "atr": _r(snap.atr14, 4),
         "ext_gate": _ext_gate(snap),
         "move30d": _r(snap.move_30d_pct, 2),
+        # 🆕 2026-09-24: Tempo-Basis (Regression 20 HT) + R^2, damit das Tempo
+        # auch ausserhalb des Grinder-Blocks (Hoch-ATR-Swing, Handcheck) aus dem
+        # Digest rechenbar ist statt aus dem 21-Balken-Endpunkt.
+        "trend20": _r(getattr(snap, "trend20_move_pct", None), 2),
+        "r2": _r(getattr(snap, "trend20_r2", None), 2),
         "dist52wH": _r(snap.distance_from_52w_high_pct, 2),
         "dist52wL": _r(snap.distance_from_52w_low_pct, 2),
         "ema200_dist": _r(snap.ema200_distance_pct, 2),

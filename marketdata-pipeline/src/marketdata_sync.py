@@ -540,6 +540,10 @@ def main():
                 # kleiner gesizt wird statt auszufallen. Ohne diesen Wert im
                 # File kann der Morning-Check die Sizing-Stufe nicht rendern.
                 "grinders_daempfer_tempo": grinders_report["daempfer_tempo"],
+                # 🆕 2026-09-24: worauf Tempo gerechnet ist (trend20 = Regression
+                # 20 HT, move30d = alter Endpunkt-Move). Ohne das Feld sind
+                # PITCHES-Files vor und nach der Umstellung nicht unterscheidbar.
+                "grinders_tempo_basis": grinders_report.get("tempo_basis", "trend20"),
             },
             ensure_ascii=False,
             separators=(",", ":"),
