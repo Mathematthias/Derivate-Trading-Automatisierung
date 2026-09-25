@@ -114,7 +114,9 @@ class TestReverse:
     def test_bullish_engulfing(self):
         df = self._c([
             {"Open": 100, "High": 100.5, "Low": 97, "Close": 97.5},   # rot
-            {"Open": 98, "High": 101.5, "Low": 97.8, "Close": 101.0},  # > prev Open
+            # Open 97.5 = prev Close: seit 2026-09-25 muss der Koerper den
+            # Vorkoerper umschliessen (vorher Open 98, reichte "Close > prev Open").
+            {"Open": 97.5, "High": 101.5, "Low": 97.3, "Close": 101.0},
         ])
         bull, bear, why = detect_reverse(df)
         assert bull is True and "Engulfing" in why
@@ -130,7 +132,7 @@ class TestReverse:
     def test_bearish_engulfing(self):
         df = self._c([
             {"Open": 98, "High": 101, "Low": 97.5, "Close": 100.5},   # gruen
-            {"Open": 100, "High": 100.5, "Low": 96, "Close": 97.0},   # < prev Open
+            {"Open": 100.5, "High": 100.7, "Low": 96, "Close": 97.0},  # umschliesst
         ])
         bull, bear, why = detect_reverse(df)
         assert bear is True and "Engulfing" in why
@@ -390,7 +392,10 @@ class TestRsiAuswertung:
                    for c in ts.conditions_pending)
 
     def test_cross_an_und_erfuellt(self, config):
-        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0})
+        # Seit 2026-09-25 braucht "erfuellt" einen FRISCHEN Cross, nicht nur
+        # den Zustand RSI > Signal (s. test_rsi_cross_event.py).
+        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0,
+                            "rsi_cross_dir": "above", "rsi_cross_bars_ago": 0})
         cfg = dict(config)
         cfg["intraday_4h"] = dict(config["intraday_4h"], evaluate_rsi_cross=True)
         ts = _evaluate_trigger(self._trg(rsi_cross_tf="4h", rsi_cross_dir="above"),
@@ -428,3 +433,59 @@ class TestEma9:
         ind = compute_4h(pd.concat(parts))
         assert ind.ema9 is not None and ind.ema20 is not None
         assert ind.ema9 > ind.ema20          # Aufwaertsdrift
+
+
+class TestRsiCrossEreignis:
+    """2026-09-25: Cross ist ein Ereignis. Zustand allein reicht nicht."""
+
+    def _cfg(self, config, lookback=2):
+        cfg = dict(config)
+        cfg["intraday_4h"] = dict(config["intraday_4h"], evaluate_rsi_cross=True,
+                                  rsi_cross_lookback=lookback)
+        return cfg
+
+    def _trg(self):
+        t = ParsedTrigger(label="A", raw="x", price_low=374.0, price_high=385.0,
+                          price_op="in_range", zone_kind="pullback")
+        t.rsi_cross_tf, t.rsi_cross_dir = "4h", "above"
+        return t
+
+    def test_biib_alter_cross_ist_kein_cross(self, config):
+        """BIIB 2026-09-25: RSI-4h 57,6 > 56,5, Aufwaerts-Cross eine Woche alt."""
+        snap = Snap4h(tf4h={"rsi14": 57.6, "rsi14_signal": 56.5,
+                            "rsi_cross_dir": "above", "rsi_cross_bars_ago": 12})
+        ts = _evaluate_trigger(self._trg(), snap, "LONG", self._cfg(config),
+                               now_utc_hour=14)
+        assert any("kein frischer Cross" in c for c in ts.conditions_missing)
+        assert not any("RSI-4h" in c for c in ts.conditions_met)
+
+    def test_frischer_cross_ist_erfuellt(self, config):
+        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0,
+                            "rsi_cross_dir": "above", "rsi_cross_bars_ago": 1})
+        ts = _evaluate_trigger(self._trg(), snap, "LONG", self._cfg(config),
+                               now_utc_hour=14)
+        assert any("Cross vor 1 Balken" in c for c in ts.conditions_met)
+
+    def test_lookback_grenze(self, config):
+        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0,
+                            "rsi_cross_dir": "above", "rsi_cross_bars_ago": 2})
+        ts = _evaluate_trigger(self._trg(), snap, "LONG", self._cfg(config, 2),
+                               now_utc_hour=14)
+        assert any("kein frischer Cross" in c for c in ts.conditions_missing)
+
+    def test_ohne_cross_historie_handcheck(self, config):
+        snap = Snap4h(tf4h={"rsi14": 55.0, "rsi14_signal": 50.0})
+        ts = _evaluate_trigger(self._trg(), snap, "LONG", self._cfg(config),
+                               now_utc_hour=14)
+        assert any("Cross-Zeitpunkt unbekannt" in c for c in ts.conditions_pending)
+        assert not ts.conditions_missing
+
+    def test_falscher_zustand_bleibt_missing(self, config):
+        snap = Snap4h(tf4h={"rsi14": 44.0, "rsi14_signal": 48.0,
+                            "rsi_cross_dir": "below", "rsi_cross_bars_ago": 0})
+        ts = _evaluate_trigger(self._trg(), snap, "LONG", self._cfg(config),
+                               now_utc_hour=14)
+        assert any("verlangt über" in c for c in ts.conditions_missing)
+
+    def test_lookback_default_in_config(self, config):
+        assert config["intraday_4h"]["rsi_cross_lookback"] == 2

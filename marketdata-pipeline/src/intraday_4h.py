@@ -75,6 +75,8 @@ class Indicators4h:
     reverse_bullish: Optional[bool] = None
     reverse_bearish: Optional[bool] = None
     reverse_reason: Optional[str] = None
+    rsi_cross_dir: Optional[str] = None     # "above" | "below" — letzter Cross
+    rsi_cross_bars_ago: Optional[int] = None  # 0 = auf dem letzten geschlossenen Balken
 
     def as_dict(self) -> dict[str, Any]:
         return {k: v for k, v in self.__dict__.items() if v is not None}
@@ -178,9 +180,23 @@ def detect_reverse(df4h: pd.DataFrame) -> tuple[Optional[bool], Optional[bool], 
     """Reverse-Kerze auf dem letzten GESCHLOSSENEN 4h-Balken.
 
     Bullisch: Hammer (untere Wick >= 50 % der Range UND Close im oberen Drittel)
-              ODER Bullish Engulfing (Close > prev Open, prev war rot).
+              ODER Bullish Engulfing (EIGENE Kerze gruen, prev rot, Koerper
+              umschliesst Vorkoerper: Open <= prev Close, Close >= prev Open).
     Bärisch:  Shooting Star (obere Wick >= 50 % UND Close im unteren Drittel)
-              ODER Bearish Engulfing (Close < prev Open, prev war grün).
+              ODER Bearish Engulfing (EIGENE Kerze rot, prev gruen, Koerper
+              umschliesst Vorkoerper: Open >= prev Close, Close <= prev Open).
+
+    Fix 2026-09-25 (Anlass BIIB): Bis dahin prueften die Engulfing-Zweige weder
+    die Farbe der eigenen Kerze noch, ob ihr Koerper den Vorkoerper umschliesst
+    — nur "Close > prev Open". Ein Shooting Star mit Mini-Koerper, der nach
+    einer roten Vorkerze oberhalb von deren Open schloss, galt deshalb zugleich
+    als "Bullish-Engulfing" — im Digest 2026-09-25 16:02 bei 9 von 150 Werten,
+    jedes Mal mit der Begruendung "Bullish-Engulfing; Shooting-Star".
+
+    Widerspruchsregel: Melden beide Seiten (nach dem Fix nur noch in seltenen
+    Randformen moeglich), gilt die Kerze als unentschieden — beide Flags False.
+    Ein widerspruechliches Signal ist kein Signal; bei eingeschaltetem
+    `evaluate_reverse` fuehrt das konservativ zu "Reverse fehlt".
 
     Die Schwellen entsprechen der Daily-Logik des `filter_engine`; sie sind
     gesetzt, nicht gemessen (Lektion 24 — Hypothese, kein Veto).
@@ -198,9 +214,13 @@ def detect_reverse(df4h: pd.DataFrame) -> tuple[Optional[bool], Optional[bool], 
     close_pos = (c - l) / rng
 
     hammer = lower_wick >= 0.5 and close_pos >= 0.66
-    bull_eng = pc < po and c > po
+    # Engulfing = der KOERPER umschliesst den Vorkoerper (Toleranz 5 % der
+    # Range fuer die Open-Seite: 4h-Bloecke oeffnen praktisch am Vor-Close,
+    # ein Tick Abweichung soll das Muster nicht kippen).
+    tol = 0.05 * rng
+    bull_eng = c > o and pc < po and c >= po and o <= pc + tol
     star = upper_wick >= 0.5 and close_pos <= 0.34
-    bear_eng = pc > po and c < po
+    bear_eng = c < o and pc > po and c <= po and o >= pc - tol
 
     reasons = []
     if hammer:
@@ -211,7 +231,42 @@ def detect_reverse(df4h: pd.DataFrame) -> tuple[Optional[bool], Optional[bool], 
         reasons.append(f"Shooting-Star (Wick {upper_wick:.0%}, Close-Pos {close_pos:.0%})")
     if bear_eng:
         reasons.append("Bearish-Engulfing")
-    return (hammer or bull_eng), (star or bear_eng), ("; ".join(reasons) or None)
+    bull, bear = (hammer or bull_eng), (star or bear_eng)
+    if bull and bear:
+        return False, False, "Widerspruch (" + "; ".join(reasons) + ") — kein Signal"
+    return bull, bear, ("; ".join(reasons) or None)
+
+
+def rsi_cross_state(rsi: Optional[pd.Series], signal: Optional[pd.Series]
+                    ) -> tuple[Optional[str], Optional[int]]:
+    """Letzter Vorzeichenwechsel von (RSI - Signallinie).
+
+    Rueckgabe (richtung, balken_her): richtung "above" = RSI hat die Linie von
+    unten nach oben gekreuzt, "below" = von oben nach unten; balken_her = 0
+    heisst: auf dem letzten GESCHLOSSENEN Balken. (None, None), wenn kein
+    Wechsel in der Reihe liegt oder die Daten fehlen.
+
+    Anlass 2026-09-25: Der "Cross" wurde bis dahin als ZUSTAND gewertet
+    (RSI > Signal). Bei BIIB lag der Aufwaerts-Cross eine Woche zurueck,
+    und der RSI stand kurz vor dem Cross NACH UNTEN — der Zustand hielt
+    das fuer eine Bestaetigung.
+    """
+    if rsi is None or signal is None:
+        return None, None
+    d = (rsi - signal).dropna()
+    if len(d) < 2:
+        return None, None
+    sgn = d.apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
+    sgn = sgn[sgn != 0]
+    if len(sgn) < 2:
+        return None, None
+    vals = sgn.values
+    idx_all = list(d.index)
+    for i in range(len(vals) - 1, 0, -1):
+        if vals[i] != vals[i - 1]:
+            pos = idx_all.index(sgn.index[i])
+            return ("above" if vals[i] > 0 else "below"), len(idx_all) - 1 - pos
+    return None, None
 
 
 def compute_4h(df_1h: pd.DataFrame, rsi_signal_len: int = 14,
@@ -236,7 +291,9 @@ def compute_4h(df_1h: pd.DataFrame, rsi_signal_len: int = 14,
     if rsi is not None and not rsi.dropna().empty:
         ind.rsi14 = float(rsi.iloc[-1])
         if len(rsi.dropna()) >= rsi_signal_len:
-            ind.rsi14_signal = float(rsi.rolling(rsi_signal_len).mean().iloc[-1])
+            sig_series = rsi.rolling(rsi_signal_len).mean()
+            ind.rsi14_signal = float(sig_series.iloc[-1])
+            ind.rsi_cross_dir, ind.rsi_cross_bars_ago = rsi_cross_state(rsi, sig_series)
     ind.atr14 = _atr(df, 14)
 
     if None not in (ind.ema20, ind.ema50):

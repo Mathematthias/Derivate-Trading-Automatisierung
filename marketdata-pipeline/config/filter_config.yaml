@@ -345,6 +345,10 @@ intraday_4h:
   # entscheidet sie mit. Getrennt vom Reverse-Schalter, weil es zwei
   # unabhaengige Entscheidungen mit verschiedenem Risiko sind.
   evaluate_rsi_cross: false
+  # 🆕 2026-09-25: "Cross" = Vorzeichenwechsel RSI-Signal auf einem der letzten
+  # N geschlossenen 4h-Balken (0 = letzter). Vorher galt der blosse Zustand
+  # RSI > Signal als Cross — bei BIIB lag der echte Cross eine Woche zurueck.
+  rsi_cross_lookback: 2
   period: "60d"             # 1h-Historie; 60d = ~120 4h-Balken bei XETRA
   rsi_signal_len: 14        # SMA auf dem RSI, wie im TradingView-Setup
   bars_per_block: 4         # 1h -> 4h, session-verankert

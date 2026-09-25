@@ -836,11 +836,28 @@ def _evaluate_trigger(
             conditions_pending.append(
                 f"RSI-{tf}-Cross {pfeil} Signallinie — manuell prüfen")
         else:
+            # Fix 2026-09-25: "Cross" ist ein EREIGNIS, kein Zustand. Verlangt
+            # wird (a) der richtige Zustand UND (b) der letzte Vorzeichenwechsel
+            # in die verlangte Richtung innerhalb von `rsi_cross_lookback`
+            # geschlossenen Balken (Default 2). Fehlt die Cross-Historie im
+            # Snapshot (alter Lauf), bleibt es beim Handcheck.
             val, sig = _rsi_cross_values(snap, tf)
-            ok = (val > sig) if want_above else (val < sig)
+            cdir, cago = _rsi_cross_event(snap, tf)
+            lookback = int((config or {}).get("intraday_4h", {})
+                           .get("rsi_cross_lookback", 2))
+            state_ok = (val > sig) if want_above else (val < sig)
             txt = f"RSI-{tf} {val:.1f} {'>' if val > sig else '<'} Signal {sig:.1f}"
-            (conditions_met if ok else conditions_missing).append(
-                txt + ("" if ok else f" — verlangt {pfeil}"))
+            if not state_ok:
+                conditions_missing.append(txt + f" — verlangt {pfeil}")
+            elif cago is None:
+                conditions_pending.append(
+                    txt + " — Cross-Zeitpunkt unbekannt, manuell prüfen")
+            elif cdir == ("above" if want_above else "below") and cago < lookback:
+                conditions_met.append(txt + f" (Cross vor {cago} Balken)")
+            else:
+                conditions_missing.append(
+                    txt + f" — kein frischer Cross (letzter vor {cago} Balken, "
+                    f"verlangt < {lookback})")
 
     _atr14 = getattr(snap, "atr14", None)
     proximity = _classify_proximity(distance_pct, config, price=price, atr14=_atr14)
@@ -1364,6 +1381,15 @@ def _rsi_cross_values(snap: Any, tf: str) -> tuple[Optional[float], Optional[flo
         tf4h = getattr(snap, "tf4h", None) or {}
         return tf4h.get("rsi14"), tf4h.get("rsi14_signal")
     return getattr(snap, "rsi14", None), None
+
+
+def _rsi_cross_event(snap: Any, tf: str) -> tuple[Optional[str], Optional[int]]:
+    """(Richtung, Balken her) des letzten RSI/Signal-Crosses. Nur 4h hat eine
+    Signallinie im Snapshot."""
+    if tf == "4h":
+        tf4h = getattr(snap, "tf4h", None) or {}
+        return tf4h.get("rsi_cross_dir"), tf4h.get("rsi_cross_bars_ago")
+    return None, None
 
 
 def _rsi_cross_can_decide(snap: Any, trigger: Any, config: Optional[dict]) -> bool:

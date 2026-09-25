@@ -196,6 +196,7 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
                 "bar_time", "close", "ema9", "ema20", "ema50", "rsi14",
                 "rsi14_signal", "atr14", "stack",
                 "reverse_bullish", "reverse_bearish", "reverse_reason",
+                "rsi_cross_dir", "rsi_cross_bars_ago",
             ) if tf.get(k) is not None
         }
     return d
