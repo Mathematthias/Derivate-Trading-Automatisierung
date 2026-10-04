@@ -1,0 +1,65 @@
+name: Dividend Scan (Dividende x Trend, woechentlich)
+
+# Angelegt 2026-10-04 (Chat-Entscheid A+C: Ex-Tag-Radar im Digest + dieser
+# Wochen-Scan). Trigger-Architektur wie alle anderen Jobs:
+#   cron-job.org -> workflow_dispatch via PAT. KEIN `on: schedule`.
+#
+# KADENZ-EMPFEHLUNG: 1x/Woche, Samstag frueh, NACH dem Catalyst-Calendar-Job.
+#   cron-job.org: 15 6 * * 6   (Berlin-Zeit, 06:15)
+#   Begruendung: Dividendendaten aendern sich quartalsweise, Trends langsam.
+#   Samstag liegt nach dem US-Freitagsschluss, d.h. alle Balken sind final.
+#   Der Morning-Check zeigt den Scan montags voll (Bucket 7), sonst als
+#   Einzeiler.
+#
+# LAST: Tier B + Tier C + Pool = rund 340 Symbole, 2y-History, in Batches zu
+#   120 (filter_config dividend_scan.batch_size). Ein gescheiterter Batch
+#   verkleinert den Output, killt den Job aber nicht.
+#
+# ⚠️ PAT-Renewal: dieser Job ist der SECHSTE Header, in dem ein neuer Token
+#   eingetragen werden muss (Tier A + B + C + Insider-US + Catalyst-Calendar
+#   + Dividend-Scan).
+#
+# ⚠️ ERSTER LAUF: Pool-Ticker mit Konfidenz [M] in config/dividend_pool.yaml
+#   im Action-Log pruefen ("Failed: [...]"). Ein falscher Ticker faellt nur
+#   heraus, er bricht nichts.
+
+on:
+  workflow_dispatch:
+    inputs:
+      nur_pool:
+        description: 'Nur dividend_pool.yaml scannen (true/false)'
+        required: false
+        default: 'false'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Dividend-Scan
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          CONFIG_DIR: ./config
+          PYTHONPATH: ./src
+        run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.nur_pool }}" = "true" ]; then EXTRA="--nur-pool"; fi
+          python src/dividend_scan.py $EXTRA
