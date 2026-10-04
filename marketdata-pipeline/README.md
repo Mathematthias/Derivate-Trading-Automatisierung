@@ -83,21 +83,49 @@ Repo-Root/
 
 ## Single Source of Truth
 
+Seit 2026-10-04 (System-Review, "Workflow B") liegt der operative Zustand im
+Repo, nicht mehr im STATE-Doc. Das Journal-xlsx ist fuer Watchlist und
+Termin-Radar ABGELEITET (Export), nicht mehr Quelle.
+
 | Datenart | Pflege wo |
 |----------|-----------|
-| Indizes/Rohstoffe/Krypto | `tickers_tier_a.yaml` (selten ändern) |
-| Offene Positionen | `tickers_tier_a.yaml` (bei Trade-Eröffnung/Schluss) |
-| **Aktive Watchlist** | **STATE-Doc (Workspace Shared Drive)** — NICHT yaml |
-| **Watchlist-Archiv** | **WATCHLIST-ARCHIV-Doc (Drive)** — separates Doc |
+| Indizes/Rohstoffe/Krypto | `tickers_tier_a.yaml` (selten aendern) |
+| Offene Positionen | `tickers_tier_a.yaml` (bei Trade-Eroeffnung/Schluss) |
+| **Aktive Watchlist** | **`state/watchlist.yaml`** — Eintraege mit `status: aktiv/position/archiviert`, Klasse, Anker, Legs A/B/C mit Gate und Trigger-Text (Grammatik unveraendert) |
+| **Watchlist-Archiv** | `state/watchlist.yaml` mit `status: archiviert` (+ `archived.date/reason`) — der Export haengt sie ans Blatt "Watchlist-Archiv" |
+| **Termin-Radar** | **`state/radar.yaml`** |
+| **Thesen (Korb-Budget, Re-Check)** | **`state/thesen.yaml`** |
 | Filter-Schwellwerte | `filter_config.yaml` (Tuning) |
-| **Kuratierte Termine** | **`catalyst_seeds.yaml`** — handgepflegt, überlebt jeden API-Ausfall |
-| Filter-Override | STATE-Doc Sektion 4 |
+| **Kuratierte Termine** | **`catalyst_seeds.yaml`** — handgepflegt, ueberlebt jeden API-Ausfall |
+| Filter-Override / Ticker-Map | STATE-Doc Sektion 4 (einzige verbleibende Rolle des STATE-Docs) |
+
+Umschalter: `WATCHLIST_SOURCE=yaml` + `STATE_DIR=./state` in den Tier-Workflows.
+Ohne die Variable liest `marketdata_sync.py` weiter das STATE-Doc (Fallback,
+nicht mehr gepflegt).
 
 ## Anpassungen ohne Code-Push
 
-- Watchlist-Wert hinzufügen/ändern → STATE-Doc editieren
-- Filter-Schwellwert ändern → `filter_config.yaml` editieren + Repo-Push
+- Watchlist-Wert hinzufuegen/aendern → `state/watchlist.yaml` editieren + Commit,
+  **oder** eine INBOX-Aktion (`INBOX-<quelle>-<stamp>.json` im Briefing-Ordner,
+  Vertrag in `src/state_yaml.py`), die `inbox_apply.yml` anwendet und committet
+- Termin/These pflegen → `state/radar.yaml` / `state/thesen.yaml` oder INBOX-Aktion
+- Filter-Schwellwert aendern → `filter_config.yaml` editieren + Repo-Push
 - Override aktivieren → STATE-Doc Sektion 4
+
+### Workflow B — Dateien und Jobs
+
+| Datei / Job | Rolle |
+|---|---|
+| `src/state_yaml.py` | Laden/Speichern, YAML → `WatchlistEntry`, `apply_actions` (idempotent), Digest-Bloecke |
+| `src/inbox_apply.py` + `.github/workflows/inbox_apply.yml` | INBOX-JSON aus Drive anwenden, `state/inbox_processed.json` fuehren, committen |
+| `src/state_export.py` + `state_export.yml` | Repo-Zustand in ein Journal-xlsx schreiben (Watchlist, Watchlist-Archiv, Termin-Radar) |
+| `src/mfe_mae.py` + `mfe_mae.yml` | MFE/MAE in R je Trade aus Blatt "Trade-Audit" (Einstiegs- vs. Ausstiegsfehler) |
+| `scripts/migrate_journal_to_state.py` | Einmal-Migration Journal → YAML (2026-10-04 gelaufen) |
+| Digest `briefing-digest/v4` | traegt Block `state` (Watchlist-Meta, Radar-Fenster 28 Tage, Thesen mit Re-Check-Faelligkeit) |
+
+cron-job.org-Slots, die NEU anzulegen sind (nicht im Repo konfigurierbar):
+`inbox_apply` 40 7 * * 1-6 (Berlin), `catalyst_calendar_sync` und
+`dividend_scan` laut Header der jeweiligen Workflow-Datei.
 
 ## Manueller Test (nach Push)
 

@@ -1,0 +1,81 @@
+name: INBOX Apply (Aktionen -> state/*.yaml)
+
+# Workflow B (System-Review 2026-10-04).
+#
+# Die automatischen Laeufe (Thesen-Lauf, Termin-Radar-Pflege, Dividenden-Scan,
+# Morning Check) legen typisierte Aktionslisten als INBOX-<quelle>-<stamp>.json
+# in den Briefing-Ordner (Vertrag: marketdata-pipeline/src/state_yaml.py).
+# Dieser Job wendet sie auf state/watchlist.yaml, state/radar.yaml und
+# state/thesen.yaml an und committet das Ergebnis. Jede Datei genau einmal
+# (Register: state/inbox_processed.json).
+#
+# Trigger: cron-job.org -> workflow_dispatch via PAT, wie alle anderen Jobs.
+#   KADENZ-EMPFEHLUNG: Mo-Fr 07:40 Berlin (vor dem ersten Tier-A-Lauf 08:00),
+#   zusaetzlich Sa 07:40 (nach Dividenden-Scan/Thesen-Lauf am Freitagabend).
+#   cron-job.org: 40 7 * * 1-6
+#   Der Job ist idempotent — haeufiger laufen lassen kostet nur Minuten.
+#
+# Rechte: contents: write (Commit auf main). Der Commit kommt vom
+# github-actions[bot]; Branch-Protection muss Bot-Pushes erlauben.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Nur anzeigen, nichts committen (true/false)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-yaml
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Apply INBOX actions
+        id: apply
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          STATE_DIR: ./state
+          PYTHONPATH: ./src
+        run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then EXTRA="--dry-run"; fi
+          python src/inbox_apply.py --drive $EXTRA
+
+      - name: Commit state
+        if: steps.apply.outputs.changed == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/state
+          git commit -m "state: INBOX-Aktionen angewendet ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main

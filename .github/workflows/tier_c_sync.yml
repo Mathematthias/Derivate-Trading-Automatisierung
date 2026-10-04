@@ -58,6 +58,9 @@ jobs:
           MODE: tier_c
           CONFIG_DIR: ./config
           PYTHONPATH: ./src
+          # Workflow B (2026-10-04): Watchlist aus dem Repo, nicht aus dem STATE-Doc
+          WATCHLIST_SOURCE: yaml
+          STATE_DIR: ./state
           # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) auch in Tier C aktiv —
           # ~96 Symbole, Earnings-Pull-Last verkraftbar.
           EARNINGS_PULL: "1"

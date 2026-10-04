@@ -1,0 +1,79 @@
+name: MFE/MAE (Trade-Audit -> Excursion in R)
+
+# System-Review 2026-10-04: Einstiegs- vs. Ausstiegsfehler lassen sich erst
+# trennen, wenn je Trade bekannt ist, wie weit der Basiswert FUER und GEGEN
+# die Position gelaufen ist. Dieser Job liest das Blatt "Trade-Audit" des
+# Journals (Spalten Nr, Symbol, Richtung, Kauf, Verkauf, EntryU, SL_U),
+# zieht Tagesbalken des Basiswerts und schreibt MFE_R/MAE_R/Bars zurueck.
+#
+# Eingabe: Drive-File-ID des Journals; leer = das juengste Trading_Journal_*.xlsx,
+# das der Service-Account sieht (wie watchlist_sync).
+# Ausgabe im Briefing-Ordner: MFE-MAE-<stamp>.csv, MFE-MAE-<stamp>.md und
+# das Journal mit gefuellten Spalten (Trading_Journal_<Datum>_mfe.xlsx).
+#
+# On demand; sinnvoll nach jedem 5er-Block geschlossener Trades.
+
+on:
+  workflow_dispatch:
+    inputs:
+      journal_file_id:
+        description: 'Drive-File-ID des Journals mit Blatt Trade-Audit (leer = juengstes Trading_Journal_*.xlsx im Drive)'
+        required: false
+        default: ''
+
+jobs:
+  mfe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download journal, compute, upload
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          JOURNAL_FILE_ID: ${{ github.event.inputs.journal_file_id }}
+          PYTHONPATH: ./src
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, download_file_bytes
+          from watchlist_sync import find_latest_journal
+          svc = build_drive_service()
+          fid = os.environ.get("JOURNAL_FILE_ID", "").strip()
+          if not fid:
+              f = find_latest_journal(svc)          # juengstes Trading_Journal_*.xlsx im Drive
+              print("Journal:", f["name"], f["modifiedTime"]); fid = f["id"]
+          pathlib.Path("work").mkdir(exist_ok=True)
+          pathlib.Path("work/in.xlsx").write_bytes(download_file_bytes(svc, fid))
+          PY
+          STAMP=$(date +%Y%m%d-%H%M)
+          python src/mfe_mae.py --journal work/in.xlsx --out "work/Trading_Journal_$(date +%Y%m%d)_mfe.xlsx" \
+            --csv "work/MFE-MAE-$STAMP.csv" --md "work/MFE-MAE-$STAMP.md"
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, write_binary_file, write_markdown_file
+          svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
+          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.csv")):
+              write_binary_file(svc, folder, p.name, p.read_bytes(), "text/csv")
+          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")):
+              write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
+          for p in sorted(pathlib.Path("work").glob("Trading_Journal_*_mfe.xlsx")):
+              write_binary_file(svc, folder, p.name, p.read_bytes(),
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+          PY

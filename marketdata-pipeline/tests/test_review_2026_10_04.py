@@ -219,3 +219,37 @@ class TestBreakoutRetestFelder:
         s = self._snap()
         md._compute_breakout_retest_fields(s, _ohlcv(closes))
         assert s.bo_level is None
+
+
+class TestDigestStateBlock:
+    """Workflow B: der Digest traegt den Repo-Zustand (Watchlist-Meta, Radar-
+    Fenster, Thesen) als Block `state`, damit der Morning Check ihn nicht mehr
+    aus dem Journal abschreiben muss."""
+
+    def test_ohne_state_leeres_objekt(self):
+        import datetime as dt
+        import json
+        from digest_renderer import build_briefing_digest
+        raw = build_briefing_digest({}, [], [], [], dt.datetime(2026, 10, 5, 6, tzinfo=dt.timezone.utc))
+        d = json.loads(raw)
+        assert d["schema"] == "briefing-digest/v4"
+        assert d["state"] == {}
+
+    def test_state_wird_durchgereicht(self):
+        import datetime as dt
+        import json
+        import state_yaml as sy
+        from digest_renderer import build_briefing_digest
+        st = {
+            "watchlist": {"updated": "x", "entries": [{"symbol": "SIE.DE", "klasse": "trend_pullback", "status": "aktiv",
+                                                        "legs": [{"label": "A", "gate": "🟡", "text": "t"}]}]},
+            "radar": {"rows": [{"id": "Z1", "date": "2026-10-10", "kat": 1, "ereignis": "E", "status": "offen"}]},
+            "thesen": {"thesen": [{"id": "A", "titel": "AI", "verdikt": "spielen", "re_check": "2026-10-09"}]},
+        }
+        block = sy.state_for_digest(st, date(2026, 10, 5))
+        raw = build_briefing_digest({}, [], [], [], dt.datetime(2026, 10, 5, 6, tzinfo=dt.timezone.utc), state=block)
+        d = json.loads(raw)
+        assert d["state"]["watchlist"][0]["symbol"] == "SIE.DE"
+        assert d["state"]["radar"]["einrueckend"][0]["id"] == "Z1"
+        assert d["state"]["thesen"][0]["id"] == "A"
+        assert d["state"]["updated"]["watchlist"] == "x"

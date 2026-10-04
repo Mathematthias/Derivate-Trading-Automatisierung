@@ -60,6 +60,9 @@ jobs:
           MODE: tier_b
           CONFIG_DIR: ./config
           PYTHONPATH: ./src
+          # Workflow B (2026-10-04): Watchlist aus dem Repo, nicht aus dem STATE-Doc
+          WATCHLIST_SOURCE: yaml
+          STATE_DIR: ./state
           # Setup-Class-Flags (EMA200-MeanRev + PEAD-Window) auch in Tier B aktiv —
           # PEAD braucht den großen Pool, EMA200-MeanRev kostet keinen Overhead.
           # Nach Variante-A-Split ist Tier B nur noch ~211 EU-Symbole, der
