@@ -402,8 +402,8 @@ def render_candidates(
         bucket_titles = {
             "long_trend_pullback": "Long-Trend-Pullback",
             "short_trend_pullback": "Short-Trend-Pullback",
-            "breakout_long": "Breakout Long",
-            "breakdown_short": "Breakdown Short",
+            "breakout_long": "Breakout-Retest Long",
+            "breakdown_short": "Breakdown-Retest Short",
             "reversal_long": "Reversal Long",
             "reversal_short": "Reversal Short",
         }

@@ -244,6 +244,29 @@ class TickerSnapshot:
     high_20d: Optional[float] = None
     low_20d: Optional[float] = None
 
+    # === Breakout-Retest (2026-10-04, System-Review) ===
+    # Ein Ausbruch ist ein EREIGNIS, kein Zustand: Tagesschluss ueber dem
+    # 20d-Hoch der 20 Balken DAVOR (Long) bzw. unter dem 20d-Tief (Short), mit
+    # Volumen. Gesucht wird der juengste solche Balken innerhalb von
+    # BREAKOUT_LOOKBACK_BARS; `bo_level` ist das gebrochene Niveau, an das der
+    # Kurs zurueckkommen soll (Retest). None = kein Ausbruch im Fenster.
+    bo_level: Optional[float] = None
+    bo_bars_ago: Optional[int] = None
+    bo_vol_mult: Optional[float] = None
+    bo_failed: Optional[bool] = None
+    """True, wenn seit dem Ausbruch ein Tagesschluss wieder UNTER dem Niveau
+    lag (Fehlausbruch) — dann ist der Retest kein Retest mehr."""
+    bd_level: Optional[float] = None
+    bd_bars_ago: Optional[int] = None
+    bd_vol_mult: Optional[float] = None
+    bd_failed: Optional[bool] = None
+
+    # === Reife (2026-10-04) ===
+    late_entry: Optional[bool] = None
+    """|move_30d_pct| ueber universal_disqualifier.thirty_day_move_max_pct.
+    Seit dem Review KEIN Ausschluss mehr (L8 v3: Reife steuert die Groesse,
+    nicht das Ob), sondern Flag -> Sizing-Deckel 1 % im Briefing."""
+
     # Heutige Kerze (für Bounce-Detection)
     today_open: Optional[float] = None
     today_high: Optional[float] = None
@@ -662,6 +685,9 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         snap.high_20d = float(recent20["High"].max())
         snap.low_20d = float(recent20["Low"].min())
 
+    # Breakout-Retest-Felder (2026-10-04)
+    _compute_breakout_retest_fields(snap, df)
+
     # Heutige Kerze (für Bounce-Detection)
     if all(c in df.columns for c in ["Open", "High", "Low", "Close"]):
         snap.today_open = float(last_row["Open"]) if not pd.isna(last_row["Open"]) else None
@@ -790,6 +816,76 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
             min_tr = float(last_7_tr.min())
             eps = 1e-9
             snap.nr7 = today_tr <= min_tr + eps
+
+
+BREAKOUT_LOOKBACK_BARS = 10
+"""Wie viele abgeschlossene Balken zurueck ein Ausbruch liegen darf, damit der
+aktuelle Kurs noch als RETEST gilt. Bulkowski misst den Throwback im Mittel am
+6. Tag (Zyklus 11 Tage) — 10 deckt das ab, ohne einen Monat alte Ausbrueche
+als frisch zu fuehren."""
+BREAKOUT_REF_BARS = 20
+"""Referenzfenster fuer das gebrochene Niveau: Hoch/Tief der 20 Balken VOR dem
+Ausbruchsbalken (der Ausbruchsbalken selbst zaehlt nicht mit — sonst waere
+jedes neue Hoch sein eigenes Niveau, und genau das war der Fehler der alten
+breakout_long-Definition)."""
+
+
+def _compute_breakout_retest_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
+    """Sucht den juengsten Ausbruchs-/Breakdown-Balken und setzt bo_*/bd_*.
+
+    Ausbruch (Long):  Close[i] > max(High[i-20 .. i-1])
+    Breakdown (Short): Close[i] < min(Low[i-20 .. i-1])
+    Gesucht in i = -2 .. -(1+BREAKOUT_LOOKBACK_BARS), also NUR abgeschlossene
+    Balken — der laufende Balken (iloc[-1]) kann noch kein bestaetigter
+    Tagesschluss sein. bars_ago zaehlt ab dem letzten Balken (1 = gestern).
+    vol_mult = Volumen des Ausbruchsbalkens / Durchschnitt der 20 Balken davor.
+    failed = seit dem Ausbruch ein Schluss wieder jenseits des Niveaus.
+    """
+    need = BREAKOUT_REF_BARS + BREAKOUT_LOOKBACK_BARS + 2
+    if len(df) < need or not all(c in df.columns for c in ("High", "Low", "Close")):
+        return
+    highs = df["High"].to_numpy(dtype=float)
+    lows = df["Low"].to_numpy(dtype=float)
+    closes = df["Close"].to_numpy(dtype=float)
+    vols = df["Volume"].to_numpy(dtype=float) if "Volume" in df.columns else None
+    n = len(df)
+
+    def _vol_mult(i: int) -> Optional[float]:
+        if vols is None:
+            return None
+        ref = vols[i - BREAKOUT_REF_BARS:i]
+        ref = ref[ref > 0]
+        if len(ref) < 5 or vols[i] <= 0:
+            return None
+        return float(vols[i] / ref.mean())
+
+    # Long
+    for bars_ago in range(1, BREAKOUT_LOOKBACK_BARS + 1):
+        i = n - 1 - bars_ago
+        if i - BREAKOUT_REF_BARS < 0:
+            break
+        level = float(highs[i - BREAKOUT_REF_BARS:i].max())
+        if closes[i] > level:
+            snap.bo_level = level
+            snap.bo_bars_ago = bars_ago
+            snap.bo_vol_mult = _vol_mult(i)
+            # Fehlausbruch: ein Schluss nach dem Ausbruch wieder unter dem Niveau
+            after = closes[i + 1:n - 1]  # abgeschlossene Balken danach
+            snap.bo_failed = bool((after < level).any()) if len(after) else False
+            break
+    # Short (Spiegel)
+    for bars_ago in range(1, BREAKOUT_LOOKBACK_BARS + 1):
+        i = n - 1 - bars_ago
+        if i - BREAKOUT_REF_BARS < 0:
+            break
+        level = float(lows[i - BREAKOUT_REF_BARS:i].min())
+        if closes[i] < level:
+            snap.bd_level = level
+            snap.bd_bars_ago = bars_ago
+            snap.bd_vol_mult = _vol_mult(i)
+            after = closes[i + 1:n - 1]
+            snap.bd_failed = bool((after > level).any()) if len(after) else False
+            break
 
 
 def _compute_ex_dividend_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:

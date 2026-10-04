@@ -1,5 +1,6 @@
 # filter_config.yaml — Setup-Klassifikations-Schwellwerte
-# Stand: 2026-04-25, V0.2 (Phase 0 Rebuild — zweistufige Architektur)
+# Stand: 2026-10-04 (System-Review: Earnings-Blackout aktiv, 30d-Move = Flag,
+# Breakout-Retest statt Nähe-zum-Hoch, tote Schlüssel entfernt)
 #
 # Diese Datei definiert die NUMERISCHEN GRENZWERTE der Filter-Engine.
 # Änderungen hier brauchen KEINEN Code-Push, nur Repo-Push und nächster
@@ -32,13 +33,18 @@ universal_disqualifier:
   # KO-Spreads bei 1M EUR/Tag sind erfahrungsgemäß noch akzeptabel
   min_avg_volume_eur: 1_000_000
 
-  # Earnings-Risk: Tage bis zur nächsten Quartalszahl
-  # Trades zu nah an Earnings = unkalkulierbares Gap-Risiko
+  # Earnings-Risk: Kalendertage bis zur nächsten Quartalszahl.
+  # SEIT 2026-10-04 TATSÄCHLICH GEPRÜFT (vorher stand der Schlüssel hier,
+  # der Code las ihn nicht — Docstring "folgt in Build 1.6"). Wirkt nur mit
+  # EARNINGS_PULL=1 (next_earnings_date im Snapshot); ohne Datum neutral.
   earnings_blackout_days: 7
 
-  # 30d-Move-Limit (Lektion 8): Late-Entry-Schutz
-  # Long: >+15% in 30 Tagen disqualifiziert für neuen Long-Einstieg
-  # Short: <-15% in 30 Tagen disqualifiziert für neuen Short-Einstieg
+  # Reife (Lektion 8 v3, 2026-06-29): |30d-Move| über dieser Schwelle ist
+  # SEIT 2026-10-04 KEIN AUSSCHLUSS MEHR, sondern das Flag `late_entry`
+  # am Kandidaten -> Sizing-Deckel 1 % im Briefing (sizing_hint floor_1pct).
+  # Bis zum Review schloss die Pipeline damit die stärksten Trends aus den
+  # Pullback-/Breakout-Buckets aus, obwohl der Skill das längst zur
+  # Größenfrage gemacht hatte (System-Review 2026-10-04, § 4.4).
   thirty_day_move_max_pct: 15.0
 
   # ATR-Deckel (neu 2026-08-28) — Volatilitaets-Obergrenze fuer NEUE Kandidaten.
@@ -86,61 +92,50 @@ short_trend_pullback:
   rsi_min: 35                        # nicht überverkauft
   min_distance_from_52w_low_pct: 2.0   # Mindestabstand vom 52W-Tief
 
-  # Short-spezifische Disqualifier
-  disqualifier_active_buyback: true        # Bei aktivem Buyback NIEMALS shorten
-  disqualifier_dividend_within_days: 14    # Vor Ex-Tag großer Div nicht shorten
+  # Short-spezifischer Disqualifier: geschätzter nächster Ex-Tag in <= N
+  # Kalendertagen -> kein Short-Kandidat (seit 2026-10-04 implementiert, gilt
+  # auch für breakdown_short). Der frühere Schlüssel disqualifier_active_buyback
+  # ist ENTFERNT: es gibt keine Buyback-Datenquelle in der Pipeline, der
+  # Schlüssel war seit 2026-04-25 tote Config. Buyback bleibt Counter-These
+  # im Skill (Quick-Check Punkt 1).
+  disqualifier_dividend_within_days: 14
 
 # ============================================================
-# BREAKOUT (Long) / BREAKDOWN (Short)
-# Setup: Kurs durchbricht 20d-Hoch (Long) bzw. 20d-Tief (Short) mit Volumen
+# BREAKOUT-RETEST (Long) / BREAKDOWN-RETEST (Short) — Neudefinition 2026-10-04
 # ============================================================
-# --- ZWEISTUFIGES VOLUMEN-GATE (User-Entscheid 2026-09-18) -------------------
-# ANLASS: Chart-Blick des Users auf NFLX, danach zwei Messungen.
+# ALT (bis 2026-10-04): "Kurs <= 1 % unter dem 20d-Hoch, Vol >= 1,0x, RSI <= 70".
+# Das 20d-Hoch enthielt den laufenden Balken, das Volumen-Gate lag am Median
+# (0,96x) — der Bucket maß NÄHE zum Hoch, kein Ausbruchs-Ereignis. Journal:
+# Breakout-Typ 0 von 4 Trades. Die Messreihen zum Volumen-Gate (2026-09-18)
+# bleiben als Herleitung in PATCH_NOTES/Changelog, nicht hier.
 #
-# (1) QUERSCHNITT, 7 Handelstage, 1.717 Ticker-Tage (US-Post-Close-Files
-#     2026-09-09..17): Median Tagesvolumen/Avg-20d = 0,96x, P90 = 1,42x.
-#     Ueber 1,5x liegen 7,7 % — die Schwelle sass also bei rund dem 92.
-#     Perzentil. Entscheidend ist aber die Trennschaerfe: Am 20-Tage-Tief
-#     steigt der Anteil >=1,5x nur von 7,7 % auf 10,7 %, der Median von 0,96
-#     auf 1,03. Die Schwelle selektiert in beiden Gruppen fast dasselbe
-#     oberste Zehntel — sie misst "heute ist etwas passiert", nicht "der
-#     Breakdown traegt". Long/Short-Asymmetrie NICHT nachweisbar (am 20d-Hoch
-#     Median 1,07x, Anteil >=1,5x 7,3 %).
-#
-# (2) VOLGATE-BACKTEST, 236 Signale 2026-05-25..08-26, Schwellen 0,8/1,0/1,2:
-#     Richtungsadjustiert lagen die GEBLOCKTEN (vol < Schwelle, also grob
-#     < 1,0x) bei Horizont 5 und 10 unter den Durchgelassenen; auf der
-#     Short-Seite katastrophal (n=30, Median -2,44 %, Trefferquote 3,3 %).
-#     -> DER BODEN BEI 1,0x IST DAMIT GESTUETZT. Zum Band 1,0-1,5 sagt der
-#        Backtest NICHTS, weil dort nie geblockt wurde (Schwellen <= 1,2).
-#
-# KONSEQUENZ, analog zum Tempo-Gate der Grinder (2026-09-15):
-#   volume_multiplier_min      = harter Boden. Darunter kein Kandidat.
-#   volume_multiplier_daempfer = Sizing-Stufe statt Rauswurf. Zwischen Boden
-#                                und Daempfer ist der Kandidat sichtbar, wird
-#                                aber kleiner gehandelt.
-# Das Band 1,0-1,5 ist damit AB SOFORT MESSBAR (vorher existierten diese
-# Kandidaten nirgends). volgate_backtest.py wertet es als eigenes Band aus.
+# NEU: Ausbruch = Tagesschluss über dem 20d-Hoch der 20 Balken DAVOR
+# (market_data.bo_level), innerhalb der letzten max_bars_since_breakout
+# abgeschlossenen Balken, Volumen am Ausbruchstag >= volume_multiplier_min,
+# seitdem kein Schluss zurück unter das Niveau (bo_failed), und der Kurs steht
+# JETZT in der Retest-Zone um das Niveau. Das ist das L18-Gate-2-Muster
+# "Breakout-Retest"; Einstieg per Stop-Buy über das Hoch der Retest-Kerze.
+# Reward für den R:R-Proxy bleibt der Measured Move (Range-Höhe ab Niveau).
 breakout_long:
-  distance_to_20d_high_pct: 1.0     # innerhalb 1% vom 20d-Hoch
-  volume_multiplier_min: 1.0        # harter Boden (war 1.5)
+  max_bars_since_breakout: 10       # Throwback kommt im Mittel am 6. Tag (Bulkowski)
+  volume_multiplier_min: 1.2        # Volumen AM AUSBRUCHSTAG, harter Boden
   volume_multiplier_daempfer: 1.5   # darunter: eine Sizing-Stufe tiefer
+  retest_lo_atr: 0.5                # Zone: Niveau - 0,5 ATR ...
+  retest_hi_atr: 0.75               # ... bis Niveau + 0,75 ATR
   require_bullish_ema_stack: true
   rsi_max: 70
 
 breakdown_short:
-  distance_to_20d_low_pct: 1.0
-  volume_multiplier_min: 1.0
+  max_bars_since_breakout: 10
+  volume_multiplier_min: 1.2
   volume_multiplier_daempfer: 1.5
-  # SHORT-HAERTE (User-Entscheid 2026-09-18, Punkt 3). Nicht weil die
-  # Asymmetrie belegt waere — sie ist es ausdruecklich NICHT (s. Messung 1) —
-  # sondern weil die Stichprobe auf der Short-Seite das schlechteste Bild
-  # zeigt, das sie zu bieten hat, und ein 1-%-Sizing nichts kostet, falls die
-  # Skepsis unbegruendet war. Ein gedaempfter SHORT geht nicht eine Stufe
-  # tiefer, sondern auf den 1-%-Floor.
+  # Short-Härte (2026-09-18): gedämpfter Short geht auf den 1-%-Floor.
   daempfer_sizing: floor_1pct       # long: "eine_stufe"
+  retest_lo_atr: 0.5
+  retest_hi_atr: 0.75
   require_bearish_ema_stack: true
   rsi_min: 30
+  disqualifier_dividend_within_days: 14
 
 # ============================================================
 # REVERSAL (selten, hohe Aufmerksamkeit)

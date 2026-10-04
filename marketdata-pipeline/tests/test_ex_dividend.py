@@ -89,10 +89,17 @@ def breakdown_match_snap(last_ex_div_days_ago=None) -> TickerSnapshot:
         prev_close=108.0,
         change_pct=-7.16,
         ema20=110.0, ema50=115.0, ema200=120.0,  # bearish: 110<115<120
-        low_20d=100.0,                            # dist_to_low = 0.0%
-        volume_multiplier_today=2.0,              # >= volume_multiplier_min
+        low_20d=99.0, high_20d=120.0,
+        atr14=2.0,
+        volume_multiplier_today=0.8,
         rsi14=35.0,                               # >= rsi_min
     )
+    # Retest-Definition (2026-10-04): Breakdown unter 100 vor 2 HT mit Volumen,
+    # Kurs heute 100,0 = exakt am Niveau -> in der Retest-Zone.
+    snap.bd_level = 100.0
+    snap.bd_bars_ago = 2
+    snap.bd_vol_mult = 2.0                        # >= volume_multiplier_min am Breakdown-Tag
+    snap.bd_failed = False
     snap.last_ex_div_days_ago = last_ex_div_days_ago
     return snap
 
