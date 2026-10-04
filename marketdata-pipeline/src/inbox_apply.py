@@ -52,7 +52,7 @@ INBOX_PREFIX = "INBOX-"
 INBOX_SCHEMA = 1
 ALLOWED_SOURCES = {
     "thesen-lauf", "termin-radar", "dividenden-scan", "morning-check",
-    "insider-us", "catalyst-calendar", "manuell", "test",
+    "fundamentaldaten", "insider-us", "catalyst-calendar", "manuell", "test",
 }
 
 
