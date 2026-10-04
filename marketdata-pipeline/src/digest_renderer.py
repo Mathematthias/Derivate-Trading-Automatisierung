@@ -31,7 +31,9 @@ from typing import Any, Optional
 
 from output_renderer import classify_watchlist_results
 
-SCHEMA_VERSION = "briefing-digest/v2"
+SCHEMA_VERSION = "briefing-digest/v3"
+# v3 seit 2026-10-04: Top-Level-Feld exdiv_radar (Ex-Tag VORWÄRTS für
+# Positionen und Watchlist). Leseseite: pipeline_utils.BriefingDigest (Skill v48).
 # v2 seit 2026-09-14. Der Sprung ist ueberfaellig: unter "v1" sind seit dem
 # 2026-09-04 drei Top-Level-Felder dazugekommen (data_freshness, grinders,
 # grinders_meta), ohne dass die Versionsnummer es gesagt haette. Eine
@@ -59,7 +61,15 @@ SCHEMA_FIELDS: tuple[str, ...] = (
     "pitches",
     "grinders",
     "grinders_meta",
+    "exdiv_radar",
 )
+
+# Ex-Tag-Radar (2026-10-04): wie weit voraus ein geschätzter Ex-Tag auf einer
+# Position oder Watchlist-Zeile gemeldet wird. 21 Kalendertage = drei Wochen
+# Vorlauf, damit die Entscheidung (SL nachziehen, vorher glattstellen, Entry
+# schieben) nicht am Vorabend fällt. Anlass: SBLK-Note 266 (2026-08-06) — der
+# Ex-Abschlag von 0,90 USD fraß ~70 % des Stop-Puffers.
+EXDIV_RADAR_DAYS = 21
 
 
 def _assert_schema(digest: dict) -> None:
@@ -381,6 +391,75 @@ def _data_freshness(universe: dict[str, Any], timestamp: Any) -> dict[str, Any]:
     }
 
 
+def _exdiv_radar(
+    snapshots: dict[str, Any],
+    watchlist_results: list[Any],
+    buckets_raw: dict[str, list[Any]],
+    today: date,
+    window_days: int = EXDIV_RADAR_DAYS,
+) -> list[dict[str, Any]]:
+    """Ex-Tag VORWÄRTS für alles, was auf der Watchlist steht.
+
+    V1.2 (Note #67) schaut nur RÜCKWÄRTS (war der Drop ein Ex-Effekt?). Für
+    eine offene Position oder einen Entry, der kurz vor dem Ex-Tag fällt, ist
+    die Frage umgekehrt: Wie viel des Stop-Puffers frisst der Abschlag?
+
+    Pro Zeile: geschätzter Ex-Tag, Quelle der Schätzung, letzter Betrag (als
+    Annahme für den nächsten), Abschlag in % vom Kurs und in ATR. Den Anteil
+    am SL-Puffer rechnet die Leseseite — der Stop lebt im Journal, nicht hier.
+
+    Geschätzte Termine, die schon in der Vergangenheit liegen (Zahlung
+    ausgefallen oder verschoben), fallen heraus: dort ist der Termin
+    unbekannt, und eine negative Tageszahl wäre eine Scheingenauigkeit.
+    """
+    bucket_of: dict[int, str] = {}
+    for name, rows in buckets_raw.items():
+        for r in rows:
+            bucket_of[id(r)] = name
+
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for r in watchlist_results:
+        sym = getattr(r.entry, "symbol", None)
+        if not sym or sym in seen:
+            continue
+        snap = snapshots.get(sym)
+        if snap is None or not getattr(snap, "next_ex_div_date", None):
+            continue
+        try:
+            ex_next = date.fromisoformat(snap.next_ex_div_date)
+        except (TypeError, ValueError):
+            continue
+        tage = (ex_next - today).days
+        if tage < 0 or tage > window_days:
+            continue
+        seen.add(sym)
+
+        direction = getattr(r.entry, "direction", "") or ""
+        name = getattr(r.entry, "name", "") or sym
+        is_pos = (direction.upper().startswith("POSITION-MONITOR")
+                  or "[MONITOR" in name.upper())
+        amt = snap.last_ex_div_amount
+        row: dict[str, Any] = {
+            "symbol": sym,
+            "name": name,
+            "rolle": "position" if is_pos else "watchlist",
+            "bucket": bucket_of.get(id(r)),
+            "dir": "SHORT" if "SHORT" in direction.upper() else "LONG",
+            "ex_next": ex_next.isoformat(),
+            "ex_src": getattr(snap, "next_ex_div_source", None),
+            "tage": tage,
+            "amt_last": _r(amt, 4),
+        }
+        if amt and snap.price:
+            row["abschlag_pct"] = _r(amt / snap.price * 100.0, 2)
+        if amt and snap.atr14:
+            row["abschlag_atr"] = _r(amt / snap.atr14, 2)
+        out.append(row)
+    out.sort(key=lambda d: (d["rolle"] != "position", d["tage"]))
+    return out
+
+
 def build_briefing_digest(
     snapshots: dict[str, Any],
     watchlist_results: list[Any],
@@ -492,6 +571,10 @@ def build_briefing_digest(
         # 🆕 2026-09-08: sagt, wie viele Treffer der Screen WIRKLICH hatte —
         # der Block selbst ist bei grinders.top_n abgeschnitten.
         "grinders_meta": grinders_meta or {},
+        # 🆕 2026-10-04: Ex-Tag VORWÄRTS (≤ EXDIV_RADAR_DAYS) für Positionen
+        # und Watchlist — Bucket 5a im Morning-Check.
+        "exdiv_radar": _exdiv_radar(snapshots, watchlist_results,
+                                    buckets_raw, today),
     }
     _assert_schema(digest)
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))

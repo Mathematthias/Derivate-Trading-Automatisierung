@@ -303,7 +303,29 @@ class TickerSnapshot:
     next_ex_div_date: Optional[str] = None
     """Geschätzter nächster Ex-Tag (ISO) — last_ex_div_date + erkannte Kadenz
     (≈91/182/365 Tage). None wenn die Kadenz aus der History nicht ableitbar
-    ist (nur eine Dividende vorhanden)."""
+    ist (nur eine Dividende vorhanden). Seit 2026-10-04 saisonal korrigiert
+    (s. next_ex_div_source) und vom Wochenende auf den Freitag davor gezogen."""
+
+    # === Dividenden-Kennzahlen (2026-10-04, Ex-Tag-Radar + DIVIDEND-SCAN) ===
+    next_ex_div_source: Optional[str] = None
+    """Woher die Schätzung stammt: "kadenz" (letzter Ex-Tag + Kadenz) oder
+    "saisonal" (Ex-Tag ein Jahr zuvor + 365 d). Saisonal gewinnt nur, wenn sie
+    um mehr als 7 Tage von der Kadenz abweicht — Anlassfall SBLK: Kadenz
+    sagte 2026-11-20, der Vorjahrestermin (2025-12-05) sagt 2026-12-04."""
+
+    div_cadence_days: Optional[int] = None
+    """Erkannte Ausschüttungs-Kadenz in Tagen (91/182/365), None ohne Historie."""
+
+    div_ttm: Optional[float] = None
+    """Summe der Bardividenden mit Ex-Tag in den letzten 365 Kalendertagen vor
+    dem letzten Balken — in Listing-Währung (Pence-normiert wie der Kurs)."""
+
+    div_ttm_count: Optional[int] = None
+    """Anzahl Ex-Tage in diesem 365-Tage-Fenster."""
+
+    div_yield_ttm_pct: Optional[float] = None
+    """div_ttm / Kurs × 100 — die TATSÄCHLICH gezahlte Rendite der letzten
+    zwölf Monate, nicht die hochgerechnete letzte Zahlung."""
 
     # === Anomaly-Layer V1 (Note #50, 2026-05-15) ===
     atr_zscore_60d: Optional[float] = None
@@ -806,6 +828,20 @@ def _compute_ex_dividend_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
     except (KeyError, TypeError):
         pass
 
+    # TTM-Kennzahlen (2026-10-04): Summe der Ex-Tage in den 365 Kalendertagen
+    # vor dem letzten Balken. Bewusst NICHT die letzte Zahlung hochgerechnet —
+    # bei variablen Ausschüttern (SBLK: 0,11 → 0,37 → 0,50 → 0,90 USD) liegen
+    # beide Zahlen um den Faktor 2 auseinander.
+    try:
+        cut = df.index[-1] - pd.Timedelta(days=365)
+        ttm = ex_rows[ex_rows.index > cut]
+        snap.div_ttm = float(ttm.sum())
+        snap.div_ttm_count = int(len(ttm))
+        if snap.price and snap.price > 0:
+            snap.div_yield_ttm_pct = snap.div_ttm / snap.price * 100.0
+    except (TypeError, ValueError):
+        pass
+
     # Nächsten Ex-Tag schätzen: Median-Kalenderabstand der letzten Ex-Tage auf
     # {91, 182, 365} runden. Bei nur einer Dividende keine Schätzung möglich.
     recent = ex_rows.index[-5:]
@@ -815,8 +851,30 @@ def _compute_ex_dividend_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
         )
         median_gap = gaps[len(gaps) // 2]
         cadence = min((91, 182, 365), key=lambda c: abs(c - median_gap))
+        snap.div_cadence_days = cadence
         next_ts = last_ex_ts + pd.Timedelta(days=cadence)
+        source = "kadenz"
+
+        # Saisonale Korrektur (2026-10-04): Viele Ausschütter haben einen
+        # festen Kalender, aber ungleiche Abstände (SBLK: Mär/Jun/Aug/Dez).
+        # Liegt ein Ex-Tag ~1 Jahr vor dem erwarteten nächsten Termin in der
+        # History, ist "Vorjahrestermin + 365 d" die bessere Schätzung — aber
+        # nur, wenn sie spürbar (> 7 Tage) von der Kadenz abweicht. Sonst
+        # bleibt die Kadenz (gleich gut, und bestehende Erwartungen stabil).
+        lo = last_ex_ts + pd.Timedelta(days=cadence * 0.5)
+        hi = last_ex_ts + pd.Timedelta(days=cadence * 1.5)
+        for ts in reversed(ex_rows.index[:-1]):
+            cand = ts + pd.Timedelta(days=365)
+            if lo < cand < hi:
+                if abs((cand - next_ts).days) > 7:
+                    next_ts, source = cand, "saisonal"
+                break
+
+        # Ex-Tage liegen nie am Wochenende → auf den Freitag davor ziehen.
+        while next_ts.weekday() >= 5:
+            next_ts -= pd.Timedelta(days=1)
         snap.next_ex_div_date = next_ts.date().isoformat()
+        snap.next_ex_div_source = source
 
 
 def _compute_ema200_meanrev_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:

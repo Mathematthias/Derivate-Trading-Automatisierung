@@ -427,3 +427,49 @@ output:
     - "krypto"
     - "positionen"
     - "watchlist_state"
+
+# ============================================================================
+# DIVIDEND-SCAN — wöchentlicher Dividende-×-Trend-Scan (seit 2026-10-04)
+# ============================================================================
+# Läuft NICHT im 30-Min-Takt, sondern 1×/Woche (src/dividend_scan.py,
+# Workflow dividend_scan.yml). Dividendendaten ändern sich quartalsweise —
+# ein täglicher Bucket würde jeden Morgen dieselbe Liste zeigen.
+# Leseseite: Skill v48, Routine 7 Bucket 7 (montags voll, sonst Einzeiler).
+#
+# Die Dividende ist hier FILTER, keine Renditequelle: am Ex-Tag fällt der
+# Kurs um den Betrag, und die Ausschüttung landet im allgemeinen Topf
+# (nicht mit Aktienverlusten verrechenbar). Gesucht sind Firmen, die
+# tatsächlich Cash ausschütten UND im Aufwärtstrend stehen.
+dividend_scan:
+  # Rendite der letzten 12 Monate (gezahlt, nicht hochgerechnet), in %.
+  min_yield_ttm_pct: 5.0
+  # Über dieser Rendite: Treffer bleibt, bekommt aber das Flag "Daten prüfen"
+  # (Sonderdividende, Währungsmix bei Auslandslistings, Kurssturz).
+  plausibel_max_yield_pct: 25.0
+  # Mindestens N Zahlungen im 12-Monats-Fenster.
+  min_ttm_count: 1
+  # Liquidität wie im Universal-Disqualifier (20d-Ø-Volumen × Kurs).
+  min_volume_eur_avg_20d: 1000000
+  # Trend intakt = Kurs > EMA200 UND EMA50 > EMA200.
+  # "am Anker" = |Kurs − EMA50| ≤ anchor_atr × ATR → Trend-Pullback-Long prüfen.
+  anchor_atr: 1.0
+  # Überdehnt = (Kurs − EMA20) / ATR ≥ ext_gate_max (Lektion 22).
+  ext_gate_max: 2.0
+  # Ex-Tag in ≤ N Kalendertagen → Hinweis (Abschlag/Steuer, kein Edge).
+  ex_hinweis_tage: 30
+  # Variable Ausschüttung: letzte Zahlung hochgerechnet / TTM.
+  #   ≥ spitze_ratio → "Spitze": die hohe Rendite ist eine Hochrechnung
+  #   ≤ kuerzung_ratio → "gekürzt": die TTM-Rendite überzeichnet die Zukunft
+  spitze_ratio: 1.5
+  kuerzung_ratio: 0.67
+  # Klumpen-Bremse: höchstens N Treffer je Cluster (Rest wird gezählt).
+  max_per_cluster: 3
+  top_n: 15
+  # Ranking: Rendite nur bis zu diesem Wert belohnen — darüber steigt das
+  # Fallenrisiko schneller als der Nutzen.
+  rank_yield_cap_pct: 12.0
+  # Wie viele Hochrendite-Werte OHNE Trend (Fallen-Anschauung) mitlisten.
+  beinahe_top_n: 5
+  # Batch-Größe für den yfinance-Pull (Tier B allein war mit ~308 Symbolen
+  # instabil, MIGRATION_NOTES 2026-05-13).
+  batch_size: 120

@@ -1,0 +1,66 @@
+# DIVIDEND-SCAN — Zusatz-Pool und Cluster-Etiketten (seit 2026-10-04)
+#
+# Der Scan läuft über Tier B (EU) + Tier C (NASDAQ-100) + diesen Pool.
+# Dieser Pool ergänzt Werte, die in keinem Tier stehen (US-Hochrendite
+# außerhalb des NASDAQ-100, Schifffahrt, UK) und vergibt Cluster-Etiketten,
+# damit die Klumpen-Bremse (max_per_cluster) greift.
+#
+# Einträge mit einem Symbol, das schon in Tier B/C steht, fügen NUR das
+# Cluster-Etikett hinzu (kein Doppel-Pull).
+#
+# Konfidenz wie in den Tier-YAMLs: [H] sicher, [M] beim ersten Lauf prüfen.
+# Stand der Auswahl: 2026-10-04, Quelle der Kandidaten: Recherche im Chat
+# (24/7 Wall St. 2026-09-18, Yahoo Finance 2026-06-09, biallo.de 2026-04-09).
+#
+# BEWUSST NICHT AUFGENOMMEN:
+#   - US-MLPs (Energy Transfer ET, Enterprise Products EPD, ...): Publicly
+#     Traded Partnerships — für Nicht-US-Anleger Quellensteuer bis 37 % auf
+#     Ausschüttungen und 10 % auf den Verkaufserlös (Section 1446(f)), dazu
+#     K-1-Formulare. Für ein deutsches Depot ungeeignet.
+#   - Rüstung (Ethik-Regel 2026-04-15).
+
+pool:
+  # --- Schifffahrt: Trockenmassengut (variabel, frachtratengetrieben) ---
+  - {symbol: "SBLK",   name: "Star Bulk Carriers",      cluster: "shipping"}   # [H] offene Position #11 AV
+  - {symbol: "GNK",    name: "Genco Shipping & Trading", cluster: "shipping"}  # [M]
+  - {symbol: "CMBT",   name: "CMB.TECH (ex Golden Ocean)", cluster: "shipping"} # [M]
+  # --- Schifffahrt: Container / LNG ---
+  - {symbol: "DAC",    name: "Danaos",                  cluster: "shipping"}   # [M]
+  - {symbol: "ZIM",    name: "ZIM Integrated Shipping", cluster: "shipping"}   # [M] stark variabel
+  - {symbol: "FLNG",   name: "FLEX LNG",                cluster: "shipping"}   # [M] Ausschüttung aus Kapitalrücklage (24/7 Wall St.)
+  - {symbol: "HLAG.DE", name: "Hapag-Lloyd",            cluster: "shipping"}   # [H] nur Etikett (Tier B)
+  # --- Tanker (Öl-/Hormus-korreliert) ---
+  - {symbol: "NAT",    name: "Nordic American Tankers", cluster: "tanker"}     # [M]
+  - {symbol: "DHT",    name: "DHT Holdings",            cluster: "tanker"}     # [M]
+  - {symbol: "TNK",    name: "Teekay Tankers",          cluster: "tanker"}     # [M]
+  - {symbol: "INSW",   name: "International Seaways",   cluster: "tanker"}     # [M]
+  - {symbol: "STNG",   name: "Scorpio Tankers",         cluster: "tanker"}     # [M]
+  - {symbol: "FRO.OL", name: "Frontline",               cluster: "tanker"}     # [M] nur Etikett (Tier B)
+  # --- Energie (nur Etiketten, Werte stehen in Tier B) ---
+  - {symbol: "SHEL.L",  name: "Shell",                  cluster: "oel_gas"}
+  - {symbol: "BP.L",    name: "BP",                     cluster: "oel_gas"}
+  - {symbol: "TTE.PA",  name: "TotalEnergies",          cluster: "oel_gas"}
+  - {symbol: "EQNR.OL", name: "Equinor",                cluster: "oel_gas"}
+  # --- US-Infrastruktur (C-Corps, keine MLPs) ---
+  - {symbol: "OKE",    name: "ONEOK",                   cluster: "midstream_us"} # [H]
+  - {symbol: "KMI",    name: "Kinder Morgan",           cluster: "midstream_us"} # [H]
+  - {symbol: "WMB",    name: "Williams Companies",      cluster: "midstream_us"} # [H]
+  # --- Defensive US/UK ---
+  - {symbol: "VZ",     name: "Verizon",                 cluster: "telekom"}    # [H]
+  - {symbol: "MO",     name: "Altria",                  cluster: "tabak"}      # [H]
+  - {symbol: "BTI",    name: "British American Tobacco (ADR)", cluster: "tabak"} # [H]
+  - {symbol: "PFE",    name: "Pfizer",                  cluster: "pharma"}     # [H]
+  - {symbol: "O",      name: "Realty Income",           cluster: "reit"}       # [H]
+  - {symbol: "ARCC",   name: "Ares Capital",            cluster: "bdc"}        # [M]
+  - {symbol: "LGEN.L", name: "Legal & General",         cluster: "versicherer"} # [M] Pence → Pfund normiert
+  # --- DAX-Hochrendite (nur Etiketten; zahlen 1×/Jahr im Frühjahr) ---
+  - {symbol: "MBG.DE",  name: "Mercedes-Benz",          cluster: "auto"}
+  - {symbol: "BMW.DE",  name: "BMW",                    cluster: "auto"}
+  - {symbol: "VOW3.DE", name: "Volkswagen Vz",          cluster: "auto"}
+  - {symbol: "PAH3.DE", name: "Porsche SE",             cluster: "auto"}
+  - {symbol: "DTG.DE",  name: "Daimler Truck",          cluster: "auto"}
+  - {symbol: "ALV.DE",  name: "Allianz",                cluster: "versicherer"}
+  - {symbol: "MUV2.DE", name: "Münchener Rück",         cluster: "versicherer"}
+  - {symbol: "HNR1.DE", name: "Hannover Rück",          cluster: "versicherer"}
+  - {symbol: "VNA.DE",  name: "Vonovia",                cluster: "immobilien"}
+  - {symbol: "BAS.DE",  name: "BASF",                   cluster: "chemie"}

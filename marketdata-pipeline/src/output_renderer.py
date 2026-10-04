@@ -147,11 +147,16 @@ def render_marketdata_full(
                 details.append(f"Betrag {_fmt_price(snap.last_ex_div_amount)}")
             if details:
                 last_part += f" ({', '.join(details)})"
+            src = getattr(snap, "next_ex_div_source", None)
             next_part = (
-                f"Next={snap.next_ex_div_date} (geschätzt)"
+                f"Next={snap.next_ex_div_date} (geschätzt{', ' + src if src else ''})"
                 if snap.next_ex_div_date else "Next=unbekannt"
             )
-            lines.append(f"- **Ex-Div:** {last_part} · {next_part}")
+            ttm_part = ""
+            ttm_y = getattr(snap, "div_yield_ttm_pct", None)
+            if ttm_y is not None and getattr(snap, "div_ttm_count", 0):
+                ttm_part = f" · TTM {ttm_y:.2f}% ({snap.div_ttm_count}×)"
+            lines.append(f"- **Ex-Div:** {last_part} · {next_part}{ttm_part}")
 
         lines.append("")
 
