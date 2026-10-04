@@ -113,16 +113,21 @@ Aktuell ~30 Ticker, später ~150 (geplante Erweiterung um Index-Komponenten).
 
 1. **Universal-Disqualifier:**
    - Liquidität: 20d-Avg-Volumen × Kurs ≥ 1M EUR
-   - Earnings: keine Quartalszahlen in 7 Tagen
-   - 30d-Move: |move| ≤ 15%
+   - ATR-Deckel: ATR14/Kurs ≤ 8 %
+   - Earnings: keine Quartalszahlen in den naechsten 7 Tagen
+     (`earnings_blackout_days`; bis 2026-10-04 stand der Schluessel in der
+     Config, wurde aber im Code nicht gelesen — seit dem Review aktiv)
+   - 30d-Move: |move| > 15 % ist KEIN Ausschluss mehr, sondern Flag
+     `late_entry` (⚠️REIFE im Summary, `sizing_hint: floor_1pct` im Pitch)
 
 2. **Setup-Bucket-Klassifikation** (siehe filter_config.yaml für Schwellwerte):
-   - Long-Trend-Pullback
-   - Breakout Long
-   - Reversal Long
-   - Short-Trend-Pullback
-   - Breakdown Short
-   - Reversal Short
+   - Long-Trend-Pullback (Anker EMA20; EMA200-MeanRev ist dieselbe Klasse mit Anker EMA200)
+   - Breakout-Retest Long (seit 2026-10-04: bestaetigter Ausbruch ≤10 HT zurueck,
+     Vol ≥1,2×, Kurs im Retest-Band Niveau −0,5/+0,75 ATR; kein nackter Ausbruch mehr)
+   - Short-Trend-Pullback (Ex-Dividende ≤14 Tage blockt)
+   - Breakdown-Retest Short (Spiegel)
+   - Reversal Long/Short: Bucket existiert, Klasse ist seit 2026-10-04
+     GESTRICHEN (Review) — Treffer werden nicht gehandelt
 
 3. **Pro Bucket maximal 5 Treffer**, sortiert nach Setup-Stärke
    (Bucket-spezifische Heuristik, z.B. Trigger-Nähe oder Volumen-Multiplier).
@@ -145,43 +150,46 @@ Aktuell ~30 Ticker, später ~150 (geplante Erweiterung um Index-Komponenten).
 (heute keiner)
 
 ### DISQUALIFIZIERT (kurze Gründe-Zusammenfassung)
-- 18 Ticker durch Liquidität, 4 durch Earnings, 12 durch 30d-Move,
-  6 durch Trend-Bruch, ...
+- 18 Ticker durch Liquidität, 4 durch Earnings-Blackout,
+  6 durch Trend-Bruch, ... (30d-Move ist seit 2026-10-04 nur noch Flag)
 ```
 
 ## Watchlist-Lifecycle-Mechanik
 
-Watchlist-Einträge im STATE haben einen Status-Wert. Pipeline behandelt
-sie unterschiedlich:
+Seit 2026-10-04 (Workflow B) lebt die Watchlist in `state/watchlist.yaml`.
+Jeder Eintrag traegt `status`, `klasse`, `anker` und bis zu drei Legs mit
+Gate (🟢 scharf / 🟡 beobachten / ⏳ wartet / 🔴 tot) und Trigger-Text in der
+unveraenderten Grammatik, die `state_parser._parse_triggers` versteht.
 
 | Status | Pipeline-Verhalten |
 |--------|--------------------|
-| ⚠️ aktiv | Stufe-1-Check, Output prominent |
-| 📅 pending | Stufe-1-Check, aber als "wartend bis Datum" markiert |
-| ⏸ paused | Stufe-1-Check, Hinweis "Bedingung nicht da" |
-| 🔍 beobachten | Stufe-1-Check, kürzer im Output. Nach 14 Tagen REVIEW-WARNING |
-| ✅ gelaufen | NICHT in aktiver Watchlist — gehört in Archiv-Sektion |
-| ❌ These geplatzt | NICHT in aktiver Watchlist — gehört in Archiv-Sektion |
-| 📉 Chart-not | NICHT in aktiver Watchlist — gehört in Archiv-Sektion |
+| `aktiv` | Stufe-1-Check je Leg nach Gate; Symbol ist in jedem Tier Teil des Pulls |
+| `position` | wie aktiv, Gate A ist 📍 (Position-Monitor, Exit-Regeln im Trigger-Text) |
+| `archiviert` | alle Legs werden als 🔴 behandelt: Stufe 1 ueberspringt, Stufe 2 darf das Symbol wieder aufnehmen; `archived.date/reason` dokumentieren den Grund |
 
-**REVIEW-WARNING:** Wenn ein Eintrag länger als 14 Tage im 🔍 beobachten-
-Status festhängt, wirft die Pipeline eine Empfehlung ins CANDIDATES.md:
-"INTC seit 18 Tagen passive (Distanz +40%) — Trigger neu definieren oder
-archivieren?". Das verhindert Watchlist-Verstopfung mit toten Einträgen.
+Verfall (`expiry`) und fruehestes Datum (`nach JJJJ-MM-TT` im Trigger-Text)
+wirken wie bisher. Die alten STATE-Doc-Status (📅 pending, ⏸ paused,
+🔍 beobachten ...) sind in den Gates aufgegangen.
 
-**Tuning-Quelle Archiv:** Quartalsweise das separate `WATCHLIST-ARCHIV`-Doc
-durchsehen, nach Grund gruppieren. Übergewicht eines Grundes deutet auf
-systemische Schwäche im aktuellen Filter-/Trigger-Setup hin.
+**Aenderungen** kommen auf zwei Wegen in die Datei: Commit (Mensch) oder
+INBOX-Aktion (Automat: `watchlist.set_status`, `set_gate`, `set_expiry`,
+`set_field`, `add`; `radar.*`; `thesen.update`; `note.add`), angewendet von
+`inbox_apply.yml`. Jede Aktion ist idempotent, jede INBOX-Datei wird genau
+einmal verarbeitet (`state/inbox_processed.json`).
+
+**Tuning-Quelle Archiv:** Quartalsweise die `archiviert`-Eintraege nach
+`archived.reason` gruppieren. Uebergewicht eines Grundes deutet auf
+systemische Schwaeche im aktuellen Filter-/Trigger-Setup hin.
 
 ## Stufe 1 vs Stufe 2 — Wichtiger Unterschied
 
 | Aspekt | Stufe 1 (Watchlist) | Stufe 2 (Universe) |
 |--------|---------------------|---------------------|
-| Eingabe | DEINE Trigger aus STATE | Generische Setup-Filter |
+| Eingabe | DEINE Trigger aus `state/watchlist.yaml` | Generische Setup-Filter |
 | Setup-Erkennung | Match gegen konkrete Spez | Heuristik aus Indikatoren |
 | Falsch-Treffer-Risiko | gering (deine Trigger) | mittel (generisch) |
 | Trade-Bereitschaft | hoch (du hast schon validiert) | brauchst Chart-Check |
-| Veränderung | du pflegst STATE | nur durch Tuning filter_config.yaml |
+| Veränderung | du pflegst `state/watchlist.yaml` (Commit/INBOX) | nur durch Tuning filter_config.yaml |
 
 ## Tuning-Strategie
 

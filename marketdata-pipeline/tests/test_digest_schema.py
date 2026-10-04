@@ -27,9 +27,10 @@ def _valide() -> dict:
 
 def test_version_ist_hochgezogen():
     """v1 hat drei Feld-Erweiterungen ueberlebt — das soll nicht wieder passieren.
-    v3 seit 2026-10-04 (exdiv_radar)."""
-    assert SCHEMA_VERSION == "briefing-digest/v3"
+    v3 seit 2026-10-04 (exdiv_radar), v4 seit 2026-10-04 (state-Block, Workflow B)."""
+    assert SCHEMA_VERSION == "briefing-digest/v4"
     assert "exdiv_radar" in SCHEMA_FIELDS
+    assert "state" in SCHEMA_FIELDS
 
 
 def test_die_drei_nachgezogenen_felder_sind_deklariert():

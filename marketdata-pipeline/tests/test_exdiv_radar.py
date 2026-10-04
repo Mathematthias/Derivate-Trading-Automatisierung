@@ -152,7 +152,7 @@ def test_digest_end_to_end_mit_position():
                                 dt.datetime(2026, 11, 20, 8, 0,
                                             tzinfo=dt.timezone.utc))
     d = json.loads(raw)
-    assert d["schema"] == "briefing-digest/v3"
+    assert d["schema"] == "briefing-digest/v4"
     assert [z["symbol"] for z in d["exdiv_radar"]] == ["SBLK"]
     assert d["exdiv_radar"][0]["rolle"] == "position"
     assert d["exdiv_radar"][0]["bucket"] == "far"

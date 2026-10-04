@@ -103,7 +103,12 @@ class TestLoadMergedPitches:
     def test_merged_und_quotiert(self, config, monkeypatch):
         monkeypatch.setattr(ms, "read_latest_json_file", _fake_files(EU_FILE, US_FILE))
         b = ms.load_merged_pitches(None, "folder", config)
-        assert {p["symbol"] for p in b["pitches"]} == {"TLX.DE", "PGHN.SW", "TGT", "HON"}
+        # Counter-Lane seit 2026-09-21 auf 0: PGHN.SW/HON (lane=counter) fallen
+        # beim Tier-A-Merge heraus, die Trend-Kandidaten bleiben.
+        erwartet = {"TLX.DE", "TGT"}
+        if config["pitches"]["quota"]["counter"] > 0:
+            erwartet |= {"PGHN.SW", "HON"}
+        assert {p["symbol"] for p in b["pitches"]} == erwartet
         assert b["meta"]["total_by_tier"] == {"EU": 0, "US": 3}
 
     def test_as_of_wird_je_quelldatei_gesetzt(self, config, monkeypatch):

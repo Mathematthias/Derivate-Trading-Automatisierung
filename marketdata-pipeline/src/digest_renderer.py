@@ -31,7 +31,7 @@ from typing import Any, Optional
 
 from output_renderer import classify_watchlist_results
 
-SCHEMA_VERSION = "briefing-digest/v3"
+SCHEMA_VERSION = "briefing-digest/v4"  # v4 (2026-10-04): + state (watchlist-meta/radar/thesen), late_entry im universe
 # v3 seit 2026-10-04: Top-Level-Feld exdiv_radar (Ex-Tag VORWÄRTS für
 # Positionen und Watchlist). Leseseite: pipeline_utils.BriefingDigest (Skill v48).
 # v2 seit 2026-09-14. Der Sprung ist ueberfaellig: unter "v1" sind seit dem
@@ -62,6 +62,7 @@ SCHEMA_FIELDS: tuple[str, ...] = (
     "grinders",
     "grinders_meta",
     "exdiv_radar",
+    "state",           # v4 (2026-10-04): Watchlist-Meta / Radar / Thesen aus state/*.yaml
 )
 
 # Ex-Tag-Radar (2026-10-04): wie weit voraus ein geschätzter Ex-Tag auf einer
@@ -165,6 +166,12 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "rsi": _r(snap.rsi14, 1),
         "atr": _r(snap.atr14, 4),
         "ext_gate": _ext_gate(snap),
+        # v4 (2026-10-04): Reife-Flag (L8 v3) und Breakout-Retest-Felder
+        "late_entry": bool(getattr(snap, "late_entry", False)),
+        "bo_level": getattr(snap, "bo_level", None),
+        "bo_bars_ago": getattr(snap, "bo_bars_ago", None),
+        "bd_level": getattr(snap, "bd_level", None),
+        "bd_bars_ago": getattr(snap, "bd_bars_ago", None),
         "move30d": _r(snap.move_30d_pct, 2),
         # 🆕 2026-09-24: Tempo-Basis (Regression 20 HT) + R^2, damit das Tempo
         # auch ausserhalb des Grinder-Blocks (Hoch-ATR-Swing, Handcheck) aus dem
@@ -470,8 +477,14 @@ def build_briefing_digest(
     pitches: Optional[list[dict[str, Any]]] = None,
     grinders: Optional[list[dict[str, Any]]] = None,
     grinders_meta: Optional[dict[str, Any]] = None,
+    state: Optional[dict[str, Any]] = None,
 ) -> str:
     """Baut den BRIEFING-DIGEST als JSON-String.
+
+    v4 (2026-10-04): `state` = state_yaml.state_for_digest(...) — Watchlist-
+    Metadaten (Klasse, Anker, Treiber, Verfall), Radar-Fenster (einrueckend/
+    ueberfaellig) und aktive Thesen. Damit liest der Morning Check alles aus
+    EINEM Fetch; vorher kamen Radar und Thesen aus dem Journal-Sheet.
 
     Args:
         snapshots: {symbol: TickerSnapshot} — alle Tier-A-Ticker.
@@ -575,6 +588,8 @@ def build_briefing_digest(
         # und Watchlist — Bucket 5a im Morning-Check.
         "exdiv_radar": _exdiv_radar(snapshots, watchlist_results,
                                     buckets_raw, today),
+        # v4: Repo-Zustand (nur gesetzt, wenn WATCHLIST_SOURCE=yaml)
+        "state": state or {},
     }
     _assert_schema(digest)
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))

@@ -1,5 +1,10 @@
 """Zweistufiges Volumen-Gate und Trend-Sub-Quote (User-Entscheid 2026-09-18).
 
+Angepasst 2026-10-04 (System-Review): breakout_long/breakdown_short sind jetzt
+RETEST-Buckets. Das Volumen-Gate misst das Volumen AM AUSBRUCHSTAG
+(bo_vol_mult/bd_vol_mult), Boden 1,2x, Daempfer 1,5x; die Zone ist
+Niveau -0,5/+0,75 ATR. `_vol_stufe` bleibt als Helfer bestehen.
+
 Anlass der beiden Aenderungen steht in config/filter_config.yaml:
 - Volumen: Querschnittsmessung ueber 1.717 Ticker-Tage plus VOLGATE-Backtest.
   Der Boden bei 1,0x ist gestuetzt, das Band 1,0-1,5 ungemessen -> Daempfer
@@ -54,6 +59,17 @@ class Snap:
     low_20d: Optional[float] = None
     volume_multiplier_today: Optional[float] = None
     last_ex_div_days_ago: Optional[int] = None
+    # Breakout-Retest-Felder (2026-10-04)
+    bo_level: Optional[float] = None
+    bo_bars_ago: Optional[int] = None
+    bo_vol_mult: Optional[float] = None
+    bo_failed: Optional[bool] = None
+    bd_level: Optional[float] = None
+    bd_bars_ago: Optional[int] = None
+    bd_vol_mult: Optional[float] = None
+    bd_failed: Optional[bool] = None
+    next_ex_div_date: Optional[str] = None
+    next_earnings_date: Optional[str] = None
     has_bullish_stack: bool = True
     has_bearish_stack: bool = False
     distance_from_52w_high_pct: Optional[float] = -10.0
@@ -61,16 +77,21 @@ class Snap:
 
 
 def _long(vol, **kw):
-    """breakout_long: Kurs am 20d-Hoch, Range 100-120 -> Measured-Move-rr hoch."""
-    s = Snap(high_20d=120.0, low_20d=100.0, price=119.5, rsi14=60.0,
-             volume_multiplier_today=vol, **kw)
+    """breakout_long (Retest): Ausbruch ueber 120 vor 3 HT mit Volumen `vol`,
+    Kurs 119,5 = 0,25 ATR unter dem Niveau -> in der Retest-Zone."""
+    s = Snap(high_20d=121.0, low_20d=100.0, price=119.5, rsi14=60.0,
+             bo_level=120.0, bo_bars_ago=3, bo_vol_mult=vol, bo_failed=False,
+             volume_multiplier_today=0.9, **kw)
     return s
 
 
 def _short(vol, **kw):
-    s = Snap(low_20d=80.0, high_20d=100.0, price=80.4, rsi14=40.0,
+    """breakdown_short (Retest): Breakdown unter 80 vor 2 HT, Kurs 80,4 =
+    0,2 ATR ueber dem Niveau -> in der Zone."""
+    s = Snap(low_20d=79.0, high_20d=100.0, price=80.4, rsi14=40.0,
              move_30d_pct=-5.0, has_bullish_stack=False, has_bearish_stack=True,
-             volume_multiplier_today=vol, **kw)
+             bd_level=80.0, bd_bars_ago=2, bd_vol_mult=vol, bd_failed=False,
+             volume_multiplier_today=0.9, **kw)
     return s
 
 
@@ -78,15 +99,15 @@ class TestVolStufe:
     """Die reine Schwellen-Logik."""
 
     def test_unter_dem_boden_kein_kandidat(self, config):
-        assert _vol_stufe(Snap(volume_multiplier_today=0.99),
+        assert _vol_stufe(Snap(volume_multiplier_today=1.19),
                           config["breakdown_short"]) is None
 
     def test_auf_dem_boden_ist_drin(self, config):
-        assert _vol_stufe(Snap(volume_multiplier_today=1.00),
+        assert _vol_stufe(Snap(volume_multiplier_today=1.20),
                           config["breakdown_short"]) is not None
 
     def test_zwischen_boden_und_daempfer_gedaempft(self, config):
-        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.2),
+        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.3),
                                      config["breakout_long"])
         assert gedaempft is True and hint == "eine_stufe"
 
@@ -97,7 +118,7 @@ class TestVolStufe:
 
     def test_short_daempfer_geht_auf_den_1prozent_floor(self, config):
         """Punkt 3 des Entscheids: bei Shorts greift der Daempfer haerter."""
-        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.2),
+        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.3),
                                      config["breakdown_short"])
         assert gedaempft is True and hint == "floor_1pct"
 
@@ -116,10 +137,10 @@ class TestCheckBucketMitStufen:
     """Die Gates im Bucket selbst — inklusive der Format-Falle im Summary."""
 
     def test_breakdown_short_unter_boden_raus(self, config):
-        assert _check_bucket(_short(0.95), "breakdown_short", config) is None
+        assert _check_bucket(_short(1.1), "breakdown_short", config) is None
 
     def test_breakdown_short_gedaempft_kommt_durch(self, config):
-        m = _check_bucket(_short(1.05), "breakdown_short", config)
+        m = _check_bucket(_short(1.3), "breakdown_short", config)
         assert m is not None
         assert m.vol_daempfer is True
         assert m.sizing_hint == "floor_1pct"
@@ -147,9 +168,51 @@ class TestCheckBucketMitStufen:
         brechen. Der Marker gehoert deshalb hinter alles andere.
         """
         import re
-        m = _check_bucket(_short(1.05), "breakdown_short", config)
+        m = _check_bucket(_short(1.3), "breakdown_short", config)
         assert m.summary.rstrip().endswith("⚠️VOL-DÄMPFER")
-        assert re.search(r"Vol=1\.1×\s\sRSI=\d+", m.summary)
+        assert re.search(r"Vol=1\.3×\s\sRSI=\d+", m.summary)
+        # Retest-Marker steht hinter dem RRprox-Suffix, vor dem Daempfer
+        assert re.search(r"RSI=\d+(\s\sRRprox=[\d.]+(\s*⚠️ENG)?)?\s\sRetest=2HT", m.summary)
+
+
+class TestRetestGates:
+    """Neudefinition 2026-10-04: Ausbruch = Ereignis, Kandidat = Retest."""
+
+    def test_kein_ausbruch_im_fenster_kein_kandidat(self, config):
+        s = _long(2.0); s.bo_level = None; s.bo_bars_ago = None
+        assert _check_bucket(s, "breakout_long", config) is None
+
+    def test_ausbruch_zu_alt(self, config):
+        s = _long(2.0); s.bo_bars_ago = 11
+        assert _check_bucket(s, "breakout_long", config) is None
+
+    def test_fehlausbruch_raus(self, config):
+        s = _long(2.0); s.bo_failed = True
+        assert _check_bucket(s, "breakout_long", config) is None
+
+    def test_kurs_zu_weit_ueber_dem_niveau_ist_kein_retest(self, config):
+        s = _long(2.0); s.price = 122.0          # +1,0 ATR ueber 120
+        assert _check_bucket(s, "breakout_long", config) is None
+
+    def test_kurs_zu_weit_unter_dem_niveau_ist_kein_retest(self, config):
+        s = _long(2.0); s.price = 118.5          # -0,75 ATR unter 120
+        assert _check_bucket(s, "breakout_long", config) is None
+
+    def test_in_zone_ist_kandidat_und_traegt_retest_marker(self, config):
+        m = _check_bucket(_long(2.0), "breakout_long", config)
+        assert m is not None
+        assert "20d-High=120.00" in m.summary and "Retest=3HT" in m.summary
+
+    def test_heutiges_volumen_zaehlt_nicht(self, config):
+        """Das Gate misst den Ausbruchstag, nicht den Retest-Tag."""
+        s = _long(2.0); s.volume_multiplier_today = 0.3
+        assert _check_bucket(s, "breakout_long", config) is not None
+
+    def test_short_exdiv_bald_blockt(self, config):
+        from datetime import date
+        s = _short(2.0); s.next_ex_div_date = "2026-10-10"
+        assert _check_bucket(s, "breakdown_short", config, today=date(2026, 10, 4)) is None
+        assert _check_bucket(s, "breakdown_short", config, today=date(2026, 9, 1)) is not None
 
 
 class TestTrendSubQuote:
@@ -194,10 +257,11 @@ class TestTrendSubQuote:
         assert len(out) == 6
 
     def test_payload_traegt_die_neuen_felder(self, config):
-        m = _check_bucket(_short(1.05), "breakdown_short", config)
+        m = _check_bucket(_short(1.3), "breakdown_short", config)
         p = build_pitches_payload([m], config)[0]
         assert p["trend_sub"] == "range"
-        assert p["vol_mult"] == pytest.approx(1.05)
+        # Fuer Retest-Buckets ist das relevante Volumen das des Ausbruchstags
+        assert p["vol_mult"] == pytest.approx(1.3)
         assert p["vol_daempfer"] is True
         assert p["sizing_hint"] == "floor_1pct"
 

@@ -1,0 +1,516 @@
+schema: 1
+source: migriert aus Trading_Journal_20261002c.xlsx am 2026-10-04
+rows:
+- id: Z5
+  date: '2026-08-07'
+  kat: 2
+  ereignis: 'UK CfD Allocation Round 8: Bewerbungsfenster schliesst (>17 GW Offshore ausgeschrieben); NESO-Pruefung 10.08.-16.09.'
+  werte: ORSTED, SSE, VWS, ENR.DE
+  wirkung: Volumen-Signal Offshore-Pipeline 2030+; Richtung unklar bis Ergebnis
+  status: erledigt
+  quelle: erledigt 2026-09-02 — Fenster schloss 07.08. 12:00 BST wie erwartet; NESO-Qualifikation bis 16.09., Ergebnismitteilung an Bieter 16.09.2026. Keine Kursreaktion bei ORSTED/SSE/VWS/ENR. (Pflegelauf 22.08.) || windtech-international.com, 2026-08-04 | Folgetermin 16.09.2026 seit 2026-09-04 als eigene Zeile gefuehrt (Z65).
+- id: Z6
+  date: '2026-08-12'
+  kat: 1
+  ereignis: 'EU-Verpackungsverordnung PPWR (VO 2025/40) anwendbar: Rezyklatquoten, Design-for-Recycling, Verbot bestimmter Einwegformate'
+  werte: SIGN, HUH1V, SW, MNDI, AMCR, KRN.DE, GXI.DE
+  wirkung: + Faser-/Rezyklat-Verpacker und Abfuellanlagenbau / - Kunststoff-Einweg
+  status: erledigt
+  quelle: erledigt 2026-09-02 — seit 12.08. anwendbar, keine Verschiebung; Kommission hat Vertagung auf 2027 ausgeschlossen. Kursreaktion aller sieben Werte zwischen -1,8% und +0,8% = keine. (Pflegelauf 22.08.) || gleisslutz.com, 2026-08-04
+- id: Z7
+  date: '2026-08-12'
+  kat: 4
+  ereignis: 'MSCI August Index Review: Ankuendigung 12.08., wirksam 01.09.'
+  werte: MSCI-Kandidaten EU/US Mid-Caps
+  wirkung: passiver Flow um Wirksamkeitstermin; Richtung wertabhaengig
+  status: erledigt
+  quelle: erledigt 2026-09-02 — Ankuendigung 12.08. (ACWI 55 Aufnahmen / 92 Streichungen), wirksam zum Schluss des 01.09.2026. LULU aus MSCI USA, CTS Eventim und Scout24 aus MSCI Germany gestrichen. (Pflegelaeufe 22./27./31.08.) || msci.com, 2026-08-04
+- id: Z8
+  date: '2026-08-14'
+  kat: 1
+  ereignis: SEC Form 13F Q2 2026 — Einreichungsfrist (45 Tage nach Quartalsende 30.06.2026). Zeigt, ob Scion Asset Management (Michael Burry) die im Q1-2026-Filing aufgebauten Long-Positionen noch haelt.
+  werte: ADBE, LULU, MELI, PYPL
+  wirkung: 'Counter-These fuer unsere SHORT-Setups ADBE + LULU: Ausstieg = Gegensignal faellt weg (Short sauberer); Aufstockung = Squeeze-Risiko verschaerft'
+  status: erledigt
+  quelle: 'erledigt 2026-09-02 — PRAEMISSE FALSCH: Scion Asset Management ist seit 2025-11-10 als SEC-Investment-Adviser dereregistriert und hat kein Q2-2026-13F eingereicht. Die Counter-These-Pruefung fuer die ADBE-/LULU-Shorts hatte nie eine Datenquelle. LEHRE: bei Melde-/Einreichungsfristen gehoert der MELDER in die Ticker-Spalte und sein Meldestatus einmal geprueft. (Pflegelauf 22.08.) || SEC 13F-Frist (45 Tage), abgeleitet 2026-08-05'
+- id: Z9
+  date: '2026-08-21'
+  kat: 1
+  ereignis: SBLK Ex-Dividende 0,90 USD (Record Date = Ex-Tag unter T+1; Auszahlung ~03.09.) — Datum 2026-09-02 hart bestaetigt, frueherer Vermerk "DATUM UNBESTAETIGT" gestrichen
+  werte: SBLK
+  wirkung: mechanischer Kursabschlag 3,11% = 0,97 ATR; frisst ~70% des 1,5xATR-SL-Puffers. SL am Ex-Tag um 0,90 USD nachziehen oder vorher glattstellen
+  status: erledigt
+  quelle: 'erledigt 2026-09-02 — Ex-Tag war der 21.08.2026 (Record Date, T+1). Abschlag von 3,11% binnen vier Handelstagen aufgeholt; Stand 31.08. notiert SBLK 5,10% UEBER der ex-adjustierten Zone. LEHRE: mechanische Ex-Div-Termine sind Pre-Trade-Check auf einer Position, kein Thesen-Input — nur aufnehmen, wenn eine Position auf dem Wert liegt. (Pflegelaeufe 22./27./31.08.) || dividendhistory.org (Schaetzung) + Star-Bulk-PM 05.08.2026, Abruf 2026-08-06'
+- id: Z10
+  date: '2026-08-27'
+  kat: 1
+  ereignis: 'FDA-PDUFA Gilead: Bictegravir + Lenacapavir (HIV)'
+  werte: GILD
+  wirkung: binaerer Katalysator auf einem Wert, der als bidirektionale PEAD-Event-Watch auf der Watchlist steht; KO-Entry <5 HT davor = Verstoss gegen Checklisten-Punkt 5
+  status: erledigt
+  quelle: 'erledigt 2026-09-02 — FDA hat am 27.08.2026 termingenau Bixlenvo (Bictegravir 75mg / Lenacapavir 50mg) zugelassen. KURSWIRKUNG NEGATIV: 148,09 (26.08.) auf 145,68 USD (28.08.) = -1,63%. LEHRE: ein PDUFA nach glatter Priority Review ohne AdComm ist ein Kalendereintrag, kein Katalysator — erwartete Ausgangs-Unsicherheit bei Aufnahme mitschreiben. (Pflegelauf 31.08.) || lifesciencedaily.news FDA-Kalender, Abruf 2026-08-06 — vor Entry gegen Gilead-IR gegenpruefen'
+- id: Z12
+  date: '2026-09-09'
+  kat: 3
+  ereignis: 'SpaceX-Lockup-Freigaben — SYSTEMATIK 2026-09-02 KORRIGIERT: keine Tageszaehlung ab Prospekt, sondern quartalsbericht- und kursbedingungsgebunden. Erste Freigabe 2026-08-06 (zwei HT nach dem ersten Quartalsbericht) mit 911,5 Mio Aktien = 20%, NICHT 7% am 20./21.08. Bedingte Zusatztranche 455,8 Mio nur bei Kurs >=175,50 USD an 5 von 10 HT — NICHT ausgeloest. Zweite Freigabe 2026-08-20 mit 319 Mio (~7%). Naechste Stufe 2026-09-09 mit 319 Mio (~7%). KORRIGIERT 2026-09-15: der Satz "KEIN Septembertermin danach" ist WIDERLEGT — derselbe Trackertyp fuehrt fuer 2026-09-24 eine Stufe ueber 328,4 Mio Aktien (~7%), dazu am 2026-09-10 eine vorgezogene Freigabe von 59,1 Mio fuer Rule-144-Affiliates. Trackerquelle gegen Trackerquelle, confidence bleibt niedrig.'
+  werte: SPCX
+  wirkung: '- laufender Angebotsdruck bei ~5% Streubesitz'
+  status: erledigt
+  quelle: 'confidence NIEDRIG — Presse- und Trackerquellen (MarketScreener, Darrow Wealth); die Prospektpassage "Shares Eligible for Future Sale" ist in drei Laeufen nicht direkt lesbar gewesen. Kursreaktion auf die 20%-Freigabe am 06.08. war +6% — der unterstellte Angebotsdruck ist NICHT eingetreten. KATEGORIE-LEHRE (Kat 3): ein Lockup ist ein Vertrag, kein Kalender. (Pflegelaeufe 27./31.08., eingepflegt 2026-09-02) || ERLEDIGT 2026-09-15 (INBOX 14.09.): Stufe 2026-09-09 (319 Mio Aktien, ~7%) eingetreten. Zeile wird NICHT ersatzlos geschlossen — Nachfolgestufe 2026-09-24 neu angelegt.'
+- id: Z13
+  date: '2026-09-03'
+  kat: 4
+  ereignis: 'DAX-Familie planmaessige Ueberpruefung: Bekanntgabe 3. Arbeitstag Sept., Verkettung nach Schluss 18.09., wirksam 21.09. — TEIL 1/2: BEKANNTGABE 03.09.2026. Wirksamkeit 21.09. jetzt Z67. (gesplittet 2026-09-07, Zwei-Termin-Problem)'
+  werte: DAX/MDAX/SDAX/TecDAX Auf- und Absteiger
+  wirkung: + Aufsteiger / - Absteiger; Flow in Schlussauktion 18.09.
+  status: erledigt
+  quelle: 'deutsche-boerse.com, 2026-08-04 | ERLEDIGT 2026-09-07: Bekanntgabe 03.09.2026 erfolgt und ausgewertet — DAX unveraendert; MDAX +Stroeer / -Hugo Boss; SDAX +Hugo Boss / -Stroeer; TecDAX +OHB / -CANCOM. ⚠️ KORREKTUR: die Aussage des 04.09.-Laufs "kein getrackter Wert betroffen" ist FALSCH — SAX.DE (Stroeer) ist aktive Watchlist-Zeile und genau der MDAX-Aufsteiger. Wirksamkeit 21.09. als eigene Zeile Z67. Naechstes Index-Review 03.12.2026.'
+- id: Z14
+  date: '2026-09-08'
+  kat: 2
+  ereignis: 'ERSTE deutsche Kapazitaetsmarkt-Auktion (StromVKG) — TEIL 1/2: GEBOTSSCHLUSS 08.09.2026 24:00. 4.500 MW, Hoechstpreis 244.000 EUR/MW*a. GESPLITTET 2026-09-07: die Zeile lautete "2026-09-08 -> 2026-11-03"; wh.termin_radar_check() wertet fuers Durchlaufen das ENDE eines Fensters, der Gebotsschluss waere unbemerkt durchgelaufen. Zuschlag jetzt Z66.'
+  werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
+  wirkung: + Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher faktisch ausgeschlossen (10-h-Kriterium)
+  status: erledigt
+  quelle: 'bundesnetzagentur.de, Bekanntmachung 1. Gebotstermin 08.09.2026 (Primaerquelle, Volumen und Hoechstpreis woertlich), Abruf 2026-09-07. confidence hoch. || AUSGEWERTET 2026-09-09: Gebotsschluss 08.09. planmaessig durchgelaufen. KEIN Ergebnis, kein Trade-Signal — die Zuschlagsbekanntgabe ist der 2026-11-03 (Z66). Volumen 4.500 MW und Hoechstpreis 244.000 EUR/MW*a woertlich bestaetigt; NEU: Vertragslaufzeit 15 Jahre. Quelle c-ober.de/blog/kapazitaetsmarkt-erste-auktion-2026, Abruf 2026-09-09.'
+- id: Z15
+  date: '2026-09-24'
+  kat: 1
+  ereignis: Trump-Xi-Gipfel in Washington — wenige Wochen vor Ablauf des Zoll-Waffenstillstands
+  werte: MP, LYC.AX, IFX.DE, CON.DE, VOW3.DE
+  wirkung: Weichenstellung fuer den 10.11.-Cluster; Richtung offen
+  status: erledigt
+  quelle: 'NTD / S&P Global, 2026-08-04 | confidence MITTEL (ergaenzt 2026-09-07): Termin nur US-seitig belegt, keine chinesische Bestaetigung; Verschiebungsgeruecht ins Jahr 2027 unbestaetigt. Indirektes Indiz fuer Fortbestand: CSIS terminiert fuer den 25.09. eine Auswertungs- und fuer den 17.09. eine Vorab-Veranstaltung. Vier Pflegelaeufe haben die Zeile so eingeordnet, ohne dass der Qualifier je im Sheet stand. | 2026-09-21: Termin durch Wire-Berichte bestaetigt — Xi landet Mi 23.09. in Joint Base Andrews, Gipfel 24.09. (easternherald.com, VOCM/Wire 21.09.). confidence fuer den TERMIN jetzt HOCH; Ausgang offen. Risiko: US-Waffenpaket Taiwan 14 Mrd USD — Peking drohte mit Absage, falls vor der Ankunft genehmigt. Agenda laut Vorbereitungsgespraechen: Zoelle, seltene Erden, KI. | ERLEDIGT 2026-09-28: Gipfel 24.09. in Washington, Ergebnis Verlaengerung statt Eskalation - Bessent bestaetigt Busan-Truce +2 Monate (2026-11-10 -> 2027-01-10).'
+- id: Z16
+  date: '2026-10-01'
+  kat: 2
+  ereignis: 'BNetzA Solar 2. Segment (Dach): Gebotstermin; KORR 2026-09-28: Volumen 296.269 kW publiziert (-19% gegen gesetzl. Basis 367 MW), Hoechstwert 10,00 ct/kWh [vorher: Volumen noch nicht publiziert]'
+  werte: SMA-Komplex, Projektierer
+  wirkung: Aufdach-Segment 3x in Folge UNTERZEICHNET -> schwaches Signal
+  status: offen
+  quelle: bundesnetzagentur.de, 2026-08-04 | bundesnetzagentur.de, Abruf 2026-09-28 (Kuerzung verstaerkt Lesart schwaches Signal)
+- id: Z17
+  date: '2026-10-10'
+  kat: 5
+  ereignis: FDA-PDUFA Ifinatamab Deruxtecan (I-DXd) bei vorbehandeltem ES-SCLC, Priority Review
+  werte: 'MRK [= Merck & Co., US — NICHT MRK.DE/Merck KGaA], 4568.T ⚠️ TICKER-KOLLISION (Pflegelauf 07.09., nachgetragen 10.09.): MRK = Merck & Co. (US). NICHT MRK.DE (Merck KGaA).'
+  wirkung: + bei Zulassung; fuer MRK klein, fuer Daiichi material
+  status: offen
+  quelle: merck.com, 2026-08-04
+- id: Z18
+  date: '2026-11-01'
+  kat: 2
+  ereignis: 'BNetzA Wind an Land: Gebotstermin (Basis 2.500 MW, Hoechstwert 7,25 ct/kWh). Mai-Runde war deutlich ueberzeichnet (6.409 MW Gebote auf 2.495 MW)'
+  werte: NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE
+  wirkung: + Projektierer bei Ueberzeichnung
+  status: offen
+  quelle: bundesnetzagentur.de, 2026-08-04
+- id: Z19
+  date: '2027-01-10'
+  kat: 1
+  ereignis: 'ANKER-TERMIN: Chinas 12-monatige Aussetzung der erweiterten SE-Exportkontrollen laeuft aus (Notice 61 inkl. extraterritorialer 0,1%-Regel)'
+  werte: MP, LYC.AX, ILU.AX / Abnehmer IFX.DE, CON.DE, VOW3.DE
+  wirkung: + Nicht-China-Foerderer bei Nichtverlaengerung / - europaeische Magnet-Abnehmer
+  status: offen
+  quelle: mining-technology.com, 2026-08-04
+  note: 'KORR 2026-09-28: Datum 2026-11-10 -> 2027-01-10 (Busan-Truce am 24.09. um 2 Monate verlaengert, Bessent/CNBC). ⚠️ confidence MITTEL: itemisierte Bestaetigung, dass Notice 61 samt 0,1-%-Regel mitverlaengert wurde, fehlt (rareearthexchanges: weiter "through November 10, 2026").'
+- id: Z20
+  date: '2026-11-10'
+  kat: 1
+  ereignis: 'ZEITGLEICH: 178 US-Section-301-Ausnahmen laufen aus (164 produktspezifisch + 14 Solarfertigungs-Equipment), keine neue Antragsrunde offen'
+  werte: FSLR, SEDG, WCH.DE, NXT
+  wirkung: + US-Solarfertiger ohne China-Equipment / - Ausbauprojekte mit chin. Anlagentechnik
+  status: offen
+  quelle: greatlakescustomslaw.com, 2026-08-04
+  note: 'ZUSATZ 2026-09-28: die 178 Ausnahmen (HTS 9903.88.69/.70, Ablauf 2026-11-09 23:59 EDT) sind in der Gipfel-Verlaengerung NICHT namentlich genannt -> als auslaufend planen (Importivity 21.09.). Pruefauftrag Federal Register letzte Oktoberwoche.'
+- id: Z21
+  date: '2026-11-11'
+  kat: 4
+  ereignis: 'MSCI November Semi-Annual Review: Ankuendigung 11.11., wirksam 01.12. — groesster passiver Flow-Termin des Halbjahres'
+  werte: MSCI-Kandidaten EU/US Large/Mid
+  wirkung: Richtung wertabhaengig
+  status: offen
+  quelle: msci.com, 2026-08-04
+- id: Z22
+  date: '2026-11-27'
+  kat: 1
+  ereignis: Aussetzung Announcement 72/2025 laeuft aus (Gallium, Germanium, Antimon, Graphit)
+  werte: Halbleiter-/Batterie-Lieferkette
+  wirkung: '- Abnehmer bei Reaktivierung'
+  status: offen
+  quelle: Clark Hill / CarraGlobe, 2026-08-04
+  note: 'ZUSATZ 2026-09-28: Announcement 72/2025 in der Verlaengerung vom 24.09. nicht genannt; Datum bleibt, confidence MITTEL.'
+- id: Z23
+  date: '2026-11-29'
+  kat: 1
+  ereignis: Euro 7 (VO 2024/1257) gilt fuer neue Typgenehmigungen Pkw/leichte Nutzfahrzeuge — erstmals Brems- und Reifenabriebgrenzwerte
+  werte: UMI.BR, JMAT.L, BAS.DE, CON.DE, ML.PA, TYRES.HE
+  wirkung: + Abgasnachbehandlung/Bremsbelag / - Kostenbelastung OEM und Reifen
+  status: offen
+  quelle: EUR-Lex 2024/1257, 2026-08-04
+- id: Z24
+  date: '2026-12-01'
+  kat: 2
+  ereignis: 'BNetzA Solar 1. Segment (Freiflaeche): Gebotstermin, Basis 3.300 MW (Maerz-Runde auf ~2.300 MW gesenkt)'
+  werte: Projektierer, SMA-Komplex
+  wirkung: Volumenkuerzungen der BNetzA beobachten
+  status: offen
+  quelle: bundesnetzagentur.de, 2026-08-04
+- id: Z25
+  date: '2026-12-08'
+  kat: 2
+  ereignis: Zweite Kapazitaetsmarkt-Auktion, weitere 4.500 MW (dritte Runde 18.05.2027 mit 2.000 MW)
+  werte: ENR.DE, RWE.DE, UN01.DE
+  wirkung: wie erste Runde; Preisniveau Runde 1 als Anker
+  status: offen
+  quelle: boersen-zeitung.de, 2026-08-04
+- id: Z26
+  date: '2026-12-08'
+  kat: 3
+  ereignis: SpaceX 180-Tage-Lockup laeuft vollstaendig ab; Restbeschraenkungen ausser 366-Tage-Gruppe um Musk (13.06.2027) fallen
+  werte: SPCX
+  wirkung: '- groesster Einzel-Unlock, Float waechst von ~5% Richtung Mehrheit'
+  status: offen
+  quelle: Datum 2026-09-02 von 2026-12-09 auf 2026-12-08 korrigiert (Prospekt-Coverdatum 11.06.2026, nicht 12.06.); Restvolumen ~797,6 Mio Aktien. confidence niedrig, siehe Z12. || modernfp.com, 2026-08-04
+- id: Z27
+  date: '2026-12-11'
+  kat: 4
+  ereignis: 'Nasdaq-100 Jahres-Rekonstitution: Bekanntgabe 2. Freitag Dez., wirksam Montag nach 3. Freitag'
+  werte: NDX-Auf-/Absteiger
+  wirkung: + Aufsteiger / - Absteiger; ETF-Flow in Schlussauktion 18.12.
+  status: offen
+  quelle: ir.nasdaq.com, 2026-08-04
+- id: Z28
+  date: '2026-12-30'
+  kat: 1
+  ereignis: EU-Entwaldungsverordnung EUDR fuer grosse/mittlere Unternehmen anwendbar (Kakao, Kaffee, Palmoel, Kautschuk, Holz, Rind, Soja)
+  werte: NESN.SW, BARN.SW, STERV.HE, UPM.HE, ML.PA, SY1.DE, HSY, MDLZ
+  wirkung: '- Compliance-Kosten/Lieferkettenrisiko / + zertifizierte Anbieter'
+  status: offen
+  quelle: consilium.europa.eu, 2026-08-04
+  note: 'ZUSATZ 2026-09-28: Kakao-Ausdruecke HSY/MDLZ ergaenzt; HSY traegt aktive Short-Zeile Z90 (Compliance-Kosten = short-stuetzend).'
+- id: Z29
+  date: '2027-01-01'
+  kat: 1
+  ereignis: EU-Importverbot fuer russisches LNG unter Langfristvertraegen (19. Sanktionspaket); Pipelinegas folgt Herbst 2027
+  werte: TTE.PA, SHEL.L, ENGI.PA, UN01.DE, LNG, VG
+  wirkung: + US-LNG-Exporteure und EU-Terminalbetreiber / - Kontraktinhaber mit Yamal-Exposure
+  status: offen
+  quelle: energy.ec.europa.eu, 2026-08-04
+- id: Z30
+  date: '2027-01-01'
+  kat: 1
+  ereignis: 'Medicare-Verhandlungspreise Runde 2 wirksam: 15 Wirkstoffe, im Schnitt -44% ggue. 2024-Listenpreis (Semaglutid ca. -70%)'
+  werte: 'NOVO-B.CO, GSK.L, AZN.L, PFE, ABBV, AMGN, MRK [= Merck & Co., US — NICHT MRK.DE], TEVA ⚠️ TICKER-KOLLISION (Pflegelauf 07.09., nachgetragen 10.09.): MRK = Merck & Co. (US), NICHT MRK.DE.'
+  wirkung: '- am staerksten Novo Nordisk (Semaglutid) und GSK (Trelegy+Breo)'
+  status: offen
+  quelle: biopharmadive.com, 2026-08-04
+- id: Z31
+  date: '2027-02-01'
+  kat: 1
+  ereignis: CBAM-Zertifikatsverkauf startet (um 13 Monate verschoben); Importeure erwerben Zertifikate fuer 2026er-Importe
+  werte: MT.AS, TKA.DE, SZG.DE, VOE.VI, HEI.DE, NHY.OL
+  wirkung: + EU-Produzenten (Importkostenaufschlag) / - importabhaengige Verarbeiter
+  status: offen
+  quelle: cbamguide.com, 2026-08-04
+- id: Z32
+  date: '2026-11-27'
+  kat: 2
+  ereignis: 'UK CfD AR8 Ergebnisbekanntgabe an Bieter — DATUM IST EINE VERZWEIGUNG, KEIN TERMIN (korrigiert 2026-09-04). Der NESO-Zeitplan kennt fuenf Szenarien, abhaengig davon, wann das Sealed-Bid-Fenster liegt: Sz1 Gebote 01.-07.10.2026 -> Bescheid 27.11.-01.12.2026 | Sz2 08.-14.10. -> 04.-08.12.2026 | Sz3 22.-28.10. -> 04.-06.01.2027 | Sz4 29.10.-04.11. -> 05.-07.01.2027 | Sz5 03.-09.12. -> 15.-17.02.2027. Die frueher gefuehrten 15.-17.02.2027 waren AUSSCHLIESSLICH Szenario 5. Welcher Ast greift, entscheidet sich mit dem Qualifikationsbescheid (16.09., Z65) und den Widerspruchsfristen (07.10. Nichtqualifikations-Review, 18.11. Beschwerdeentscheid). Vertragsunterzeichnung bis 17.03.2027 nur im Sz5-Ast.'
+  werte: ORSTED, SSE, VWS, ENR.DE
+  wirkung: + Turbinen-/Kabel-Lieferkette bei hohem Zuschlagsvolumen
+  status: offen
+  quelle: 'NESO/DESNZ "Allocation Round 8: indicative timeline scenarios for all technologies" (cfdallocationround.uk), Abruf 2026-09-04. confidence hoch fuer die Szenarien-Struktur, das eintretende Szenario ist offen. (Pflegelauf 04.09.)'
+- id: Z36
+  date: '2026-09-21'
+  kat: 5
+  ereignis: WINREVAIR (Sotatercept) sNDA — Datum nur aus PDUFA-Aggregator, keine Merck-PM
+  werte: MRK
+  wirkung: ''
+  status: erledigt
+  quelle: pdufa.bio, 2026-08-04
+  note: (verworfen, nicht belegt, 2026-09-21) | Kein Merck-Beleg fuer eine WINREVAIR-sNDA mit Zieldatum 21.09.2026. Letzte FDA-Aktion Label-Erweiterung 27.10.2025 (ZENITH, merck.com); FDA-Historie (drugs.com, Abruf 2026-09-21) kennt keine offene Entscheidung. Aggregator-Artefakt (pdufa.bio).
+- id: Z40
+  date: '2027-01-01'
+  kat: 1
+  ereignis: EU-Methanverordnung Aequivalenznachweis — Datum steht, aber Kommissionsentwurf sieht Sanktionsverzicht bis 2029 vor
+  werte: TTE.PA, SHEL.L
+  wirkung: '+ nachweisfaehige Lieferanten / - Importeure ohne Aequivalenznachweis. EINSCHRAENKUNG: die Kommissionsempfehlung vom 20.07.2026 setzt NUR die Sanktionen 2027-2029 aus, nicht die Pflicht selbst.'
+  status: offen
+  quelle: '2026-09-02 aus dem Unsicher-Block geholt: Art. 27/28 VO (EU) 2024/1787 greifen zum 01.01.2027 fuer alle nach dem 04.08.2024 geschlossenen oder erneuerten Vertraege. Quelle DG ENER Q&A, HSF Kramer 08/2026. (Pflegelauf 22.08.)'
+- id: Z50
+  date: '2026-10-01'
+  kat: 1
+  ereignis: Durchfuehrungsrechtsakt zur EU-Stahlverordnung (EU) 2026/1384 tritt in Kraft; Importeure muessen bei der Zollabfertigung das Land des "melt and pour" (erste Verfestigung des Rohstahls) nachweisen, um Zollkontingente zu nutzen.
+  werte: MT.AS, SZG.DE, TKA.DE, VOE.VI, ACX.MC, APAM.AS
+  wirkung: 'Angebotsseitig: Umleitungsimporte ueber Drittlaender verlieren den Kontingentzugang und fallen unter den 50%-Ausserkontingentzoll — verknappt das zollfrei verfuegbare Importvolumen, hebt die Kostenbasis stahlverarbeitender Importeure.'
+  status: offen
+  quelle: policy.trade.ec.europa.eu (GD Handel, Konsultation melt-and-pour 04.06.2026, woertlich "Implementing Act ... will enter into force on 1 October 2026"), Abruf 2026-08-22. confidence hoch. (Lauf 22.08., nachgetragen 2026-09-02)
+- id: Z51
+  date: '2026-11-14'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Ivonescimab (Summit/Akeso) plus Chemotherapie bei EGFR-mutiertem, nicht-plattenepithelialem NSCLC nach TKI-Vortherapie; Standard Review, KEINE Priority Review.
+  werte: SMMT, 9926.HK
+  wirkung: 'Nachfrageseitig: Zulassung schafft erstmals eine erstattungsfaehige US-Absatzbasis und loest bei Akeso Meilenstein-/Lizenzzahlungen aus; ein CRL haelt den US-Absatz bei null.'
+  status: offen
+  quelle: Summit Therapeutics IR-PM (BLA-Acceptance, s206.q4cdn.com), Abruf 2026-08-22. confidence hoch. (Lauf 22.08., nachgetragen 2026-09-02)
+- id: Z52
+  date: '2026-11-24'
+  kat: 2
+  ereignis: Terna fuehrt die zweite MACSE-Auktion (Mercato a Termine dello Stoccaggio) fuer das Lieferjahr 2029 durch, Beginn 10:00; ausgeschrieben rund 16 GWh neue Batteriespeicherkapazitaet (Vorrunde 10 GWh).
+  werte: TRN.MI, ENEL.MI, A2A.MI, IRE.MI, ERG.MI, FLNC
+  wirkung: 'Nachfrageseitig: Zuschlag begruendet 15-jaehrige indexierte Kapazitaetsvertraege = vertraglich fixierte BESS-Bestellmenge in Italien mit Lieferziel 2029.'
+  status: offen
+  quelle: 'elettricitafutura.it (Ternas Auktionskalender: "L''asta si terra il 24 novembre 2026 a partire dalle ore 10"), Volumen 16 GWh via modoenergy.com, Abruf 2026-08-22. confidence: Datum hoch, Volumen Sekundaerquelle. (Lauf 22.08., nachgetragen 2026-09-02)'
+- id: Z53
+  date: '2027-01-12'
+  kat: 1
+  ereignis: 'Art. 29 Abs. 1 EU Data Act (VO (EU) 2023/2854) greift: Anbieter von Datenverarbeitungsdiensten duerfen keinerlei Wechselentgelte mehr erheben; die bis dahin zulaessigen reduzierten Egress-/Wechselgebuehren fallen auf null.'
+  werte: AMZN, MSFT, GOOGL, ORCL, IBM, SAP.DE, NET, SNOW, MDB
+  wirkung: 'Umsatz- und Kostenbasis: eine bislang bepreiste Leistung wird fuer EU-Kunden gesetzlich auf null gesetzt; der Umsatzanteil im EU-Geschaeft entfaellt, Migrationskosten der EU-Cloudkunden sinken auf interne Aufwaende.'
+  status: offen
+  quelle: Volltext Art. 29 (dataactkit.eu / eu-data-act.com, wortgleich); EUR-Lex-Direktabruf blockiert. Abruf 2026-08-22. confidence hoch. ⚠️ NET steht seit 2026-09-02 auf der Watchlist (Z62). (Lauf 22.08., nachgetragen 2026-09-02)
+- id: Z54
+  date: '2026-09-01'
+  kat: 2
+  ereignis: 'Gebotstermin der EEG-Innovationsausschreibung (Anlagenkombinationen, praktisch ausschliesslich PV plus Batteriespeicher); Zuschlagsbekanntgabe erfahrungsgemaess rund fuenf Wochen spaeter, also Anfang Oktober 2026. Gebotstermin ist DURCH, die Zuschlagsbekanntgabe steht aus. — TEIL 1/2: GEBOTSTERMIN 01.09.2026. Zuschlagsbekanntgabe ohne publiziertes Datum, daher KEINE zweite Zeile (ein Fund ohne belastbares Datum gehoert nicht in den Radar). (gesplittet 2026-09-07)'
+  werte: S92.DE, EKT.DE, AB9.DE, BYW6.DE, PNE3.DE, FLNC
+  wirkung: 'Nachfrageseitig mit Zeitversatz: das bezuschlagte Volumen ist eine foerderunterlegte Projektpipeline und legt die Bestellmenge fuer Batterie-Systemintegratoren und Grosswechselrichter fest. Gegenlaeufig: Vorjahresrunde >4-fach ueberzeichnet — hohe Ueberzeichnung senkt den Zuschlagswert und die Margenbasis der Projektierer.'
+  status: erledigt
+  quelle: 'bundesnetzagentur.de (Auktionskalender, zwei feste Gebotsrunden 1. Mai / 1. September); Vorjahresrunde BNetzA-PM 2025-10-08. Abruf 2026-08-27. confidence: Termin hoch, Zuschlagsdatum Anfang Oktober ist SCHAETZUNG aus dem Vorjahresrhythmus. (Lauf 27.08., nachgetragen 2026-09-02) | ERLEDIGT 2026-09-07: Gebotstermin 01.09.2026 durch. Zuschlagsbekanntgabe steht aus, hat aber KEIN publiziertes Datum (Schaetzung Anfang Oktober aus dem Vorjahresrhythmus) und bekommt deshalb bewusst keine eigene Zeile — eigene Radar-Regel: ein Fund ohne belastbares Datum gehoert nicht in den Radar. Sobald die BNetzA einen Termin publiziert, als neue Zeile aufnehmen.'
+- id: Z55
+  date: '2027-01-01'
+  kat: 1
+  ereignis: EU-Hoechstmenge fuer das Inverkehrbringen von HFKW nach Anhang VII VO (EU) 2024/573 faellt von rund 42,9 auf rund 21,7 Mio t CO2e; zeitgleich greifen Anhang-IV-Verbote fuer Split-Klimageraete und Waermepumpen bis 12 kW sowie Kaltwassersaetze bis 12 kW mit Kaeltemitteln GWP >=150 (trifft R-32).
+  werte: CC, HON, AKE.PA, LIN, 6367.T, CARR, TT, NIBE-B.ST, ARIS.MI
+  wirkung: 'Angebots- und Kostenbasis: die Halbierung der Quote verknappt Servicegas fuer R-410A/R-32 zum Stichtag und hebt die Quotenpreise. Produktseitig Neu-Inverkehrbringen bis 12 kW mit R-32 verboten, Lagerware bleibt verkaeuflich — mechanisch Lageraufbau H2 2026, Bruch Q1 2027, Umruestungskosten auf R-290.'
+  status: offen
+  quelle: fluorocarbons.org (FPP4EU Anhang-IV-Liste), generalgas.eu (Anhang-VII-Mengen), BFS Kaelte-Klima. Abruf 2026-08-27. confidence mittel — Amtsblatt-Volltext nicht abrufbar, exakte Tonnagen vor Nutzung gegenpruefen. (Lauf 27.08., nachgetragen 2026-09-02)
+- id: Z56
+  date: '2027-01-20'
+  kat: 1
+  ereignis: EU-Maschinenverordnung (EU) 2023/1230 ersetzt die Maschinenrichtlinie 2006/42/EG vollstaendig; KEINE Uebergangsphase mit Wahlrecht — bis 2027-01-19 gilt ausschliesslich die Richtlinie, ab 2027-01-20 ausschliesslich die Verordnung.
+  werte: 'KRN.DE, G1A.DE, DUE.DE, KGX.DE, SAND.ST, SIE.DE, ABBN.SW, SU.PA, SGSN.SW, BVI.PA, ITRK.L ⚠️ QUERVERWEIS AKTUALISIERT (10.09.): G1A.DE ist seit 05.09. AKTIVE Watchlist-Zeile Z68 (LONG Momentum-Continuation), nicht mehr nur Pitch.'
+  wirkung: 'Kostenbasis und Zeitachse: Stichtag knuepft ans Inverkehrbringen an — Anreiz, Auslieferungen und Abnahmen in Q4 2026 vorzuziehen, danach Luecke. Fuer Anhang-I-Teil-A-Maschinen entfaellt die Selbstzertifizierung, notifizierte Stelle wird zwingend: Zertifizierungskosten der Hersteller und Auftragsvolumen der Pruefdienstleister steigen. | QUERVERWEIS AKTUALISIERT 2026-09-07: G1A.DE ist seit dem 05.09. AKTIVE WATCHLIST-ZEILE (Z68, LONG Momentum-Continuation, Verfall 2026-09-25), nicht mehr nur Pitch. Ereignis liegt viereinhalb Monate ausserhalb jedes Setup-Fensters.'
+  status: offen
+  quelle: DGUV Test "Umstellung auf die EU-Maschinenverordnung" (woertlich "Ab dem 20.1.2027 gilt nur noch die Maschinenverordnung"), gestuetzt durch IHK Halle-Dessau. Abruf 2026-08-27. confidence hoch. ⚠️ G1A.DE stand am 2026-09-02 als Pitch im Briefing. (Lauf 27.08., nachgetragen 2026-09-02)
+- id: Z57
+  date: '2027-02-18'
+  kat: 1
+  ereignis: 'Digitaler Batteriepass nach Art. 77 VO (EU) 2023/1542 wird verpflichtend: jede EV-Batterie, jede LMT-Batterie und jede Industriebatterie ueber 2 kWh darf in der EU nur noch mit einem per QR-Code zugaenglichen Pass in Verkehr gebracht werden. Der Omnibus-Akt VO (EU) 2025/1561 hat NUR die Sorgfaltspflichten auf 2027-08-18 verschoben, nicht den Pass.'
+  werte: 373220.KS, 006400.KS, 6752.T, FLNC, VOW3.DE, MBG.DE, BMW.DE, STLAM.MI, SAP.DE
+  wirkung: 'Marktzugangsvoraussetzung ohne Uebergangsfrist fuer Neuware: die Datenanforderung wandert ab Q4 2026 vertraglich durch die Lieferkette und hebt die Kostenbasis je Batterie; Nachfrage nach Traceability-/DPP-Software steigt. Importeure ohne Datenkette ziehen Volumen vor — Vorzieheffekt Q4 2026/Q1 2027, Luecke danach.'
+  status: offen
+  quelle: 'CMS Legal Update 2025-11-25 und Minespider zum Kommissions-Update Mai 2026 (DG GROW: "the obligation remains on track for 18 February 2027"). Abruf 2026-08-27. confidence mittel — Art. 77 Abs. 1 im Amtsblatt nicht gegengelesen. (Lauf 27.08., am 22.08. bewusst zurueckgehalten, nachgetragen 2026-09-02)'
+- id: Z58
+  date: '2026-11-27'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer BBP-418 (Ribitol, BridgeBio) bei Limb-Girdle-Muskeldystrophie Typ 2I/R9; Priority Review, NDA-Annahme 2026-05-27.
+  werte: BBIO
+  wirkung: 'Nachfrageseitig aus dem Nichts: fuer LGMD2I/R9 existiert in den USA keine zugelassene Therapie. Zulassung schafft erstmals eine erstattungsfaehige Absatzbasis, ein CRL haelt den Umsatz bei null. Kein bestehender Umsatzstrom steht zur Disposition.'
+  status: offen
+  quelle: 'BridgeBio IR-PM 2026-05-27 (woertlich "PDUFA target action date of November 27, 2026"), im Q2-Bericht 2026-08-10 bestaetigt. Abruf 2026-08-27. confidence hoch. ⚠️ CLUSTER-HINWEIS: 27.11. (Fr nach Thanksgiving, verkuerzte Sitzung) und COGT 30.11. liegen zwei HT auseinander — EIN Sperrfenster ab ca. 20.11. deckt beide ab. (Lauf 27.08., nachgetragen 2026-09-02)'
+- id: Z59
+  date: '2026-11-30'
+  kat: 5
+  ereignis: 'Zwei FDA-PDUFA-Zieldaten auf denselben Wirkstoff Bezuclastinib (Cogent Biosciences): 2026-11-30 in Kombination mit Sunitinib bei GIST nach Imatinib-Vortherapie (Priority Review), 2026-12-30 als Monotherapie bei nicht-fortgeschrittener systemischer Mastozytose (Standard Review).'
+  werte: COGT
+  wirkung: 'Nachfrageseitig aus dem Nichts — Cogent hat kein vermarktetes Produkt. Die Termine sind NICHT unabhaengig: gleicher Wirkstoff, gleiche CMC-Akte, ein Herstellungs- oder Inspektionsbefund im ersten Verfahren schlaegt mechanisch aufs zweite durch. Als verbundenes Paar fuehren.'
+  status: offen
+  quelle: Cogent IR-PM 2026-05-28 (GIST) und 2026-03-16 (NonAdvSM). Abruf 2026-08-27. confidence hoch; Marktkapitalisierung und KO-Abdeckung NICHT verifiziert — vor Nutzung Liquiditaet pruefen. (Lauf 27.08., nachgetragen 2026-09-02)
+- id: Z60
+  date: '2027-01-06'
+  kat: 5
+  ereignis: FDA-Entscheidung ANKTIVA-sBLA (ImmunityBio).
+  werte: IBRX
+  wirkung: 'Nachfrageseitig: Indikationserweiterung auf einem bereits zugelassenen Wirkstoff.'
+  status: offen
+  quelle: ImmunityBio IR-PM 2026-05-19. Abruf 2026-08-27. Im Lauf 27.08. bewusst ohne YAML-Block gefuehrt ("falls spaeter gebraucht"); Marktkapitalisierung und KO-Abdeckung nicht verifiziert. (nachgetragen 2026-09-02)
+- id: Z61
+  date: '2027-02-28'
+  kat: 5
+  ereignis: FDA-Entscheidung VOXZOGO-sNDA (BioMarin) auf regulaere Zulassung.
+  werte: BMRN
+  wirkung: 'Nachfrageseitig: Umwandlung einer beschleunigten in eine regulaere Zulassung, Absicherung eines bestehenden Umsatzstroms.'
+  status: offen
+  quelle: BioMarin IR-PM 2026-07-13. Abruf 2026-08-27. Im Lauf 27.08. bewusst ohne YAML-Block gefuehrt. (nachgetragen 2026-09-02)
+- id: Z62
+  date: '2026-09-11'
+  kat: 1
+  ereignis: 'Meldepflichten der EU-Cyberresilienzverordnung (CRA, VO (EU) 2024/2847) werden anwendbar: Hersteller von Produkten mit digitalen Elementen muessen aktiv ausgenutzte Schwachstellen und schwerwiegende Sicherheitsvorfaelle melden — Fruehwarnung binnen 24 h, Vollmeldung binnen 72 h, Abschlussbericht binnen 14 Tagen (Schwachstelle) bzw. eines Monats (Vorfall), ueber die Single Reporting Platform an CSIRT und ENISA. Uebrige CRA-Pflichten erst 2027-12-11.'
+  werte: 'SIE.DE, ABBN.SW, SU.PA, PHIA.AS, LOGN.SW, CRWD, PANW ⚠️ QUERVERWEIS AKTUALISIERT (10.09.): PANW-Zeile Z54 ist seit 10.09. ARCHIVIERT (PEAD-Fenster zu). Dieser Radar-Eintrag ist damit der einzige Rueckweg fuer PANW in die Pipeline.'
+  wirkung: 'Kostenbasis auf der Herstellerseite, Nachfrage auf der Toolingseite. Die 24/72-Stunden-Taktung erzwingt einen dauerhaft besetzten PSIRT-Prozess und eine belastbare Software-Stueckliste je Produkt — laufender Aufwand, kein Einmaleffekt. Gegenrichtung: die Pflicht erzeugt Bedarf an Schwachstellen-Management und Incident-Response zum Stichtag. WICHTIG: breit und je Emittent klein — Sektor-Datum, kein | QUERVERWEIS AKTUALISIERT 2026-09-07: Die PANW-Watchlist-Zeile (Z54) VERFAELLT AM 08.09., drei Tage vor diesem Termin — der Verweis laeuft danach ins Leere, solange die Zeile nicht neu gefasst wird.'
+  status: erledigt
+  quelle: 'Europaeische Kommission, digital-strategy.ec.europa.eu/en/policies/cra-reporting, woertlich "As of 11 September 2026, manufacturers are required to report actively exploited vulnerabilities and severe incidents". Abruf 2026-08-31. confidence hoch. ⚠️ QUERVERWEIS AKTUALISIERT 2026-09-08: PANW stand als PEAD-Event-Watch auf der Watchlist (Z54); diese Zeile VERFAELLT AM 2026-09-08, also drei Tage VOR diesem Termin. Der Verweis laeuft ab dem 09.09. ins Leere. Wenn PANW zum CRA-Stichtag getrackt bleiben soll, muss die Watchlist-Zeile neu gefasst oder verlaengert werden — sonst ist der einzige getrackte Wert dieser Radar-Zeile SIE.DE (archiviert). (Lauf 31.08., nachgetragen 2026-09-02, Verfall-Korrektur 2026-09-08) || ERLEDIGT 2026-09-15 (INBOX 14.09.): Meldepflichten am 2026-09-11 in Kraft getreten, ENISA-Single-Reporting-Platform seit demselben Tag live, keine Verschiebung. Kein getrackter Wert mehr betroffen (SIE.DE und PANW Z54 beide archiviert), keine messbare Einzelwert-Reaktion
+    — Sektor-Stichtag wie eingeordnet.'
+- id: Z63
+  date: '2026-11-26'
+  kat: 2
+  ereignis: 'Niederlande, Ausschreibung Offshore-Wind IJmuiden Ver Gamma-A UND Gamma-B (zusammen 2 GW): Bewerbungsfenster 26.11.-10.12.2026, Zuschlagsentscheidung Q1 2027. Doppelstruktur — vorrangig subventionsfreie Marktauktion nach hoechster Einmalzahlung, alternativ 15-Jahres-CfD mit Strike bis 11,6 ct/kWh und Floor 3,7 ct/kWh, 100 Mio EUR Bankgarantie. ERSETZT die alte Zeile Z37 ("2026-09 erwartet", 1 GW) — Datum UND Volumen dort falsch.'
+  werte: ORSTED.CO, VWS.CO, ENR.DE, PRY.MI, NEX.PA
+  wirkung: 'Nachfrageseitig mit langem Zeitversatz und harter Zweiteilung. Zwei vergebene Gigawatt legen Turbinen-, Kabel- und Installationsmenge fuers Ende des Jahrzehnts fest — Mengenwirkung fuer die Lieferkette unabhaengig vom Mechanismus. Fuer die Bieterseite gegenlaeufig: gewinnt die Marktauktion, tragen die Zuschlagsempfaenger das Preisrisiko selbst; beim CfD wandert es zum Staat.'
+  status: offen
+  quelle: renewable-energy-industry.com ("Netherlands Shifts Course on Offshore Wind Tenders"), gestuetzt durch offshorewind.biz (Ergaenzung des zweiten Standorts 2026-04-06). Abruf 2026-08-31. confidence mittel — RVO-Verfahrensseite nicht direkt gegengelesen. ⚠️ ENR.DE, PRY.MI und NEX.PA sind These-A-Korb-Werte. (Lauf 31.08., nachgetragen 2026-09-02)
+- id: Z64
+  date: '2027-01-21'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Z-Rostudirsen (Dyne Therapeutics) bei Duchenne-Muskeldystrophie mit Exon-51-Skipping; BLA-Annahme mit Priority Review 2026-07-20, beschleunigte Zulassung auf Basis der Dystrophin-Produktion als Surrogatendpunkt.
+  werte: DYN, SRPT
+  wirkung: 'Zweiseitig, und das ist der Punkt: fuer DYN entstuende bei Zulassung erstmals eine erstattungsfaehige US-Absatzbasis, ein CRL haelt den Umsatz bei null. Fuer SRPT ist derselbe Termin ein ANGEBOTSereignis gegen den eigenen Bestand — Exon-51 ist die Indikation von Exondys 51. Der Termin wirkt auf zwei Werte in ENTGEGENGESETZTE Richtung: als verbundenes Paar fuehren.'
+  status: offen
+  quelle: Dyne Therapeutics IR-PM 2026-07-20 (GlobeNewswire); Datum in Practical Neurology und NeurologyLive bestaetigt. Abruf 2026-08-31. confidence hoch — AdComm-Einberufung nicht geprueft. (Lauf 31.08., nachgetragen 2026-09-02)
+- id: Z65
+  date: '2026-09-16'
+  kat: 2
+  ereignis: 'UK CfD Allocation Round 8: NESO teilt den Bewerbern das Ergebnis der Qualifikationspruefung mit. Erste harte Weiche der Runde — sie entscheidet mit ueber die Lage des Sealed-Bid-Fensters und damit darueber, welches der fuenf Ergebnis-Szenarien greift (Z32). Folgetermine: 07.10.2026 Ergebnis der Nichtqualifikations-Reviews, 18.11.2026 Entscheid ueber Qualifikations-Beschwerden.'
+  werte: ORSTED.CO, SSE.L, VWS.CO, ENR.DE, PRY.MI, NEX.PA
+  wirkung: Mengen-Signal ohne Preis. Zahl und Volumen der qualifizierten Projekte legen die Obergrenze dessen fest, was in AR8 ueberhaupt bezuschlagt werden kann — die Auftragsmenge fuer Turbinen-, Kabel- und Installationslieferanten ist danach nach oben gedeckelt, aber noch nicht verteilt. Keine Aussage ueber Zuschlagspreise.
+  status: erledigt
+  quelle: 'erledigt 2026-09-17 - Benachrichtigung an die Bewerber, NICHT oeffentlich: cfdallocationround.uk/news ohne Eintrag nach 20.07.2026 (Abruf 2026-09-17). Kursreaktion 17.09. unauffaellig (ENR +3,34 % im Kontext Siemens-Platzierung, PRY +1,19 %, NEX +0,37 %). Folgetermine als eigene Zeilen gefuehrt. || NESO/DESNZ AR8 indicative timetable (cfdallocationround.uk), woertlich "Applicants notified of outcome of qualification assessment" 16.09.2026. Abruf 2026-09-04. confidence hoch. *** ACHTUNG: ENR.DE, PRY.MI und NEX.PA sind These-A-Korb-Werte; PRY.MI ist aktive Watchlist-Zeile (Z39), NEX.PA war OFFENE POSITION #8 AV — KORRIGIERT 2026-09-15 (INBOX 14.09.): am 2026-09-14 verkauft, Watchlist-Zeile Z38 am selben Tag archiviert (Note #649). Getrackt bleiben PRY.MI (Z39, aktiv, Verfall 2026-09-22) und ENR.DE (Z43, EVENT-WATCH, geparkt bis 2026-11-14). Der Termin 2026-09-16 liegt damit weiterhin in einem aktiven Setup-Fenster. (Lauf 04.09., eingetragen 07.09.)'
+- id: Z66
+  date: '2026-11-03'
+  kat: 2
+  ereignis: 'ERSTE deutsche Kapazitaetsmarkt-Auktion (StromVKG) — TEIL 2/2: ZUSCHLAGSBEKANNTGABE 03.11.2026. Abgespalten von Z14 am 2026-09-07 (Zwei-Termin-Problem). ERGAENZT 2026-09-09: Vertragslaufzeit der bezuschlagten Kapazitaet 15 Jahre.'
+  werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
+  wirkung: + Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher als Gegenseite. Erst mit dem Zuschlag steht die Menge je Technologie fest.
+  status: offen
+  quelle: bundesnetzagentur.de / boersen-zeitung.de, 2026-08-04; Split 2026-09-07.
+- id: Z67
+  date: '2026-09-21'
+  kat: 4
+  ereignis: 'DAX-Familie planmaessige Ueberpruefung — TEIL 2/2: AENDERUNGEN WIRKSAM 21.09.2026, Verkettung nach Schluss 18.09. MDAX +Stroeer / -Hugo Boss; SDAX +Hugo Boss / -Stroeer; TecDAX +OHB / -CANCOM; DAX unveraendert. Abgespalten von Z13 am 2026-09-07.'
+  werte: SAX.DE (Stroeer, AUFSTIEG SDAX->MDAX), BOSS.DE, OHB.DE, COK.DE
+  wirkung: 'Index-Flow in der Schlussauktion 18.09. — mechanischer Kaufdruck auf die Aufsteiger, Verkaufsdruck auf die Absteiger, danach Ruecksetzer-Neigung. KORRIGIERT 2026-09-15 (INBOX 14.09.): Der Verweis auf SAX.DE ist doppelt veraltet — Z57 wurde am 2026-09-14 archiviert (Verfall + TIW + widerlegte Flow-These, Note #655). Einziger aktiv getrackter Wert dieser Zeile ist jetzt BOSS.DE (Watchlist Z74, LONG Trend-Pullback, Verfall 2026-09-29) — ein MDAX-ABSTEIGER, also mechanischer Nettoverkaufsdruck in der Verkettungsauktion 2026-09-18. KONSEQUENZ (Note #654): VOR DEM 19.09. NICHT MANUELL EINSTEIGEN; die Zone wandert mit der EMA20 mit und laeuft nicht davon. | Die Buyback-Stuetze der Zeile Z74 existiert nicht mehr — Programm seit 08.09. ausgesetzt (Frasers-Vorstoss > 50 %), s. Watchlist-Korrektur Z74.'
+  status: erledigt
+  quelle: STOXX-PM 03.09.2026, Abruf 2026-09-04; Split und SAX.DE-Kreuzung 2026-09-07.
+  note: '(2026-09-21) | DAX-Familien-Aenderungen am 21.09. wirksam (dpa-AFX Index-Monitor 21.09.: MDAX +Stroeer / -Hugo Boss). Kurswirkung gering: BOSS.DE 18.09. O 37,93/H 38,28/L 37,93/C 37,99, 21.09. 12:32 38,06 (+0,18%). SAX.DE 18.09. C 36,44, 21.09. 36,14. Kein messbarer Abgabedruck - dritter Kat-4-Termin in Folge ohne sichtbare Einzelwertreaktion.'
+- id: Z68
+  date: '2026-10-01'
+  kat: 2
+  ereignis: BNetzA-Ausschreibung Biomasse, Gebotstermin 01.10.2026 24:00. Volumen 617.326 kW = Haelfte des Jahresvolumens von 1.126 MW. Hoechstwerte 19,43 ct/kWh (Neuanlagen) und 19,83 ct/kWh (Bestandsanlagen). Gehoert als CLUSTER zu Z16 (Solar Dach, gleicher Gebotstermin).
+  werte: EKT.DE, AB9.DE, PNE3.DE, VER.VI, MTX.DE
+  wirkung: Nachfrageseitig, klein und mit langem Zeitversatz. Biomasse ist im deutschen Ausschreibungssystem ein Nischensegment — Mengenwirkung je Emittent gering, Tickerliste illustrativ.
+  status: offen
+  quelle: bundesnetzagentur.de, Ausschreibung Biomasse Gebotstermin 01.10.2026 (Primaerquelle, Volumen und beide Hoechstwerte woertlich). Abruf 2026-09-04. confidence hoch — Zuschlagsbekanntgabe auf der Seite nicht datiert. (Lauf 04.09., eingetragen 07.09.)
+- id: Z69
+  date: '2027-01-01'
+  kat: 1
+  ereignis: UK CBAM (Carbon Border Adjustment Mechanism) startet. Importe nach Grossbritannien in den Sektoren Aluminium, Zement, Duengemittel, Wasserstoff sowie Eisen und Stahl werden mit einer Abgabe auf die eingebetteten Emissionen belegt, gemindert um einen im Herkunftsland nachweislich gezahlten CO2-Preis. Glas und Keramik sind fuer 2027 ausdruecklich AUSGENOMMEN.
+  werte: MT.AS, TKA.DE, SZG.DE, VOE.VI, ACX.MC, HEI.DE, CRH, NHY.OL, YAR.OL
+  wirkung: 'Kostenbasis auf der Importseite, spiegelbildlich zum EU-CBAM. Fuer Lieferungen nach UK aus Laendern ohne vergleichbaren CO2-Preis steigt die Landed-Cost-Basis; UK-Inlandsproduzenten der fuenf Sektoren verlieren den bisherigen Importkosten-Nachteil. Fuer EU-Exporteure haengt die Wirkung an der Anrechnung des EU-ETS-Preises — GEGENLAEUFIG, eine funktionierende EU-UK-ETS-Verknuepfung neutralisiert die Abgabe fuer EU-Ware weitgehend. Zeitlich vorgelagert: Anreiz, Lieferungen nach UK ins Q4 2026 vorzuziehen, danach Luecke.'
+  status: offen
+  quelle: gov.uk "Introduction of a UK Carbon Border Adjustment Mechanism from January 2027 — Government response"; HMRC-Veroeffentlichung 05.08.2026; Pinsent Masons. Abruf 2026-09-07. confidence hoch — Registrierungsschwelle und Abgabenformel NICHT gegengelesen. (Lauf 07.09.)
+- id: Z70
+  date: '2027-01-01'
+  kat: 1
+  ereignis: 'EU-Emissionshandel Seeverkehr, naechste Geltungsstufe: Offshore-Schiffe ab 5.000 BRZ fallen ab dem 01.01.2027 unter das EU-ETS (RL 2003/87/EG i.d.F. der RL (EU) 2023/959). Bis dahin nur MRV-Berichtspflicht.'
+  werte: SUBC.OL, TDW, SDRL, DOF.OL, CADLR.CO, FTI
+  wirkung: Kostenbasis je Betriebstag im EU-Fahrtgebiet. Fuer jede in den Geltungsbereich fallende Reise sind ab 2027 EUA abzugeben — das hebt die Charterkosten fuer Versorger-, Errichter- und Bohrschiffe und damit indirekt die Kostenbasis der Offshore-Wind-Errichtung, die genau diese Flotte chartert. Wirkung ist mengenproportional zum Bunkerverbrauch, nicht zum Umsatz.
+  status: offen
+  quelle: 'Europaeische Kommission, "FAQ — Maritime transport in EU ETS", climate.ec.europa.eu, woertlich "From 2027: offshore ships of or above 5000 GT". Abruf 2026-09-07. confidence hoch — Schiffsklassen-Definition nach Art. 3g/3ga nicht im Amtsblatt gegengelesen, Tickerliste illustrativ. (Lauf 07.09.)'
+- id: Z71
+  date: '2026-11-04'
+  kat: 5
+  ereignis: 'Ahold Delhaize Q3-2026-Zahlen. EINZIGER echter Katalysator fuer die AD.AS-Short-These: Die Guidance "mittleres bis hohes einstelliges EPS-Wachstum zu konstanten Kursen" steht gegen ein Q2 mit -1,4% waehrungsbereinigt. Falsifikat/Bestaetigung faellt hier.'
+  werte: AD.AS
+  wirkung: Binaer. Guidance-Senkung bestaetigt die Short-These (JPM-Ziel 24,07 EUR); bestaetigte Guidance loest bei Konsensziel 38,58 EUR und 0,00% gemeldeten Shorts eine Gegenbewegung aus.
+  status: offen
+  quelle: aholddelhaize.com/investors Finanzkalender, Abruf 2026-09-08. confidence hoch. Angelegt im Zuge der AD.AS-Recherche 08.09.
+- id: Z72
+  date: '2026-10-13'
+  kat: 1
+  ereignis: Ahold Delhaize ausserordentliche Hauptversammlung. Einladung am 2026-08-31 veroeffentlicht; Tagesordnung nicht abrufbar, mutmasslich Bestellung von Thierry Garnier zum CEO (Amtsantritt 2027) — VERMUTUNG, kein Beleg.
+  werte: AD.AS
+  wirkung: Gering. Personalie ohne Zahlenbezug. Nur relevant, falls die Agenda etwas anderes enthaelt — vor dem Termin nachlesen.
+  status: offen
+  quelle: 'marketscreener.com Kalender + newsroom.aholddelhaize.com, Abruf 2026-09-08. confidence mittel (Datum 12. oder 13.10. je Quelle, Agenda unbelegt). || KORRIGIERT 2026-09-15 (INBOX 14.09.): Datum 2026-10-12 -> 2026-10-13. Die Ahold-Delhaize-Mitteilung nennt woertlich den 13. Oktober 2026; das Sheet trug die MarketScreener-Lesart. Agenda weiterhin nicht oeffentlich; die Vermutung "Bestellung Thierry Garnier" bleibt Vermutung, ist durch die CEO-Nominierung vom Mai 2026 aber plausibel.'
+- id: Z73
+  date: '2026-12-29'
+  kat: 2
+  ereignis: ZWEITE deutsche Kapazitaetsmarkt-Auktion (StromVKG) — GEBOTSFRIST 29.12.2026. Erneut 4.500 MW. Angelegt 2026-09-09 bei der Auswertung von Z14; Zuschlagstermin noch nicht publiziert -> bewusst KEINE Teil-2-Zeile (kein erfundenes Datum).
+  werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
+  wirkung: + Gasturbinen-/Kraftwerksbau. Regelbare Lasten und Speicher sind ab den Runden 2027/2029 zugelassen, in Runde 1 und 2 nicht.
+  status: offen
+  quelle: c-ober.de/blog/kapazitaetsmarkt-erste-auktion-2026, Abruf 2026-09-09. confidence mittel (Sekundaerquelle; gegen bundesnetzagentur.de gegenlesen).
+- id: Z75
+  date: '2026-09-24'
+  kat: 3
+  ereignis: 'SpaceX-Lockup, naechste Stufe: bis zu 328,4 Mio Aktien (~7 Prozent) werden handelbar. Die Zeile ersetzt die am 2026-09-02 als "ersatzlos weggefallen" gestrichene Stufe — sie war nicht weggefallen. Vorgelagert wurden am 2026-09-10 zusaetzlich 59,1 Mio Aktien von Rule-144-Affiliates vorzeitig aus Standoff-Vereinbarungen freigegeben.'
+  werte: SPCX
+  wirkung: 'Angebotsseitig: handelbares Volumen waechst erneut um rund 7 Prozent des ausstehenden Kapitals. Die Erfahrung dieser Serie widerspricht der naheliegenden Erwartung — die weit groessere 20-Prozent-Freigabe am 2026-08-06 ging mit +6 Prozent Kurs einher. Handelbar wird ANGEBOT, nicht Verkaufsdruck; ob verkauft wird, sagt ein Lockup-Datum nicht.'
+  status: erledigt
+  quelle: 'purepowerpicks.com "SpaceX (SPCX) Lockup Schedule: When Insider Shares Unlock (2026-2027)", Abruf 2026-09-14. Trackerquelle, kein Prospektzugriff. confidence NIEDRIG — Kategorie-Lehre Kat 3 unveraendert: ein Lockup ist ein Vertrag, kein Kalender; Prospektpassage "Shares Eligible for Future Sale" in vier Laeufen nicht direkt lesbar. (INBOX 2026-09-14, eingetragen 2026-09-15) | ERLEDIGT 2026-09-28: Stufe lief 24.09. wie datiert, 328 Mio Aktien handelbar, SPCX fiel am Unlock-Tag (Invezz). Muster 3 Stufen: +6,1% / -3,9% / fallend - Vorzeichen dreht mit steigendem Float.'
+- id: Z76
+  date: '2026-09-27'
+  kat: 1
+  ereignis: 'Richtlinie (EU) 2024/825 ueber die Staerkung der Verbraucher fuer den gruenen Wandel (EmpCo) wird in der gesamten EU anwendbar. Drei neue Verbotstatbestaende in Anhang I der Richtlinie ueber unlautere Geschaeftspraktiken: Nachhaltigkeitssiegel ohne anerkanntes Zertifizierungssystem; produkt- oder unternehmensbezogene Umweltaussagen, die tatsaechlich nur einen Teilaspekt betreffen; generische Umweltaussagen ("gruen", "umweltfreundlich") ohne nachgewiesene anerkannt hervorragende Umweltleistung. Gilt ausdruecklich auch fuer Ware, die vor dem Stichtag ausgeliefert wurde und im Regal steht.'
+  werte: OR.PA, BEI.DE, HEN3.DE, AD.AS, HFG.DE, NESN.SW, ULVR.L, BN.PA, ZAL.DE, ADS.DE
+  wirkung: 'Kostenbasis und Marktzugang auf der Anbieterseite, breit und je Emittent klein. Verpackungen, Etiketten und Werbemittel mit generischen Umweltaussagen muessen ersetzt oder belegt werden; der Aufwand faellt einmalig beim Umstellen und danach laufend in der Claim-Pruefung an. Keine Mengen- oder Preiswirkung auf das Produkt selbst. Die Gegenrichtung ist klein und real: Anbieter mit zertifizierten Siegeln verlieren den Wettbewerb gegen unbelegte Claims. SEKTOR-DATUM, KEIN EINZELWERT-TERMIN — dieselbe Klasse wie Z62 (CRA), die keine messbare Einzelwertreaktion hatte. KEIN Fall fuer die 5-Handelstage-Sperrfrist.'
+  status: erledigt
+  quelle: 'Richtlinie (EU) 2024/825, Anwendungsdatum Art. 4; bestaetigt bei coslaw.eu ("Generic environmental claims and practices banned in the EU from 27 September 2026") und im Q&A der Kommission zur EmpCo-Richtlinie (transition-pathways.europa.eu). Abruf 2026-09-14. confidence HOCH — Anwendungsdatum und Verbotstatbestaende belegt; die nationalen Umsetzungsgesetze und ihre Sanktionshoehen NICHT je Mitgliedstaat gegengelesen. ⚠️ Getrackt: OR.PA ist offene Position #87; BEI.DE Z78, AD.AS Z73 und HFG.DE Z79 sind aktive Short-Zeilen. (INBOX 2026-09-14, eingetragen 2026-09-15) | ERLEDIGT 2026-09-28: seit 27.09. EU-weit anwendbar, keine Verschiebung; Stichtag Sonntag, Kursreaktion nicht messbar.'
+- id: Z77
+  date: '2027-01-01'
+  kat: 1
+  ereignis: 'FRTB: Die Eigenmittelanforderungen fuer das Marktrisiko nach dem EU-Bankenpaket (CRR3) werden zum 01.01.2027 anwendbar. Die Kommission hat am 2026-06-04 einen delegierten Rechtsakt mit befristeten Anpassungen angenommen — ein Multiplikator daempft die Kapitalwirkung fuer EU-Banken, und zwar drei Jahre lang ab demselben Stichtag. Der Rechtsakt lief zum Zeitpunkt der Veroeffentlichung noch in der dreimonatigen Einspruchsfrist von Parlament und Rat (verlaengerbar um weitere drei Monate).'
+  werte: INGA.AS, DBK.DE, CBK.DE, BNP.PA, ACA.PA, GLE.PA, ISP.MI, UCG.MI, SAN.MC, UBSG.SW, BARC.L, HSBA.L
+  wirkung: 'Kostenbasis des Handelsbuchs. Hoehere Eigenmittelunterlegung je Einheit Marktrisiko verteuert Market-Making und Eigenhandel und wirkt damit auf die Kapitalallokation der Handelssparten — am staerksten bei Haeusern mit grossem Handelsbuch, am schwaechsten bei Retail- und Kommerzbanken. Der Multiplikator ist die Gegenrichtung: er ist ausdruecklich als Schutz der Wettbewerbsfaehigkeit gegenueber Nicht-EU-Haeusern gedacht und nimmt dem Stichtag einen Teil seiner Wirkung. ACHTUNG ZWEISEITIG: die Einspruchsfrist kann den Rechtsakt noch kippen — dann traete der ungedaempfte Standard in Kraft, was die Wirkung VERSTAERKT statt sie aufzuheben.'
+  status: offen
+  quelle: Europaeische Kommission, "Commission adopts temporary adjustments to Basel III Market Risk Rules to safeguard EU banks' competitiveness", 2026-06-04, woertlich "apply for three years from 1 January 2027"; EBA-Papier "EBA consideration on the application of the FRTB from 1 January 2027" (08/2026). Abruf 2026-09-14. confidence HOCH — Datum und Befristung woertlich belegt; Ausgang der Einspruchsfrist offen, Tickerliste illustrativ und nicht auf Handelsbuch-Anteil je Emittent geprueft. ⚠️ INGA.AS Z56 wurde am 2026-09-15 archiviert; der FRTB-Termin liegt ohnehin gut drei Monate hinter jedem laufenden Setup-Fenster. (INBOX 2026-09-14, eingetragen 2026-09-15)
+- id: Z78
+  date: '2026-10-07'
+  kat: 2
+  ereignis: 'UK CfD AR8: Ergebnis der Reviews gegen Nichtqualifikation (Folgetermin zu Z65). Erster Termin, an dem die Zahl qualifizierter Projekte praktisch feststeht; oeffentliche Veroeffentlichung nicht zugesagt.'
+  werte: ORSTED.CO, SSE.L, VWS.CO, ENR.DE, PRY.MI, NEX.PA
+  wirkung: Mengen-Signal ohne Preis (s. Z65).
+  status: offen
+  quelle: NESO/DESNZ AR8 indicative timetable (cfdallocationround.uk). Angelegt 2026-09-17 als Zeile 2/3 der Kette Z65.
+- id: Z79
+  date: '2026-11-18'
+  kat: 2
+  ereignis: 'UK CfD AR8: Entscheid ueber Qualifikations-Beschwerden (Folgetermin zu Z65). Danach steht die Liste der Bieter endgueltig, das Sealed-Bid-Fenster folgt.'
+  werte: ORSTED.CO, SSE.L, VWS.CO, ENR.DE, PRY.MI, NEX.PA
+  wirkung: Mengen-Signal ohne Preis (s. Z65).
+  status: offen
+  quelle: NESO/DESNZ AR8 indicative timetable (cfdallocationround.uk). Angelegt 2026-09-17 als Zeile 3/3 der Kette Z65.
+- id: Z80
+  date: '2026-09-23'
+  kat: 5
+  ereignis: 'McDonald''s Investor Day: Ziele 2027 fuer Umsatz, Marge, Remodel-Capex, Franchisee-Beitraege, Traffic und Beverage. Binaerer Katalysator fuer die Short-Zeile Watchlist Z92.'
+  werte: MCD
+  wirkung: 'Guidance-Event: glaubwuerdige Ziele = Short-These geschwaecht, Enttaeuschung = Fortsetzung des Abwaertstrends.'
+  status: erledigt
+  quelle: 'Investor Day am 23.09. stattgefunden (>NEXT-Programm), Kurs -4,81%, Watchlist Z92 am 24.09. neu gefasst. || seekingalpha.com/news/4643295 (nur Ueberschrift), in.investing.com (2026-09-14), Abruf 2026-09-17. Datum beim naechsten Pflegelauf nachtragen. | 2026-09-21: Datum 2026-09-23 lt. ad-hoc-news.de 17.09.2026 woertlich ''the company has scheduled an Investor Day for September 23, 2026''; confidence MITTEL (keine IR-PM, Events-Seite ohne Datum). Folge WL Z92 (MCD Short, Aktivierung 2026-10-01): nach dem 23.09. gegen den Chart neu halten (binaerer Katalysator); Kurs 18.09. 248,24 liegt bereits UNTER der Zone 252-256.'
+- id: Z81
+  date: '2026-11-10'
+  kat: 1
+  ereignis: USTR-Section-301-Hafengebuehren auf chinesisch betriebene/gebaute Schiffe (Annex I/II) und auf Nicht-US-Autotransporter (Annex III) werden wieder faellig; zeitgleich endet die Aussetzung der chinesischen Gegen-Hafengebuehren auf US-Schiffe — Aussetzung lief 2025-11-10 bis 2026-11-09, keine Verlaengerung publiziert
+  werte: SBLK, MAERSK-B.CO, HLAG.DE, ZIM, 1919.HK, WAWI.OL, GOGL
+  wirkung: 'Kostenbasis je US-Hafenanlauf fuer Betreiber chinesisch gebauter bzw. betriebener Tonnage, bei Autotransportern nach Nettotonnage; Anreiz zur Flottenumschichtung auf Nicht-China-Tonnage fuer US-Routen. Chinesische Gegengebuehren belasten US-verbundene Schiffe in chinesischen Haefen. Gehoert zum 10.11.-Cluster (Z20/Z21) und haengt am Trump-Xi-Gipfel (Z15) — eine Verlaengerung im Gipfelpaket wuerde den Termin entwerten. Getrackt: SBLK Z27 (aktiv bis 07.10.), MAERSK-B.CO Z29 (aktiv bis 23.09.).'
+  status: offen
+  quelle: Watson Farley & Williams, 'Suspension and Amendments to US and China Port Fees – Current Status' (wfw.com, 21.11.2025), woertlich Aussetzung 'November 10, 2025 through November 9, 2026'; Holland & Knight, 'USTR Port Fee Suspension' (hklaw.com, 11/2025). Abruf 2026-09-21 | confidence MITTEL — Datum hart belegt, Verlaengerung im Gipfel moeglich; Tickerliste illustrativ, Flottenanteil NICHT geprueft
+  note: 'ZUSATZ 2026-09-28: Widerspruch offen - Untersuchung Schiffbau weiter pausiert, publiziertes Ende der Gebuehren-Aussetzung unveraendert 2026-11-09 23:59 EST. Datum bleibt bis zur Federal-Register-Notice.'
+- id: Z82
+  date: '2026-10-28'
+  kat: 1
+  ereignis: 'UK Autumn Budget 2026 (Chancellor John Healey) — Steuer- und Abgabenpaket inkl. Business Rates; bereits zugesagt: Steuersenkung fuer Pubs und Clubs, Beteiligung der Mayors an Einkommensteuer und Business Rates'
+  werte: WTB.L, BARC.L, HSBA.L, LLOY.L, NWG.L, TSCO.L, SBRY.L
+  wirkung: 'Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Getrackt: WTB.L Z76 (Short, Verfall 30.09. — liegt VOR dem Termin).'
+  status: offen
+  quelle: 'Grant Thornton UK ''Autumn Budget 2026: what we know so far'', woertlich ''The Autumn Budget will take place on 28 October 2026''; Which? 14.09.2026. Abruf 2026-09-21 | confidence HOCH fuer das Datum, NIEDRIG fuer den Inhalt'
+- id: Z83
+  date: '2027-03-10'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum Lonvoguran Ziclumeran (Lonvo-z, Intellia) bei hereditaerem Angioedem Typ 1/2 ab 16 J.; Priority Review, BLA-Annahme 2026-09-08. Erste potenzielle Zulassung einer In-vivo-CRISPR-Therapie.
+  werte: NTLA
+  wirkung: Nachfrageseitig aus dem Nichts (kein vermarktetes Produkt) + Plattform-Praezedenz fuer In-vivo-Editing. Binaer.
+  status: offen
+  quelle: Intellia PR 2026-09-08 (GlobeNewswire / ir.intelliatx.com), PDUFA "March 10, 2027"; Abruf 2026-09-28 | confidence hoch
+- id: Z84
+  date: '2027-01-29'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum Ulixacaltamide HCl (Praxis Precision Medicines) bei essentiellem Tremor Erwachsener; NDA-Annahme 2026-04-14.
+  werte: PRAX
+  wirkung: 'Nachfrageseitig aus dem Nichts: keine spezifisch zugelassene orale Therapie, grosse Indikation. Binaer.'
+  status: offen
+  quelle: Praxis PR 2026-04-14 (GlobeNewswire), gegengelesen asyro.com PDUFA-Kalender 2027; Abruf 2026-09-28 | confidence hoch
+updated: '2026-10-04T23:52:18+02:00'

@@ -61,10 +61,12 @@ from filter_engine import (
     dedupe_grinders,
     evaluate_universe,
     evaluate_watchlist,
+    _is_late_entry,
 )
 from intraday_4h import pull_4h
 from market_data import fetch_ticker_data
 from output_renderer import render_candidates, render_marketdata_full
+import state_yaml
 from state_parser import (
     active_watchlist_symbols,
     fetch_state_doc,
@@ -341,13 +343,38 @@ def main():
         filter_config = yaml.safe_load(f)
 
     # === STATE LESEN ===
-    logger.info("Reading STATE-Doc from Drive...")
-    state_text = fetch_state_doc(drive_service, state_doc_id)
-    watchlist_entries = parse_watchlist(state_text)
-    overrides = parse_filter_overrides(state_text)
-    ticker_map = parse_ticker_map(state_text)
+    # Workflow B (System-Review 2026-10-04): WATCHLIST_SOURCE=yaml liest die
+    # Watchlist aus state/watchlist.yaml im Repo (STATE_DIR), nicht mehr aus
+    # dem STATE-Doc. Overrides/TickerMap kommen weiter aus dem STATE-Doc,
+    # solange es erreichbar ist (Sektion 4 wird von Hand gepflegt).
+    # Default bleibt state_doc, damit ein alter Workflow nicht kippt.
+    watchlist_source = os.environ.get("WATCHLIST_SOURCE", "state_doc").lower()
+    state_dir = Path(os.environ.get("STATE_DIR", "./state"))
+    repo_state = None
+    if watchlist_source == "yaml":
+        logger.info(f"Reading watchlist from {state_dir / state_yaml.WATCHLIST_FILE} (WATCHLIST_SOURCE=yaml)")
+        repo_state = state_yaml.load_state(state_dir)
+        watchlist_entries = state_yaml.entries_from_yaml(repo_state["watchlist"])
+        if not watchlist_entries:
+            raise RuntimeError(
+                f"WATCHLIST_SOURCE=yaml, aber {state_dir / state_yaml.WATCHLIST_FILE} "
+                "ist leer oder fehlt — Abbruch statt leerer Watchlist."
+            )
+        try:
+            state_text = fetch_state_doc(drive_service, state_doc_id)
+            overrides = parse_filter_overrides(state_text)
+            ticker_map = parse_ticker_map(state_text)
+        except Exception as exc:  # STATE-Doc ist in Variante B nur noch Beiwerk
+            logger.warning(f"STATE-Doc nicht lesbar ({exc}) — Overrides/TickerMap leer")
+            overrides, ticker_map = [], {}
+    else:
+        logger.info("Reading STATE-Doc from Drive...")
+        state_text = fetch_state_doc(drive_service, state_doc_id)
+        watchlist_entries = parse_watchlist(state_text)
+        overrides = parse_filter_overrides(state_text)
+        ticker_map = parse_ticker_map(state_text)
     logger.info(
-        f"  Watchlist: {len(watchlist_entries)} entries, "
+        f"  Watchlist: {len(watchlist_entries)} entries ({watchlist_source}), "
         f"Overrides: {len(overrides)}, TickerMap: {len(ticker_map)}"
     )
 
@@ -390,6 +417,10 @@ def main():
 
     # === YFINANCE PULL ===
     snapshots = fetch_ticker_data(sorted(all_symbols))
+    # Reife-Flag (L8 v3) auf jedem Snapshot, damit Digest und Watchlist-Zeilen
+    # es sehen — nicht nur Stufe-2-Kandidaten.
+    for _snap in snapshots.values():
+        _snap.late_entry = _is_late_entry(_snap, filter_config)
 
     # === 4h-LAYER (v0.1, 2026-09-08) ===
     # Zweiter, getrennter Pull auf 1h-Balken; die Aggregation zu session-
@@ -588,10 +619,13 @@ def main():
         )
 
         digest_filename = f"BRIEFING-DIGEST-{timestamp_str}.json"
+        digest_state = (
+            state_yaml.state_for_digest(repo_state, today) if repo_state else None
+        )
         digest_content = build_briefing_digest(
             snapshots, watchlist_results, universe_matches, overrides, timestamp,
             pitches=merged_pitches, grinders=merged_grinders,
-            grinders_meta=g_meta,
+            grinders_meta=g_meta, state=digest_state,
         )
         write_json_file(drive_service, briefing_folder_id, digest_filename, digest_content)
 

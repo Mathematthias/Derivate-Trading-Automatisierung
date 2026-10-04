@@ -1,0 +1,42 @@
+schema: 1
+source: Thesen-Lauf 2026-10-03
+thesen:
+- id: A
+  titel: AI-Strom/Elektrifizierung
+  verdikt: spielen
+  korb_budget_pct: 4
+  crowdedness_pp: 4.52
+  re_check: '2026-10-09'
+  falsifikat: (a) Hyperscaler-Capex-Cut (Messtermin Q3-Calls Ende Oktober, Alphabet 2026-10-28); (b) book-to-bill < 1 (PRY 2026-10-29, ENR 2026-11-11)
+  ausdruecke:
+  - PRY.MI
+  - NEX.PA
+  - ENR.DE
+  note: Re-Check 2026-10-02 war ueberfaellig (Thesen-Lauf 2026-10-03); naechster Termin vorlaeufig +1 Woche
+- id: OEL
+  titel: Oel/Hormus
+  verdikt: spielen
+  korb_budget_pct: 2
+  crowdedness_pp: 6.81
+  re_check: '2026-10-05'
+  falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
+  ausdruecke:
+  - ENI.MI
+  note: Budget-Entscheid 1 % vs 2 % am 2026-10-05 (Crowdedness vs. Gap-Risiko)
+- id: STAHL
+  titel: EU-Stahl melt-and-pour
+  verdikt: beobachten
+  korb_budget_pct: 0
+  crowdedness_pp: -11.84
+  re_check: '2026-10-10'
+  falsifikat: HRC Nordeuropa unter 745 EUR/t am 2026-11-12
+  ausdruecke: []
+- id: N2
+  titel: UK-Ersterwerber (N-2)
+  verdikt: beobachten
+  korb_budget_pct: 0
+  crowdedness_pp: null
+  re_check: '2026-10-29'
+  falsifikat: ''
+  ausdruecke: []
+updated: '2026-10-04T23:52:18+02:00'

@@ -1,0 +1,70 @@
+name: State Export (state/*.yaml -> Journal-xlsx)
+
+# Workflow B (System-Review 2026-10-04). Erzeugt aus einem bestehenden Journal
+# und dem Repo-Zustand ein neues Journal, in dem die Blaetter Watchlist,
+# Watchlist-Archiv und Termin-Radar aus state/*.yaml stammen. Alle anderen
+# Blaetter bleiben unveraendert (Formeln inklusive).
+#
+# Eingabe: Drive-File-ID des Eingangs-Journals; leer = das juengste
+# Trading_Journal_*.xlsx, das der Service-Account sieht (wie watchlist_sync).
+# Ausgabe: Trading_Journal_<JJJJMMTT>_state.xlsx im Briefing-Ordner.
+#
+# Kein Cron noetig — on demand (Morning Check / Wochenpflege).
+
+on:
+  workflow_dispatch:
+    inputs:
+      journal_file_id:
+        description: 'Drive-File-ID des Eingangs-Journals (leer = juengstes Trading_Journal_*.xlsx im Drive)'
+        required: false
+        default: ''
+      out_name:
+        description: 'Dateiname der Ausgabe (leer = Trading_Journal_<Datum>_state.xlsx)'
+        required: false
+        default: ''
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download journal, export, upload
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          JOURNAL_FILE_ID: ${{ github.event.inputs.journal_file_id }}
+          OUT_NAME: ${{ github.event.inputs.out_name }}
+          STATE_DIR: ./state
+          PYTHONPATH: ./src
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, download_file_bytes
+          from watchlist_sync import find_latest_journal
+          svc = build_drive_service()
+          fid = os.environ.get("JOURNAL_FILE_ID", "").strip()
+          if not fid:
+              f = find_latest_journal(svc)          # juengstes Trading_Journal_*.xlsx im Drive
+              print("Journal:", f["name"], f["modifiedTime"]); fid = f["id"]
+          pathlib.Path("work").mkdir(exist_ok=True)
+          pathlib.Path("work/in.xlsx").write_bytes(download_file_bytes(svc, fid))
+          PY
+          NAME="${OUT_NAME:-Trading_Journal_$(date +%Y%m%d)_state.xlsx}"
+          python src/state_export.py --journal work/in.xlsx --out "work/$NAME" --state-dir ./state --upload

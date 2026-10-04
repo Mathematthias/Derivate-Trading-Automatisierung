@@ -324,3 +324,85 @@ def read_latest_json_file(
     except Exception as e:  # noqa: BLE001 — bewusst tolerant, Digest darf nicht crashen
         logger.warning(f"read_latest_json_file({filename_prefix}) fehlgeschlagen: {e}")
         return None
+
+
+# ---------------------------------------------------------------------------
+# Workflow B (System-Review 2026-10-04): INBOX-JSON lesen, Binaerdateien
+# schreiben. Alles additiv — die bestehenden Funktionen sind unveraendert.
+# ---------------------------------------------------------------------------
+
+def list_files_by_prefix(
+    drive_service,
+    parent_folder_id: str,
+    filename_prefix: str,
+    page_size: int = 100,
+) -> list[dict]:
+    """Listet Dateien eines Ordners mit Namenspraefix, aelteste zuerst.
+
+    Rueckgabe: Liste von {"id", "name", "createdTime", "md5Checksum"?}.
+    Aelteste zuerst, damit ein Replay von INBOX-Dateien in Erzeugungsreihen-
+    folge laeuft (spaetere Aktionen ueberschreiben fruehere — gewollt).
+    """
+    query = (
+        f"'{parent_folder_id}' in parents "
+        f"and name contains '{filename_prefix}' "
+        f"and trashed = false"
+    )
+    results = _with_retry(
+        f"list_files_by_prefix({filename_prefix})",
+        lambda: drive_service.files().list(
+            q=query,
+            orderBy="createdTime",
+            fields="files(id,name,createdTime,md5Checksum)",
+            pageSize=page_size,
+            supportsAllDrives=True,
+            includeItemsFromAllDrives=True,
+            corpora="allDrives",
+        ).execute(),
+    )
+    return [f for f in results.get("files", []) if f.get("name", "").startswith(filename_prefix)]
+
+
+def download_file_bytes(drive_service, file_id: str) -> bytes:
+    """Laedt eine Datei (kein Google-Doc) als Bytes."""
+    buf = io.BytesIO()
+    downloader = MediaIoBaseDownload(
+        buf,
+        drive_service.files().get_media(fileId=file_id, supportsAllDrives=True),
+    )
+    done = False
+    while not done:
+        _, done = _with_retry(f"download_file_bytes({file_id})", downloader.next_chunk)
+    return buf.getvalue()
+
+
+def download_json_file(drive_service, file_id: str) -> dict:
+    return json.loads(download_file_bytes(drive_service, file_id).decode("utf-8"))
+
+
+def write_binary_file(
+    drive_service,
+    parent_folder_id: str,
+    filename: str,
+    data: bytes,
+    mimetype: str = "application/octet-stream",
+) -> str:
+    """Schreibt Binaerdaten (z.B. xlsx-Export) in den Drive-Ordner.
+
+    Returns:
+        File-ID der neu erstellten Datei.
+    """
+    body = {"name": filename, "parents": [parent_folder_id], "mimeType": mimetype}
+    media = MediaInMemoryUpload(data, mimetype=mimetype, resumable=False)
+    result = _with_retry(
+        f"write_binary_file({filename})",
+        lambda: drive_service.files().create(
+            body=body,
+            media_body=media,
+            fields="id,name,parents",
+            supportsAllDrives=True,
+        ).execute(),
+    )
+    file_id = result["id"]
+    logger.info(f"  Wrote {filename} ({len(data)} bytes) → file_id {file_id}")
+    return file_id

@@ -185,16 +185,25 @@ class TestLanesUndQuote:
         assert lanes == ["trend"] * pull_cap + ["counter"] * q["counter"]
 
     def test_counter_verdraengt_trend_nicht(self, config):
-        """Der Kern des Auftrags: hoher RRprox auf Counter darf Trend nicht kicken."""
-        # Counter mit weit besserem rr als jeder Trend-Kandidat
+        """Der Kern des Auftrags: hoher RRprox auf Counter darf Trend nicht kicken.
+
+        Seit 2026-09-21 steht quota.counter auf 0 (Counter-Lane abgeschaltet,
+        Journal-Note #736; System-Review 2026-10-04: Reversal-Klassen
+        gestrichen). Der starke Counter-Kandidat erscheint deshalb GAR NICHT —
+        und nimmt damit erst recht keinen Trend-Platz weg. Mit counter>0 muss
+        er in der Counter-Lane stehen, nie in der Trend-Lane.
+        """
         stark = _match("XX", "reversal_long", 100, 112.0, 5.0, -15.0, high_20d=160)
         uni = [stark] + [self._trend(i) for i in range(6)]
-        syms = [p["symbol"] for p in build_pitches_payload(uni, config)]
-        # 6 angeboten, 5 Pullback-Plaetze -> 5 kommen durch; entscheidend ist,
-        # dass der starke Counter-Kandidat KEINEN davon wegnimmt.
+        out = build_pitches_payload(uni, config)
+        syms = [p["symbol"] for p in out]
         assert len([s for s in syms if s.startswith("T")]) == \
             config["pitches"]["quota"]["trend_sub"]["pullback"]
-        assert "XX" in syms
+        if config["pitches"]["quota"]["counter"] > 0:
+            assert "XX" in syms
+            assert [p for p in out if p["symbol"] == "XX"][0]["lane"] == "counter"
+        else:
+            assert "XX" not in syms
 
     def test_faecher_stuft_short_herab(self, config):
         """Note #542: bearischer Stack, aber Kurs über dem Fächer → counter."""
@@ -203,10 +212,17 @@ class TestLanesUndQuote:
         snap.ema50, snap.ema100, snap.ema200 = 37.02, 37.35, 38.01
         m = CandidateMatch(symbol="AMV", bucket="short_trend_pullback",
                            snapshot=snap, score=0.0, summary="")
-        p = build_pitches_payload([m], config)[0]
+        # Die Lane-Zuordnung selbst wird vor der Quote geprueft: mit
+        # quota.counter=0 (seit 2026-09-21) faellt der Kandidat danach ganz
+        # heraus, die Herabstufung muss aber trotzdem stattgefunden haben.
+        cfg = dict(config)
+        cfg["pitches"] = dict(config["pitches"])
+        cfg["pitches"]["quota"] = dict(config["pitches"]["quota"], counter=4)
+        p = build_pitches_payload([m], cfg)[0]
         assert p["lane"] == "counter"
         assert p["below_emas"] == 1
         assert "Stack-Reclaim" in p["fan_note"]
+        assert build_pitches_payload([m], config) == []   # Counter-Lane aus
 
     def test_faecher_laesst_echten_short_trend_durch(self, config):
         snap = FakeSnap(symbol="DUE", price=17.84, ema20=17.84, atr14=0.48,

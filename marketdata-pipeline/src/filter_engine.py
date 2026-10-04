@@ -24,8 +24,8 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import date
-from typing import Optional
+from datetime import date, timedelta
+from typing import Any, Optional
 
 from market_data import TickerSnapshot
 from state_parser import (
@@ -101,6 +101,12 @@ class CandidateMatch:
     # faellt im Briefing, nicht hier.
     vol_daempfer: bool = False
     sizing_hint: str = "voll"
+    # --- Reife-Flag (2026-10-04, System-Review) -----------------------------
+    # |30d-Move| ueber thirty_day_move_max_pct. Bis zum Review war das ein
+    # harter Ausschluss in _passes_universal_disqualifier — im Widerspruch zu
+    # L8 v3 ("Reife steuert die Groesse, nicht das Ob", 2026-06-29). Jetzt
+    # Flag: der Kandidat bleibt sichtbar, das Briefing deckelt ihn auf 1 %.
+    late_entry: bool = False
 
 
 # ============================================================
@@ -963,8 +969,11 @@ def evaluate_universe(
             continue
 
         # Universal-Disqualifier
-        if not _passes_universal_disqualifier(snap, config):
+        if not _passes_universal_disqualifier(snap, config, today=today):
             continue
+
+        # Reife-Flag (L8 v3): kein Ausschluss mehr, sondern Sizing-Deckel.
+        late = _is_late_entry(snap, config)
 
         # Pro Bucket prüfen
         for bucket_name in [
@@ -975,8 +984,11 @@ def evaluate_universe(
             "reversal_long",
             "reversal_short",
         ]:
-            match = _check_bucket(snap, bucket_name, config)
+            match = _check_bucket(snap, bucket_name, config, today=today)
             if match is not None:
+                if late:
+                    match.late_entry = True
+                    match.summary += "  ⚠️REIFE>15%"
                 matches.append(match)
 
     # Pro Bucket auf max_new_candidates_per_bucket reduzieren
@@ -993,8 +1005,45 @@ def evaluate_universe(
     return final_matches
 
 
-def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
-    """Prüft Liquidität + 30d-Move (Earnings-Check folgt in Build-Schritt 1.6)."""
+def _is_late_entry(snap: TickerSnapshot, config: dict) -> bool:
+    """|30d-Move| ueber der Reife-Schwelle (Default 15 %). Kein Veto — Flag."""
+    cfg = config.get("universal_disqualifier", {})
+    lim = cfg.get("thirty_day_move_max_pct")
+    if lim is None or snap.move_30d_pct is None:
+        return False
+    return abs(snap.move_30d_pct) > lim
+
+
+def _days_until(iso_date: Optional[str], today: Optional[date]) -> Optional[int]:
+    """Kalendertage von today bis iso_date (negativ = vergangen). None wenn
+    eines der beiden fehlt oder das Datum nicht lesbar ist."""
+    if not iso_date or today is None:
+        return None
+    try:
+        d = date.fromisoformat(str(iso_date)[:10])
+    except ValueError:
+        return None
+    return (d - today).days
+
+
+def _passes_universal_disqualifier(
+    snap: TickerSnapshot, config: dict, today: Optional[date] = None
+) -> bool:
+    """Prüft Liquidität, ATR-Deckel und Earnings-Blackout.
+
+    2026-10-04 (System-Review): Zwei Aenderungen gegenueber dem Stand davor.
+    (1) Der 30d-Move ist KEIN Ausschluss mehr. Er stand hier seit 2026-04-25
+        als harter Filter, obwohl Lektion 8 v3 (2026-06-29) ihn ausdruecklich
+        zur Sizing-Frage gemacht hat — die Pipeline hat damit monatelang die
+        staerksten Trends aus den Pullback-/Breakout-Buckets ausgeschlossen
+        (fuenfte dokumentierte Divergenz Skill<->Code). Jetzt: Flag
+        `late_entry` am Match (siehe _is_late_entry / evaluate_universe).
+    (2) Der Earnings-Blackout (`earnings_blackout_days`, in der Config seit
+        2026-04-25) wird ERSTMALS geprueft. Bis heute stand im Docstring
+        "folgt in Build-Schritt 1.6" und `architecture.md` behauptete den
+        Check. Ohne `today` oder ohne next_earnings_date (EARNINGS_PULL=0)
+        ist der Check neutral — ein fehlender Datenpunkt ist kein Veto.
+    """
     cfg = config["universal_disqualifier"]
 
     # Liquidität
@@ -1002,23 +1051,22 @@ def _passes_universal_disqualifier(snap: TickerSnapshot, config: dict) -> bool:
         if snap.volume_eur_avg_20d < cfg["min_avg_volume_eur"]:
             return False
 
-    # 30d-Move
-    if snap.move_30d_pct is not None:
-        if abs(snap.move_30d_pct) > cfg["thirty_day_move_max_pct"]:
-            return False
-
     # ATR-Deckel (2026-08-28): relative Volatilitaet zu hoch fuer die Methode.
-    # Fehlt der Schluessel in der Config, ist der Filter inaktiv — damit bleibt
-    # eine aeltere filter_config.yaml lauffaehig.
     max_atr_pct = cfg.get("max_atr_pct")
     if max_atr_pct is not None:
         if snap.atr14 is not None and snap.price is not None and snap.price > 0:
             if (snap.atr14 / snap.price) * 100.0 > max_atr_pct:
                 return False
 
+    # Earnings-Blackout: naechste Zahlen in <= N Kalendertagen -> kein neuer
+    # Kandidat (L23 Veto 2 / 7/7-Punkt 5). Auch 0 (heute) zaehlt.
+    blackout = cfg.get("earnings_blackout_days")
+    if blackout is not None:
+        d = _days_until(getattr(snap, "next_earnings_date", None), today)
+        if d is not None and 0 <= d <= int(blackout):
+            return False
+
     return True
-
-
 
 
 # Buckets, deren Reward NICHT am 20d-Extrem gemessen werden darf — dort ist das
@@ -1205,6 +1253,17 @@ _PITCH_COUNTER_BUCKETS = {"reversal_long", "reversal_short"}
 # Trend-Pitches aus den Top 6. Deshalb getrennte Toepfe, kein Uebertrag.
 _PITCH_RANGE_BUCKETS = {"breakout_long", "breakdown_short"}
 _PITCH_PULLBACK_BUCKETS = {"long_trend_pullback", "short_trend_pullback"}
+
+
+def _pitch_vol_mult(m: "CandidateMatch") -> Optional[float]:
+    snap = m.snapshot
+    if m.bucket == "breakout_long":
+        v = getattr(snap, "bo_vol_mult", None)
+    elif m.bucket == "breakdown_short":
+        v = getattr(snap, "bd_vol_mult", None)
+    else:
+        v = getattr(snap, "volume_multiplier_today", None)
+    return round(v, 2) if v is not None else None
 
 
 def _trend_sub(bucket: str) -> str:
@@ -1773,10 +1832,14 @@ def build_pitches_payload(
             # kann, ohne die Bucket-Namen selbst zu kennen.
             "trend_sub": _trend_sub(m.bucket) if lane == "trend" else None,
             # Zweistufiges Volumen-Gate (nur Range-Buckets setzen das).
-            "vol_mult": (round(snap.volume_multiplier_today, 2)
-                         if getattr(snap, "volume_multiplier_today", None) is not None else None),
+            # Range-Buckets (Retest, 2026-10-04): das relevante Volumen ist das
+            # des AUSBRUCHSTAGS, nicht das heutige. Pullbacks: Tagesvolumen.
+            "vol_mult": _pitch_vol_mult(m),
             "vol_daempfer": bool(getattr(m, "vol_daempfer", False)),
-            "sizing_hint": getattr(m, "sizing_hint", "voll"),
+            # 2026-10-04: Reife-Deckel (L8 v3) gewinnt ueber den Vol-Daempfer.
+            "sizing_hint": ("floor_1pct" if getattr(m, "late_entry", False)
+                            else getattr(m, "sizing_hint", "voll")),
+            "late_entry": bool(getattr(m, "late_entry", False)),
             "ethics": "grenzfall" if sym in grenz else "ok",
             "tier": source_tag,
             # --- Fallback-Felder (2026-09-15), s. Docstring -------------------
@@ -1793,10 +1856,25 @@ def build_pitches_payload(
     return apply_pitch_quota(out, config)
 
 
+def _exdiv_blocks_short(snap: TickerSnapshot, cfg: dict, today: Optional[date]) -> bool:
+    """Short-Disqualifier: Ex-Tag in <= disqualifier_dividend_within_days.
+
+    2026-10-04: Der Schluessel stand seit 2026-04-25 in filter_config.yaml,
+    kein Code hat ihn gelesen. Jetzt gegen die geschaetzte next_ex_div_date
+    (market_data, Kadenz/saisonal). Ohne Datum neutral.
+    """
+    days = cfg.get("disqualifier_dividend_within_days")
+    if days is None:
+        return False
+    d = _days_until(getattr(snap, "next_ex_div_date", None), today)
+    return d is not None and 0 <= d <= int(days)
+
+
 def _check_bucket(
     snap: TickerSnapshot,
     bucket: str,
     config: dict,
+    today: Optional[date] = None,
 ) -> Optional[CandidateMatch]:
     """Prüft ob ein Snapshot in einen Bucket fällt."""
     cfg = config.get(bucket)
@@ -1836,6 +1914,8 @@ def _check_bucket(
 
     # Short-Trend-Pullback (Spiegel)
     if bucket == "short_trend_pullback":
+        if _exdiv_blocks_short(snap, cfg, today):
+            return None
         if cfg.get("require_bearish_ema_stack") and not snap.has_bearish_stack:
             return None
         if snap.ema20 is None:
@@ -1864,33 +1944,53 @@ def _check_bucket(
             score=score, summary=summary,
         )
 
-    # Breakout Long
+    # Breakout-Retest Long (Neudefinition 2026-10-04, System-Review)
+    # ALT: "Kurs <= 1 % unter dem 20d-Hoch (inkl. laufendem Balken), Vol >= 1,0x"
+    #      — das misst NAEHE zum Hoch, kein Ausbruchs-Ereignis; 0 von 4 Trades.
+    # NEU: Es gab innerhalb von BREAKOUT_LOOKBACK_BARS einen Tagesschluss ueber
+    #      dem 20d-Hoch der Balken DAVOR mit Volumen >= volume_multiplier_min
+    #      (am Ausbruchstag), seitdem kein Schluss zurueck darunter, und der
+    #      Kurs ist in die Retest-Zone [Niveau - retest_lo_atr x ATR,
+    #      Niveau + retest_hi_atr x ATR] zurueckgekommen. Das ist das
+    #      L18-Gate-2-Muster "Breakout-Retest", das nie gebaut war.
+    #      Einstieg per Stop-Buy ueber das Hoch der Retest-Kerze (Skill).
     if bucket == "breakout_long":
         if cfg.get("require_bullish_ema_stack") and not snap.has_bullish_stack:
             return None
-        if snap.high_20d is None:
+        lvl = getattr(snap, "bo_level", None)
+        bars = getattr(snap, "bo_bars_ago", None)
+        if lvl is None or bars is None or snap.atr14 is None or snap.atr14 <= 0:
             return None
-        dist_to_high = (snap.high_20d - snap.price) / snap.high_20d * 100
-        if dist_to_high > cfg["distance_to_20d_high_pct"]:
+        if bars > int(cfg.get("max_bars_since_breakout", 10)):
             return None
-        if dist_to_high < -1.0:  # zu weit drüber = nicht mehr Breakout
+        if getattr(snap, "bo_failed", False):
             return None
-        stufe = _vol_stufe(snap, cfg)
-        if stufe is None:
+        vol_bo = getattr(snap, "bo_vol_mult", None)
+        boden = cfg.get("volume_multiplier_min")
+        if boden is not None and (vol_bo is None or vol_bo < boden):
             return None
-        gedaempft, sizing_hint = stufe
+        daempfer = cfg.get("volume_multiplier_daempfer")
+        gedaempft = daempfer is not None and vol_bo < daempfer
+        sizing_hint = cfg.get("daempfer_sizing", "eine_stufe") if gedaempft else "voll"
+        dist_atr = (snap.price - lvl) / snap.atr14
+        lo = -float(cfg.get("retest_lo_atr", 0.5))
+        hi = float(cfg.get("retest_hi_atr", 0.75))
+        if not (lo <= dist_atr <= hi):
+            return None
         if snap.rsi14 is None or snap.rsi14 > cfg["rsi_max"]:
             return None
-        score = snap.volume_multiplier_today + 1.0 / max(0.1, dist_to_high)
+        dist_pct = (lvl - snap.price) / lvl * 100  # Vorzeichen wie frueher: + = unter dem Niveau
+        # Score: nah am Niveau und frisch ist besser; Volumen des Ausbruchs zaehlt mit.
+        score = (vol_bo or 0.0) + 1.0 / max(0.1, abs(dist_atr)) + 1.0 / bars
         summary = (
-            f"{snap.symbol}: {snap.price:.2f}  20d-High={snap.high_20d:.2f} "
-            f"({dist_to_high:+.2f}%)  Vol={snap.volume_multiplier_today:.1f}×  "
+            f"{snap.symbol}: {snap.price:.2f}  20d-High={lvl:.2f} "
+            f"({dist_pct:+.2f}%)  Vol={vol_bo:.1f}×  "
             f"RSI={snap.rsi14:.0f}"
         )
         summary += _rr_proxy_suffix(snap, "long", config, bucket=bucket)
-        # Marker ans ENDE, hinter den rr-Suffix: der Skill-Parser liest
-        # 'Vol=1.7×' mit nachfolgendem Feld in festem Abstand — ein Einschub
-        # dazwischen wuerde ihn brechen (Format-Falle vom 2026-09-09).
+        # Marker ans ENDE, hinter den rr-Suffix (Skill-Parser liest Vol=..× mit
+        # festem Folgefeld; Format-Falle vom 2026-09-09).
+        summary += f"  Retest={bars}HT"
         if gedaempft:
             summary += "  ⚠️VOL-DÄMPFER"
         return CandidateMatch(
@@ -1899,36 +1999,47 @@ def _check_bucket(
             vol_daempfer=gedaempft, sizing_hint=sizing_hint,
         )
 
-    # Breakdown Short
+    # Breakdown-Retest Short (Spiegel)
     if bucket == "breakdown_short":
-        # V1.2 Ex-Div-Pre-Filter (Note #67, Lektion 16): liegt der letzte
-        # Ex-Tag 0-2 HT zurück, ist der Tagesverlust überwiegend Buchungs-
-        # effekt, kein realer Verkaufsdruck (HEI.DE 15.05.2026: -7,16% am
-        # Ex-Tag fälschlich als Breakdown gemeldet). Kein Breakdown-Signal.
+        # V1.2 Ex-Div-Pre-Filter (Note #67, Lektion 16): Ex-Tag 0-2 HT zurueck
+        # -> Tagesverlust ist Buchungseffekt, kein Breakdown.
         if snap.last_ex_div_days_ago is not None and snap.last_ex_div_days_ago <= 2:
+            return None
+        if _exdiv_blocks_short(snap, cfg, today):
             return None
         if cfg.get("require_bearish_ema_stack") and not snap.has_bearish_stack:
             return None
-        if snap.low_20d is None:
+        lvl = getattr(snap, "bd_level", None)
+        bars = getattr(snap, "bd_bars_ago", None)
+        if lvl is None or bars is None or snap.atr14 is None or snap.atr14 <= 0:
             return None
-        dist_to_low = (snap.price - snap.low_20d) / snap.low_20d * 100
-        if dist_to_low > cfg["distance_to_20d_low_pct"]:
+        if bars > int(cfg.get("max_bars_since_breakout", 10)):
             return None
-        if dist_to_low < -1.0:
+        if getattr(snap, "bd_failed", False):
             return None
-        stufe = _vol_stufe(snap, cfg)
-        if stufe is None:
+        vol_bd = getattr(snap, "bd_vol_mult", None)
+        boden = cfg.get("volume_multiplier_min")
+        if boden is not None and (vol_bd is None or vol_bd < boden):
             return None
-        gedaempft, sizing_hint = stufe
+        daempfer = cfg.get("volume_multiplier_daempfer")
+        gedaempft = daempfer is not None and vol_bd < daempfer
+        sizing_hint = cfg.get("daempfer_sizing", "eine_stufe") if gedaempft else "voll"
+        dist_atr = (lvl - snap.price) / snap.atr14  # + = unter dem Niveau (Short-konform)
+        lo = -float(cfg.get("retest_lo_atr", 0.5))
+        hi = float(cfg.get("retest_hi_atr", 0.75))
+        if not (lo <= dist_atr <= hi):
+            return None
         if snap.rsi14 is None or snap.rsi14 < cfg["rsi_min"]:
             return None
-        score = snap.volume_multiplier_today + 1.0 / max(0.1, dist_to_low)
+        dist_pct = (snap.price - lvl) / lvl * 100
+        score = (vol_bd or 0.0) + 1.0 / max(0.1, abs(dist_atr)) + 1.0 / bars
         summary = (
-            f"{snap.symbol}: {snap.price:.2f}  20d-Low={snap.low_20d:.2f} "
-            f"({dist_to_low:+.2f}%)  Vol={snap.volume_multiplier_today:.1f}×  "
+            f"{snap.symbol}: {snap.price:.2f}  20d-Low={lvl:.2f} "
+            f"({dist_pct:+.2f}%)  Vol={vol_bd:.1f}×  "
             f"RSI={snap.rsi14:.0f}"
         )
         summary += _rr_proxy_suffix(snap, "short", config, bucket=bucket)
+        summary += f"  Retest={bars}HT"
         if gedaempft:
             summary += "  ⚠️VOL-DÄMPFER"
         return CandidateMatch(
