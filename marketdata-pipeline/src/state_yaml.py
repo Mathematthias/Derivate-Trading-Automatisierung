@@ -144,8 +144,16 @@ def entries_from_yaml(block: dict) -> list[WatchlistEntry]:
         trigger_raw = _legs_to_trigger_raw(e)
         if not trigger_raw:
             continue
+        name = str(e.get("name", symbol) or symbol)
+        # Positions-Monitore erkennt digest_renderer am "[MONITOR"-Token im
+        # Namen (oder an der Richtung). Der YAML-Status ist die Wahrheit —
+        # fehlt das Token (DB1.DE #93 im Journal vom 2026-10-02), wird es
+        # ergaenzt, damit die Zeile in Bucket 📍 landet und nicht als Kandidat.
+        if e.get("status") == "position" and "[MONITOR" not in name.upper():
+            nr = e.get("trade_nr")
+            name = f"{name} [MONITOR{(' #' + str(nr)) if nr else ''}]"
         out.append(WatchlistEntry(
-            name=str(e.get("name", symbol)),
+            name=name,
             symbol=symbol,
             direction=str(e.get("direction", "LONG")).upper(),
             trigger_raw=trigger_raw,

@@ -79,6 +79,15 @@ class TestEntriesFromYaml:
         assert "🟡" not in zts.trigger_raw and "🟢" not in zts.trigger_raw
         assert zts.trigger_raw.count("🔴") == 2
 
+    def test_position_bekommt_monitor_token(self, tmp_path):
+        st = {"watchlist": {"entries": [
+            _entry("DB1.DE", status="position", name="Deutsche Boerse AG (DB1, XETR)", trade_nr="93"),
+            _entry("NBIS", status="position", name="Nebius [MONITOR #9 AV]"),
+        ]}, "radar": {}, "thesen": {}}
+        by = {e.symbol: e for e in sy.entries_from_yaml(st["watchlist"])}
+        assert by["DB1.DE"].name == "Deutsche Boerse AG (DB1, XETR) [MONITOR #93]"
+        assert by["NBIS"].name == "Nebius [MONITOR #9 AV]"          # nicht doppelt
+
     def test_leerer_ordner_ist_leerer_zustand(self, tmp_path):
         st = sy.load_state(tmp_path / "nix")
         assert st["watchlist"]["entries"] == [] and st["radar"]["rows"] == []
