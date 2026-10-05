@@ -2229,4 +2229,4 @@ entries:
     text: 'nach 2026-10-02 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stopweite entry-relativ -1,5xATR-1D (6,74 -> -10,11), keine L25-Klammer. Invalidator = Zustand (Stack, Faecher, Tempo unter 0,6). TP1 416,00€ = BE-Stufe (Sept-Hoch), R:R 1,44-1,77. Kein TP2, Trail EMA20-1,25xATR. Exit bis 2026-10-21. 1% Pilot. Non-Quanto SEK.'
   notes: '[NEU 2026-10-02 aus Grinder-Block (Tempo 1,45-1,59), Zwei-Laeufe-Regel 01./02.10. erfuellt, S0 + Chart-News, Linien von Claude (User-Auftrag), Chart 14:08] Trend seit Juni, Hoch ~416 Ende Sept, Ruecksetzer auf EMA20-1D 399,8. 4h unter EMA20/50, RSI-4h 38,5 < 51,9 -> Bestaetigung abwarten. L7: Block schwedische Banken - statt SHB-A. FLAG: Earnings ~2026-10-22 -> Exit spaetestens 2026-10-21. KO-Produkt (SEK, non-Quanto) ungeprueft. Symbol noch nicht im Digest-Universum -> relative Zone loest erst nach Watchlist-Sync auf.'
   journal_row: 129
-updated: '2026-10-04T23:52:18+02:00'
+updated: '2026-10-05T10:01:50+00:00'

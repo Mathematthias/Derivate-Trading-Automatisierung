@@ -87,8 +87,9 @@ rows:
   ereignis: 'BNetzA Solar 2. Segment (Dach): Gebotstermin; KORR 2026-09-28: Volumen 296.269 kW publiziert (-19% gegen gesetzl. Basis 367 MW), Hoechstwert 10,00 ct/kWh [vorher: Volumen noch nicht publiziert]'
   werte: SMA-Komplex, Projektierer
   wirkung: Aufdach-Segment 3x in Folge UNTERZEICHNET -> schwaches Signal
-  status: offen
+  status: erledigt
   quelle: bundesnetzagentur.de, 2026-08-04 | bundesnetzagentur.de, Abruf 2026-09-28 (Kuerzung verstaerkt Lesart schwaches Signal)
+  note: '2026-10-05: Gebotstermin 01.10.2026 eingetreten. Volumen 296.269 kW und Hoechstwert 10,00 ct/kWh wie publiziert (keine Anhebung durch EU-Beihilfefreigabe bis 30.09.). Zuschlaege am Stichtag nicht veroeffentlicht; BNetzA-Seite Stand 26.08.2026, Abruf 2026-10-05. Lernschleife Kat 2: Ein Gebotstermin ist kein Bekanntgabetermin — am Termin selbst gibt es nichts zu messen, die Information entsteht erst mit der Zuschlagsliste (historisch 6-10 Wochen spaeter). Kein Folgetermin eingetragen, weil die BNetzA kein Datum fuer die Bekanntgabe nennt.'
 - id: Z17
   date: '2026-10-10'
   kat: 5
@@ -97,6 +98,7 @@ rows:
   wirkung: + bei Zulassung; fuer MRK klein, fuer Daiichi material
   status: offen
   quelle: merck.com, 2026-08-04
+  note: '2026-10-05 geprueft: PDUFA-Zieldatum 10.10.2026 unveraendert, Priority Review seit 13.04.2026. Keine Verschiebung und kein AdCom-Termin belegt. Quelle curetoday.com ''FDA Decision on Ifinatamab Deruxtecan ... Expected by Oct. 10'' + merck.com Pressemitteilung, Abruf 2026-10-05.'
 - id: Z18
   date: '2026-11-01'
   kat: 2
@@ -105,6 +107,7 @@ rows:
   wirkung: + Projektierer bei Ueberzeichnung
   status: offen
   quelle: bundesnetzagentur.de, 2026-08-04
+  note: '2026-10-05 geprueft: Gebotstermin 01.11.2026 und Hoechstwert 7,25 ct/kWh (§ 85a EEG) auf der BNetzA-Seite bestaetigt, Abruf 2026-10-05. Das Ausschreibungsvolumen (Basis 2.500 MW) nennt die Seite nicht — bleibt aus § 28a EEG abgeleitet, nicht primaer belegt.'
 - id: Z19
   date: '2027-01-10'
   kat: 1
@@ -244,8 +247,9 @@ rows:
   ereignis: Durchfuehrungsrechtsakt zur EU-Stahlverordnung (EU) 2026/1384 tritt in Kraft; Importeure muessen bei der Zollabfertigung das Land des "melt and pour" (erste Verfestigung des Rohstahls) nachweisen, um Zollkontingente zu nutzen.
   werte: MT.AS, SZG.DE, TKA.DE, VOE.VI, ACX.MC, APAM.AS
   wirkung: 'Angebotsseitig: Umleitungsimporte ueber Drittlaender verlieren den Kontingentzugang und fallen unter den 50%-Ausserkontingentzoll — verknappt das zollfrei verfuegbare Importvolumen, hebt die Kostenbasis stahlverarbeitender Importeure.'
-  status: offen
-  quelle: policy.trade.ec.europa.eu (GD Handel, Konsultation melt-and-pour 04.06.2026, woertlich "Implementing Act ... will enter into force on 1 October 2026"), Abruf 2026-08-22. confidence hoch. (Lauf 22.08., nachgetragen 2026-09-02)
+  status: erledigt
+  quelle: Durchfuehrungsverordnung (EU) 2026/1963 vom 31.08.2026 (melt-and-pour-Nachweis zu Art. 4 VO (EU) 2026/1384), Geltung ab 01.10.2026, Uebergang mit Alternativdokumenten bis 30.09.2027 — customssupport.com/melt-and-pour-steel-import-evidence (Abruf 2026-10-05). confidence hoch. Ersetzt die frueher zitierte GD-Handel-Konsultation (policy.trade.ec.europa.eu, Abruf 2026-08-22), die nur den Entwurfsstand belegte.
+  note: '2026-10-05: Pflicht ist zum 01.10.2026 wirksam geworden, Rechtsgrundlage jetzt belegt — Durchfuehrungsverordnung (EU) 2026/1963 vom 31.08.2026 zu Art. 4 VO (EU) 2026/1384. ABER: bis 30.09.2027 koennen Rechnungen und Qualitaetszertifikate das Mill Test Certificate ersetzen oder ergaenzen; die Nachweishuerde beisst erst ab 01.10.2027. Keine gemeinsame Kursrichtung in der Woche des Inkrafttretens (KW 40, 28.09.-02.10.): MT.AS +5,91 %, VOE.VI -3,23 %, SZG.DE -7,94 %, TKA.DE -8,79 % (boerse-social.com BSN Peer-Group Stahl, 2026-10-03) — die Streuung ist idiosynkratisch, kein Regulierungssignal. Lernschleife Kat 1: ''tritt in Kraft'' ist nicht ''wirkt'', wenn eine Uebergangsfrist dahinterliegt. Der harte Termin dieser Kette ist 2027-10-01 und liegt ausserhalb des 6-Monats-Horizonts; bei naechster Gelegenheit als eigene Zeile aufnehmen. Die ex-ante-wirkung bleibt unveraendert stehen, damit der Lernsatz nachpruefbar bleibt.'
 - id: Z51
   date: '2026-11-14'
   kat: 5
@@ -390,8 +394,9 @@ rows:
   ereignis: BNetzA-Ausschreibung Biomasse, Gebotstermin 01.10.2026 24:00. Volumen 617.326 kW = Haelfte des Jahresvolumens von 1.126 MW. Hoechstwerte 19,43 ct/kWh (Neuanlagen) und 19,83 ct/kWh (Bestandsanlagen). Gehoert als CLUSTER zu Z16 (Solar Dach, gleicher Gebotstermin).
   werte: EKT.DE, AB9.DE, PNE3.DE, VER.VI, MTX.DE
   wirkung: Nachfrageseitig, klein und mit langem Zeitversatz. Biomasse ist im deutschen Ausschreibungssystem ein Nischensegment — Mengenwirkung je Emittent gering, Tickerliste illustrativ.
-  status: offen
+  status: erledigt
   quelle: bundesnetzagentur.de, Ausschreibung Biomasse Gebotstermin 01.10.2026 (Primaerquelle, Volumen und beide Hoechstwerte woertlich). Abruf 2026-09-04. confidence hoch — Zuschlagsbekanntgabe auf der Seite nicht datiert. (Lauf 04.09., eingetragen 07.09.)
+  note: '2026-10-05: Gebotstermin 01.10.2026 eingetreten. Volumen 617.326 kW, Hoechstwerte 19,43 / 19,83 ct/kWh von der BNetzA-Seite bestaetigt (Stand 26.08.2026, Abruf 2026-10-05). Zuschlaege offen; die April-2026-Runde wurde erst am 09.06.2026 bekanntgegeben (~10 Wochen). Wie Z16: Bekanntgabe ohne Datum, kein Folgetermin.'
 - id: Z69
   date: '2027-01-01'
   kat: 1
@@ -419,11 +424,12 @@ rows:
 - id: Z72
   date: '2026-10-13'
   kat: 1
-  ereignis: Ahold Delhaize ausserordentliche Hauptversammlung. Einladung am 2026-08-31 veroeffentlicht; Tagesordnung nicht abrufbar, mutmasslich Bestellung von Thierry Garnier zum CEO (Amtsantritt 2027) — VERMUTUNG, kein Beleg.
+  ereignis: 'Ahold Delhaize ausserordentliche Hauptversammlung, 13.10.2026 10:00 CET, Van der Valk Hotel Schiphol. Tagesordnung seit Einberufung oeffentlich: Bestellung von Thierry Garnier (CEO-Nominee, Management Board), Claire Peters und Margaret Versteden-Van Duijn sowie Edmond Mesrobian (Supervisory Board). Die frueher vermerkte VERMUTUNG ist damit belegt.'
   werte: AD.AS
   wirkung: Gering. Personalie ohne Zahlenbezug. Nur relevant, falls die Agenda etwas anderes enthaelt — vor dem Termin nachlesen.
   status: offen
-  quelle: 'marketscreener.com Kalender + newsroom.aholddelhaize.com, Abruf 2026-09-08. confidence mittel (Datum 12. oder 13.10. je Quelle, Agenda unbelegt). || KORRIGIERT 2026-09-15 (INBOX 14.09.): Datum 2026-10-12 -> 2026-10-13. Die Ahold-Delhaize-Mitteilung nennt woertlich den 13. Oktober 2026; das Sheet trug die MarketScreener-Lesart. Agenda weiterhin nicht oeffentlich; die Vermutung "Bestellung Thierry Garnier" bleibt Vermutung, ist durch die CEO-Nominierung vom Mai 2026 aber plausibel.'
+  quelle: newsroom.aholddelhaize.com 'Ahold Delhaize publishes convocation of the EGM' + aholddelhaize.com/investors/egm-2026 (Datum und Uhrzeit woertlich), Abruf 2026-10-05. confidence hoch fuer Datum und Tagesordnung.
+  note: '2026-10-05: Agenda-Luecke geschlossen. Inhalt bleibt eine Personalie ohne Zahlenbezug — Wirkung gering, wie eingetragen. Zusatzbefund: beide AD.AS-Watchlist-Zeilen sind archiviert (letzte 2026-09-28, Trade #96 per Review-Frist geschlossen); Z72 und Z71 stehen damit auf einer These ohne Traeger.'
 - id: Z73
   date: '2026-12-29'
   kat: 2
@@ -464,6 +470,7 @@ rows:
   wirkung: Mengen-Signal ohne Preis (s. Z65).
   status: offen
   quelle: NESO/DESNZ AR8 indicative timetable (cfdallocationround.uk). Angelegt 2026-09-17 als Zeile 2/3 der Kette Z65.
+  note: '2026-10-05 geprueft, Datum unveraendert. Praezisierung aus dem aktuellen NESO/DESNZ-Zeitplan: 07.10. = Mitteilung des Tier-1-Reassessment-Ergebnisses an die Bewerber (qualifying / non-qualifying); danach 08.-14.10. Fenster fuer Tier-2-Beschwerden bei Ofgem, 15.-21.10. Ofgem-Bewertung, 18.11. Bekanntgabe der Tier-2-Ergebnisse (= Z79). Sealed-Bid-Szenarien unveraendert (Z32). Zwischenschritte 14.10. und 21.10. absichtlich NICHT als eigene Zeilen aufgenommen: rein verfahrensintern, keine oeffentliche Bekanntgabe. Quelle cfdallocationround.uk/ar8-timeline + Indicative_CfD_AR8_Timetable.pdf, Abruf 2026-10-05.'
 - id: Z79
   date: '2026-11-18'
   kat: 2
@@ -497,6 +504,7 @@ rows:
   wirkung: 'Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Getrackt: WTB.L Z76 (Short, Verfall 30.09. — liegt VOR dem Termin).'
   status: offen
   quelle: 'Grant Thornton UK ''Autumn Budget 2026: what we know so far'', woertlich ''The Autumn Budget will take place on 28 October 2026''; Which? 14.09.2026. Abruf 2026-09-21 | confidence HOCH fuer das Datum, NIEDRIG fuer den Inhalt'
+  note: '2026-10-05 geprueft: Termin 28.10.2026 von mehreren UK-Beratungsquellen bestaetigt, keine Verschiebung. Inhalt weiter unbelegt (confidence NIEDRIG bleibt). Hinweis im Feld wirkung auf ''Getrackt: WTB.L Z76'' ist ueberholt — die WTB.L-Watchlist-Zeile ist seit 2026-09-29 archiviert (zum Verfall 30.09. auslaufen gelassen); Z76 ist ausserdem die EmpCo-Richtlinie, nicht der WTB.L-Trade. Querverweis beim naechsten Lauf bereinigen.'
 - id: Z83
   date: '2027-03-10'
   kat: 5
@@ -513,4 +521,31 @@ rows:
   wirkung: 'Nachfrageseitig aus dem Nichts: keine spezifisch zugelassene orale Therapie, grosse Indikation. Binaer.'
   status: offen
   quelle: Praxis PR 2026-04-14 (GlobeNewswire), gegengelesen asyro.com PDUFA-Kalender 2027; Abruf 2026-09-28 | confidence hoch
-updated: '2026-10-04T23:52:18+02:00'
+- date: '2027-01-09'
+  kat: 1
+  ereignis: 'Instant Payments Regulation (EU) 2024/886: Zahlungsdienstleister in Nicht-Euro-Mitgliedstaaten muessen SEPA-Echtzeitueberweisungen EMPFANGEN koennen, und die Gebuehr dafuer darf die einer normalen Ueberweisung nicht uebersteigen. Zweite Stufe (Senden + kostenlose Verification of Payee) folgt am 09.07.2027, Konten in nationaler Waehrung ausserhalb der Geschaeftszeiten am 09.06.2028.'
+  werte: SWED-A.ST, SEB-A.ST, SHB-A.ST, DANSKE.CO, DNB.OL, PKO.WA, OTP.BU, TEMN.SW, TIETO.HE
+  wirkung: 'Kostenbasis: einmaliger IT- und Compliance-Aufwand bei den betroffenen Banken, laufender Umsatz pro Transaktion durch die Gebuehren-Gleichstellung gedeckelt (eine separate Echtzeit-Gebuehr ist nicht mehr erhebbar). Nachfrageseitig fuer Kernbanken-Softwareanbieter: terminierter Umstellungsbedarf in SE/DK/NO/PL/HU/CZ/RO.'
+  quelle: ecb.europa.eu/paym/retail/instant_payments (Fristenuebersicht IPR, Nicht-Euro-Raum 09.01.2027 Empfang / 09.07.2027 Senden und VoP), Abruf 2026-10-05. confidence hoch fuer die Daten, mittel fuer die Tickerliste (illustrativ, nicht erschoepfend).
+  id: Z85
+  status: offen
+  added: '2026-10-05'
+- date: '2027-01-28'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Insmeds sNDA zu ARIKAYCE (Amikacin-Liposomen-Inhalationssuspension) bei MAC-Lungenerkrankung; Priority Review am 21.09.2026 gewaehrt.
+  werte: INSM
+  wirkung: 'Angebotsseitig: Bei Zulassung entfaellt die Beschraenkung auf refraktaere Patienten, das adressierbare Verordnungsvolumen des bereits vermarkteten Produkts wird formal erweitert. Material fuer INSM als Single-Product-Treiber.'
+  quelle: investor.insmed.com, Pressemitteilung 2026-09-21 'FDA Grants Priority Review ... With PDUFA Target Action Date Set for January 28, 2027' (Primaerquelle, Datum woertlich), Abruf 2026-10-05. confidence hoch.
+  id: Z86
+  status: offen
+  added: '2026-10-05'
+- date: '2027-03-03'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Zanzalintinib plus Atezolizumab (Exelixis) bei vorbehandeltem metastasiertem Kolorektalkarzinom. Um drei Monate verschoben, weil die FDA nachgereichte Sicherheits- und Wirksamkeitsdaten als 'major amendment' eingeordnet hat.
+  werte: EXEL
+  wirkung: 'Angebotsseitig: erste Zulassung des Nachfolgemolekuels zu Cabozantinib; entscheidet darueber, ob EXEL vor dem Cabozantinib-Patentablauf ein zweites vermarktetes Molekuel hat. Indikationsbezogen material.'
+  quelle: Exelixis 8-K (SEC), woertlich 'The updated Prescription Drug User Fee Act action date is March 3, 2027', ueber stocktitan.net/sec-filings/EXEL, Abruf 2026-10-05. confidence hoch.
+  id: Z87
+  status: offen
+  added: '2026-10-05'
+updated: '2026-10-05T10:01:50+00:00'
