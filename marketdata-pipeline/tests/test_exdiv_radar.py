@@ -155,4 +155,6 @@ def test_digest_end_to_end_mit_position():
     assert d["schema"] == "briefing-digest/v4"
     assert [z["symbol"] for z in d["exdiv_radar"]] == ["SBLK"]
     assert d["exdiv_radar"][0]["rolle"] == "position"
-    assert d["exdiv_radar"][0]["bucket"] == "far"
+    # Seit 2026-10-05 laufen Positions-Monitore nicht mehr durch die Stufe-1-
+    # Buckets (vorher "far" ohne Aussage) -> kein Bucket, wie im Hilfs-Test oben.
+    assert d["exdiv_radar"][0]["bucket"] is None

@@ -116,6 +116,33 @@ DIGEST_BUCKETS: tuple[str, ...] = (
 )
 
 
+# Watchlist-Lebenszyklen, deren Verfall im Digest steht (2026-10-05). Archivierte
+# Zeilen verfallen nicht mehr — im Erstlauf v49 waren 74 von 105 Expiry-
+# Einträgen archiviert und haben die echten Fristen zugedeckt.
+EXPIRY_STATUSES: tuple[str, ...] = ("aktiv", "position")
+
+
+def _is_position_monitor(entry: Any) -> bool:
+    """Positions-Monitor: YAML-Status "position" ODER das bisherige Kriterium
+    (Richtung "POSITION-MONITOR …" aus journal_utils, "[MONITOR"-Token im
+    Namen). Eine Stelle für Stufe-1-Filter, position_monitors und Ex-Tag-Radar."""
+    if getattr(entry, "state_status", None) == "position":
+        return True
+    direction = (getattr(entry, "direction", "") or "").upper()
+    name = (getattr(entry, "name", "") or "").upper()
+    return direction.startswith("POSITION-MONITOR") or "[MONITOR" in name
+
+
+def _watchlist_status(entry: Any) -> str:
+    """Lebenszyklus einer Watchlist-Zeile. Aus state/watchlist.yaml, wenn die
+    Zeile von dort kommt; sonst (STATE-Doc, kennt nur aktive Zeilen) aus dem
+    Monitor-Kriterium abgeleitet."""
+    status = getattr(entry, "state_status", None)
+    if status:
+        return str(status)
+    return "position" if _is_position_monitor(entry) else "aktiv"
+
+
 def _r(x: Optional[float], n: int = 2) -> Optional[float]:
     """Rundet, lässt None durch. Hält das JSON klein und lesbar."""
     if x is None:
@@ -362,38 +389,126 @@ def _setup_class_flags(snapshots: dict[str, Any]) -> dict[str, list[Any]]:
     return {"ema200_meanrev": ema200, "pead_window": pead, "anomaly": anomaly}
 
 
-def _data_freshness(universe: dict[str, Any], timestamp: Any) -> dict[str, Any]:
-    """Fasst die bar_date-Verteilung des Universums zusammen.
+# Börsengruppen für die peer-relative Staleness (2026-10-05). Die Gruppe kommt
+# aus dem Symbol, nicht aus einem Kalender: Ticker derselben Gruppe bekommen
+# ihren Tagesbalken zur selben Zeit, also ist der jüngste bar_date der Gruppe
+# der Maßstab für jeden einzelnen Ticker darin.
+_EU_SUFFIXES: frozenset[str] = frozenset({
+    ".DE", ".F", ".PA", ".MI", ".AS", ".BR", ".MC", ".SW", ".ST", ".HE",
+    ".CO", ".OL", ".VI", ".WA", ".L",
+})
+_ASIA_SUFFIXES: frozenset[str] = frozenset({".T", ".HK"})
+_INDEX_GROUPS: dict[str, str] = {
+    **{s: "EU" for s in ("^GDAXI", "^MDAXI", "^SDAXI", "^TECDAX",
+                         "^STOXX50E", "^FTSE")},
+    **{s: "US" for s in ("^GSPC", "^IXIC", "^DJI", "^RUT", "^VIX")},
+    **{s: "ASIA" for s in ("^N225", "^HSI")},
+}
+# Krypto handelt sieben Tage die Woche und ist deshalb eine EIGENE Gruppe,
+# nicht Teil von CONT (FX/Futures, 24/5): am Wochenende hätte BTC-EUR sonst
+# einen Samstagsbalken, und alle FX-/Futures-Ticker mit Freitagsbalken stünden
+# als stale da — derselbe strukturelle Fehlalarm, den dieser Umbau beseitigt.
+SEVEN_DAY_GROUPS: frozenset[str] = frozenset({"CRYPTO"})
 
-    Ein Nicht-Handelstag erzeugt keinen neuen Balken — Wochenende, Feiertag und
-    ein einzelner haengender Feed sehen hier gleich aus, und das ist gewollt:
-    der Befund lautet "diese Ticker sind nicht von heute", nicht "warum".
-    Damit braucht es keinen Handelskalender und keine Feiertagsliste, und der
-    Fall, den eine Feiertagsliste NICHT faengt (ein einzelner Ticker mit
-    haengendem Feed, Anlassfall G1A.DE/AOF.DE am 2026-09-07), ist mit drin.
+
+def exchange_group(symbol: str) -> str:
+    """Börsengruppe eines Yahoo-Symbols: EU | US | ASIA | CONT | CRYPTO.
+
+    CONT = FX (=X) und Futures (=F), CRYPTO = -EUR/-USD-Paare. Ein Symbol mit
+    unbekanntem Börsen-Suffix (z.B. ".TO") oder ein unbekannter Index bildet
+    eine eigene Gruppe unter seinem Suffix bzw. Namen — lieber eine Gruppe ohne
+    Vergleichspartner (kein Stale-Befund möglich) als eine fremde Börse als
+    Maßstab (Fehlalarm an jedem Feiertag der anderen).
+    """
+    s = (symbol or "").upper()
+    if s.startswith("^"):
+        return _INDEX_GROUPS.get(s, s)
+    if s.endswith(("=X", "=F")):
+        return "CONT"
+    if s.endswith(("-EUR", "-USD")):
+        return "CRYPTO"
+    if "." in s:
+        suffix = "." + s.rsplit(".", 1)[1]
+        if suffix in _EU_SUFFIXES:
+            return "EU"
+        if suffix in _ASIA_SUFFIXES:
+            return "ASIA"
+        return suffix
+    return "US"
+
+
+def _data_freshness(universe: dict[str, Any], timestamp: Any) -> dict[str, Any]:
+    """Fasst die bar_date-Verteilung des Universums zusammen — je Börsengruppe.
+
+    Weiterhin OHNE Handelskalender und Feiertagsliste. Bis 2026-10-04 galt
+    jeder Ticker als stale, dessen bar_date nicht von heute war. Das war jeden
+    Vormittag falsch: Montag 12:02 CEST standen alle 68 US-Ticker mit dem
+    Freitagsschluss auf "stale, kein Entry", obwohl die US-Börse schlicht noch
+    zu war (Morning Check v49, Erstlauf 2026-10-05).
+
+    Neu ist der Maßstab der Peer, nicht das Datum:
+
+      stale       Ticker, deren bar_date ÄLTER ist als der jüngste bar_date
+                  ihrer Gruppe (exchange_group). Das ist genau der hängende
+                  Einzel-Feed (Anlassfall G1A.DE/AOF.DE am 2026-09-07): die
+                  übrigen EU-Ticker haben den Balken von heute, er nicht.
+      groups      {Gruppe: {"latest": jüngster bar_date, "count": Ticker mit
+                  bar_date}}.
+      pre_session Gruppen, deren latest HINTER dem jüngsten bar_date des
+                  Universums liegt — Session noch nicht eröffnet oder
+                  Börsenfeiertag (z.B. ["US"] am Montagmittag). Maßstab ist
+                  bewusst NICHT as_of: am Wochenende liegt dann jede Gruppe
+                  hinter as_of, und die Liste wäre voll, ohne etwas zu sagen.
+                  Gruppen aus SEVEN_DAY_GROUPS (Krypto) zählen für den
+                  Maßstab nicht mit, sonst schöbe der Samstagsbalken von
+                  BTC-EUR am Wochenende alle anderen Gruppen in die Liste.
+                  Sie können selbst aber in pre_session landen (Feed hängt).
+
+    Grenze: Eine Gruppe aus nur einem Ticker hat keinen Vergleichspartner und
+    wird nie stale. Ein Ticker, der seiner Gruppe VORAUS ist (Balken von
+    heute, alle anderen von gestern), macht die übrigen stale — das ist
+    gewollt, solange die Gruppe gemeinsam handelt; innerhalb von EU kann ein
+    Feiertag nur einer Börse (UK-Bank-Holiday) so einzelne Ticker markieren.
     """
     try:
         today = timestamp.date().isoformat()
     except AttributeError:
         today = None
     by_date: dict[str, int] = {}
-    stale: list[str] = []
     unknown: list[str] = []
+    dated: list[tuple[str, str, str]] = []  # (symbol, gruppe, bar_date)
+    groups: dict[str, dict[str, Any]] = {}
     for sym, entry in universe.items():
         bd = entry.get("bar_date") if isinstance(entry, dict) else None
         if bd is None:
             unknown.append(sym)
             continue
         by_date[bd] = by_date.get(bd, 0) + 1
-        if today is not None and bd != today:
-            stale.append(sym)
+        grp = exchange_group(sym)
+        dated.append((sym, grp, bd))
+        g = groups.setdefault(grp, {"latest": bd, "count": 0})
+        g["count"] += 1
+        if bd > g["latest"]:
+            g["latest"] = bd
+
+    stale = sorted(sym for sym, grp, bd in dated if bd < groups[grp]["latest"])
+
     latest = max(by_date) if by_date else None
+    ref_dates = [g["latest"] for name, g in groups.items()
+                 if name not in SEVEN_DAY_GROUPS]
+    reference = max(ref_dates) if ref_dates else latest
+    pre_session = sorted(
+        name for name, g in groups.items()
+        if reference is not None and g["latest"] < reference
+    )
     return {
         "as_of": today,
         "latest_bar": latest,
         "by_date": dict(sorted(by_date.items(), reverse=True)),
+        "groups": dict(sorted(groups.items())),
+        "pre_session": pre_session,
         "stale_count": len(stale),
-        "stale": sorted(stale),
+        "stale": stale,
         "unknown": sorted(unknown),
     }
 
@@ -444,8 +559,7 @@ def _exdiv_radar(
 
         direction = getattr(r.entry, "direction", "") or ""
         name = getattr(r.entry, "name", "") or sym
-        is_pos = (direction.upper().startswith("POSITION-MONITOR")
-                  or "[MONITOR" in name.upper())
+        is_pos = _is_position_monitor(r.entry)
         amt = snap.last_ex_div_amount
         row: dict[str, Any] = {
             "symbol": sym,
@@ -498,7 +612,16 @@ def build_briefing_digest(
     Returns:
         JSON-String (UTF-8, ensure_ascii=False), fertig für write_json_file.
     """
-    buckets_raw = classify_watchlist_results(watchlist_results)
+    # Stufe 1 ohne Positions-Monitore (2026-10-05). Ein Monitor hat keinen
+    # Entry-Trigger; sein Trigger-Text ("POSITION-MONITOR (#NN) - kein Entry-
+    # Trigger … SL … TIW …") enthält aber Preise, die der Parser als Zone
+    # liest — im Erstlauf v49 standen NBIS und JST.DE so in buckets.ready, und
+    # DHL.DE wurde über "Invalidator … EMA50-1D (~55,86€)" als approx-Trigger
+    # BEREIT. Monitore gehen nur in position_monitors; ihre Indikatoren stehen
+    # weiter im universe-Block (der kommt aus den Snapshots, nicht von hier).
+    stufe1_results = [r for r in watchlist_results
+                      if not _is_position_monitor(r.entry)]
+    buckets_raw = classify_watchlist_results(stufe1_results)
     today = timestamp.date()
 
     buckets: dict[str, list[dict[str, Any]]] = {}
@@ -507,11 +630,15 @@ def build_briefing_digest(
         if rows:
             buckets[name] = [_bucket_entry(r) for r in rows]
 
-    # Watchlist-Verfall: alle Einträge mit expiry_date ≤ Fenster
+    # Watchlist-Verfall: Einträge mit expiry_date ≤ Fenster, nur aktive Zeilen
+    # und Positionen (EXPIRY_STATUSES) — archivierte verfallen nicht mehr.
     expiry: list[dict[str, Any]] = []
     for r in watchlist_results:
         exp: Optional[date] = getattr(r.entry, "expiry_date", None)
         if exp is None:
+            continue
+        status = _watchlist_status(r.entry)
+        if status not in EXPIRY_STATUSES:
             continue
         days_left = (exp - today).days
         if days_left <= expiry_window_days:
@@ -519,6 +646,7 @@ def build_briefing_digest(
                 "symbol": r.entry.symbol,
                 "expiry": exp.isoformat(),
                 "tage_rest": days_left,
+                "status": status,
             })
     expiry.sort(key=lambda d: d["tage_rest"])
 
@@ -543,9 +671,8 @@ def build_briefing_digest(
     # parser-sicher, kein Entry) und wird clientseitig gegen den Kurs geprüft.
     position_monitors: list[dict[str, Any]] = []
     for r in watchlist_results:
-        direction = (getattr(r.entry, "direction", "") or "").upper()
         name = getattr(r.entry, "name", "") or ""
-        if direction.startswith("POSITION-MONITOR") or "[MONITOR" in name.upper():
+        if _is_position_monitor(r.entry):
             row = {"symbol": r.entry.symbol, "name": name}
             if getattr(r.entry, "direction", None):
                 row["label"] = r.entry.direction
@@ -562,14 +689,19 @@ def build_briefing_digest(
         "tier": "A",
         "counts": {
             "universe": len(universe),
+            # Bucket-Zahlen ohne Positions-Monitore (Stufe 1); die stehen
+            # gesondert, damit die Summe weiter die Watchlist ergibt.
             **{name: len(buckets_raw.get(name, [])) for name in
                ("ready", "in_zone_partial", "very_close", "close",
                 "watching", "pending", "paused", "no_data", "far")},
+            "position_monitors": len(position_monitors),
         },
         "macro": macro_present,
         # Aggregierter Datenstand: welcher Balken steckt in wie vielen Tickern.
         # Der Morning-Check liest 'stale' und schreibt eine Kopfzeile, statt die
-        # Staleness aus 99 Einzelfeldern zu rekonstruieren.
+        # Staleness aus 99 Einzelfeldern zu rekonstruieren. Seit 2026-10-05
+        # je Börsengruppe: 'stale' = hinter den eigenen Peers, 'pre_session' =
+        # ganze Gruppe noch ohne heutigen Balken (z.B. US am Vormittag).
         "data_freshness": _data_freshness(universe, timestamp),
         "universe": universe,
         "buckets": buckets,
