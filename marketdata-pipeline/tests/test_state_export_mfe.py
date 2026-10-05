@@ -230,3 +230,23 @@ class TestRunOffline:
         assert ws.cell(row=3, column=hdr.index("MFE_R") + 1).value is None
         assert csv.exists() and "uebersprungen (Symbol)" in csv.read_text(encoding="utf-8")
         assert "2 von 4 Zeilen gerechnet" in summary and "Nr 104 NIX: keine Kursdaten" in summary
+
+
+def test_archiv_ohne_datum_wird_nicht_doppelt_angehaengt(tmp_path):
+    """Regression AMZN 2026-10-05: archived.date leer, Datum nur im Grund-Text."""
+    j = tmp_path / "in.xlsx"
+    _journal(j)
+    state = {
+        "watchlist": {"entries": [{
+            "symbol": "AMZN", "name": "Amazon", "direction": "LONG", "status": "archiviert",
+            "legs": [{"label": "A", "gate": "🔴", "text": "x"}],
+            "archived": {"date": "", "reason": "Position geschlossen 2026-09-16"},
+        }]},
+        "radar": {"rows": []}, "thesen": {"thesen": []},
+    }
+    out1, out2 = tmp_path / "o1.xlsx", tmp_path / "o2.xlsx"
+    c1 = se.export_journal(state, j, out1)
+    c2 = se.export_journal(state, out1, out2)
+    assert c1["archiv_neu"] == 1 and c2["archiv_neu"] == 0
+    ws = load_workbook(out2)["Watchlist-Archiv"]
+    assert sum(1 for r in ws.iter_rows(min_row=2, values_only=True) if r[1] == "AMZN") == 1

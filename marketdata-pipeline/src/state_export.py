@@ -195,11 +195,15 @@ def export_archive(ws, entries: list[dict]) -> int:
     for e in sorted((e for e in entries if e.get("status") == "archiviert"),
                     key=lambda x: (str((x.get("archived") or {}).get("date") or ""), x.get("symbol", ""))):
         arch = e.get("archived") or {}
-        key = (str(e.get("symbol", "")).upper(), str(arch.get("date") or ""))
+        status_txt = f"📦 ARCHIVIERT {arch.get('date') or '?'} — {arch.get('reason') or ''}".strip(" —")
+        # Schluessel genau so bilden wie beim Lesen des Blatts (_first_iso auf dem
+        # Status-Text). Vorher: Datum aus archived.date — fehlte es und stand ein
+        # Datum nur im Grund-Text, passten Lese- und Schreibschluessel nie zusammen
+        # und die Zeile wurde bei JEDEM Export erneut angehaengt (AMZN, 2026-10-05).
+        key = (str(e.get("symbol", "")).upper(), _first_iso(status_txt))
         if key in existing:
             continue
         r += 1
-        status_txt = f"📦 ARCHIVIERT {arch.get('date') or '?'} — {arch.get('reason') or ''}".strip(" —")
         vals = [
             e.get("name") or e.get("symbol"), e.get("symbol"), _richtung_text({**e, "status": "aktiv"}),
             _legs_text(e), _bemerkung(e), status_txt, e.get("added") or None, e.get("expiry") or None,
