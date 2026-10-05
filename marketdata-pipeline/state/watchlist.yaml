@@ -2289,4 +2289,32 @@ entries:
   notes: '[NEU 2026-10-05 18:4x, Korb A Umbau (User), User-Charts 1D+4h] Eaton plc - Elektrotechnik/Power-Management (Schaltanlagen, USV, Rechenzentrums-Strom). 1D: Stack bullish (EMA 428,03/421,38/412,78/396,68), Kurs 439,74 ueber 4/4; Ausbruch ueber 438,26 vor 9 HT, Okt-2-Docht bis ~452 abgewiesen, heute Retest bis 431,38 und Schluss nahe Hoch. Aug-Spike bis 478 (52W-Hoch) mit Konsolidierung 463-470, Sept-Tief ~385. 4h: EMA 432,62/425,76/421,00/412,53, RSI-4h 61,1 > Signal 58,3 (Cross nach oben), laufende Kerze gruen. RSI-1D 58,0 > 55,7, ATR 13,57 (3,1 %). L25: Entry 440,10 -> SL 419,75 (ATR-Term), d 20,36, TIW-Puffer 1,36 ATR. TP 452 (Okt-Docht) waere nur 0,58 R -> TP1 470 = erste Marke ueber 1,3 R (466,56). Sizing 8 Stk Basis = 145 EUR. Score 7/7. Counter-These S0: keine Earnings vor 2026-11-03; Personalie Controller (2026-10-05) unerheblich; Stufe 1 (Websuche) nicht gemacht. Klassen-Hinweis: Ausbruch 9 HT alt - das 10-HT-Fenster der Klasse endet 2026-10-06; als Thesen-Korb-Ausdruck
     gilt die Geometrie weiter, Verfall 2026-10-16.'
   added: '2026-10-05'
-updated: '2026-10-05T16:45:49+00:00'
+- symbol: ABBN.SW
+  name: ABB Ltd (ABBN, SIX) - Elektrifizierung/Automation
+  direction: LONG
+  klasse: thesen_korb
+  anker: EMA20/50/100-1D-Cluster
+  treiber: These A AI-Strom (spielen, Korb 4 % RK, Re-Check 2026-10-09; Hyperscaler-Q3-Calls ab 2026-10-28)
+  status: aktiv
+  expiry: '2026-10-12'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-05 KORB-A TREND-PULLBACK-LONG (Korb 2/4, KURSE IN CHF - Euro-Zeichen nur fuer den Parser): Touch 79,30-80,00€ [pullback] (EMA100-1D 79,28 bis EMA20/50-1D 80,23) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (1,95 -> -2,92). TIW = 1D-Schluss unter 78,80€ (unter Range-Tief ~79,0 seit 2026-09-22). TP1 84,00€ = Range-Hoch (1/3 raus, Exit-Test v49). TP2 88,00€ = Jul-Hochs. Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,37-1,61 / TP2 2,74-2,98. Korb-Anteil 150 EUR Risk. Non-Quanto CHF. Earnings 2026-10-20: Einstieg nur bis 2026-10-12.'
+  notes: '[NEU 2026-10-05 18:5x, Korb A, User-Charts 1D+4h] ABB - Elektrifizierung, Netz- und Rechenzentrums-Ausruestung. 1D C 81,70 (H 82,80 L 80,62), EMA 80,24/80,23/79,28/74,77; Rally Apr-Jun 64 -> ~89, seitdem Range 75,5-88; seit 2026-09-22 enger 79,0-84,0. Digest-Ausbruch 82,62 vor 9 HT: Schluss 81,70 heute DARUNTER = Fehlausbruch nach Klassendefinition -> kein Breakout-Retest, sondern Pullback an den EMA-Cluster. 4h EMA 81,02/80,50/80,30/80,23, RSI-4h 57,4 > 51,5. ATR 1,949 (2,4 %). Range-Ausbruch >84,10 verworfen: Aug-Hoch 86 nur 0,65 R. Aber: EMA20 = EMA50 (flach), r2 0,27 - traegt duenn. Earnings 2026-10-20, Aktienrueckkauf laeuft. Sizing in EUR: Stk = 150 x EURCHF / 2,92 (Kurs bei Entry live).'
+  added: '2026-10-05'
+- symbol: PWR
+  name: Quanta Services (PWR, NYSE) - Netzbau/Engineering
+  direction: LONG
+  klasse: thesen_korb
+  anker: Ausbruch 664,36 (20-Tage-Hoch)
+  treiber: These A AI-Strom (spielen, Korb 4 % RK, Re-Check 2026-10-09; Hyperscaler-Q3-Calls ab 2026-10-28)
+  status: aktiv
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-05 KORB-A BREAKOUT-RETEST-LONG (Korb 3/4): Niveau 664,36$ (20-Tage-Hoch, Ausbruch 2026-10-02). Retest: Touch 653,62-680,47$ [pullback] (Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze, NUR wenn Marke <= 678,00 (sonst TP1 < 1,3 R). Stopweite entry-relativ -1,5xATR-1D (21,48 -> -32,22). TIW = 1D-Schluss unter 664,36$. TP1 722,00$ = Aug-Hoch (1/3 raus, Exit-Test v49). TP2 760,00$ = Jun-Hochs. Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,43 (Marke 676) bis 1,68 (Marke 668). Korb-Anteil 150 EUR Risk. ATR 3,1% 🟡: KO Hebel <=8. Non-Quanto USD. Earnings 2026-10-29.'
+  notes: '[NEU 2026-10-05 18:5x, Korb A, User-Charts 1D+4h] Quanta Services - Bau und Wartung von Stromnetzen und Leitungen. 1D C 689,68 (+1,94 %, laufend), EMA 647,97/647,17/643,14/602,40 (20/50/100 eng beieinander), Kurs 1,94 ATR ueber EMA20. Ausbruch ueber 664,36 am 2026-10-02, seitdem steil: 4h RSI 73,0 (ueberkauft), 4h-Kerzen 640 -> 690 in zwei Tagen = Velocity, kein Einstieg hier. Ueber dem Kurs: Aug-Hoch ~722, Jul-Cluster ~740, Jun ~760, ATH Mai ~788. Rahmen: Rueckkehr ins Band 653,6-680,5, dann Stop-Buy ueber Retest-Kerze; Marke > 678 macht TP1 722 < 1,3 R.'
+  added: '2026-10-05'
+updated: '2026-10-05T17:00:25+00:00'
