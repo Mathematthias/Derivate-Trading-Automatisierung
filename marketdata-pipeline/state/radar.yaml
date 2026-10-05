@@ -548,4 +548,13 @@ rows:
   id: Z87
   status: offen
   added: '2026-10-05'
-updated: '2026-10-05T10:01:50+00:00'
+- date: '2026-10-28'
+  kat: 5
+  ereignis: 'Alphabet Q3-2026-Zahlen und Call: erster datierter Messtermin fuer Falsifikat (a) der These A (Hyperscaler-Capex-Cut) - 2027-Capex-Guidance der Big-5 in den Q3-Calls Ende Oktober. Zeile aus Thesen-Lauf 2026-10-03 (Journal-20261004 Z85), bei der Migration nach radar.yaml verloren, am 2026-10-05 nachgetragen.'
+  werte: GOOGL; Messwert fuer These A (PRY.MI, NEX.PA, ENR.DE)
+  wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: bestaetigt oder kippt das AI-Strom-Narrativ ueber die Nachfrageseite (Rechenzentren-Capex). Guidance-Cut = Falsifikat (a) eingetreten -> Korb A auf Verdikt pruefen.'
+  quelle: Thesen-Lauf 2026-10-03 (Sekundaerkalender, IR-Kalender nicht gegengelesen, confidence MITTEL).
+  id: Z88
+  status: offen
+  added: '2026-10-05'
+updated: '2026-10-05T14:09:07+00:00'

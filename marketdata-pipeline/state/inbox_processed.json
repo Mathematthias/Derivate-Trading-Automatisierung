@@ -6,5 +6,29 @@
   "source": "termin-radar",
   "status": "ok",
   "verworfen": 0
+ },
+ "1O-kZLsMk5q9gMRlflLd-PtNPTxOwHlJ2": {
+  "actions": 4,
+  "at": "2026-10-05T14:09:07+00:00",
+  "name": "INBOX-morning-check-20261005-1355.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1ROOVphHB-YHk_lD7yukING3giyhiw1W8": {
+  "actions": 7,
+  "at": "2026-10-05T14:09:07+00:00",
+  "name": "INBOX-morning-check-20261005-1535.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1lK3BZT8v_PsKz-mvcsMwF85KOE2T10GZ": {
+  "actions": 6,
+  "at": "2026-10-05T14:09:07+00:00",
+  "name": "INBOX-morning-check-20261005-1410.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
  }
 }
