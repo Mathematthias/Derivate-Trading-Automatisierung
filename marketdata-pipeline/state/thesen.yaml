@@ -9,11 +9,16 @@ thesen:
   re_check: '2026-10-09'
   falsifikat: (a) Hyperscaler-Capex-Cut (Messtermin Q3-Calls Ende Oktober, Alphabet 2026-10-28); (b) book-to-bill < 1 (PRY 2026-10-29, ENR 2026-11-11)
   ausdruecke:
+  - ETN
+  - ABBN.SW
+  - PWR
   - PRY.MI
-  - NEX.PA
-  - ENR.DE
-  note: '2026-10-05 (User, Weg 3): Korb-Kandidaten ins Tier-A-Universum - PR #4 (NKT.CO, SU.PA, ABBN.SW, LR.PA, GEV, VRT, ETN, PWR + PRY.MI, NEX.PA). Setups erst nach Merge und erstem Tier-A-Lauf; PRY/NEX/ENR heute seitwaerts (r2 0,04-0,22).'
+  note: 'Korb A Umbau 2026-10-05 (User): ETN, ABBN.SW, PWR (Universum seit PR #4) + PRY.MI (Kabel, RE-EVAL >133,40). NEX.PA und ENR.DE raus (seit Wochen seitwaerts, r2 <=0,23). Budget 4 % RK / 4 = 150 EUR je Ausdruck. SU.PA nicht: PTC-Uebernahme 22,6 Mrd USD (2026-10-05, -10 %) = frischer Gegen-Katalysator.'
   historie:
+  - date: '2026-10-05'
+    verdikt: spielen
+    crowdedness_pp: null
+    source: morning-check
   - date: '2026-10-05'
     verdikt: spielen
     crowdedness_pp: null
@@ -52,4 +57,4 @@ thesen:
   re_check: '2026-10-29'
   falsifikat: ''
   ausdruecke: []
-updated: '2026-10-05T14:09:07+00:00'
+updated: '2026-10-05T16:45:49+00:00'
