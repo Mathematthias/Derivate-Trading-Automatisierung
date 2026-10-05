@@ -64,6 +64,33 @@ positionen:
   Xtrackers_Gold:  "XAD5.DE"    # Trade #39 ETC Long, primäres Position-Underlying
   # JPM Sparplan-Rest: passiv, kein Tracking nötig
 # ============================================================
+# THESEN-KOERBE — Ausdruecke und Kandidaten aktiver Thesen (seit 2026-10-05)
+#
+# Anlass: These A (AI-Strom/Elektrifizierung, Verdikt spielen, 4 % RK) hatte
+# nur drei Ausdruecke im Digest-Universum (PRY.MI, NEX.PA, ENR.DE), alle drei
+# seitwaerts. Kandidaten mit eigenem Trend fehlten, weil Tier A nur Indizes,
+# Rohstoffe, Krypto, Positionen und Watchlist zieht. Diese Sektion bringt sie
+# in jeden Tier-A-Lauf (Kurs, EMAs, ATR, 4h) — und damit in den Digest.
+# Sie ist KEIN excluded_category: der Tier-A-Setup-Filter darf sie bewerten.
+# Pflege: Thesen-Lauf (Routine 9) schlaegt Zu-/Abgaenge vor, Aenderung per Commit.
+# Ethik: alle ohne Angriffswaffen-Kerngeschaeft (Eaton-Aerospace < 30 %, zivil
+# dominiert — Schaetzung, Stand 2026-10-05).
+# ============================================================
+thesen_koerbe:
+  # These A — Kabel / Netzanschluss (bisherige Ausdruecke, nicht in Tier B/C)
+  Prysmian:           "PRY.MI"     # Kabel/HV-Netzanschluss, Mailand, EUR
+  Nexans:             "NEX.PA"     # Kabel/HV-Netzanschluss, Paris, EUR
+  NKT:                "NKT.CO"     # HV-Kabel, Kopenhagen, DKK
+  # These A — Elektrifizierung / Rechenzentrums-Strom
+  Schneider_Electric: "SU.PA"      # Energiemanagement/Elektrifizierung, Paris, EUR (auch Tier B)
+  ABB:                "ABBN.SW"    # Elektrifizierung/Automation, Zuerich, CHF (auch Tier B)
+  Legrand:            "LR.PA"      # Elektroinstallation, Rechenzentren, Paris, EUR
+  GE_Vernova:         "GEV"        # Gasturbinen/Netz, NYSE, USD
+  Vertiv:             "VRT"        # Rechenzentrums-Strom/Kuehlung, NYSE, USD
+  Eaton:              "ETN"        # Elektrotechnik/Power-Management, NYSE, USD (auch Tier C)
+  Quanta_Services:    "PWR"        # Netzbau, NYSE, USD (auch Tier C)
+
+# ============================================================
 # NEBENWERTE-COVERAGE — DE Mid/Small-Caps mit Hidden-Catalyst-Potenzial
 # Stand: 2026-04-27, V0.3 — Coverage-Erweiterung nach CANCOM-Lücke
 #

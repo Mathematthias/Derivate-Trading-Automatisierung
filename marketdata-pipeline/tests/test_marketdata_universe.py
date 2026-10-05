@@ -90,3 +90,27 @@ def test_watchlist_eintrag_ohne_symbol_wird_ignoriert():
 def test_leere_watchlist_bricht_nicht():
     all_s, _, _ = build_pull_universe("tier_c", TIER_C_CFG, [])
     assert all_s == {"AAPL", "NVDA", "CTSH"}
+
+
+def test_tier_a_zieht_thesen_koerbe_ohne_filter_ausschluss():
+    cfg = dict(TIER_A_CFG, thesen_koerbe={"Schneider": "SU.PA", "Vertiv": "VRT", "Leer": None})
+    all_s, excl, excl_cat = build_pull_universe("tier_a", cfg, _wl("PRY.MI"))
+    assert {"SU.PA", "VRT", "PRY.MI"} <= all_s
+    # Handelskandidaten, kein Makro-Kontext: Setup-Filter darf sie bewerten
+    assert not ({"SU.PA", "VRT"} & excl_cat)
+
+
+def test_thesen_koerbe_ethik_schlaegt():
+    cfg = dict(TIER_A_CFG, thesen_koerbe={"Rheinmetall": "RHM.DE", "ABB": "ABBN.SW"})
+    all_s, excl, _ = build_pull_universe("tier_a", cfg, _wl())
+    assert "RHM.DE" not in all_s and "ABBN.SW" in all_s
+
+
+def test_echte_tier_a_config_laedt_thesen_koerbe():
+    import yaml
+    cfg_path = os.path.join(os.path.dirname(_HERE), "config", "tickers_tier_a.yaml")
+    cfg = yaml.safe_load(open(cfg_path, encoding="utf-8"))
+    all_s, _, excl_cat = build_pull_universe("tier_a", cfg, _wl())
+    erwartet = {"PRY.MI", "NEX.PA", "NKT.CO", "SU.PA", "ABBN.SW", "LR.PA", "GEV", "VRT", "ETN", "PWR"}
+    assert erwartet <= all_s
+    assert not (erwartet & excl_cat)

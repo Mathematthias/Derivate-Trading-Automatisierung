@@ -261,6 +261,13 @@ def build_pull_universe(
                 if sym:
                     all_symbols.add(sym)
                     excluded_category_symbols.add(sym)
+        # Thesen-Koerbe (seit 2026-10-05): Ausdruecke/Kandidaten aktiver Thesen.
+        # Gepullt wie Watchlist-Werte, aber NICHT vom Setup-Filter ausgenommen —
+        # es sind Handelskandidaten, kein Makro-Kontext. Ohne diese Zeile wuerde
+        # die Sektion stillschweigend ignoriert (Tier A liest nur die Liste oben).
+        for sym in (ticker_config.get("thesen_koerbe", {}) or {}).values():
+            if sym:
+                all_symbols.add(sym)
     else:
         # Tier B / Tier C — Auto-Discover: alle Sektionen unter Root oder
         # unter 'categories:'. Tier B = EU-Universum, Tier C = US-Universum.
