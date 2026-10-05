@@ -45,6 +45,11 @@ class WatchlistEntry:
     triggers: list["ParsedTrigger"] = field(default_factory=list)
     earliest_date: Optional[date] = None  # bei "nach 2026-04-30"
     expiry_date: Optional[date] = None  # Verfallsdatum (Spalte H, Patch 5)
+    # Lebenszyklus aus state/watchlist.yaml ("aktiv" | "position" | "archiviert").
+    # NICHT dasselbe wie `status` oben: der ist der Pipeline-Status und steht
+    # bei YAML-Eintraegen immer auf "aktiv". None = Quelle STATE-Doc, dort gibt
+    # es kein Lebenszyklus-Feld (2026-10-05, Digest-Fixes Morning Check v49).
+    state_status: Optional[str] = None
 
 
 @dataclass

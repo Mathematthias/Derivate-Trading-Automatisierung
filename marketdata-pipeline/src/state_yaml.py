@@ -162,6 +162,9 @@ def entries_from_yaml(block: dict) -> list[WatchlistEntry]:
             triggers=_parse_triggers(trigger_raw),
             earliest_date=_parse_earliest_date(trigger_raw),
             expiry_date=_iso_date(e.get("expiry")),
+            # Der YAML-Status muss bis in den Digest durch: watchlist_expiry
+            # filtert archivierte Zeilen, Stufe 1 laesst Positionen aus.
+            state_status=str(e.get("status") or "aktiv"),
         ))
     return out
 
