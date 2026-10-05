@@ -225,6 +225,11 @@ def pitch_symbols(bundle: dict | None) -> set[str]:
     }
 
 
+# Tier-A-Sektionen, die Makro-Kontext sind (gepullt, aber vom Setup-Filter
+# ausgenommen). Alles andere in tickers_tier_a.yaml ist Kandidaten-Sektion.
+TIER_A_MACRO_CATEGORIES = ("indizes", "rohstoffe_forex", "krypto", "positionen")
+
+
 def build_pull_universe(
     mode: str,
     ticker_config: dict,
@@ -255,19 +260,35 @@ def build_pull_universe(
         # Indizes/Rohstoffe/Krypto/Positionen aus tickers_tier_a.yaml.
         # Diese Kategorien sind Makro-Kontext, kein Trade-Universum →
         # zusätzlich als excluded_category_symbols für den Setup-Filter.
-        for category in ["indizes", "rohstoffe_forex", "krypto", "positionen"]:
+        for category in TIER_A_MACRO_CATEGORIES:
             section = ticker_config.get(category, {}) or {}
             for sym in section.values():
                 if sym:
                     all_symbols.add(sym)
                     excluded_category_symbols.add(sym)
-        # Thesen-Koerbe (seit 2026-10-05): Ausdruecke/Kandidaten aktiver Thesen.
-        # Gepullt wie Watchlist-Werte, aber NICHT vom Setup-Filter ausgenommen —
-        # es sind Handelskandidaten, kein Makro-Kontext. Ohne diese Zeile wuerde
-        # die Sektion stillschweigend ignoriert (Tier A liest nur die Liste oben).
-        for sym in (ticker_config.get("thesen_koerbe", {}) or {}).values():
-            if sym:
-                all_symbols.add(sym)
+        # Kandidaten-Sektionen (seit 2026-10-05): JEDE weitere Mapping-Sektion
+        # der Tier-A-Config (nebenwerte_de, thesen_koerbe, ...) wird gepullt.
+        # Vorher las Tier A nur die vier Makro-Kategorien oben — eine neue
+        # Sektion fiel stillschweigend raus (nebenwerte_de seit 2026-04-27 nie
+        # gepullt). Kandidaten sind Handelswerte, kein Makro-Kontext: sie sind
+        # NICHT excluded_category, der Setup-Filter darf sie bewerten.
+        loaded_sections: list[tuple[str, int]] = []
+        for name, section in ticker_config.items():
+            if name in TIER_A_MACRO_CATEGORIES or name == "ethik_excluded":
+                continue
+            if not isinstance(section, dict):
+                continue
+            count = 0
+            for sym in section.values():
+                if sym:
+                    all_symbols.add(sym)
+                    count += 1
+            loaded_sections.append((name, count))
+        if loaded_sections:
+            logger.info(
+                "  TIER_A candidate sections loaded: "
+                + ", ".join(f"{n}={c}" for n, c in loaded_sections)
+            )
     else:
         # Tier B / Tier C — Auto-Discover: alle Sektionen unter Root oder
         # unter 'categories:'. Tier B = EU-Universum, Tier C = US-Universum.

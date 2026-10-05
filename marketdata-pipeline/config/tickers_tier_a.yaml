@@ -72,6 +72,8 @@ positionen:
 # Rohstoffe, Krypto, Positionen und Watchlist zieht. Diese Sektion bringt sie
 # in jeden Tier-A-Lauf (Kurs, EMAs, ATR, 4h) — und damit in den Digest.
 # Sie ist KEIN excluded_category: der Tier-A-Setup-Filter darf sie bewerten.
+# Seit 2026-10-05 gilt das fuer JEDE Sektion ausser indizes/rohstoffe_forex/
+# krypto/positionen/ethik_excluded (marketdata_sync.TIER_A_MACRO_CATEGORIES).
 # Pflege: Thesen-Lauf (Routine 9) schlaegt Zu-/Abgaenge vor, Aenderung per Commit.
 # Ethik: alle ohne Angriffswaffen-Kerngeschaeft (Eaton-Aerospace < 30 %, zivil
 # dominiert — Schaetzung, Stand 2026-10-05).
@@ -97,6 +99,8 @@ thesen_koerbe:
 # Auswahl-Logik: Hohe News-Sensitivität, ausreichende Liquidität für KO-
 # Zertifikate (Vol-Avg ≥ 1 Mio EUR/Tag), Sektor-Spread für Hidden-Catalyst-
 # Treffer. Kein Rüstungs-Core (Ethik-Filter).
+# HINWEIS 2026-10-05: Diese Sektion wurde bis 2026-10-05 NIE gepullt — Tier A
+# las nur die Makro-Kategorien. Seitdem liest marketdata_sync jede Sektion.
 # ============================================================
 nebenwerte_de:
   CANCOM:           "COK.DE"      # SDAX/TecDAX, IT-Services, Buyback-Story

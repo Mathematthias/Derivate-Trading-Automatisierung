@@ -114,3 +114,26 @@ def test_echte_tier_a_config_laedt_thesen_koerbe():
     erwartet = {"PRY.MI", "NEX.PA", "NKT.CO", "SU.PA", "ABBN.SW", "LR.PA", "GEV", "VRT", "ETN", "PWR"}
     assert erwartet <= all_s
     assert not (erwartet & excl_cat)
+
+
+def test_tier_a_zieht_jede_kandidaten_sektion():
+    cfg = dict(TIER_A_CFG, nebenwerte_de={"CANCOM": "COK.DE", "KION": "KGX.DE"},
+               irgendwas_neues={"X": "XYZ.DE"})
+    all_s, _, excl_cat = build_pull_universe("tier_a", cfg, _wl())
+    assert {"COK.DE", "KGX.DE", "XYZ.DE"} <= all_s
+    assert not ({"COK.DE", "KGX.DE", "XYZ.DE"} & excl_cat)
+
+
+def test_keine_sektion_der_echten_config_faellt_raus():
+    """Regression: jede Mapping-Sektion in tickers_tier_a.yaml landet im Pull."""
+    import yaml
+    cfg_path = os.path.join(os.path.dirname(_HERE), "config", "tickers_tier_a.yaml")
+    cfg = yaml.safe_load(open(cfg_path, encoding="utf-8"))
+    all_s, excl, _ = build_pull_universe("tier_a", cfg, _wl())
+    for name, section in cfg.items():
+        if name == "ethik_excluded" or not isinstance(section, dict):
+            continue
+        for sym in section.values():
+            if sym and sym not in excl:
+                assert sym in all_s, f"{name}: {sym} fehlt im Pull"
+    assert {"COK.DE", "F3C.DE", "KGX.DE", "HAG.DE"} <= all_s
