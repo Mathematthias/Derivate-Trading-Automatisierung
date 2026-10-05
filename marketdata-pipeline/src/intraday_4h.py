@@ -327,10 +327,19 @@ def pull_4h(symbols: list[str], period: str = "60d",
         logger.warning(f"4h-Layer: Download fehlgeschlagen ({exc}) — Layer fällt aus.")
         return {}
 
+    # Pence -> Pound (2026-10-05): Yahoo liefert LSE-Listings auch auf 1h in
+    # Pence. Der Tagespfad normiert seit jeher (market_data._normalize_price_units,
+    # Kriterium: Suffix aus PRICE_DIVISORS), der 4h-Pfad nicht — im Digest stand
+    # NG.L mit tf4h.close 1147.5 neben kurs 11.455. Gleiche Funktion, gleiches
+    # Kriterium, VOR der Aggregation: dann sind OHLC, EMAs und ATR in einer
+    # Einheit, und der RSI ist ohnehin skalenfrei.
+    from market_data import _normalize_price_units
+
     out: dict[str, Indicators4h] = {}
     for sym in symbols:
         try:
             sub = raw[sym] if isinstance(raw.columns, pd.MultiIndex) else raw
+            sub = _normalize_price_units(sym, sub)
             out[sym] = compute_4h(sub, rsi_signal_len=rsi_signal_len)
         except Exception as exc:
             logger.debug(f"4h-Layer: {sym} übersprungen ({exc})")

@@ -90,6 +90,53 @@ def test_original_df_not_mutated():
     assert df["Close"].iloc[0] == original_close, "Original df wurde mutiert!"
 
 
+def _xetra_tage_1h(base: float, tage: int = 30) -> pd.DataFrame:
+    """1h-Balken, 9 je Handelstag (09:00-17:00), leichter Aufwaertstrend."""
+    idx, rows = [], []
+    for d in pd.bdate_range("2026-08-03", periods=tage):
+        for h in range(9):
+            o = base * (1 + 0.0005 * len(rows))
+            rows.append({"Open": o, "High": o * 1.002, "Low": o * 0.998,
+                         "Close": o * 1.001, "Adj Close": o * 1.001,
+                         "Volume": 10_000})
+            idx.append(d + pd.Timedelta(hours=9 + h))
+    return pd.DataFrame(rows, index=pd.DatetimeIndex(idx))
+
+
+def test_4h_pfad_normiert_uk_listing_wie_der_tagespfad():
+    """Anlassfall 2026-10-05: NG.L stand im Digest mit tf4h.close 1147.5 neben
+    kurs 11.455 — der Tagespfad normiert, der 4h-Pfad (intraday_4h.pull_4h)
+    tat es nicht. Gleiche Rohdaten, einmal .L, einmal .DE: alle Preisfelder
+    des .L-Symbols sind genau 1/100, RSI ist skalenfrei und bleibt gleich."""
+    from intraday_4h import pull_4h
+
+    pence = _xetra_tage_1h(1145.0)
+    wide = pd.concat([pence, pence], axis=1)
+    wide.columns = pd.MultiIndex.from_product([["NG.L", "XYZ.DE"], pence.columns])
+    out = pull_4h(["NG.L", "XYZ.DE"], downloader=lambda s, **k: wide)
+
+    uk, de = out["NG.L"], out["XYZ.DE"]
+    assert uk.bars_available == de.bars_available > 50
+    assert 10.0 < uk.close < 13.0                     # Pound, nicht Pence
+    assert de.close > 1000.0                          # .DE unveraendert
+    for feld in ("open", "high", "low", "close", "prev_open", "prev_close",
+                 "ema9", "ema20", "ema50", "atr14"):
+        v_uk, v_de = getattr(uk, feld), getattr(de, feld)
+        assert v_uk is not None, feld
+        assert abs(v_uk - v_de / 100.0) < 1e-9 * max(1.0, v_de), feld
+    assert abs(uk.rsi14 - de.rsi14) < 1e-9
+    assert uk.stack == de.stack
+
+
+def test_4h_pfad_mutiert_rohdaten_nicht():
+    from intraday_4h import pull_4h
+
+    pence = _xetra_tage_1h(1145.0, tage=3)
+    vorher = pence["Close"].iloc[-1]
+    pull_4h(["NG.L"], downloader=lambda s, **k: pence)
+    assert pence["Close"].iloc[-1] == vorher
+
+
 if __name__ == "__main__":
     fns = [
         (name, fn) for name, fn in globals().items()
