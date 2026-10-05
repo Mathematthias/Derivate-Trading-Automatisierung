@@ -890,7 +890,7 @@ entries:
   notes: '[AUF POSITIONS-MONITOR UMGESTELLT 2026-08-19, User-Auftrag] Der Entry-Trigger ist mit dem Fill vom 18.08.2026 erledigt; die Zeile lief danach weiter als aktives Setup und erschien im Digest-Bucket NAHE — aktives Setup und offene Position auf demselben Wert nebeneinander (gleicher Befund wie ADBE Z23 am 13.08.). Jetzt Monitor-Konvention analog Z3 (SIE #74) / Z29 (JNJ #75) / Z35 (DR0 #7 AV) / Z44 (NEX #8 AV): Namensfeld traegt [MONITOR #NN], Richtung POSITION-MONITOR, Gate 📍. Die Pipeline erkennt Monitore am Namens-Tag, nicht am Trigger-Text (Note #321). | NEU 2026-08-17 (Abend, User-Charts 1D+4'
   journal_row: 48
   archived:
-    date: ''
+    date: '2026-09-16'
     reason: 'Positions-Monitor #80, Position geschlossen 2026-09-16'
 - symbol: INTC
   name: Intel Corporation (INTC, NASDAQ) — CEO-Insiderkauf
