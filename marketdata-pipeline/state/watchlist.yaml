@@ -750,25 +750,6 @@ entries:
   archived:
     date: '2026-09-04'
     reason: TIW GEBROCHEN. Der Short-Trend-Pullback verlangte TIW = 1D-Schluss ueber 601,55$; der Kurs steht bei 616,77 = +0,76 ATR darueber. Hartes Veto 1 nach L23. Vollte
-- symbol: NBIS
-  name: 'Nebius Group N.V. (NBIS) [MONITOR #9 AV] — AI-Infrastruktur'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA20-1D
-  treiber: ''
-  status: position
-  added: '2026-08-11'
-  expiry: ''
-  legs:
-  - label: A
-    gate: 🟢
-    text: 'POSITION-MONITOR (#9 AV) - kein Entry-Trigger. SL 161,83EUR. TIW = 1D-Schluss unter 198,00$ = 169,93EUR (EMA100-1D). TP1 222,29EUR = 259,00$ (Break-even-Stufe, 50% Teilexit + SL->BE, L6). TP2 257,47EUR = 300,00$ (Runner L6). [Volltext: Sheet Trigger-Historie]'
-  - label: B
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: 'MONITOR-UMBAU 2026-08-28 nach dem Entry #9 AV. Fill 190,50EUR lag 0,03EUR unter dem geplanten Limit 190,53EUR (Note #435) und damit innerhalb der Zone — der TIW-Puffer ist der geplante geblieben. TIW-RE-ANCHOR 193,00 -> 198,00 am 2026-08-27 10:45 CEST (User-Freigabe). GRUND: NVDA hat am 26.08. 23:00 CEST einen Doppel-Beat gemeldet (Q2 FY27 Umsatz 96,22 Mrd USD +106% YoY, Data Center 89 Mrd +117%, Q3-Guide ~108 Mrd); NBIS steht daraufhin vorboerslich bei 227,89 USD (+6,53%). Mit der alten TIW 193,00 lag die L26-Decke bei 219,72 — jedes erreichbare Limit haette den TIW-Puffer unter 0,30 ATR gedr'
-  journal_row: 42
-  trade_nr: '9'
 - symbol: ENR.DE
   name: Siemens Energy AG (ENR) — Turbinen/Netz
   direction: LONG
@@ -2381,4 +2362,23 @@ entries:
   notes: '[GEFUELLT 2026-10-06 ~15:3x] 62 Stk x 16,27 EUR (UniCredit DE000UN6MH31, KO 27,5125, BV 1), Gebuehr 0,00, Fill-U ~43,51 (rueckgerechnet), Trade #104. Stop-Buy Weg a (Kerze lief noch): Schluss heute unter 42,70 = TIW gebrochen -> Exit 07.10. L26-Puffer 0,99 ATR. || [NEU 2026-10-06, Pitch breakout_long RRprox 3,48, User-Auftrag Watchlist, Linien von Claude (Default)] Chart 06.10. 12:47: 1D Stack bullish EMA 41,26/40,58/39,33/35,55, Kurs 43,38, RSI 59,8 > 55,7, ATR 1,586, r2 0,43, Extension 1,22 ATR. Ausbruch ueber 42,70 am 02.10. (Vol 1,51x), Retest 06.10. bis 42,14 (-0,36 ATR), Kerze laeuft bis 17:35. 4h RSI 61,8 > 59,9 (Cross nach oben), 4h-EMA20 42,16. Widerstaende: Okt-Docht ~44,0, Jul-Hoch ~46,5 (abgelesen), Jun-Hoch/52W ~48,4. L25 an 43,50: MIN(41,15 ; 41,67) = 41,15, d 2,35, TIW-Puffer 0,99 ATR. TP1-Boden 46,56 -> TP1 48 (wie ETN 470: naechste Marke ueber 1,3 R). COUNTER-THESE [S0+S1]: H1 Auftragseingang +53 %, Margen-Guidance angehoben, Jefferies Kursziel 45 -> 48 Buy, Konsens
     47,19 (ad-hoc-news, automatisiert - gegenlesen). Archivzeile 2026-09-01 (damals EMA-Gate verletzt). Verdikt traegt, Aber Zwischenwiderstand ~46,5.'
   trade_nr: 104
-updated: '2026-10-06T15:39:29+02:00'
+- symbol: NBIS
+  name: 'Nebius Group N.V. (NBIS) [MONITOR #9 AV] — AI-Infrastruktur'
+  direction: LONG
+  klasse: position_monitor
+  anker: EMA20-1D
+  treiber: ''
+  status: position
+  added: '2026-08-11'
+  expiry: '2026-10-13'
+  legs:
+  - label: A
+    gate: 🟢
+    text: 'POSITION-MONITOR (#9 AV, Rest 3 Stk, RUNNER) - kein Entry-Trigger. TP1 222,35EUR gefuellt 2026-10-06 (3 Stk, U ~250,3$). SL 161,83EUR (alt) - Nachzug offen: Stufe 3 ~195,00EUR (U ~219,5$ = unter EMA50-1D/4h-EMA100 224,3 -0,3 ATR, Veto frei) bzw. Rueckfallebene Breakeven 191,17EUR. TIW = 1D-Schluss unter 198,00$ (EMA100-1D). TP2 300,00$ (~266,5EUR bei FX 1,1255) = Runner. Earnings-Datum klaeren (TV ~2026-10-22 vs 2026-11-10). [Sp. Trigger-Historie]'
+  - label: B
+    gate: 🔴
+    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
+  notes: '[TP1 2026-10-06, User] 3 x 222,35 EUR, +93,55 EUR (+0,53 R). Chart 16:57: 250,77$ +7,8 %, EMA20 232,04, ATR 16,09; Chandelier 1,5 ATR 226,63 per Veto (0,34 ATR unter EMA20) gesperrt. Flag: Insider-Verkaeufe ~19 Mio USD (TV-Headline). || MONITOR-UMBAU 2026-08-28 nach dem Entry #9 AV. Fill 190,50EUR lag 0,03EUR unter dem geplanten Limit 190,53EUR (Note #435) und damit innerhalb der Zone — der TIW-Puffer ist der geplante geblieben. TIW-RE-ANCHOR 193,00 -> 198,00 am 2026-08-27 10:45 CEST (User-Freigabe). GRUND: NVDA hat am 26.08. 23:00 CEST einen Doppel-Beat gemeldet (Q2 FY27 Umsatz 96,22 Mrd USD +106% YoY, Data Center 89 Mrd +117%, Q3-Guide ~108 Mrd); NBIS steht daraufhin vorboerslich bei 227,89 USD (+6,53%). Mit der alten TIW 193,00 lag die L26-Decke bei 219,72 — jedes erreichbare Limit haette den TIW-Puffer unter 0,30 ATR gedr'
+  journal_row: 42
+  trade_nr: '9'
+updated: '2026-10-06T16:59:08+02:00'
