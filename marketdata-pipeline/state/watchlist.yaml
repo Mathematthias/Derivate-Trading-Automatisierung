@@ -206,24 +206,6 @@ entries:
     text: 'ARCHIVIERT 2026-09-29 - Leg B: TIW 26,35 gebrochen. Leg A bleibt aktiv.'
   notes: '[LEG B ARCHIVIERT 2026-09-29, User-Entscheid Hygiene] Ausbruchs-Leg B (TIW 26,35 = 4h-Higher-Low 21.09.) per Schluss gebrochen; Leg A (EMA20-Pullback, TIW 24,90) intakt. || [NEU GEFASST 2026-09-23, Trigger A, User-Chart 1D+4h] Alte TIW 23,80 lag 1,8 ATR unter der Zone und erzwang per L25 einen Stop von 2,4 EUR -> R:R TP1 0,47. Neue TIW 24,90 = unter 4h-EMA100 24,75/Konsolidierungsboden Mitte Sep; Stop jetzt ATR-bestimmt. Stand: Kurs 26,00, EMA20 25,47 / EMA50 24,12 / EMA100 22,73 / EMA200 21,44, Konsolidierung 25,9-27,1 seit Mitte Sep unter dem 52W-Hoch 27,1; RSI-1D 56,0 unter Signal 58,3, RSI'
   journal_row: 12
-- symbol: JEN.DE
-  name: Jenoptik AG (JEN)
-  direction: LONG
-  klasse: sonstige
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-06-19'
-  expiry: '2026-08-31'
-  legs:
-  - label: A
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: 'ARCHIVIERT 2026-09-01 12:40 CEST (User-Charts 1D+4h, Auftrag ''neu bewerten oder archivieren'') ——— MESSUNG: Kurs 38,96 EUR (-1,81%), 1D O 39,60 H 40,06 L 38,96 - Schluss auf dem Tagestief, Close-Position 0%. ATR-1D 1,533 (25.08.: 1,610, -4,8%), Stopweite 2,415 auf 2,2995. L26-Fill-Grenze = 36,00 + 2,2995 - 0,4599 = 37,84. Die Zone 37,80-37,93 schrumpft damit auf 37,80-37,84 = VIER CENT. Kurs steht 0,73 ATR darueber. EMA-LAGE: EMA20-1D 39,51 weiterhin UNTER EMA50-1D 39,87 (Maschinen-Gate verletzt), Kurs unter beiden, EMA100-1D 38,35 haelt noch, EMA200-1D 34,06. RSI-1D 46,46 unter Signal 50,12; R'
-  journal_row: 13
-  archived:
-    date: '2026-09-01'
-    reason: Verfall ueberschritten, Zone von der ATR aufgezehrt
 - symbol: AVGO
   name: Broadcom Inc. (AVGO)
   direction: LONG
@@ -2365,4 +2347,32 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-06 GRINDER-SHORT: Touch EMA20-1D -0,50/+0,10 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (1,31 -> +1,97), keine L25-Klammer (Grinder). Invalidator = Zustand: Stack gebrochen ODER Kurs ueber >= 2 der 4 EMAs ODER Tempo < 0,6 (Tagesschluss). TP1 69,00$ = Sept/Okt-Tief ~68,9 (abgelesen), 1/3 raus. Kein TP2, Rest Trail EMA20+1,25xATR. R:R TP1 1,32-1,64 (an EMA20 -0,50 / +0,00 ATR). Pilot 1 %. ATR 1,8% frei. Non-Quanto USD. Earnings 2026-10-29.'
   notes: '[NEU 2026-10-06, Grinder-Pitch Tempo 1,55, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:42: 1D Stack sauber bearish EMA 72,24/74,74/76,50/76,97, Kurs 71,49 = -0,57 ATR unter EMA20 (Gate <=0,5 heute knapp verfehlt), ATR 1,31 (1,83 %), RSI-1D 41,1 > 32,7 (Bounce von ~68,9). 4h: Kurs ueber 4h-EMA20 71,17, RSI-4h 50,0 > 38,5 - gegen Short. Treiber Regulierung (MN-AG 05.10.). Earnings 2026-10-29. Ticker war nicht im Universe - kommt ueber die Watchlist in Tier A.'
-updated: '2026-10-06T13:00:00+02:00'
+- symbol: JEN.DE
+  name: Jenoptik AG (JEN, Xetra) - Optik/Photonik fuer Halbleiter und Messtechnik
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: aktiv
+  added: '2026-10-06'
+  expiry: '2026-10-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-06 BREAKOUT-RETEST-LONG: Niveau 42,70€ (20-Tage-Hoch, Ausbruch 2026-10-02 mit Vol 1,51x). Touch 41,92-43,87€ [pullback] (Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (Kandidat 2026-10-06, Hoch 43,48 -> 43,50). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (1,57 -> -2,35). TIW = 1D-Schluss unter 42,70€. TP1 48,00€ = Measured Move / Jun-Hoch-Zone / Jefferies-Ziel (1/3 raus; Jul-Hoch ~46,5 dazwischen nur 1,28 R). TP2 48,40€ = 52W-Hoch, Rest 2/3 Chandelier 2,0 ATR. R:R an 43,50: TP1 1,91 / TP2 2,09. Pilot 1 %. ATR 3,7% 🟡: KO Hebel <=6,8. Ethik ok (Ethik-Regel). Earnings 2026-11-10.'
+  notes: '[NEU 2026-10-06, Pitch breakout_long RRprox 3,48, User-Auftrag Watchlist, Linien von Claude (Default)] Chart 06.10. 12:47: 1D Stack bullish EMA 41,26/40,58/39,33/35,55, Kurs 43,38, RSI 59,8 > 55,7, ATR 1,586, r2 0,43, Extension 1,22 ATR. Ausbruch ueber 42,70 am 02.10. (Vol 1,51x), Retest 06.10. bis 42,14 (-0,36 ATR), Kerze laeuft bis 17:35. 4h RSI 61,8 > 59,9 (Cross nach oben), 4h-EMA20 42,16. Widerstaende: Okt-Docht ~44,0, Jul-Hoch ~46,5 (abgelesen), Jun-Hoch/52W ~48,4. L25 an 43,50: MIN(41,15 ; 41,67) = 41,15, d 2,35, TIW-Puffer 0,99 ATR. TP1-Boden 46,56 -> TP1 48 (wie ETN 470: naechste Marke ueber 1,3 R). COUNTER-THESE [S0+S1]: H1 Auftragseingang +53 %, Margen-Guidance angehoben, Jefferies Kursziel 45 -> 48 Buy, Konsens 47,19 (ad-hoc-news, automatisiert - gegenlesen). Archivzeile 2026-09-01 (damals EMA-Gate verletzt). Verdikt traegt, Aber Zwischenwiderstand ~46,5.'
+- symbol: COST
+  name: Costco Wholesale Corporation (COST, NASDAQ) - Grosshandels-Clubmaerkte
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20
+  treiber: Comps-Verlangsamung (adj. 8 % Mai -> 5,4 % Aug); September-Umsatz 2026-10-07 nachboerslich
+  status: aktiv
+  added: '2026-10-06'
+  expiry: '2026-10-26'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-08 SHORT-TREND-PULLBACK: Touch EMA20-1D +0,00/+0,60 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (15,29 -> +22,94). TIW = 1D-Schluss ueber 927,72$ (EMA50-1D). TP1 876,00$ = Sept-Tief (abgelesen), 1/3 raus. TP2 844,00$ = 52W-Tief, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,74-2,14 / TP2 3,12-3,53 (an Zone UG/OG). 1 % (r2 0,29 = schwache Trendqualitaet). Non-Quanto USD. Earnings 2026-12-10.'
+  notes: '[NEU 2026-10-06, Pitch short_trend_pullback RRprox 1,65, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:48: 1D Stack bearish EMA 915,94/927,72/942,31/951,74, Kurs 923,52 zwischen EMA20 und EMA50 (3/4 darunter), RSI 52,8 > 44,2, ATR 15,29 (1,66 %), r2 0,29 (Seitwaertsrisiko wie GOOGL 05.10.). 4h: Kurs ueber 4h-EMA20/50, RSI-4h 60,3 > 56,5 - GEGEN Short. Erst nach dem Sept-Umsatzbericht (2026-10-07 nachboerslich) aktiv. Stufe 1: Motley Fool 2026-10-04 (Comps-Trend), Q4-Bericht 2026-09-24 durch.'
+updated: '2026-10-06T13:07:37+02:00'
