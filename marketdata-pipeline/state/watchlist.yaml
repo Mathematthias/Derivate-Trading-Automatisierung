@@ -1548,21 +1548,6 @@ entries:
     text: 'nach 2026-09-24 SHORT-TREND-PULLBACK: Touch 246,50-249,50$ [pullback] (4h-EMA20 / Open Investor-Day) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Stopweite entry-relativ +1,5xATR-1D (5,10 -> +7,65). TIW = 1D-Schluss ueber 252,00$. TP1 234,00$ = BE-Stufe (Event-Tief, 50% + SL->BE, L6). Kein TP2 (L13), Runner trailt. R:R TP1 1,63-2,03. 1% Sizing. Non-Quanto USD.'
   notes: '[NEU GEFASST 2026-09-24, User-Entscheid, User-Chart 1D+4h 09:15 UTC] Binaeres Ereignis durch: Investor Day 23.09. (>NEXT: operative Marge low-mid 50% bis 2030, 8,5 Mrd USD Franchisee-Support bis 2036) -> Tag -4,81%, H 250,32 / L 234,03 / C 238,32, Vol 16,61 Mio. Alte Zone 252-256 gegenstandslos (2,7-3,4 ATR), altes TP2 237 ohne Entry erreicht. EMA20/50/100/200-1D 254,08/262,44/272,06/283,54, Kurs unter 4/4. RSI-1D 25,9 ueberverkauft, Extension -3,1 ATR -> kein Entry am Markt, Bounce abwarten. SL an der Zone ATR-bestimmt 254,15-257,15 (L25 frei, Puffer 0,42 ATR). EARNINGS: TV zeigt 28 Tage (~22'
   journal_row: 92
-- symbol: PFE
-  name: Pfizer Inc. (PFE, NYSE) — Pharma
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA50-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-10-02'
-  expiry: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-02 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (0,515 -> -0,773). TIW = 1D-Schluss unter 27,00$. TP1 28,20$ = BE-Stufe (50% + SL->BE, L6). TP2 29,20$ = Runner L6 (Sept-Hoch). R:R am Runner 2,10-2,47. 1% Sizing. Non-Quanto USD.'
-  notes: '[NEU GEFASST 2026-10-02 nach Exit #97 (0 R, SL auf Einstand), User-Auftrag ''EMA50-Pullback'', Linien von Claude, Chart 1D+4h 20:59] Ruecksetzer vom Doppelhoch Ende Sept (~28,9-29,0) auf 27,44 in zwei Tagen; Kurs 27,60 knapp ueber EMA50-1D 27,43, Stack bullisch 28,05/27,43/26,85/26,41, Kurs unter 1/4 EMAs. RSI-1D 44,8 < 56,8; 4h RSI 38,7 < 59,5, Kurs unter EMA20/50-4h -> 4h-Bestaetigung abwarten. TIW 27,00 = unter Sept-Tief ~27,2, ueber EMA100 26,85 (L25 frei, SL ATR-bestimmt). TP1 28,20 = EMA20-1D/4h-EMA20, TP2 29,20 = Sept-Hoch. R:R TP1 0,80-1,18, Runner 2,10-2,47. Auslöser des Ruecksetzers ni'
-  journal_row: 93
 - symbol: FCX
   name: Freeport-McMoRan (FCX, NYSE) — Kupfer/Gold-Miner
   direction: LONG
@@ -2378,4 +2363,20 @@ entries:
     gate: 🟢
     text: 'POSITION-MONITOR (#92, Rest 500 Stk, RUNNER) - kein Entry-Trigger. TP1 1,49 gefuellt 22.09. SL 1,54EUR (U ~66,99; Chandelier 1,5 ATR am Kurs 68,70, 0,66 ATR ueber EMA20-1D 66,23, Veto frei; gesetzt 2026-10-06 ~13:10, User). TIW = 1D-Schluss unter 63,00€. Kein TP-Order (Runner trailt, Entscheid 2026-10-05 Variante B). Schluss >68,10 = Dreiecks-Ausbruch -> SL-Upgrade unter Ausbruchsniveau pruefen (~U 67,16 / Zert ~1,56). Naechster Recheck 2026-10-12. Earnings 2026-11-09. [Volltext: Sheet Trigger-Historie]'
   notes: '[SL-NACHZUG 2026-10-06, User] SL 1,38 (U 65,40) -> 1,54 (U 66,99) = Chandelier 1,5x1,141 am Kurs 68,70 (Hoch 68,75 = 52W-Hoch); sichert ~+149 EUR auf den Rest (vorher ~+69). Zert-Gegenprobe: 1,38 = (65,40-51,60)x0,1 -> Aufgeld ~0. || Reaktiviert 2026-10-05 (Morning Check): Zeile stand nach der Migration auf archiviert, Trade #92 ist offen (Runner 500 Stk, SL 1,34, Recheck 2026-10-07).'
-updated: '2026-10-06T13:29:34+02:00'
+- symbol: PFE
+  name: Pfizer Inc. (PFE, NYSE) — Pharma
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-02'
+  expiry: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-06 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 1D-Schluss ueber EMA50-1D (Klassen-Gate >= 3/4 EMAs) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,527 -> -0,79). TIW = 1D-Schluss unter 27,00$. TP1 29,00$ = Sept-Doppelhoch (1/3 raus, Exit-Test v49). TP2 29,20$ = Sept-Hoch, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,78-2,19 / TP2 2,04-2,44 (an Zone OG/UG). 1% Sizing. Non-Quanto USD. Earnings 2026-11-03.'
+  notes: '[NEU GEFASST 2026-10-06, User-OK] TP1 28,20 (v48-BE-Stufe, nur 0,97 R an der EMA50) -> 29,00 = Sept-Doppelhoch; Gate-Bedingung Schluss ueber EMA50 ergaenzt (Mo-Schluss 27,41 knapp unter EMA50 27,43 = Kurs ueber nur 2/4 EMAs -> Gate ⛔). Chart 06.10. 13:27: EMA 28,01/27,43/26,86/26,42, RSI-1D 41,9 < 56,4, 4h RSI 37,3 < 55,5, Kurs auf 4h-EMA100 27,42. L25: SL = MIN(E-0,79 ; 26,84) -> ATR-Term, TIW-Puffer 0,38 (OG) bis 1,0 ATR (UG). || [NEU GEFASST 2026-10-02 nach Exit #97 (0 R, SL auf Einstand), User-Auftrag ''EMA50-Pullback'', Linien von Claude, Chart 1D+4h 20:59] Ruecksetzer vom Doppelhoch Ende Sept (~28,9-29,0) auf 27,44 in zwei Tagen; Kurs 27,60 knapp ueber EMA50-1D 27,43, Stack bullisch 28,05/27,43/26,85/26,41, Kurs unter 1/4 EMAs. RSI-1D 44,8 < 56,8; 4h RSI 38,7 < 59,5, Kurs unter EMA20/50-4h -> 4h-Bestaetigung abwarten. TIW 27,00 = unter Sept-Tief ~27,2, ueber EMA100 26,85 (L25 frei, SL ATR-bestimmt). TP1 28,20 = EMA20-1D/4h-EMA20, TP2 29,20 = Sept-Hoch. R:R TP1 0,80-1,18,
+    Runner 2,10-2,47. Auslöser des Ruecksetzers ni'
+  journal_row: 93
+updated: '2026-10-06T13:30:03+02:00'
