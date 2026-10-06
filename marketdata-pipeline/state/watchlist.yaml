@@ -2280,21 +2280,6 @@ entries:
   notes: '[KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] In den Oel-Korb uebernommen (Gegenrichtung, zaehlt gegen dessen Budget, kein eigener 1-%-Trade mehr). TP1 60,00 -> 58,50 (Sept-Tief 58,30): 60,00 ergab an der Zonen-UG nur 0,89 R < 1,3 (Exit-Test v49). Jetzt 1,48 (UG) / 1,76 R (OG); am heutigen Kurs 61,80 nur 1,18 R -> nur aus der Zone. || [ANGELEGT 2026-09-28, User-Auftrag "nach deinen Vorschlaegen", User-Charts 1D+4h 14:42 CEST] Fraport AG (FRA, XETRA, MDAX) — Flughafenbetreiber. Herkunft Stufe-2-Pitch EU 11:35 (short_trend_pullback, RRprox 1,55), an der 5er-Pullback-Quote gescheitert. CHART: Abwaertstrend seit Juli-Hoch ~76,5; September-Boden 57,5-58,3; Reaktion bis 64,2 an die EMA50-1D, Abweisung 22./23.09.; heute zurueck an der EMA20. EMA-1D 20/50/100/200 = 61,95 / 63,90 / 66,47 / 68,43 (baerisch, Kurs 62,10 unter 3/4 -> trendkonform,
     kein Counter-Deckel). RSI-1D 48,8 ueber Signal 40,8; ATR-1D 1,649 = 2,66 % (🟡). 4h: EMA 61'
   journal_row: 117
-- symbol: ETN
-  name: Eaton Corporation plc (ETN, NYSE) - Elektrotechnik/Power-Management
-  direction: LONG
-  klasse: thesen_korb
-  anker: Ausbruch 438,26 (20-Tage-Hoch)
-  treiber: These A AI-Strom (spielen, Korb 4 % RK, Re-Check 2026-10-09; Hyperscaler-Q3-Calls ab 2026-10-28)
-  status: aktiv
-  expiry: '2026-10-16'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-05 KORB-A BREAKOUT-RETEST-LONG (Korb 1/4): Niveau 438,26$ (20-Tage-Hoch, Ausbruch ~2026-09-22). Retest: Touch 431,47-448,44$ [pullback] (Niveau -0,50/+0,75 ATR; Retest-Tief 2026-10-05 431,38) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (2026-10-05, ~439,74 -> 440,10). Stopweite entry-relativ -1,5xATR-1D (13,57 -> -20,36). TIW = 1D-Schluss unter 438,26$ (Rueckfall unter das Ausbruchsniveau). TP1 470,00$ = Aug-Konsolidierung (1/3 raus, Exit-Test v49). TP2 478,00$ = 52W-Hoch, danach Measured Move 491. Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,47 / TP2 1,86. Korb-Anteil 150 EUR Risk (A 4 % RK / 4). ATR 3,1% 🟡: KO Hebel <=8. Non-Quanto USD. Earnings 2026-11-03.'
-  notes: '[NEU 2026-10-05 18:4x, Korb A Umbau (User), User-Charts 1D+4h] Eaton plc - Elektrotechnik/Power-Management (Schaltanlagen, USV, Rechenzentrums-Strom). 1D: Stack bullish (EMA 428,03/421,38/412,78/396,68), Kurs 439,74 ueber 4/4; Ausbruch ueber 438,26 vor 9 HT, Okt-2-Docht bis ~452 abgewiesen, heute Retest bis 431,38 und Schluss nahe Hoch. Aug-Spike bis 478 (52W-Hoch) mit Konsolidierung 463-470, Sept-Tief ~385. 4h: EMA 432,62/425,76/421,00/412,53, RSI-4h 61,1 > Signal 58,3 (Cross nach oben), laufende Kerze gruen. RSI-1D 58,0 > 55,7, ATR 13,57 (3,1 %). L25: Entry 440,10 -> SL 419,75 (ATR-Term), d 20,36, TIW-Puffer 1,36 ATR. TP 452 (Okt-Docht) waere nur 0,58 R -> TP1 470 = erste Marke ueber 1,3 R (466,56). Sizing 8 Stk Basis = 145 EUR. Score 7/7. Counter-These S0: keine Earnings vor 2026-11-03; Personalie Controller (2026-10-05) unerheblich; Stufe 1 (Websuche) nicht gemacht. Klassen-Hinweis: Ausbruch 9 HT alt - das 10-HT-Fenster der Klasse endet 2026-10-06; als Thesen-Korb-Ausdruck
-    gilt die Geometrie weiter, Verfall 2026-10-16.'
-  added: '2026-10-05'
 - symbol: ABBN.SW
   name: ABB Ltd (ABBN, SIX) - Elektrifizierung/Automation
   direction: LONG
@@ -2323,4 +2308,61 @@ entries:
     text: 'nach 2026-10-05 KORB-A BREAKOUT-RETEST-LONG (Korb 3/4): Niveau 664,36$ (20-Tage-Hoch, Ausbruch 2026-10-02). Retest: Touch 653,62-680,47$ [pullback] (Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze, NUR wenn Marke <= 678,00 (sonst TP1 < 1,3 R). Stopweite entry-relativ -1,5xATR-1D (21,48 -> -32,22). TIW = 1D-Schluss unter 664,36$. TP1 722,00$ = Aug-Hoch (1/3 raus, Exit-Test v49). TP2 760,00$ = Jun-Hochs. Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,43 (Marke 676) bis 1,68 (Marke 668). Korb-Anteil 150 EUR Risk. ATR 3,1% 🟡: KO Hebel <=8. Non-Quanto USD. Earnings 2026-10-29.'
   notes: '[NEU 2026-10-05 18:5x, Korb A, User-Charts 1D+4h] Quanta Services - Bau und Wartung von Stromnetzen und Leitungen. 1D C 689,68 (+1,94 %, laufend), EMA 647,97/647,17/643,14/602,40 (20/50/100 eng beieinander), Kurs 1,94 ATR ueber EMA20. Ausbruch ueber 664,36 am 2026-10-02, seitdem steil: 4h RSI 73,0 (ueberkauft), 4h-Kerzen 640 -> 690 in zwei Tagen = Velocity, kein Einstieg hier. Ueber dem Kurs: Aug-Hoch ~722, Jul-Cluster ~740, Jun ~760, ATH Mai ~788. Rahmen: Rueckkehr ins Band 653,6-680,5, dann Stop-Buy ueber Retest-Kerze; Marke > 678 macht TP1 722 < 1,3 R.'
   added: '2026-10-05'
-updated: '2026-10-06T05:40:55+00:00'
+- symbol: ETN
+  name: Eaton Corporation plc (ETN, NYSE) - Elektrotechnik/Power-Management
+  direction: LONG
+  klasse: thesen_korb
+  anker: EMA20
+  treiber: These A AI-Strom (spielen, Korb 4 % RK, Re-Check 2026-10-09; Hyperscaler-Q3-Calls ab 2026-10-28)
+  status: aktiv
+  added: '2026-10-05'
+  expiry: '2026-10-23'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-06 KORB-A MOMENTUM-CONTINUATION-LONG (Korb 1/4): Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (13,58 -> -20,37). TIW = 1D-Schluss unter 421,10$ (EMA50-1D = 4h-EMA100). TP1 463,00$ = Aug-Konsolidierung Unterkante (1/3 raus, Exit-Test v49). TP2 478,00$ = 52W-Hoch, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,55-1,95 / TP2 2,29-2,69. Korb-Anteil 150 EUR Risk (A 4 % RK / 4). ATR 3,1% 🟡: KO Hebel <=7,9 (L2). Non-Quanto USD. Earnings 2026-11-03.'
+  notes: '[NEU GEFASST 2026-10-06, User: Option A, TP1 463 statt 470] Alte Fassung Breakout-Retest 438,26 per Schluss 05.10. 432,60 gebrochen (Fehlausbruch, 0,42 ATR). Chart 06.10. (User-Screenshots): 1D Stack bullish EMA 427,35/421,10/412,63/396,61, Kurs 432,60 = +0,39 ATR ueber EMA20, RSI 54,2 < 55,4, ATR 13,58. 4h: Kurs auf 4h-EMA20 432,38, 4h-EMA100 421,18 = 1D-EMA50 (TIW-Konfluenz), RSI-4h 52,8 < 57,2. Range seit ~22.09. 427-452; Widerstaende 452 (Okt-Docht, nur 1,08-1,21 R), 463-470, 478. L25: ATR-Term gewinnt in der ganzen Zone (d 20,37), TIW-Puffer 0,74-1,34 ATR. Zuordnungstest: Zone um EMA20 = Momentum-Continuation, Anker EMA20. Stufe 1 06.10.: keine frische Firmennachricht zum Rueckfall (nur CAO-Wechsel 05.10.). || [NEU 2026-10-05 18:4x, Korb A Umbau (User), User-Charts 1D+4h] Eaton plc - Elektrotechnik/Power-Management (Schaltanlagen, USV, Rechenzentrums-Strom). 1D: Stack bullish (EMA 428,03/421,38/412,78/396,68), Kurs 439,74 ueber 4/4; Ausbruch ueber 438,26 vor 9 HT, Okt-2-Docht
+    bis ~452 abgewiesen, heute Retest bis 431,38 und Schluss nahe Hoch. Aug-Spike bis 478 (52W-Hoch) mit Konsolidierung 463-470, Sept-Tief ~385. 4h: EMA 432,62/425,76/421,00/412,53, RSI-4h 61,1 > Signal 58,3 (Cross nach oben), laufende Kerze gruen. RSI-1D 58,0 > 55,7, ATR 13,57 (3,1 %). L25: Entry 440,10 -> SL 419,75 (ATR-Term), d 20,36, TIW-Puffer 1,36 ATR. TP 452 (Okt-Docht) waere nur 0,58 R -> TP1 470 = erste Marke ueber 1,3 R (466,56). Sizing 8 Stk Basis = 145 EUR. Score 7/7. Counter-These S0: keine Earnings vor 2026-11-03; Personalie Controller (2026-10-05) unerheblich; Stufe 1 (Websuche) nicht gemacht. Klassen-Hinweis: Ausbruch 9 HT alt - das 10-HT-Fenster der Klasse endet 2026-10-06; als Thesen-Korb-Ausdruck gilt die Geometrie weiter, Verfall 2026-10-16.'
+- symbol: GLJ.DE
+  name: GRENKE AG (GLJ, Xetra) - Small-Ticket-IT-Leasing fuer KMU
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: ''
+  status: aktiv
+  added: '2026-10-06'
+  expiry: '2026-10-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-06 BREAKDOWN-RETEST-SHORT: Niveau 10,42€ (20-Tage-Tief, Bruch 2026-10-05 mit Vol 7,9x). Touch 10,20-10,57€ [pullback] (Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (Kandidat 2026-10-06, Tief 10,06 -> 10,05). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR = 10,51). Stopweite entry-relativ +1,5xATR-1D (0,293 -> +0,44). TIW = 1D-Schluss ueber 10,42€. TP1 9,40€ (erste Marke unter dem 1,3-R-Boden 9,45; kein Chartniveau, 10-Jahres-Tief) 1/3 raus. TP2 8,90€ = Measured Move (Range ~1,5 abgelesen), Rest Chandelier 2,0 ATR. R:R an 10,05: TP1 1,42 / TP2 2,51. Pilot 1 %. ATR 2,9% 🟡: Short-KO Hebel <=8,2 (L2). Earnings 2026-11-12.'
+  notes: '[NEU 2026-10-06, Pitch breakdown_short RRprox 4,96, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:38: 1D Stack bearish EMA 10,87/11,29/11,79/12,71, r2 0,87, RSI 32,5 < 36,9, ATR 0,293 (2,88 %). Bruch 20-T-Tief 10,42 am 05.10. (Schluss 10,06, Vol 7,9x), 10-Jahres-Tief. 06.10. Retest bis 10,28 in das Band 10,20-10,57, 4h gruen ab 10,02, RSI-4h 30,8 < 35,4. COUNTER-THESE [S0+S1]: Q2 Neugeschaeft -1 %, Schadenquote 2,0-2,1 % steigend, Prognose 74-86 Mio EUR bestaetigt (traegt Trend). FLAG: Ausloeser des 7,9x-Volumens am 05.10. NICHT gefunden (3 Suchen) - Klimax-Volumen am Mehrjahrestief kann Kapitulation sein. Verdikt traegt duenn, mittleres Aber. Kein Ex-Tag in Sicht.'
+- symbol: FLUT
+  name: Flutter Entertainment plc (FLUT, NYSE) - Online-Sportwetten/Gaming (FanDuel, Paddy Power, Betfair)
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: Brasilien-Wettverbot (Provisional Measure, Seiten offline 2026-10-06; STF-Klagen anhaengig)
+  status: aktiv
+  added: '2026-10-06'
+  expiry: '2026-10-14'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-06 BREAKDOWN-RETEST-SHORT: Niveau 76,53$ (20-Tage-Tief, Bruch ~2026-09-30). Touch 73,38-78,63$ [pullback] (Niveau -0,75/+0,50 ATR) + RSI-1D >= 30 (Klassen-Gate) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; TIW+0,30xATR = 77,79 ; Retest-Hoch+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (4,20 -> +6,30). TIW = 1D-Schluss ueber 76,53$. TP1 65,00$ (1/3 raus; kein Chartniveau, 52W-Tief) . TP2 60,00$ = Measured Move (abgelesen), Rest Chandelier 2,0 ATR. R:R an 74,75: TP1 1,55 / TP2 2,34. ATR 5,5% 🔴: 1 % hart, Short-KO Hebel <=3. REIFE (30d -26%). Non-Quanto USD. Earnings 2026-11-04.'
+  notes: '[NEU 2026-10-06, Pitch breakdown_short RRprox 5,06, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:39: 1D Stack bearish EMA 85,07/92,84/101,59/125,56, r2 0,93, RSI 29,8 < 31,6 (KLASSEN-GATE RSI>=30 heute verletzt), ATR 4,20 (5,55 % 🔴), Extension 2,22 ATR, 30d -26 % REIFE. Mo 05.10. Lehrbuch-Retest: H 78,26 ueber Niveau, Schluss 75,73 darunter. 4h RSI 32,8 > 25,8 steigend, Basis 74-78. COUNTER-THESE [S0+S1]: Brasilien-Verbot -70 Mio USD Umsatz / -20 Mio USD EBITDA 2026; STF-Entscheid = binaeres Squeeze-Risiko; Guidance-Cut 2026-08-05; CEO Taylor seit 2026-10-01; Stifel Buy 161. Earnings 2026-11-04 (TV zeigt 43 d - Datenkonflikt).'
+- symbol: XEL
+  name: Xcel Energy Inc. (XEL, NASDAQ) - US-Versorger
+  direction: SHORT
+  klasse: grinder
+  anker: EMA20
+  treiber: Minnesota-AG fordert Ablehnung des 15-J-Google-Stromvertrags (2026-10-05)
+  status: aktiv
+  added: '2026-10-06'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-06 GRINDER-SHORT: Touch EMA20-1D -0,50/+0,10 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (1,31 -> +1,97), keine L25-Klammer (Grinder). Invalidator = Zustand: Stack gebrochen ODER Kurs ueber >= 2 der 4 EMAs ODER Tempo < 0,6 (Tagesschluss). TP1 69,00$ = Sept/Okt-Tief ~68,9 (abgelesen), 1/3 raus. Kein TP2, Rest Trail EMA20+1,25xATR. R:R TP1 1,32-1,64 (an EMA20 -0,50 / +0,00 ATR). Pilot 1 %. ATR 1,8% frei. Non-Quanto USD. Earnings 2026-10-29.'
+  notes: '[NEU 2026-10-06, Grinder-Pitch Tempo 1,55, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:42: 1D Stack sauber bearish EMA 72,24/74,74/76,50/76,97, Kurs 71,49 = -0,57 ATR unter EMA20 (Gate <=0,5 heute knapp verfehlt), ATR 1,31 (1,83 %), RSI-1D 41,1 > 32,7 (Bounce von ~68,9). 4h: Kurs ueber 4h-EMA20 71,17, RSI-4h 50,0 > 38,5 - gegen Short. Treiber Regulierung (MN-AG 05.10.). Earnings 2026-10-29. Ticker war nicht im Universe - kommt ueber die Watchlist in Tier A.'
+updated: '2026-10-06T13:00:00+02:00'
