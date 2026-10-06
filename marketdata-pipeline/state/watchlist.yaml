@@ -2320,20 +2320,6 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-06 GRINDER-SHORT: Touch EMA20-1D -0,50/+0,10 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (1,31 -> +1,97), keine L25-Klammer (Grinder). Invalidator = Zustand: Stack gebrochen ODER Kurs ueber >= 2 der 4 EMAs ODER Tempo < 0,6 (Tagesschluss). TP1 69,00$ = Sept/Okt-Tief ~68,9 (abgelesen), 1/3 raus. Kein TP2, Rest Trail EMA20+1,25xATR. R:R TP1 1,32-1,64 (an EMA20 -0,50 / +0,00 ATR). Pilot 1 %. ATR 1,8% frei. Non-Quanto USD. Earnings 2026-10-29.'
   notes: '[NEU 2026-10-06, Grinder-Pitch Tempo 1,55, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:42: 1D Stack sauber bearish EMA 72,24/74,74/76,50/76,97, Kurs 71,49 = -0,57 ATR unter EMA20 (Gate <=0,5 heute knapp verfehlt), ATR 1,31 (1,83 %), RSI-1D 41,1 > 32,7 (Bounce von ~68,9). 4h: Kurs ueber 4h-EMA20 71,17, RSI-4h 50,0 > 38,5 - gegen Short. Treiber Regulierung (MN-AG 05.10.). Earnings 2026-10-29. Ticker war nicht im Universe - kommt ueber die Watchlist in Tier A.'
-- symbol: JEN.DE
-  name: Jenoptik AG (JEN, Xetra) - Optik/Photonik fuer Halbleiter und Messtechnik
-  direction: LONG
-  klasse: breakout_retest
-  anker: Range-Hoch
-  treiber: ''
-  status: aktiv
-  added: '2026-10-06'
-  expiry: '2026-10-16'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-06 BREAKOUT-RETEST-LONG: Niveau 42,70€ (20-Tage-Hoch, Ausbruch 2026-10-02 mit Vol 1,51x). Touch 41,92-43,87€ [pullback] (Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (Kandidat 2026-10-06, Hoch 43,48 -> 43,50). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (1,57 -> -2,35). TIW = 1D-Schluss unter 42,70€. TP1 48,00€ = Measured Move / Jun-Hoch-Zone / Jefferies-Ziel (1/3 raus; Jul-Hoch ~46,5 dazwischen nur 1,28 R). TP2 48,40€ = 52W-Hoch, Rest 2/3 Chandelier 2,0 ATR. R:R an 43,50: TP1 1,91 / TP2 2,09. Pilot 1 %. ATR 3,7% 🟡: KO Hebel <=6,8. Ethik ok (Ethik-Regel). Earnings 2026-11-10.'
-  notes: '[NEU 2026-10-06, Pitch breakout_long RRprox 3,48, User-Auftrag Watchlist, Linien von Claude (Default)] Chart 06.10. 12:47: 1D Stack bullish EMA 41,26/40,58/39,33/35,55, Kurs 43,38, RSI 59,8 > 55,7, ATR 1,586, r2 0,43, Extension 1,22 ATR. Ausbruch ueber 42,70 am 02.10. (Vol 1,51x), Retest 06.10. bis 42,14 (-0,36 ATR), Kerze laeuft bis 17:35. 4h RSI 61,8 > 59,9 (Cross nach oben), 4h-EMA20 42,16. Widerstaende: Okt-Docht ~44,0, Jul-Hoch ~46,5 (abgelesen), Jun-Hoch/52W ~48,4. L25 an 43,50: MIN(41,15 ; 41,67) = 41,15, d 2,35, TIW-Puffer 0,99 ATR. TP1-Boden 46,56 -> TP1 48 (wie ETN 470: naechste Marke ueber 1,3 R). COUNTER-THESE [S0+S1]: H1 Auftragseingang +53 %, Margen-Guidance angehoben, Jefferies Kursziel 45 -> 48 Buy, Konsens 47,19 (ad-hoc-news, automatisiert - gegenlesen). Archivzeile 2026-09-01 (damals EMA-Gate verletzt). Verdikt traegt, Aber Zwischenwiderstand ~46,5.'
 - symbol: COST
   name: Costco Wholesale Corporation (COST, NASDAQ) - Grosshandels-Clubmaerkte
   direction: SHORT
@@ -2379,4 +2365,20 @@ entries:
   notes: '[NEU GEFASST 2026-10-06, User-OK] TP1 28,20 (v48-BE-Stufe, nur 0,97 R an der EMA50) -> 29,00 = Sept-Doppelhoch; Gate-Bedingung Schluss ueber EMA50 ergaenzt (Mo-Schluss 27,41 knapp unter EMA50 27,43 = Kurs ueber nur 2/4 EMAs -> Gate ⛔). Chart 06.10. 13:27: EMA 28,01/27,43/26,86/26,42, RSI-1D 41,9 < 56,4, 4h RSI 37,3 < 55,5, Kurs auf 4h-EMA100 27,42. L25: SL = MIN(E-0,79 ; 26,84) -> ATR-Term, TIW-Puffer 0,38 (OG) bis 1,0 ATR (UG). || [NEU GEFASST 2026-10-02 nach Exit #97 (0 R, SL auf Einstand), User-Auftrag ''EMA50-Pullback'', Linien von Claude, Chart 1D+4h 20:59] Ruecksetzer vom Doppelhoch Ende Sept (~28,9-29,0) auf 27,44 in zwei Tagen; Kurs 27,60 knapp ueber EMA50-1D 27,43, Stack bullisch 28,05/27,43/26,85/26,41, Kurs unter 1/4 EMAs. RSI-1D 44,8 < 56,8; 4h RSI 38,7 < 59,5, Kurs unter EMA20/50-4h -> 4h-Bestaetigung abwarten. TIW 27,00 = unter Sept-Tief ~27,2, ueber EMA100 26,85 (L25 frei, SL ATR-bestimmt). TP1 28,20 = EMA20-1D/4h-EMA20, TP2 29,20 = Sept-Hoch. R:R TP1 0,80-1,18,
     Runner 2,10-2,47. Auslöser des Ruecksetzers ni'
   journal_row: 93
-updated: '2026-10-06T13:30:03+02:00'
+- symbol: JEN.DE
+  name: Jenoptik AG (JEN, Xetra) - Optik/Photonik fuer Halbleiter und Messtechnik
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: position
+  added: '2026-10-06'
+  expiry: '2026-10-13'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#104, 62 Stk) - kein Entry-Trigger. SL 13,84EUR (U ~41,13). TIW = 1D-Schluss unter 42,70€ (Rueckfall unter das Ausbruchsniveau). TP1 20,71EUR (U 48,00) = 20 Stk (1/3, Exit-Test v49). TP2 21,11EUR (U 48,40), Rest 42 Stk Chandelier 2,0 ATR. Review 2026-10-13. Earnings 2026-11-10. [Sp. Trigger-Historie]
+  notes: '[GEFUELLT 2026-10-06 ~15:3x] 62 Stk x 16,27 EUR (UniCredit DE000UN6MH31, KO 27,5125, BV 1), Gebuehr 0,00, Fill-U ~43,51 (rueckgerechnet), Trade #104. Stop-Buy Weg a (Kerze lief noch): Schluss heute unter 42,70 = TIW gebrochen -> Exit 07.10. L26-Puffer 0,99 ATR. || [NEU 2026-10-06, Pitch breakout_long RRprox 3,48, User-Auftrag Watchlist, Linien von Claude (Default)] Chart 06.10. 12:47: 1D Stack bullish EMA 41,26/40,58/39,33/35,55, Kurs 43,38, RSI 59,8 > 55,7, ATR 1,586, r2 0,43, Extension 1,22 ATR. Ausbruch ueber 42,70 am 02.10. (Vol 1,51x), Retest 06.10. bis 42,14 (-0,36 ATR), Kerze laeuft bis 17:35. 4h RSI 61,8 > 59,9 (Cross nach oben), 4h-EMA20 42,16. Widerstaende: Okt-Docht ~44,0, Jul-Hoch ~46,5 (abgelesen), Jun-Hoch/52W ~48,4. L25 an 43,50: MIN(41,15 ; 41,67) = 41,15, d 2,35, TIW-Puffer 0,99 ATR. TP1-Boden 46,56 -> TP1 48 (wie ETN 470: naechste Marke ueber 1,3 R). COUNTER-THESE [S0+S1]: H1 Auftragseingang +53 %, Margen-Guidance angehoben, Jefferies Kursziel 45 -> 48 Buy, Konsens
+    47,19 (ad-hoc-news, automatisiert - gegenlesen). Archivzeile 2026-09-01 (damals EMA-Gate verletzt). Verdikt traegt, Aber Zwischenwiderstand ~46,5.'
+  trade_nr: 104
+updated: '2026-10-06T15:39:29+02:00'
