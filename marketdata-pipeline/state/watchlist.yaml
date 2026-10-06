@@ -2116,21 +2116,6 @@ entries:
     text: 'nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15.'
   notes: 'Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40. Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
   added: '2026-10-05'
-- symbol: G1A.DE
-  name: 'GEA Group AG (G1A, XETR) [MONITOR #92] — Lebensmittel-/Pharmaanlagenbau'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA50-1D
-  treiber: ''
-  status: position
-  added: '2026-09-04'
-  expiry: '2026-10-07'
-  trade_nr: '92'
-  legs:
-  - label: A
-    gate: 🟢
-    text: 'POSITION-MONITOR (#92, Rest 500 Stk, RUNNER) - kein Entry-Trigger. TP1 1,49 gefuellt 22.09. SL 1,34EUR (U ~65,00; Chandelier-Recheck 30.09., Veto frei). TIW = 1D-Schluss unter 63,00€. TP2 1,640EUR (U 68,00) Runner L6. Naechster Recheck 2026-10-07. Earnings 2026-11-09. [Volltext: Sheet Trigger-Historie]'
-  notes: 'Reaktiviert 2026-10-05 (Morning Check): Zeile stand nach der Migration auf archiviert, Trade #92 ist offen (Runner 500 Stk, SL 1,34, Recheck 2026-10-07).'
 - symbol: DB1.DE
   name: Deutsche Boerse AG (DB1, XETR)
   direction: LONG
@@ -2375,4 +2360,19 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-08 SHORT-TREND-PULLBACK: Touch EMA20-1D +0,00/+0,60 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (15,29 -> +22,94). TIW = 1D-Schluss ueber 927,72$ (EMA50-1D). TP1 876,00$ = Sept-Tief (abgelesen), 1/3 raus. TP2 844,00$ = 52W-Tief, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,74-2,14 / TP2 3,12-3,53 (an Zone UG/OG). 1 % (r2 0,29 = schwache Trendqualitaet). Non-Quanto USD. Earnings 2026-12-10.'
   notes: '[NEU 2026-10-06, Pitch short_trend_pullback RRprox 1,65, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:48: 1D Stack bearish EMA 915,94/927,72/942,31/951,74, Kurs 923,52 zwischen EMA20 und EMA50 (3/4 darunter), RSI 52,8 > 44,2, ATR 15,29 (1,66 %), r2 0,29 (Seitwaertsrisiko wie GOOGL 05.10.). 4h: Kurs ueber 4h-EMA20/50, RSI-4h 60,3 > 56,5 - GEGEN Short. Erst nach dem Sept-Umsatzbericht (2026-10-07 nachboerslich) aktiv. Stufe 1: Motley Fool 2026-10-04 (Comps-Trend), Q4-Bericht 2026-09-24 durch.'
-updated: '2026-10-06T13:07:37+02:00'
+- symbol: G1A.DE
+  name: 'GEA Group AG (G1A, XETR) [MONITOR #92] — Lebensmittel-/Pharmaanlagenbau'
+  direction: LONG
+  klasse: position_monitor
+  anker: EMA50-1D
+  treiber: ''
+  status: position
+  added: '2026-09-04'
+  expiry: '2026-10-07'
+  trade_nr: '92'
+  legs:
+  - label: A
+    gate: 🟢
+    text: 'POSITION-MONITOR (#92, Rest 500 Stk, RUNNER) - kein Entry-Trigger. TP1 1,49 gefuellt 22.09. SL 1,54EUR (U ~66,99; Chandelier 1,5 ATR am Kurs 68,70, 0,66 ATR ueber EMA20-1D 66,23, Veto frei; gesetzt 2026-10-06 ~13:10, User). TIW = 1D-Schluss unter 63,00€. Kein TP-Order (Runner trailt, Entscheid 2026-10-05 Variante B). Schluss >68,10 = Dreiecks-Ausbruch -> SL-Upgrade unter Ausbruchsniveau pruefen (~U 67,16 / Zert ~1,56). Naechster Recheck 2026-10-12. Earnings 2026-11-09. [Volltext: Sheet Trigger-Historie]'
+  notes: '[SL-NACHZUG 2026-10-06, User] SL 1,38 (U 65,40) -> 1,54 (U 66,99) = Chandelier 1,5x1,141 am Kurs 68,70 (Hoch 68,75 = 52W-Hoch); sichert ~+149 EUR auf den Rest (vorher ~+69). Zert-Gegenprobe: 1,38 = (65,40-51,60)x0,1 -> Aufgeld ~0. || Reaktiviert 2026-10-05 (Morning Check): Zeile stand nach der Migration auf archiviert, Trade #92 ist offen (Runner 500 Stk, SL 1,34, Recheck 2026-10-07).'
+updated: '2026-10-06T13:11:34+02:00'
