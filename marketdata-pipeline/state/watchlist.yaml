@@ -2374,11 +2374,11 @@ entries:
   legs:
   - label: A
     gate: 🟢
-    text: 'POSITION-MONITOR (#9 AV, Rest 3 Stk, RUNNER) - kein Entry-Trigger. TP1 222,35EUR gefuellt 2026-10-06 (3 Stk, U ~250,3$). SL 161,83EUR (alt) - Nachzug offen: Stufe 3 ~195,00EUR (U ~219,5$ = unter EMA50-1D/4h-EMA100 224,3 -0,3 ATR, Veto frei) bzw. Rueckfallebene Breakeven 191,17EUR. TIW = 1D-Schluss unter 198,00$ (EMA100-1D). TP2 300,00$ (~266,5EUR bei FX 1,1255) = Runner. Earnings-Datum klaeren (TV ~2026-10-22 vs 2026-11-10). [Sp. Trigger-Historie]'
+    text: POSITION-MONITOR (#9 AV, Rest 3 Stk, RUNNER) - kein Entry-Trigger. TP1 222,35EUR gefuellt 2026-10-06 (3 Stk, U ~250,3$). SL 195,00EUR (U ~219,5$ bei FX 1,1255; Stufe 3 unter EMA50-1D/4h-EMA100 224,3 -0,3 ATR, gesetzt 2026-10-06 ~17:00). TIW = 1D-Schluss unter 198,00$ (EMA100-1D). TP2 300,00$ (~266,5EUR) = Runner. Earnings-Datum klaeren (TV ~2026-10-22 vs 2026-11-10). Review 2026-10-13. [Sp. Trigger-Historie]
   - label: B
     gate: 🔴
     text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
   notes: '[TP1 2026-10-06, User] 3 x 222,35 EUR, +93,55 EUR (+0,53 R). Chart 16:57: 250,77$ +7,8 %, EMA20 232,04, ATR 16,09; Chandelier 1,5 ATR 226,63 per Veto (0,34 ATR unter EMA20) gesperrt. Flag: Insider-Verkaeufe ~19 Mio USD (TV-Headline). || MONITOR-UMBAU 2026-08-28 nach dem Entry #9 AV. Fill 190,50EUR lag 0,03EUR unter dem geplanten Limit 190,53EUR (Note #435) und damit innerhalb der Zone — der TIW-Puffer ist der geplante geblieben. TIW-RE-ANCHOR 193,00 -> 198,00 am 2026-08-27 10:45 CEST (User-Freigabe). GRUND: NVDA hat am 26.08. 23:00 CEST einen Doppel-Beat gemeldet (Q2 FY27 Umsatz 96,22 Mrd USD +106% YoY, Data Center 89 Mrd +117%, Q3-Guide ~108 Mrd); NBIS steht daraufhin vorboerslich bei 227,89 USD (+6,53%). Mit der alten TIW 193,00 lag die L26-Decke bei 219,72 — jedes erreichbare Limit haette den TIW-Puffer unter 0,30 ATR gedr'
   journal_row: 42
   trade_nr: '9'
-updated: '2026-10-06T16:59:08+02:00'
+updated: '2026-10-06T17:03:37+02:00'
