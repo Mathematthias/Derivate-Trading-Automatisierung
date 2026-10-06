@@ -2122,7 +2122,7 @@ entries:
   klasse: position_monitor
   anker: ''
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-09-03'
   expiry: '2026-10-12'
   legs:
@@ -2132,6 +2132,9 @@ entries:
   notes: '[REVIEW 2026-10-05, User-Entscheid im Morning Check] SL 5,57 -> 5,73 (U 278,41 -> 280,0 = Chandelier auf Fr-Schluss; Live-Rechnung 281,1 haette das 0,50-ATR-Veto gerissen). TP2 292 steht in den Hochs 29.09./02.10. || [TRADE-STORY 2026-09-10 12:53, User-Charts 1D+4h — Belegqualitaet [S0+S1], Ueberschriften-Ebene] *** TRIGGER VOLLSTAENDIG ERFUELLT: *** 4h-Kerze O 273,1 H 277,6 L 272,1 C 277,5 = Bullish Engulfing mit Close am Hoch, RSI-4h 44,68 UEBER Signal 39,86 = Cross erfuellt. Kurs 277,50 in der Zone (EMA20-1D 279,2, ATR 5,327 -> 275,84-279,41). HERKUNFT: Der Aufwaertstrend laeuft seit Juni (Stack EMA20 279,2 > EMA50 271,3 > EMA100 262,0 > EMA200 252,5). Der AKTUELLE Ruecksetzer von rund 292 auf 272 hat dagegen einen datierten Ausloeser: die Platzierung einer WANDELANLEIHE UEBER 600 MIO EUR am 2026-09-09,'
   journal_row: 66
   trade_nr: '93'
+  archived:
+    date: '2026-10-06'
+    reason: 'Trade #93 geschlossen 2026-10-06: Runner-Rest 93x6,99 (Limit-Sell, U ~292,61), Trade gesamt +246,26 EUR (+1,66 R)'
 - symbol: WMT
   name: 'Walmart Inc. (WMT, NASDAQ) [MONITOR #99] — Einzelhandel'
   direction: SHORT
@@ -2375,4 +2378,4 @@ entries:
     gate: 🟢
     text: 'POSITION-MONITOR (#92, Rest 500 Stk, RUNNER) - kein Entry-Trigger. TP1 1,49 gefuellt 22.09. SL 1,54EUR (U ~66,99; Chandelier 1,5 ATR am Kurs 68,70, 0,66 ATR ueber EMA20-1D 66,23, Veto frei; gesetzt 2026-10-06 ~13:10, User). TIW = 1D-Schluss unter 63,00€. Kein TP-Order (Runner trailt, Entscheid 2026-10-05 Variante B). Schluss >68,10 = Dreiecks-Ausbruch -> SL-Upgrade unter Ausbruchsniveau pruefen (~U 67,16 / Zert ~1,56). Naechster Recheck 2026-10-12. Earnings 2026-11-09. [Volltext: Sheet Trigger-Historie]'
   notes: '[SL-NACHZUG 2026-10-06, User] SL 1,38 (U 65,40) -> 1,54 (U 66,99) = Chandelier 1,5x1,141 am Kurs 68,70 (Hoch 68,75 = 52W-Hoch); sichert ~+149 EUR auf den Rest (vorher ~+69). Zert-Gegenprobe: 1,38 = (65,40-51,60)x0,1 -> Aufgeld ~0. || Reaktiviert 2026-10-05 (Morning Check): Zeile stand nach der Migration auf archiviert, Trade #92 ist offen (Runner 500 Stk, SL 1,34, Recheck 2026-10-07).'
-updated: '2026-10-06T13:11:34+02:00'
+updated: '2026-10-06T13:25:52+02:00'
