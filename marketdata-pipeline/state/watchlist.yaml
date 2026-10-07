@@ -540,24 +540,6 @@ entries:
   archived:
     date: ''
     reason: kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-- symbol: GILD
-  name: Gilead Sciences (GILD, NASDAQ) — News-Catalyst-Continuation
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-08-03'
-  expiry: '2026-10-09'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-21 TREND-PULLBACK-LONG: Touch EMA20-1D -0,50/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stopweite entry-relativ -1,5xATR-1D (3,52 -> -5,29). TIW = 1D-Schluss unter 143,00$. TP1 153,30$ = BE-Stufe (50% + SL->BE, L6). TP2 157,30$ = Runner L6. R:R TP1 0,92-1,56 / Runner 1,61-2,32. 1% Sizing. USD Non-Quanto. [HEALTH-CARE mit JNJ/REGN]'
-  - label: B
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: 'NEU GEFASST 2026-09-21 (User-Charts 1D+4h, User-OK). WARUM DIE ALTE ZEILE NIE BEREIT WAR: Zone EMA20 +0,00/+0,34 ATR lag komplett UEBER der EMA20 und war nur ~1,20 USD breit. Der Ruecksetzer Mitte September fiel in einem Zug hindurch und schloss unter der EMA20 (~143,5-145); die 4h-Bullish-Umkehr vom 17.09. entstand UNTER der Zone. Zone und Bestaetigung waren nie gleichzeitig erfuellt. NEU: Zone EMA20 -0,50/+0,30 ATR (heute 145,03-147,85), TIW = Septembertief 143,00, TP1 Septemberhoch 153,30, TP2 52W-Hoch 157,30. Chart 21.09.: Kurs 151,27, Stack bullisch (146,81/141,89/138,16/133,44), RSI-1D 6'
-  journal_row: 32
 - symbol: KHC
   name: Kraft Heinz (KHC, NASDAQ)
   direction: LONG
@@ -1493,21 +1475,6 @@ entries:
     text: 'nach 2026-09-24 SHORT-TREND-PULLBACK: Touch 246,50-249,50$ [pullback] (4h-EMA20 / Open Investor-Day) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Stopweite entry-relativ +1,5xATR-1D (5,10 -> +7,65). TIW = 1D-Schluss ueber 252,00$. TP1 234,00$ = BE-Stufe (Event-Tief, 50% + SL->BE, L6). Kein TP2 (L13), Runner trailt. R:R TP1 1,63-2,03. 1% Sizing. Non-Quanto USD.'
   notes: '[NEU GEFASST 2026-09-24, User-Entscheid, User-Chart 1D+4h 09:15 UTC] Binaeres Ereignis durch: Investor Day 23.09. (>NEXT: operative Marge low-mid 50% bis 2030, 8,5 Mrd USD Franchisee-Support bis 2036) -> Tag -4,81%, H 250,32 / L 234,03 / C 238,32, Vol 16,61 Mio. Alte Zone 252-256 gegenstandslos (2,7-3,4 ATR), altes TP2 237 ohne Entry erreicht. EMA20/50/100/200-1D 254,08/262,44/272,06/283,54, Kurs unter 4/4. RSI-1D 25,9 ueberverkauft, Extension -3,1 ATR -> kein Entry am Markt, Bounce abwarten. SL an der Zone ATR-bestimmt 254,15-257,15 (L25 frei, Puffer 0,42 ATR). EARNINGS: TV zeigt 28 Tage (~22'
   journal_row: 92
-- symbol: FCX
-  name: Freeport-McMoRan (FCX, NYSE) — Kupfer/Gold-Miner
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-09-21'
-  expiry: '2026-10-09'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-21 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D +0,00/+0,20 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stopweite entry-relativ -1,5xATR-1D (2,91 -> -4,37), mindestens bis unter das Sept-Tief 67,40. TIW = 1D-Schluss unter 69,50$. TP1 76,00$ = BE-Stufe (50% + SL->BE, L6). TP2 80,00$ = Runner L6. R:R Runner 1,43-1,72. 1% Sizing. ATR 4,0% 🟡: KO Hebel <=6 oder Aktie. [Sp. Trigger-Historie]'
-  notes: '[NEU 2026-09-21, User-Auftrag, Charts 1D+4h] Freeport-McMoRan: Kupfer/Gold-Miner (Grasberg/Indonesien, Americas). GEOMETRIE: Stack 1D bullisch 71,78/69,64/66,71/61,89, Kurs Fr 71,54 (Pre 72,55), Faecher ueber 3/4. Hoch 80,24 Ende Aug, Ruecksetzer bis ~67,40 (Sept-Tief), 4h wieder ueber EMA20/50-4h, RSI-4h-Cross erfuellt (48,2 > 42,2). SL-HERLEITUNG: SL = MIN(Entry - 1,5xATR ; 67,00) - der ATR-Term allein laege mit 67,41 nur 0,01 ueber dem Sept-Tief (Stop-Hunt-Magnet). Zone-OG 72,36 = R:R TP2 1,43, deshalb +0,20 ATR und nicht mehr. VEHIKEL: DIREKTAKTIE (ATR 4,07% > 2,5%, Schnellreferenz); KEIN '
-  journal_row: 94
 - symbol: MCK
   name: McKesson Corporation (MCK, NYSE) — Pharma-Grosshandel
   direction: LONG
@@ -2377,4 +2344,36 @@ entries:
     text: 'nach 2026-10-07 BREAKOUT-RETEST-LONG: Niveau 43,50€ (Dez-Hochs), Ausbruch per Schluss 06.10. (43,70; Vol 1,14x = Vol-Daempfer). Touch 43,13–44,06€ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stop-Buy ueber Retest-Hoch. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 43,50€. TP1 45,80€, TP2 Chandelier 2,0 ATR. 1% Sizing.'
   notes: '[RE-EVAL AUSGELOEST 2026-10-07, User-Charts 1D+4h 11:36, User-OK] Schluss 06.10. 43,70 > 43,50 (Re-Eval-Bedingung), Volumen 114K vs Avg-20d ~100K = 1,14x: Re-Eval erfuellt, Klassenschwelle 1,2x verfehlt -> Vol-Daempfer, 1 %. EMA20/50/100/200-1D 42,44/41,47/40,49/39,86 bullish, ATR-1D 0,75 (1,7 %), Extension (43,78-42,44)/0,75 = 1,79 ATR (frei), RSI-1D 65,5, 52W-Hoch. Heutige Kerze 43,46-43,80 testet das Niveau. Rechnung an Stop-Buy 43,85: SL = MIN(42,73 ; Retest-Tief 43,46-0,22 = 43,24) = 42,73, R 1,12; TP1 45,80 (Measured Move Range 40,6-43,2) = 1,74 R. Direktaktie bei 1 % = 133 Stk ~5.830 EUR > disponibel -> nur KO. Organ-Transaktion (PDMR) laut TV vor 5 Tagen, Art ungeprueft. EARNINGS 2026-10-30 (User 2026-10-07; Digest fuehrt keinen Termin) -> Entry frei bis 2026-10-22, KO-Exit spaetestens 2026-10-23 (5 HT vorher); Verfall 21.10. liegt davor. Gegenrede: Doppel-Top 43,1-43,2 (Sept), Schluss unter 43,50 stellt es wieder her. || Vorgaenger (archiviert 2026-09-24): [ARCHIVIERT
     2026-09-24, User-Entscheid, Wiedervorlage] Zone EMA50-1D nie erreicht, Kurs lief ohne Fill bis 43,14 = TP1 43,10. TV 09:16 UTC: C 42,68, EMA20/50/100/200-1D 41,59/40,82/40,01/39,57, RSI-1D 62,3, RSI-4h 67,1; moegliches Doppel-Top 43,1-43,2 (09.09. / 24.09.). RE-EVAL bei 1D-Schluss >43,50 (ueber Dezember-Hochs ~43,5, aus Chart geschaetzt) mit Volumen -> dann Ausbruchs-Leg neu rechnen (Measured Move Range 40,6-43,2 = 45,80). BROKER: evtl. offene Order stornieren. || [NEU 2026-09-15 aus'
-updated: '2026-10-07T11:45:29+02:00'
+- symbol: GILD
+  name: Gilead Sciences (GILD, NASDAQ) — News-Catalyst-Continuation
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-08-03'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-07 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 142,50$. TP1 153,00$, TP2 157,30$. R:R TP1 1,52-1,92. 1% Sizing. USD Non-Quanto.'
+  notes: '[NEU GEFASST 2026-10-07, User-Charts 1D+4h 12:10, User-OK] Alte Zone EMA20 -0,50/+0,30 ATR nie mit Bestaetigung erreicht; Kurs fiel vom Sept-Hoch ~153 in einer Woche auf die EMA50 (Schluss 06.10. 144,23 = EMA50 144,26, Tief 142,60). Gate war ⛔ (Kurs ueber nur 2/4 EMAs). Neu: Anker EMA50-1D, Zone 143,24-145,27 (heute). TIW 142,50 = unter Tagestief 06.10. 142,60 und Sept-Tief 143,00. ATR-1D 3,38. Rechnung: Zonen-OG 145,27 -> SL MIN(140,19 ; 141,48) = 140,19, R 5,08, TP1 153,00 (Sept-Hochs) = 1,52 R, TP2 157,30 (52W-Hoch) = 2,37 R; Zonen-UG 143,24 -> 1,92 / 2,77 R. SL liegt unter EMA100 140,24. 4h: RSI 37,5 < Signal 44,8, unter EMA20/50-4h ~147,2, an EMA100-4h 144,15 -> Bestaetigung fehlt. Earnings 2026-10-29 -> KO-Exit bis 2026-10-22, Verfall 21.10. Leg B (archiviert) entfernt. || NEU GEFASST 2026-09-21 (User-Charts 1D+4h, User-OK). WARUM DIE ALTE ZEILE NIE BEREIT WAR: Zone EMA20 +0,00/+0,34 ATR lag komplett UEBER der EMA20 und war nur ~1,20 USD breit. Der Ruecksetzer Mitte September
+    fiel in einem Zug hindurch und schloss unter der EMA20 (~143,5-145); die 4h-Bullish-Umkehr vom 17.09. entstand UNTER der Zone. Zone und Bestaetigung waren nie gleichzeitig erfuellt. NEU: Zone EMA20 -0,50/+0,30 ATR (heute 145,03-147,85), TIW = Septembertief 143,00, TP1 Septemberhoch 153,30, TP2 52W-Hoch 157,30. Chart 21.09.: Kurs 151,27, Stack bullisch (146,81/141,89/138,16/133,44), RSI-1D 6'
+  journal_row: 32
+- symbol: FCX
+  name: Freeport-McMoRan (FCX, NYSE) — Kupfer/Gold-Miner
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-09-21'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-07 TREND-PULLBACK-LONG: Touch EMA100-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 65,50$. TP1 74,60$, TP2 80,00$. R:R TP1 1,46-1,86. 1% Sizing, ATR 3,8% -> Hebel <=6.'
+  notes: '[NEU GEFASST 2026-10-07, User-Charts 1D+4h 12:10, User-OK] Seitwaertsrange seit Mitte Sept ~69,5-74,6 bei ATR 2,73 (3,8 %): an EMA20 (71,78) oder EMA50 (70,48) liefert kein chartdefiniertes TP1 >= 1,3 R (erster Widerstand Sept-Range-Hoch ~74,6: EMA20-Entry 71,8 / SL 67,7 = 0,68 R; EMA50-Entry 70,8 / SL 66,6 = 0,90 R). Einzige regelkonforme Geometrie: tiefer Ruecklauf an die EMA100-1D 67,81, Zone 66,99-68,63 (Sept-Tief 67,40 liegt darin). TIW 65,50 = unter Aug-Tiefs (AUS SCREENSHOT GESCHAETZT). Rechnung: Zonen-OG 68,63 -> SL MIN(64,53 ; 64,68) = 64,53, R 4,10, TP1 74,60 = 1,46 R, TP2 80,00 (Aug-Hoch) = 2,77 R; Zonen-UG 66,99 -> 1,86 / 3,17 R. Kurs 72,56 liegt 1,7 ATR ueber der Zone -> Erreichen vor den Earnings unsicher. Barclays KZ 82->83 (TV 06.10.). Earnings 2026-10-27 -> KO-Exit bis 2026-10-20 = Verfall. ATR 3,8 % gelb -> Hebel <= 6 oder Direktaktie. || [NEU 2026-09-21, User-Auftrag, Charts 1D+4h] Freeport-McMoRan: Kupfer/Gold-Miner (Grasberg/Indonesien, Americas). GEOMETRIE:
+    Stack 1D bullisch 71,78/69,64/66,71/61,89, Kurs Fr 71,54 (Pre 72,55), Faecher ueber 3/4. Hoch 80,24 Ende Aug, Ruecksetzer bis ~67,40 (Sept-Tief), 4h wieder ueber EMA20/50-4h, RSI-4h-Cross erfuellt (48,2 > 42,2). SL-HERLEITUNG: SL = MIN(Entry - 1,5xATR ; 67,00) - der ATR-Term allein laege mit 67,41 nur 0,01 ueber dem Sept-Tief (Stop-Hunt-Magnet). Zone-OG 72,36 = R:R TP2 1,43, deshalb +0,20 ATR und nicht mehr. VEHIKEL: DIREKTAKTIE (ATR 4,07% > 2,5%, Schnellreferenz); KEIN '
+  journal_row: 94
+updated: '2026-10-07T12:12:49+02:00'
