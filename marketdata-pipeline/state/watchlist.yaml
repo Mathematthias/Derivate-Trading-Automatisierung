@@ -1860,21 +1860,6 @@ entries:
     text: 'nach 2026-09-29 TREND-PULLBACK-LONG: Touch EMA50-1D -0,60/+0,00 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (0,255 -> -0,38). TIW = 1D-Schluss unter 9,85€. TP1 10,60€ = BE-Stufe (L6). TP2 11,00€ = Runner L6. R:R TP1 1,29-1,69 / TP2 2,33-2,74. 1% Sizing. EUR-direkt.'
   notes: '[NEU 2026-09-29, Pitch long_trend_pullback RRprox 2,05, Recherche S0+S1, Linien von Claude (User-Auftrag)] Hoch 11,1 (22.09.), seither -8 %, Kurs 10,225 unter EMA20 10,35. Zone = EMA-Band 9,97-10,11 (EMA50/100/200). TIW 9,85 = unter EMA200 9,97 mit Puffer. L25: OG 10,11 -> SL 9,73 (ATR), UG 9,95 -> SL 9,57. FLAG: Ausblick-Update 18.09. (-1,8 %, Inhalt nicht gefunden); Umbauverhandlungen Saegewerk Gruvoen; Jefferies KZ hoch, Konsens neutral ~10,64; Abspaltung Waldvermoegen im Gespraech. Radar Z28 EUDR (zertifizierte Anbieter +). Earnings ~2026-10-30. Trade-Story traegt duenn.'
   journal_row: 121
-- symbol: AAPL
-  name: Apple Inc. (AAPL, NASDAQ)
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA50-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-09-30'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (7,04 -> -10,56). TIW = 1D-Schluss unter 312,00$. TP1 345,00$ = BE-Stufe (L6). TP2 360,00$ = Runner L6. R:R Runner 2,42-3,76. 1% Sizing. Non-Quanto USD.'
-  notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs 329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
-  journal_row: 123
 - symbol: QCOM
   name: QUALCOMM (QCOM, NASDAQ) - Mobilfunk-Chips
   direction: LONG
@@ -2408,4 +2393,20 @@ entries:
     text: 'nach 2026-10-07 BREAKOUT-RETEST-LONG: Niveau 236,50$ (Juli-Hoch, geschaetzt), Ausbruch 06.10. (H 243,37, Schluss 239,24). Touch 233,59–240,87$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stop-Buy ueber Retest-Hoch. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 236,50$. TP1 263,50$, TP2 Chandelier 2,0 ATR. 1% Sizing. USD Non-Quanto.'
   notes: '[NEU 2026-10-07, User-Wunsch, Charts 1D+4h 14:17] Stack 1D bullish (EMA20/50/100/200 227,47/220,97/214,09/202,93), ATR-1D 5,82, RSI-1D 67,2, RSI-4h 70,3. Ausbruch ueber Juli-Hoch ~236,5 (AUS CHART GESCHAETZT) am 03./06.10., 06.10. H 243,37 / Schluss 239,24, vorboerslich 07.10. 236,88 = Retest des Niveaus. Extension Schluss 06.10. (239,24-227,47)/5,82 = 2,02 ATR (L18 Grenze), am Niveau ~1,6 ATR (frei). Band 233,59-240,87 = Niveau -0,5/+0,75 ATR. Beispielrechnung Retest-Tief 235,0 / Stop-Buy 240,0: SL = MIN(231,27 ; 233,25) = 231,27, R 8,73; TP1 263,50 = Measured Move Basis Aug/Sep ~209,5 bis 236,5 (+27) = 2,69 R (4 ATR, plausibel ueber 2-3 Wochen). VOLUMEN Ausbruchstag 06.10. 101,7 Mio - Avg-20d Handcheck (Klasse >= 1,2x, sonst Vol-Daempfer). Earnings ~2026-11-25 (TV: in 49 Tagen). L7/Tech-Cluster: NBIS #9 (Runner, Restrisiko 0) und QCOM-Zeile im selben Block, max. zwei Tech-Positionen. Ausweichvariante, falls TIW bricht: Trend-Pullback EMA20-1D (226,0-228,9), TIW Schluss unter
     220,00, TP1 243,37 = 1,36 R / TP2 263,50 = 3,24 R. Gegenrede: Morgan-Stanley-Hinweis auf Strom-/Energiegrenzen bei Kunden (TV Key Facts), Krypto-/Risk-off heute.'
-updated: '2026-10-07T14:19:22+02:00'
+- symbol: AAPL
+  name: Apple Inc. (AAPL, NASDAQ)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-09-30'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-07 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 312,00$. TP1 345,00$, TP2 360,00$. R:R TP1 1,34-1,85. 1% Sizing. Non-Quanto USD.'
+  notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
+    329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
+  journal_row: 123
+updated: '2026-10-07T14:41:06+02:00'
