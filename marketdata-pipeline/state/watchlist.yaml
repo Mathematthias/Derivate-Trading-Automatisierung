@@ -2393,4 +2393,19 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-07 - Ausbruch 06.10. per Docht abgewiesen (H ~42,30, Schluss 40,54), TP1 am Docht-Hoch nur 0,78 R. RE-EVAL: 1D-Schluss >42,30€ + Vol >Avg-20d.'
   notes: '[ANGELEGT ALS BEOBACHTUNG 2026-10-07, Pitch Stufe 2 + User-Charts 1D+4h 12:13, User-OK] Digest-Ausbruch ueber 40,445 vor 1 HT, aber Kerze 06.10. mit Docht bis ~42,30 auf hohem Volumen (4h: gruen bis ~41,9, dann rot zurueck auf ~40,3) = Abweisung. Als Breakout-Retest an 40,445: Stop-Buy ~40,95, SL MIN(39,21 ; 40,18) = 39,21, R 1,74; TP1 Docht-Hoch 42,30 = 0,78 R (Boden 1,3) -> kein Trade. Measured Move ~43,65 liegt hinter dem Widerstand. RE-EVAL: Schluss >42,30 mit Volumen -> 42,30 wird neues Ausbruchsniveau, darueber im Chart (ab Juni) kein Widerstand; dann Breakout-Retest neu rechnen. EMA20/50/100/200-1D 38,91/37,70/36,77/37,09, ATR 1,16, RSI 67,9. Earnings 2026-11-04 -> KO bis ~2026-10-28.'
-updated: '2026-10-07T12:14:36+02:00'
+- symbol: NVDA
+  name: NVIDIA Corporation (NVDA, NASDAQ) — Halbleiter/AI
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: aktiv
+  added: '2026-10-07'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-07 BREAKOUT-RETEST-LONG: Niveau 236,50$ (Juli-Hoch, geschaetzt), Ausbruch 06.10. (H 243,37, Schluss 239,24). Touch 233,59–240,87$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stop-Buy ueber Retest-Hoch. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 236,50$. TP1 263,50$, TP2 Chandelier 2,0 ATR. 1% Sizing. USD Non-Quanto.'
+  notes: '[NEU 2026-10-07, User-Wunsch, Charts 1D+4h 14:17] Stack 1D bullish (EMA20/50/100/200 227,47/220,97/214,09/202,93), ATR-1D 5,82, RSI-1D 67,2, RSI-4h 70,3. Ausbruch ueber Juli-Hoch ~236,5 (AUS CHART GESCHAETZT) am 03./06.10., 06.10. H 243,37 / Schluss 239,24, vorboerslich 07.10. 236,88 = Retest des Niveaus. Extension Schluss 06.10. (239,24-227,47)/5,82 = 2,02 ATR (L18 Grenze), am Niveau ~1,6 ATR (frei). Band 233,59-240,87 = Niveau -0,5/+0,75 ATR. Beispielrechnung Retest-Tief 235,0 / Stop-Buy 240,0: SL = MIN(231,27 ; 233,25) = 231,27, R 8,73; TP1 263,50 = Measured Move Basis Aug/Sep ~209,5 bis 236,5 (+27) = 2,69 R (4 ATR, plausibel ueber 2-3 Wochen). VOLUMEN Ausbruchstag 06.10. 101,7 Mio - Avg-20d Handcheck (Klasse >= 1,2x, sonst Vol-Daempfer). Earnings ~2026-11-25 (TV: in 49 Tagen). L7/Tech-Cluster: NBIS #9 (Runner, Restrisiko 0) und QCOM-Zeile im selben Block, max. zwei Tech-Positionen. Ausweichvariante, falls TIW bricht: Trend-Pullback EMA20-1D (226,0-228,9), TIW Schluss unter
+    220,00, TP1 243,37 = 1,36 R / TP2 263,50 = 3,24 R. Gegenrede: Morgan-Stanley-Hinweis auf Strom-/Energiegrenzen bei Kunden (TV Key Facts), Krypto-/Risk-off heute.'
+updated: '2026-10-07T14:19:22+02:00'
