@@ -13,7 +13,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'ARCHIVIERT 2026-09-14 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >1040,00$ + Vol >Avg-20d. [Sp. Trigger-Historie]'
+    text: 'ARCHIVIERT 2026-09-14 - kein Entry-Trigger. Re-Eval 1.040 ausgeloest 2026-10-07: Schluss >1.040 seit 02.10., Vol 02.10. 617K = 1,32x Avg-30d (467,88K; Avg-20d nicht gemessen). Neu gerechnet: erstes Hindernis 1.100 (Hoch 06.10. 1.101,41 + Sept-Ballung) nur 1,89 ATR ueber 1.040 -> Stop-Buy 1.065 gibt TP1 0,72 R, 1,3 R erst bei Entry <=1.036,61 = Exit-Test nicht bestanden. RE-EVAL: 1D-Schluss >1.101,41$ + Vol >Avg-20d. Dann Breakout-Retest @ 1.100, TP1 Aug-Hochs 1.172-1.180 (Entry <=1.108,61 fuer 1,3 R an 1.172). Earnings klaeren: Digest 2026-10-21, TV 2026-10-28. [Sp. Trigger-Historie]'
   notes: '[ARCHIVIERT 2026-09-14] TIW gebrochen (1D-Schluss 11.09. 989,12 unter 1000,00 = 0,34 ATR). ENTSCHEIDEND IST ABER NICHT DER BRUCH, SONDERN DIE STRUKTUR: Die EMA20-1D 1038,68 ist unter die EMA50-1D 1056,35 gekreuzt, der Kurs steht 3,6 Prozent UNTER der EMA100 1025,64 - der Anker des Setups. Ein Trend-Pullback AN die EMA100 existiert nicht mehr, wenn der Kurs durch sie hindurch ist. Kurs unter 3 von 4 EMAs, nur die EMA200 965,94 liegt noch darunter. Verfall waere ohnehin am 2026-09-15 gewesen. WAS OFFEN BLEIBT: Die EMA200 bei 965,94 ist 0,73 ATR entfernt und die naechste benennbare Struktur - das'
   journal_row: 2
   archived:
@@ -2412,4 +2412,4 @@ entries:
   notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
     329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
   journal_row: 123
-updated: '2026-10-07T14:50:27+02:00'
+updated: '2026-10-07T15:20:08+02:00'
