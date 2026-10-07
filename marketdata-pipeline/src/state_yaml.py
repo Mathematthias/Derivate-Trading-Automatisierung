@@ -19,6 +19,7 @@ muss sich aendern.
 from __future__ import annotations
 
 import json
+import re
 import logging
 import os
 from datetime import date, datetime
@@ -176,12 +177,57 @@ def load_watchlist_yaml(path: str | Path) -> list[WatchlistEntry]:
     return entries
 
 
+_TIW_META_RE = re.compile(
+    r"TIW[^.]{0,40}?(?P<dir>unter|ueber|über)\s*(?P<val>\d{1,3}(?:\.\d{3})*,\d+|\d+,\d+|\d+)",
+    re.IGNORECASE)
+_REEVAL_META_RE = re.compile(
+    r"RE[-\s]?EVAL\s*:\s*1D-Schluss\s*(?P<op>[<>])\s*(?P<val>\d{1,3}(?:\.\d{3})*,\d+|\d+,\d+|\d+)",
+    re.IGNORECASE)
+
+
+def _de_zahl(s: str) -> Optional[float]:
+    try:
+        return float(s.replace(".", "").replace(",", ".")) if "," in s else float(s)
+    except (ValueError, AttributeError):
+        return None
+
+
+def _leg_tiw(text: str) -> Optional[dict]:
+    """TIW-Schlussbedingung aus einem Leg-Text: {"seite": "unter"|"ueber", "level": x}."""
+    m = _TIW_META_RE.search(str(text or ""))
+    if not m:
+        return None
+    v = _de_zahl(m.group("val"))
+    if v is None:
+        return None
+    return {"seite": "ueber" if m.group("dir").lower().startswith(("ue", "üb")) else "unter", "level": v}
+
+
+def _leg_reeval(text: str) -> Optional[dict]:
+    """RE-EVAL-Schlussbedingung (nur die maschinenlesbare Form
+    „RE-EVAL: 1D-Schluss >X"): {"op": ">"|"<", "level": x}."""
+    m = _REEVAL_META_RE.search(str(text or ""))
+    if not m:
+        return None
+    v = _de_zahl(m.group("val"))
+    return None if v is None else {"op": m.group("op"), "level": v}
+
+
 def watchlist_meta(block: dict) -> list[dict]:
     """Schlanke Metadaten je Eintrag fuer den Digest (Klasse, Anker, Treiber,
     Verfall, Gates) — das, was der Morning Check braucht und bisher nirgends
-    stand."""
+    stand.
+
+    Seit 2026-10-07 zusaetzlich je Eintrag `tiw` (aus dem ersten Leg mit
+    TIW-Klausel) und `reeval` (aus dem ersten Leg mit „RE-EVAL: 1D-Schluss
+    >/<X"). Damit sieht der Morning Check geparkte aktive Zeilen (alle Legs 🔴)
+    samt TIW-Lage und archivierte Zeilen, deren Re-Eval naeherrueckt — beides
+    stand vorher nur im Parked-Gate-Audit (Anlass VOS.DE)."""
     out = []
     for e in block.get("entries", []) or []:
+        legs = e.get("legs") or []
+        tiw = next((t for t in (_leg_tiw(l.get("text")) for l in legs) if t), None)
+        reeval = next((r for r in (_leg_reeval(l.get("text")) for l in legs) if r), None)
         out.append({
             "symbol": e.get("symbol"),
             "name": e.get("name"),
@@ -193,6 +239,8 @@ def watchlist_meta(block: dict) -> list[dict]:
             "expiry": e.get("expiry"),
             "gates": [l.get("gate") for l in (e.get("legs") or [])],
             "trade_nr": e.get("trade_nr"),
+            "tiw": tiw,
+            "reeval": reeval,
         })
     return out
 

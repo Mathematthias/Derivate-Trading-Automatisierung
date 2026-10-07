@@ -595,6 +595,9 @@ def _evaluate_trigger(
         _is_close_breakout_trigger(trigger)
         and _last_bar_is_forming(snap, today, now_utc_hour, hard_hour)
         and snap.prev_close is not None
+        # 2026-10-07: fehlt der Vortagesbalken, ist prev_close ein aelterer
+        # Schluss — dann kein Carry-Forward, Live-Wert wie ohne Kontext.
+        and not getattr(snap, "prev_luecke", False)
     )
 
     # === PREIS-DISTANZ ===

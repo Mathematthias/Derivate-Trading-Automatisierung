@@ -179,6 +179,10 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
     d: dict[str, Any] = {
         "kurs": _r(snap.price, 4),
         "chg": _r(snap.change_pct, 2),
+        # 2026-10-07: Bezugsschluss fuer chg und die TIW-Pruefung am
+        # geschlossenen Balken (pu.tiw_status), plus Luecken-Flag.
+        "prev_close": _r(getattr(snap, "prev_close", None), 4),
+        "prev_bar_date": getattr(snap, "prev_bar_date", None),
         "ema20": _r(snap.ema20, 4),
         "ema50": _r(snap.ema50, 4),
         "ema100": _r(snap.ema100, 4),
@@ -228,6 +232,8 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         ]
     if snap.gap_pct is not None:
         d["gap"] = _r(snap.gap_pct, 2)
+    if getattr(snap, "prev_luecke", False):
+        d["prev_luecke"] = True
     if snap.atr_zscore_60d is not None:
         d["atr_z"] = _r(snap.atr_zscore_60d, 2)
     # 🆕 4h-Layer (2026-09-08): kompakt, nur was im Briefing gebraucht wird.
@@ -465,10 +471,10 @@ def _data_freshness(universe: dict[str, Any], timestamp: Any) -> dict[str, Any]:
                   Sie können selbst aber in pre_session landen (Feed hängt).
 
     Grenze: Eine Gruppe aus nur einem Ticker hat keinen Vergleichspartner und
-    wird nie stale. Ein Ticker, der seiner Gruppe VORAUS ist (Balken von
-    heute, alle anderen von gestern), macht die übrigen stale — das ist
-    gewollt, solange die Gruppe gemeinsam handelt; innerhalb von EU kann ein
-    Feiertag nur einer Börse (UK-Bank-Holiday) so einzelne Ticker markieren.
+    wird nie stale. Seit 2026-10-07 ist der Gruppen-Maßstab der bar_date der
+    Mehrheit: ein Ticker, der seiner Gruppe VORAUS ist (^VIX mit Balken von
+    heute, alle anderen von gestern), macht die übrigen nicht mehr stale.
+    Kippt eine Gruppe genau zur Hälfte, gewinnt der jüngere Balken.
     """
     try:
         today = timestamp.date().isoformat()
@@ -486,10 +492,19 @@ def _data_freshness(universe: dict[str, Any], timestamp: Any) -> dict[str, Any]:
         by_date[bd] = by_date.get(bd, 0) + 1
         grp = exchange_group(sym)
         dated.append((sym, grp, bd))
-        g = groups.setdefault(grp, {"latest": bd, "count": 0})
+        g = groups.setdefault(grp, {"latest": bd, "count": 0, "_n": {}})
         g["count"] += 1
-        if bd > g["latest"]:
-            g["latest"] = bd
+        g["_n"][bd] = g["_n"].get(bd, 0) + 1
+
+    # 2026-10-07: Maßstab der Gruppe ist der bar_date der MEHRHEIT (bei
+    # Gleichstand der jüngere), nicht das Maximum. Anlass: ^VIX (CBOE, fast
+    # 24 h) trug um 10:02 CEST schon den 07.10.-Balken und schob damit die
+    # ganze US-Gruppe auf „latest 2026-10-07" — 76 US-Ticker galten als stale
+    # statt pre_session. Ein einzelner voreilender Ticker kippt die Gruppe
+    # jetzt nicht mehr; ein einzelner hängender Feed bleibt stale.
+    for g in groups.values():
+        n = g.pop("_n")
+        g["latest"] = max(n, key=lambda d: (n[d], d))
 
     stale = sorted(sym for sym, grp, bd in dated if bd < groups[grp]["latest"])
 
