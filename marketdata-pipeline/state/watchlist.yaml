@@ -2376,4 +2376,21 @@ entries:
   notes: '[NEU GEFASST 2026-10-07, User-Charts 1D+4h 12:10, User-OK] Seitwaertsrange seit Mitte Sept ~69,5-74,6 bei ATR 2,73 (3,8 %): an EMA20 (71,78) oder EMA50 (70,48) liefert kein chartdefiniertes TP1 >= 1,3 R (erster Widerstand Sept-Range-Hoch ~74,6: EMA20-Entry 71,8 / SL 67,7 = 0,68 R; EMA50-Entry 70,8 / SL 66,6 = 0,90 R). Einzige regelkonforme Geometrie: tiefer Ruecklauf an die EMA100-1D 67,81, Zone 66,99-68,63 (Sept-Tief 67,40 liegt darin). TIW 65,50 = unter Aug-Tiefs (AUS SCREENSHOT GESCHAETZT). Rechnung: Zonen-OG 68,63 -> SL MIN(64,53 ; 64,68) = 64,53, R 4,10, TP1 74,60 = 1,46 R, TP2 80,00 (Aug-Hoch) = 2,77 R; Zonen-UG 66,99 -> 1,86 / 3,17 R. Kurs 72,56 liegt 1,7 ATR ueber der Zone -> Erreichen vor den Earnings unsicher. Barclays KZ 82->83 (TV 06.10.). Earnings 2026-10-27 -> KO-Exit bis 2026-10-20 = Verfall. ATR 3,8 % gelb -> Hebel <= 6 oder Direktaktie. || [NEU 2026-09-21, User-Auftrag, Charts 1D+4h] Freeport-McMoRan: Kupfer/Gold-Miner (Grasberg/Indonesien, Americas). GEOMETRIE:
     Stack 1D bullisch 71,78/69,64/66,71/61,89, Kurs Fr 71,54 (Pre 72,55), Faecher ueber 3/4. Hoch 80,24 Ende Aug, Ruecksetzer bis ~67,40 (Sept-Tief), 4h wieder ueber EMA20/50-4h, RSI-4h-Cross erfuellt (48,2 > 42,2). SL-HERLEITUNG: SL = MIN(Entry - 1,5xATR ; 67,00) - der ATR-Term allein laege mit 67,41 nur 0,01 ueber dem Sept-Tief (Stop-Hunt-Magnet). Zone-OG 72,36 = R:R TP2 1,43, deshalb +0,20 ATR und nicht mehr. VEHIKEL: DIREKTAKTIE (ATR 4,07% > 2,5%, Schnellreferenz); KEIN '
   journal_row: 94
-updated: '2026-10-07T12:12:49+02:00'
+- symbol: QIA.DE
+  name: QIAGEN NV (QIA, XETRA) — Diagnostik
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: archiviert
+  added: '2026-10-07'
+  expiry: '2026-10-28'
+  archived:
+    date: '2026-10-07'
+    reason: 'Beobachtung: Ausbruch abgewiesen, TP1 < 1,3 R'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-07 - Ausbruch 06.10. per Docht abgewiesen (H ~42,30, Schluss 40,54), TP1 am Docht-Hoch nur 0,78 R. RE-EVAL: 1D-Schluss >42,30€ + Vol >Avg-20d.'
+  notes: '[ANGELEGT ALS BEOBACHTUNG 2026-10-07, Pitch Stufe 2 + User-Charts 1D+4h 12:13, User-OK] Digest-Ausbruch ueber 40,445 vor 1 HT, aber Kerze 06.10. mit Docht bis ~42,30 auf hohem Volumen (4h: gruen bis ~41,9, dann rot zurueck auf ~40,3) = Abweisung. Als Breakout-Retest an 40,445: Stop-Buy ~40,95, SL MIN(39,21 ; 40,18) = 39,21, R 1,74; TP1 Docht-Hoch 42,30 = 0,78 R (Boden 1,3) -> kein Trade. Measured Move ~43,65 liegt hinter dem Widerstand. RE-EVAL: Schluss >42,30 mit Volumen -> 42,30 wird neues Ausbruchsniveau, darueber im Chart (ab Juni) kein Widerstand; dann Breakout-Retest neu rechnen. EMA20/50/100/200-1D 38,91/37,70/36,77/37,09, ATR 1,16, RSI 67,9. Earnings 2026-11-04 -> KO bis ~2026-10-28.'
+updated: '2026-10-07T12:14:36+02:00'
