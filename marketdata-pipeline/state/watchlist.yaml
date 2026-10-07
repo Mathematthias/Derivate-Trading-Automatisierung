@@ -2051,22 +2051,6 @@ entries:
   archived:
     date: '2026-10-06'
     reason: 'Trade #93 geschlossen 2026-10-06: Runner-Rest 93x6,99 (Limit-Sell, U ~292,61), Trade gesamt +246,26 EUR (+1,66 R)'
-- symbol: JST.DE
-  name: 'JOST Werke SE (JST, XETRA) [MONITOR #100] — Nutzfahrzeug-Zulieferer'
-  direction: LONG
-  klasse: position_monitor
-  anker: ''
-  treiber: ''
-  status: position
-  added: '2026-09-02'
-  expiry: '2026-10-12'
-  legs:
-  - label: A
-    gate: 🟢
-    text: 'POSITION-MONITOR (#100) - kein Entry-Trigger. SL 0.88EUR (U 58.97). TIW = 1D-Schluss unter 59,50€ (EMA50-1D/Sept-Boden). TP1 1.33EUR (U 63,50) = BE-Stufe, 300 Stk + SL->BE (L6). TP2 1.68EUR (U 67,00) = Runner L6. 1. Verlaengerung bis 2026-10-12; Fortschrittskriterium: 1D-Schluss ueber EMA20-1D (~60,9) bis 2026-10-08, sonst Exit. [Sp. Trigger-Historie]'
-  notes: '[REVIEW 2026-10-05, User-Entscheid im Morning Check] Positions-Review 5 HT: Kurs 60,6 = -0,40 R, TIW 0,68 ATR, unter EMA20 60,9 / ueber EMA50 59,7, Vol duenn. Option a: 1. Verlaengerung bis 2026-10-12 mit Fortschrittskriterium 1D-Schluss > EMA20 bis 2026-10-08. || [ENTRY #100 2026-09-28 ~17:30: 600 x 1,15, Fill-U ~61.67, Details im Detail-Sheet] || [NEU GEFASST 2026-09-28 — VARIANTE B, User-Entscheid im Morning Check] TIW 58,20 -> 59,50 (EMA50-1D 59,5 + September-Tief ~59,7, 4h-Docht 25.09.). ANLASS: Die Zone war mit der EMA20 auf 61,00-61,71 gewandert, TIW und Ziele standen still; mit TIW 58,20 zwang L25 den Stop auf 57,67 und der Runner fiel am Kurs 61,70 auf 1,31 R (unter 1,4). Mit TIW 59,50: an der Zonen-UG 61,00 SL 58,35 (ATR) -> 0,94 / 2,26 R; an der Zonen-OG 61,71 SL 58,97 (L25) -> 0,65 / 1,93 R. ATR-1D 1,77 (2,87 %, 🟡 Hebel <= 8,7; praktisch <= '
-  journal_row: 63
-  trade_nr: '100'
 - symbol: LLY
   name: 'Eli Lilly (LLY, NYSE) - Pharma/GLP-1 [MONITOR #10 AV]'
   direction: LONG
@@ -2379,4 +2363,21 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-07 TREND-PULLBACK-SHORT: Touch EMA20-1D +0,05/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 17,80€. TP1 16,70€, TP2 Chandelier 2,0 ATR. R:R TP1 1,31-1,44. 1% Sizing.'
   notes: '[NEU 2026-10-07, Pitch Stufe 2 + User-Charts 1D/4h 10:31, User-OK] Kurs 16,725 am 52W-Tief 16,71, RSI-1D 29,7 -> Short am Tief = Chase (L22d), deshalb nur Pullback an die EMA20-1D (17,48). EMA20/50/100/200 17,48/18,64/19,89/21,64 sauber baerisch, ATR-1D 0,407. TIW 17,80 = Ende-Sept-Hoch AUS SCREENSHOT GESCHAETZT. Rechnung: SL = MAX(E+1,5xATR ; 17,92); E 17,50 -> R 0,61, TP1 16,70 = 1,31 R; E 17,58 -> 1,44 R; unter EMA20+0,05 ATR faellt TP1 unter den Exit-Test-Boden 1,3 R. Vol-Daempfer laut Pitch -> 1 %. Treiber: keiner frisch (Schuldenlast, Anleihen bis 2027 = Hintergrund). Earnings 2026-11-04 -> KO-Exit bis 2026-10-28. || Vorgaenger-Zeile (reversal, archiviert 2026-08-13).'
-updated: '2026-10-07T10:46:49+02:00'
+- symbol: JST.DE
+  name: 'JOST Werke SE (JST, XETRA) [MONITOR #100] — Nutzfahrzeug-Zulieferer'
+  direction: LONG
+  klasse: position_monitor
+  anker: ''
+  treiber: ''
+  status: position
+  added: '2026-09-02'
+  expiry: '2026-10-14'
+  legs:
+  - label: A
+    gate: 🟢
+    text: 'POSITION-MONITOR (#100, Rest 300 Stk, RUNNER) - kein Entry-Trigger. TP1 1,34EUR gefuellt 2026-10-07 (300 Stk). SL 1,02EUR (U ~60,35, Stufe 3 Chart: unter 4h-Tief ~60,4 und EMA100-4h 60,7, 0,58 ATR unter EMA20-1D 61,3, Veto frei; BE 1,16 = 0,31 ATR ueber EMA20 -> Veto; gesetzt 2026-10-07, User). TIW = 1D-Schluss unter 59,50€. TP2 1,68EUR (U 67,00) = Runner L6. Schluss >64,00 = Range-Ausbruch -> SL-Upgrade unter Ausbruchsniveau pruefen. Naechster Recheck 2026-10-14. Earnings 2026-11-11.'
+  notes: '[TP1 2026-10-07, User] 300 x 1,34 = 402,00 EUR, Gebuehr 4,00 (wahrscheinlich, bei Abrechnung pruefen), anteiliger Einstand 349,00 -> +49,00 EUR netto. Fortschrittskriterium (Schluss > EMA20 bis 08.10.) erfuellt. Runner-SL nach Chart 1D+4h 11:18: Variante A 1,02 (U 60,35), Rest-Risiko 300 x (1,163 - 1,02) = 42,90 EUR. || [REVIEW 2026-10-05, User-Entscheid im Morning Check] Positions-Review 5 HT: Kurs 60,6 = -0,40 R, TIW 0,68 ATR, unter EMA20 60,9 / ueber EMA50 59,7, Vol duenn. Option a: 1. Verlaengerung bis 2026-10-12 mit Fortschrittskriterium 1D-Schluss > EMA20 bis 2026-10-08. || [ENTRY #100 2026-09-28 ~17:30: 600 x 1,15, Fill-U ~61.67, Details im Detail-Sheet] || [NEU GEFASST 2026-09-28 — VARIANTE B, User-Entscheid im Morning Check] TIW 58,20 -> 59,50 (EMA50-1D 59,5 + September-Tief ~59,7, 4h-Docht 25.09.). ANLASS: Die Zone war mit der EMA20 auf 61,00-61,71 gewandert, TIW und Ziele standen still; mit TIW 58,20 zwang L25 den Stop auf 57,67 und der Runner fiel am Kurs 61,70 auf
+    1,31 R (unter 1,4). Mit TIW 59,50: an der Zonen-UG 61,00 SL 58,35 (ATR) -> 0,94 / 2,26 R; an der Zonen-OG 61,71 SL 58,97 (L25) -> 0,65 / 1,93 R. ATR-1D 1,77 (2,87 %, 🟡 Hebel <= 8,7; praktisch <= '
+  journal_row: 63
+  trade_nr: '100'
+updated: '2026-10-07T11:29:56+02:00'
