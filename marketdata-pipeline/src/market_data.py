@@ -199,6 +199,17 @@ class TickerSnapshot:
     die Pipeline-Laufzeit (dafür: timestamp). Der Vol-Guard nutzt es, um ein
     finales Tagesvolumen von einem partiellen Intraday-Wert zu trennen
     (Handelstags-Check, 2026-05-24)."""
+    prev_bar_date: Optional[str] = None
+    """ISO-Datum des vorletzten Balkens — der Balken, auf den sich prev_close,
+    change_pct und gap_pct beziehen (2026-10-07)."""
+    prev_luecke: bool = False
+    """True, wenn zwischen vorletztem und letztem Balken ein Werktag fehlt
+    (Anlass Morning Check 2026-10-07: alle EU-Ticker hatten morgens den
+    laufenden 07.10.-Balken, aber nicht den 06.10.; prev_close war der Schluss
+    vom 05.10., chg/gap falsch, z.B. JEN +0,47 % statt -3,3 %). Ursache im
+    yfinance-Batch noch offen. Folge hier: change_pct und gap_pct = None, und
+    die Filter-Engine nutzt prev_close nicht als „letzten Schluss". Ein
+    Feiertag erzeugt dasselbe Signal — das ist gewollt konservativ."""
 
     # Indikatoren auf Daily-Basis
     ema20: Optional[float] = None
@@ -562,6 +573,23 @@ def fetch_ticker_data(
     return snapshots
 
 
+def _werktag_fehlt(prev_iso: Optional[str], last_iso: Optional[str]) -> bool:
+    """True, wenn zwischen zwei Balken-Daten mindestens ein Werktag (Mo-Fr)
+    liegt, also ein Handelstag fehlt — ohne Feiertagskalender."""
+    if not prev_iso or not last_iso:
+        return False
+    try:
+        a, b = date.fromisoformat(prev_iso), date.fromisoformat(last_iso)
+    except ValueError:
+        return False
+    d = a + timedelta(days=1)
+    while d < b:
+        if d.weekday() < 5:
+            return True
+        d += timedelta(days=1)
+    return False
+
+
 def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]:
     """Berechnet alle Indikatoren für einen einzelnen Ticker."""
     if len(df) < 2:
@@ -601,10 +629,16 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
     # Balken — der Datums-Vergleich deckt beide Fälle ab, ein Handelskalender
     # ist dafür nicht nötig.
     last_bar_date: Optional[str] = None
+    prev_bar_date: Optional[str] = None
     try:
         last_bar_date = df.index[-1].date().isoformat()
+        prev_bar_date = df.index[-2].date().isoformat()
     except (AttributeError, IndexError):
         pass
+    prev_luecke = _werktag_fehlt(prev_bar_date, last_bar_date)
+    if prev_luecke:
+        logger.warning(f"  {symbol}: Vortagesbalken fehlt ({prev_bar_date} -> {last_bar_date}) — chg/gap unterdrueckt")
+        change_pct = None
 
     snap = TickerSnapshot(
         symbol=symbol,
@@ -615,6 +649,8 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         change_pct=change_pct,
         volume_today=volume_today,
         last_bar_date=last_bar_date,
+        prev_bar_date=prev_bar_date,
+        prev_luecke=prev_luecke,
     )
 
     closes = df["Close"]
@@ -763,7 +799,8 @@ def _compute_anomaly_fields(snap: TickerSnapshot, df: pd.DataFrame) -> None:
     is_eod = _is_eod_now()
 
     # --- gap_pct: nur today_open vs. prev_close (intraday-stabil) ---
-    if snap.today_open is not None and snap.prev_close is not None and snap.prev_close > 0:
+    if snap.today_open is not None and snap.prev_close is not None and snap.prev_close > 0 \
+            and not getattr(snap, "prev_luecke", False):
         snap.gap_pct = (snap.today_open - snap.prev_close) / snap.prev_close * 100
 
     # --- ATR-Z-Score über 60 HT (intraday-stabil durch EWMA-Glättung) ---
