@@ -2204,7 +2204,7 @@ entries:
   klasse: breakout_retest
   anker: Range-Hoch
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-10-06'
   expiry: '2026-10-13'
   legs:
@@ -2214,6 +2214,9 @@ entries:
   notes: '[GEFUELLT 2026-10-06 ~15:3x] 62 Stk x 16,27 EUR (UniCredit DE000UN6MH31, KO 27,5125, BV 1), Gebuehr 0,00, Fill-U ~43,51 (rueckgerechnet), Trade #104. Stop-Buy Weg a (Kerze lief noch): Schluss heute unter 42,70 = TIW gebrochen -> Exit 07.10. L26-Puffer 0,99 ATR. || [NEU 2026-10-06, Pitch breakout_long RRprox 3,48, User-Auftrag Watchlist, Linien von Claude (Default)] Chart 06.10. 12:47: 1D Stack bullish EMA 41,26/40,58/39,33/35,55, Kurs 43,38, RSI 59,8 > 55,7, ATR 1,586, r2 0,43, Extension 1,22 ATR. Ausbruch ueber 42,70 am 02.10. (Vol 1,51x), Retest 06.10. bis 42,14 (-0,36 ATR), Kerze laeuft bis 17:35. 4h RSI 61,8 > 59,9 (Cross nach oben), 4h-EMA20 42,16. Widerstaende: Okt-Docht ~44,0, Jul-Hoch ~46,5 (abgelesen), Jun-Hoch/52W ~48,4. L25 an 43,50: MIN(41,15 ; 41,67) = 41,15, d 2,35, TIW-Puffer 0,99 ATR. TP1-Boden 46,56 -> TP1 48 (wie ETN 470: naechste Marke ueber 1,3 R). COUNTER-THESE [S0+S1]: H1 Auftragseingang +53 %, Margen-Guidance angehoben, Jefferies Kursziel 45 -> 48 Buy, Konsens
     47,19 (ad-hoc-news, automatisiert - gegenlesen). Archivzeile 2026-09-01 (damals EMA-Gate verletzt). Verdikt traegt, Aber Zwischenwiderstand ~46,5.'
   trade_nr: 104
+  archived:
+    date: '2026-10-07'
+    reason: 'Trade #104 am SL ausgestoppt 2026-10-07 (2x31 x 13,66)'
 - symbol: NBIS
   name: 'Nebius Group N.V. (NBIS) [MONITOR #9 AV] — AI-Infrastruktur'
   direction: LONG
@@ -2409,4 +2412,4 @@ entries:
   notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
     329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
   journal_row: 123
-updated: '2026-10-07T14:41:06+02:00'
+updated: '2026-10-07T14:50:27+02:00'
