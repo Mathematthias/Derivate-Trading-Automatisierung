@@ -451,11 +451,11 @@ entries:
   treiber: ''
   status: position
   added: '2026-07-17'
-  expiry: '2026-10-07'
+  expiry: '2026-10-14'
   legs:
   - label: A
     gate: 🟢
-    text: POSITION-MONITOR (#11 AV) - kein Entry-Trigger. Stop 24,64EUR (U 27,94$). TIW = 1D-Schluss unter 28,20$. TP1 32,40$ = 45 Stk + SL->BE (L6). TP2 34,00$ = Runner L6. Review 2026-10-07. [Sp. Trigger-Historie]
+    text: 'POSITION-MONITOR (#11 AV) - kein Entry-Trigger. Stop 24,98EUR (U 27,94$ bei FX 1,1187; nachgezogen 07.10., User; vorher 24,64). TIW = 1D-Schluss unter 28,20$. TP1 32,40$ = 45 Stk + SL->BE (L6). TP2 34,00$ = Runner L6. Review 2026-10-14 (verlaengert 07.10.): bis dahin 1D-Schluss zurueck ueber EMA20-1D (~30,33$), sonst neu bewerten. Earnings 2026-11-18. [Sp. Trigger-Historie]'
   - label: B
     gate: 🔴
     text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
@@ -1993,11 +1993,11 @@ entries:
   treiber: ''
   status: position
   added: '2026-09-23'
-  expiry: '2026-10-07'
+  expiry: '2026-10-09'
   legs:
   - label: A
     gate: 🟢
-    text: 'POSITION-MONITOR (#10 AV) - kein Entry-Trigger. Stop 985,10EUR (U ~1104$ bei FX 1,121; geplant 1118,5$). TIW = 1D-Schluss unter 1139,00$. TP1 1240,00$ = BE-Stufe, 1 Stk (L6). TP2 1290,00$ = Runner L6. EXIT-PLAN: kein 1D-Schluss ueber 1200$ bis 2026-10-07 = schliessen (Review 05.10.: Plan gehalten). Earnings 2026-10-29 (Direktaktie: Entscheidung bis 28.10.). [Sp. Trigger-Historie]'
+    text: 'POSITION-MONITOR (#10 AV) - kein Entry-Trigger. Stop 1.009,60EUR (U ~1.129,5$ = TIW 1.139 - 0,3 ATR, bei FX 1,1187; nachgezogen 07.10., User; vorher 985,10). TIW = 1D-Schluss unter 1139,00$. TP1 1240,00$ = BE-Stufe, 1 Stk (L6). TP2 1290,00$ = Runner L6. EXIT-PLAN n.F. (07.10., User): kein 1D-Schluss ueber 1200$ bis 2026-10-09 = schliessen; Exit spaetestens vor Earnings 2026-10-29. Begruendung Verlaengerung: EMA20/50 zurueckerobert, RSI-4h-Cross, relative Staerke +2,5 % am Risk-off-Tag 07.10.'
   notes: '[REVIEW 2026-10-05, User-Entscheid im Morning Check] Option a, Plan gehalten: Fr-Schluss 1142,85, TIW 0,12 ATR, Kurs auf EMA100-1D 1135,8 = EMA200-4h 1136,3; EUR -0,31 R / USD -0,61 R. Stop in USD-Terms durch FX 15$ lockerer als geplant. || ANGELEGT 2026-09-23 (User-Charts, Stand 22.09.). Uptrend Mai-Aug 900->1290, Ruecksetzer bis ~1115 (Sep), EMA100 1130 hat gehalten; Kurs 1170 wieder ueber EMA20 1158,6/EMA50 1161,5. RSI-4h 58,9 ueber Signal. TIW unter EMA100-1D, ueber dem Sep-Tief. TP1 = Jul/Aug-Hochs 1240-1250. Earnings 2026-10-29 (TV: in 36 Tagen). [HEALTH-CARE mit JNJ/REGN/GILD] ATR-STUFE 🟡 (2.63 %, § ATR-Stufen seit 2026-09-23): Vehikel frei, KO-Hebel <= 9.5. || 23.09.: Zone am 22.09. intraday beruehrt (Tief 1.139,26, 0,29 ATR ueber EMA100 1.130,46), Schluss 1.170,14 (Close-Pos 75%), 4h-Umkehr und RSI-4h-Cross (58,9 > 49,7)'
   journal_row: 99
   trade_nr: '10'
@@ -2412,4 +2412,4 @@ entries:
   notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
     329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
   journal_row: 123
-updated: '2026-10-07T15:20:08+02:00'
+updated: '2026-10-07T17:38:29+02:00'
