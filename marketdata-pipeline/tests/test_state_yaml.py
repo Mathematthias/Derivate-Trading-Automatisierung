@@ -304,8 +304,11 @@ class TestRepoState:
                    if e["klasse"] in sy.KLASSEN_GESTRICHEN)
         # Review-Entscheide 2026-10-04 sind drin
         by = {e["symbol"]: e for e in st["watchlist"]["entries"]}
-        for sym in ("HLMA.L", "LIN", "HLN.L", "ALC.SW", "HOLN.SW", "ZTS"):
+        for sym in ("HLMA.L", "LIN", "HLN.L", "ALC.SW", "ZTS"):
             assert by[sym]["status"] == "archiviert", sym
+        # HOLN.SW: der Grinder-Short (Entscheid 2026-10-04) bleibt weg; die Zeile wurde
+        # am 2026-10-07 als Breakdown-Retest-Short neu angelegt (User-Entscheid).
+        assert not (by["HOLN.SW"]["status"] == "aktiv" and by["HOLN.SW"]["klasse"] == "grinder")
         assert by["GIVN.SW"]["klasse"] == "breakout_retest"
         assert "BREAKOUT-RETEST-LONG" in by["TMO"]["legs"][0]["text"]
         assert len(aktiv) >= 30

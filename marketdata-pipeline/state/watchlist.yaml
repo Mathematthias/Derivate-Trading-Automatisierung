@@ -287,24 +287,6 @@ entries:
   archived:
     date: '2026-09-10'
     reason: LONG-These invalidiert (TIW gebrochen
-- symbol: VNA.DE
-  name: Vonovia SE (VNA)
-  direction: SHORT
-  klasse: reversal
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-06-22'
-  expiry: '2026-08-12'
-  legs:
-  - label: A
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: '[ARCHIVIERT 2026-08-13, User-Entscheid Morning-Check] Verfall 12.08. ueberschritten. Kurs 20,93 nur 0,1 ATR unter der Bounce-Zone 21,00-21,25, aber Setup seit 22.06. ohne Fill. | STATUSVERMERK 2026-07-23: nah am Trigger (1.5 ATR, Trend bearish) → Gate aktiv, 7/7 lohnt bei Annäherung. Zone ggf. auf aktuelle EMA prüfen. | These: Vonovia SE (VNA.DE) - XETR, Finance / Real-Estate-Development. Stufe-2-Gamechanger-EU 2026-06-22 (Short-Trend-Pullback, RRprox 1,72), TV-Chart user 22.06. CHART 1D O20,63/H20,86/L20,34/C20,86 (+1,26%), GRUENE Kerze Schluss am HOCH (Close-Pos 100%) = Bounce-Tag. RSI-4h 56'
-  journal_row: 18
-  archived:
-    date: ''
-    reason: kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
 - symbol: SMHN.DE
   name: Suss MicroTec SE (SMHN) — Halbleiter-Equipment
   direction: LONG
@@ -861,9 +843,9 @@ entries:
 - symbol: INTC
   name: Intel Corporation (INTC, NASDAQ) — CEO-Insiderkauf
   direction: LONG
-  klasse: news_catalyst
-  anker: GAP
-  treiber: ''
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: CEO-Aussage Kapazitaet, Gap +12 % am 2026-09-21
   status: aktiv
   added: '2026-08-17'
   expiry: '2026-10-12'
@@ -1929,24 +1911,6 @@ entries:
     text: 'nach 2026-09-29 TREND-PULLBACK-LONG: Touch EMA50-1D -0,60/+0,00 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (0,255 -> -0,38). TIW = 1D-Schluss unter 9,85€. TP1 10,60€ = BE-Stufe (L6). TP2 11,00€ = Runner L6. R:R TP1 1,29-1,69 / TP2 2,33-2,74. 1% Sizing. EUR-direkt.'
   notes: '[NEU 2026-09-29, Pitch long_trend_pullback RRprox 2,05, Recherche S0+S1, Linien von Claude (User-Auftrag)] Hoch 11,1 (22.09.), seither -8 %, Kurs 10,225 unter EMA20 10,35. Zone = EMA-Band 9,97-10,11 (EMA50/100/200). TIW 9,85 = unter EMA200 9,97 mit Puffer. L25: OG 10,11 -> SL 9,73 (ATR), UG 9,95 -> SL 9,57. FLAG: Ausblick-Update 18.09. (-1,8 %, Inhalt nicht gefunden); Umbauverhandlungen Saegewerk Gruvoen; Jefferies KZ hoch, Konsens neutral ~10,64; Abspaltung Waldvermoegen im Gespraech. Radar Z28 EUDR (zertifizierte Anbieter +). Earnings ~2026-10-30. Trade-Story traegt duenn.'
   journal_row: 121
-- symbol: HOLN.SW
-  name: Holcim Ltd (HOLN, SIX) — Zement/Baustoffe
-  direction: SHORT
-  klasse: grinder
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-09-30'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-30 GRINDER-CONTINUATION-SHORT: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL). Stopweite entry-relativ +1,5xATR-1D (1,67 -> +2,51), keine L25-Klammer. Invalidator = Zustand (Stack, Faecher, Tempo unter 0,6). TP1 65,00€ = BE-Stufe, R:R 1,37-1,71. Kein TP2, Trail EMA20+1,25xATR. 1% Pilot.'
-  notes: '[ANGELEGT 2026-09-30, Morning Check, Zwei-Laeufe-Regel: Grinder-Block EU 29.09. (Tempo 1,31) + 30.09. (1,27), User-OK] CHART 12:30: 4h O68,90 H70,00 L67,78 C67,80 = Abweisung an der 4h-EMA100 69,96 (Eroeffnungsspike +2,5% auf 69,94, Grund nicht gefunden, finanzen.ch nur Kursmeldung). 1D-EMA 68,86/70,56/71,54/70,77 - Kurs unter 4/4, aber EMA100 > EMA200 (Stack nicht voll geordnet). RSI-1D 41,8 > Signal 37,8. ATR-1D 1,67 = 2,46% (Grinder-Deckel 2,5 knapp eingehalten). TP1 65,00 unter Sept-Tief ~66,3 (bis dorthin nur 0,85-1,19 R, TP1-Boden 1,3 R). 52W 60,10 (09.03.) - 82,54 (03.02.). Einsatz h5 ~'
-  journal_row: 122
-  archived:
-    date: '2026-10-04'
-    reason: Short-Grinder ohne Katalysator (Entscheid 2026-10-04)
 - symbol: AAPL
   name: Apple Inc. (AAPL, NASDAQ)
   direction: LONG
@@ -2067,20 +2031,6 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-05 BREAKOUT-RETEST-LONG: Niveau 99,92 (20-Tage-Hoch, Einheit SEK wie Pipeline), Ausbruch bestaetigt 2026-10-02 per Tagesschluss, Volumen 1,33x = Daempfer. Jetzt: Touch 98,86–101,50€ [pullback] (= Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze, NUR wenn Retest-Hoch <=100,90 (sonst TP1 unter 1,3 R). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 99,92€. TP1 105,30€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 1% Sizing (Vol-Daempfer). Non-Quanto SEK. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15.'
   notes: 'Pitch Stufe 2 2026-10-05 (RRprox 4,25). Ausbruch 2026-10-02 ueber 99,92 (Vol 1,33x). Band 98,86-101,50. MM 105,3: ab Stop-Buy 102,0 nur 1,06 R (zu eng, L17 Phantom-R:R) -> Einstieg nur bei Retest-Hoch <=100,90 (dann 1,40 R). Widerstand Mai-Hoch ~102, Juni-Spike 108. Non-Quanto SEK (EURSEK nicht im Digest).'
-  added: '2026-10-05'
-- symbol: VOS.DE
-  name: Vossloh AG (VOS, XETRA) — Bahninfrastruktur
-  direction: SHORT
-  klasse: breakout_retest
-  anker: Range-Tief
-  treiber: Warburg Hold (KZ 65->60) 2026-10-01, Deutsche Bank KZ 82->75 nach CMD 2026-09-28; Q3 2026-10-22
-  status: aktiv
-  expiry: '2026-10-15'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15.'
-  notes: 'Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40. Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
   added: '2026-10-05'
 - symbol: DB1.DE
   name: Deutsche Boerse AG (DB1, XETR)
@@ -2307,7 +2257,7 @@ entries:
   treiber: ''
   status: position
   added: '2026-09-04'
-  expiry: '2026-10-07'
+  expiry: '2026-10-12'
   trade_nr: '92'
   legs:
   - label: A
@@ -2382,4 +2332,51 @@ entries:
     Crash; US-Comps 6-J-Tief; Kurszielsenkungen RBC 102, RJ 105) -> 1%-Pilot, keine Aufstockung. Stand 16.09.: 1D C 107,50, EMA 107,59/110,26/113,53/113,87, RSI-1D 48,0 > Signal 43,4 (gegen den Short); RSI-4h 51,06 < 51,23 (Cross hauchduenn erfuellt), 4h-Reverse offen. ATR-1D 2,13. Invalid'
   journal_row: 88
   trade_nr: '99'
-updated: '2026-10-06T17:32:36+02:00'
+- symbol: VOS.DE
+  name: Vossloh AG (VOS, XETRA) — Bahninfrastruktur
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: Warburg Hold (KZ 65->60) 2026-10-01, Deutsche Bank KZ 82->75 nach CMD 2026-09-28; Q3 2026-10-22
+  status: archiviert
+  expiry: '2026-10-15'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-07 - TIW 51,15 per Schluss gebrochen (05.10. 51,20, 06.10. 51,85). RE-EVAL: 1D-Schluss <50,02€ + Vol >Avg-20d.'
+  notes: '[ARCHIVIERT 2026-10-07, User-Entscheid Morning Check] Breakdown vom 02.10. zurueckerobert, zwei Schluesse ueber dem Niveau. RE-EVAL = echter zweiter Breakdown unter die Band-UG 50,02 mit Volumen. Q3 2026-10-22. Vorheriger Leg-Text: nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40. Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter
+    EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
+  added: '2026-10-05'
+  archived:
+    date: '2026-10-07'
+    reason: TIW 51,15 per Schluss gebrochen (05.10. 51,20, 06.10. 51,85)
+- symbol: HOLN.SW
+  name: Holcim Ltd (HOLN, SIX) — Zement/Baustoffe
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: ''
+  status: aktiv
+  added: '2026-10-07'
+  expiry: '2026-10-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-07 BREAKDOWN-RETEST-SHORT (CHF): Niveau 64,10€ (Okt-Tief). Breakdown per Schluss unter 64,10 mit Vol >=1,2x Avg-20d, danach Touch 62,86–64,93€ [pullback] + 4h-Bearish-Reverse-Close (MANUELL). Stop-Sell unter Retest-Tief. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 64,10€. TP1 60,10€, TP2 Chandelier 2,0 ATR. 1% Sizing.'
+  notes: '[NEU 2026-10-07, Pitch Stufe 2 + User-Charts 1D/4h 10:31, User-OK] Kurs 65,22, EMA20/50/100/200-1D 67,31/69,53/70,90/70,48 (EMA100 > EMA200, Stack nicht voll geordnet), RSI-1D 36,9, ATR-1D 1,64. Niveau 64,10 = Okt-Tief AUS SCREENSHOT GESCHAETZT -> vor Scharfstellen am Live-Chart pruefen; Band = Niveau -0,75/+0,50 ATR. Rechnung: Stop-Sell 63,80, SL MAX(66,26 ; Retest-Hoch+0,3 ATR), R 2,46; TP1 60,10 (52W-Tief) = 1,50 R. Trend-Pullback an EMA20 verworfen: TP1 am Okt-Tief nur 0,99 R. Treiber: keiner gefunden (Recherche 2026-10-07). Q3-Update 2026-10-23 (Digest fuehrt 2027-02-25 = falsch) -> KO-Exit bis 2026-10-16. Non-Quanto CHF. || Vorgaenger-Zeile (Grinder-Short, archiviert 2026-10-04): [ANGELEGT 2026-09-30, Morning Check, Zwei-Laeufe-Regel: Grinder-Block EU 29.09. (Tempo 1,31) + 30.09. (1,27), User-OK] CHART 12:30: 4h O68,90 H70,00 L67,78 C67,80 = Abweisung an der 4h-EMA100 69,96 (Eroeffnungsspike +2,5% auf 69,94, Grund nicht gefunden, finanzen.ch nur Kursmeldung). 1D-EMA 68,86/70,56/71,54/70,77
+    - Kurs unter 4/4, aber EMA100 > EMA200 (Stack nicht voll geordnet). RSI-1D 41,8 > Si'
+- symbol: VNA.DE
+  name: Vonovia SE (VNA, XETRA) — Wohnimmobilien
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-07'
+  expiry: '2026-10-23'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-07 TREND-PULLBACK-SHORT: Touch EMA20-1D +0,05/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 17,80€. TP1 16,70€, TP2 Chandelier 2,0 ATR. R:R TP1 1,31-1,44. 1% Sizing.'
+  notes: '[NEU 2026-10-07, Pitch Stufe 2 + User-Charts 1D/4h 10:31, User-OK] Kurs 16,725 am 52W-Tief 16,71, RSI-1D 29,7 -> Short am Tief = Chase (L22d), deshalb nur Pullback an die EMA20-1D (17,48). EMA20/50/100/200 17,48/18,64/19,89/21,64 sauber baerisch, ATR-1D 0,407. TIW 17,80 = Ende-Sept-Hoch AUS SCREENSHOT GESCHAETZT. Rechnung: SL = MAX(E+1,5xATR ; 17,92); E 17,50 -> R 0,61, TP1 16,70 = 1,31 R; E 17,58 -> 1,44 R; unter EMA20+0,05 ATR faellt TP1 unter den Exit-Test-Boden 1,3 R. Vol-Daempfer laut Pitch -> 1 %. Treiber: keiner frisch (Schuldenlast, Anleihen bis 2027 = Hintergrund). Earnings 2026-11-04 -> KO-Exit bis 2026-10-28. || Vorgaenger-Zeile (reversal, archiviert 2026-08-13).'
+updated: '2026-10-07T10:46:49+02:00'
