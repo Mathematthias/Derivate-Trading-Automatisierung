@@ -34,7 +34,7 @@ D-095,FANG,Long,2026-09-16,2026-09-17,199.92,191.16,-1.05,"Fill-U = 141,1026 + 5
 D-096,AD.AS,Short,2026-09-17,2026-09-28,31.83,32.64,-0.89,"Fill-Underlying ~31,83-31,93 | Rechnung KO=Basis: 38,1267 - 0,63/0,1 = 31,83 (Untergrenze der Spanne)","SL Zert 0,549 (= Fill - 1,5xATR-1D x BV; U ~32,64-32,74) | Rechnung: 38,1267 - 0,549/0,1 = 32,64",E=rueckgerechnet;SL=rueckgerechnet
 D-097,PFE,Long,2026-09-21,2026-10-02,27.68,26.75,0,Fill-Underlying geschaetzt U ~27.68,"SL U 26.75 (L25: TIW 26,90 - 0,30xATR 0,5084) = Zert 5.08",E=belegt;SL=belegt
 D-098,MA,Long,2026-09-21,2026-09-22,568.75,555.79,-1,"Fill-U ~568,75 USD (GESCHAETZT","SL entry-relativ 1,5xATR-1D (8,64 -> 12,96): U 555,79 = Zert 9,02 EUR",E=belegt;SL=belegt
-D-099,WMT,Short,2026-09-25,2026-10-08,,110.66,-0.18,kein Entry-Underlying in Spalte M oder Notes-Blatt (Entry-Notiz fehlt),"SL Broker 2,02 (U ~110,66)",E=fehlt;SL=belegt
+D-099,WMT,Short,2026-09-25,2026-10-08,107.47,110.66,-0.18,"Abrechnung Baader 25.09.2026 18:01: 450 Stk x 2,30 EUR, TurboP O.End Walmart 133,7 | Rechnung: 133,70 - 2,30 x 1,1406 / 0,1 = 107,47 (FX 1,1406 = derselbe Faktor wie SL 2,02 <-> U 110,66)","SL Broker 2,02 (U ~110,66)",E=rueckgerechnet;SL=belegt
 D-100,JST.DE,Long,2026-09-28,2026-10-08,61.67,58.97,0.01,"Notes #760: KO 50,1738, BV 0,1 rueckgerechnet, Fill-U ~61.67","Notes #760: SL 0.88 (U 58.97, L25)",E=belegt;SL=belegt
 D-101,DUE.DE,Short,2026-09-30,,17.06,17.88,,"Fill-U ~17.06 (geschaetzt, gegen Chart pruefen)","SL_U = MAX(Fill+1,5xATR 17,71 ; TIW 17,75+0,30xATR 17,88) = 17,88-17,89 (L25-Term)",E=belegt;SL=belegt
 D-102,DHL.DE,Long,2026-10-01,2026-10-08,56.55,54.94,-1.09,"Fill-U ~56,55 (= 11,32 - 0,12 + 45,35, geschaetzt)","SL U 54,94 (= Fill-U - 1,5 x ATR-1D 1,0722",E=belegt;SL=belegt
