@@ -250,3 +250,43 @@ def test_archiv_ohne_datum_wird_nicht_doppelt_angehaengt(tmp_path):
     assert c1["archiv_neu"] == 1 and c2["archiv_neu"] == 0
     ws = load_workbook(out2)["Watchlist-Archiv"]
     assert sum(1 for r in ws.iter_rows(min_row=2, values_only=True) if r[1] == "AMZN") == 1
+
+
+# ---------------------------------------------------------------------------
+# CSV-Modus und Merge (Fix 2026-10-08)
+# ---------------------------------------------------------------------------
+
+def _bars_csv():
+    idx = pd.to_datetime(["2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04"])
+    return pd.DataFrame({"High": [101.0, 104.0, 102.0, 100.5], "Low": [99.5, 100.5, 99.0, 97.5]}, index=idx)
+
+
+def test_csv_mode_and_merge(tmp_path):
+    inp = tmp_path / "trade_audit.csv"
+    pd.DataFrame([
+        {"TradeID": "D-091", "Symbol": "FRE.DE", "Richtung": "Long", "Kauf": "2026-09-01", "Verkauf": "2026-09-04",
+         "EntryU": "100", "SL_U": "98", "R": "-1.21"},
+        {"TradeID": "A-010", "Symbol": "LLY", "Richtung": "Long", "Kauf": "2026-09-01", "Verkauf": "",
+         "EntryU": "100", "SL_U": "98", "R": ""},
+        {"TradeID": "D-065", "Symbol": "CL=F", "Richtung": "Long", "Kauf": "2026-09-01", "Verkauf": "2026-09-02",
+         "EntryU": "", "SL_U": "", "R": "-1.02"},
+    ]).to_csv(inp, index=False)
+    out = tmp_path / "mfe_mae.csv"
+    table, summary = mfe_mae.run_csv(inp, out, fetch=lambda s, a, b: _bars_csv(), today=date(2026, 9, 4))
+    by = {t["TradeID"]: t for t in table}
+    assert by["D-091"]["MFE_R"] == 2.0 and by["D-091"]["MAE_R"] == 1.25
+    assert by["D-091"]["MFE_Datum"] == "2026-09-02" and by["D-091"]["MAE_Datum"] == "2026-09-04"
+    assert by["D-091"]["Klasse"] == "Ausstiegsfehler (lief, dann weg)"
+    assert by["A-010"]["Status"] == "ok (offen)" and by["A-010"]["Klasse"] == "offen"
+    assert by["D-065"]["Status"].startswith("uebersprungen")
+    # Merge ins Journal: D-091 vorhanden (Nr int), A-010 wird angehaengt
+    j = tmp_path / "j.xlsx"
+    wb = Workbook(); ws = wb.active; ws.title = "Trade-Audit"
+    ws.append(["Nr", "Instrument", "Symbol", "Richtung", "Kauf", "Verkauf", "R", "EntryU", "SL_U", "Status", "MFE_R", "MAE_R", "Bars"])
+    ws.append([91, "FRE KO", None, "Long", "2026-09-01", "2026-09-04", -1.21, None, None, "CLOSED", None, None, None])
+    wb.save(j)
+    st = mfe_mae.merge_into_journal(j, out, tmp_path / "j2.xlsx", inp)
+    assert st == {"gefuellt": 2, "angehaengt": 1}
+    ws2 = load_workbook(tmp_path / "j2.xlsx")["Trade-Audit"]
+    assert ws2["C2"].value == "FRE.DE" and ws2["H2"].value == 100 and ws2["K2"].value == 2.0
+    assert ws2["A3"].value == "A-010" and ws2["J3"].value == "OFFEN"

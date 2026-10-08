@@ -2,24 +2,34 @@ name: MFE/MAE (Trade-Audit -> Excursion in R)
 
 # System-Review 2026-10-04: Einstiegs- vs. Ausstiegsfehler lassen sich erst
 # trennen, wenn je Trade bekannt ist, wie weit der Basiswert FUER und GEGEN
-# die Position gelaufen ist. Dieser Job liest das Blatt "Trade-Audit" des
-# Journals (Spalten Nr, Symbol, Richtung, Kauf, Verkauf, EntryU, SL_U),
-# zieht Tagesbalken des Basiswerts und schreibt MFE_R/MAE_R/Bars zurueck.
+# die Position gelaufen ist.
 #
-# Eingabe: Drive-File-ID des Journals; leer = das juengste Trading_Journal_*.xlsx,
-# das der Service-Account sieht (wie watchlist_sync).
-# Ausgabe im Briefing-Ordner: MFE-MAE-<stamp>.csv, MFE-MAE-<stamp>.md und
-# das Journal mit gefuellten Spalten (Trading_Journal_<Datum>_mfe.xlsx).
-#
-# On demand; sinnvoll nach jedem 5er-Block geschlossener Trades.
+# Fix 2026-10-08 (MFE_R/MAE_R waren in allen Audit-Zeilen leer):
+#   - Eingaben leben jetzt im Repo: marketdata-pipeline/state/trade_audit.csv
+#     (TradeID D-0NN/A-0NN, Symbol, Richtung, Kauf, Verkauf, EntryU, SL_U, R).
+#     Das Journal braucht der Job nicht mehr.
+#   - Ergebnis: state/mfe_mae.csv wird zurueck nach main committet; der
+#     Journal-Export im Chat traegt es ins Blatt Trade-Audit ein
+#     (mfe_mae.py --merge-journal). Zusaetzlich MFE-MAE-<stamp>.md im Briefing-Ordner.
+#   - Laeuft jetzt auch automatisch: samstags 07:15 UTC, plus on demand.
+#   - Altmodus (Journal aus Drive) bleibt, wenn trade_audit.csv fehlt.
 
 on:
+  schedule:
+    - cron: '15 7 * * 6'
   workflow_dispatch:
     inputs:
       journal_file_id:
-        description: 'Drive-File-ID des Journals mit Blatt Trade-Audit (leer = juengstes Trading_Journal_*.xlsx im Drive)'
+        description: 'Nur Altmodus: Drive-File-ID des Journals (leer = juengstes). Wird ignoriert, wenn state/trade_audit.csv existiert.'
         required: false
         default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-yaml
+  cancel-in-progress: false
 
 jobs:
   mfe:
@@ -42,7 +52,45 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Download journal, compute, upload
+      - name: Compute (CSV-Modus aus dem Repo)
+        if: hashFiles('marketdata-pipeline/state/trade_audit.csv') != ''
+        working-directory: marketdata-pipeline
+        env:
+          PYTHONPATH: ./src
+        run: |
+          mkdir -p work
+          STAMP=$(date +%Y%m%d-%H%M)
+          python src/mfe_mae.py --audit-csv state/trade_audit.csv --results-csv state/mfe_mae.csv \
+            --md "work/MFE-MAE-$STAMP.md"
+
+      - name: Commit results
+        if: hashFiles('marketdata-pipeline/state/trade_audit.csv') != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/state/mfe_mae.csv
+          git commit -m "state: MFE/MAE neu gerechnet ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Upload summary to Drive (CSV-Modus)
+        if: hashFiles('marketdata-pipeline/state/trade_audit.csv') != ''
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, write_markdown_file
+          svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
+          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")):
+              write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
+          PY
+
+      - name: Altmodus (Journal aus Drive)
+        if: hashFiles('marketdata-pipeline/state/trade_audit.csv') == ''
         working-directory: marketdata-pipeline
         env:
           GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
@@ -57,14 +105,13 @@ jobs:
           svc = build_drive_service()
           fid = os.environ.get("JOURNAL_FILE_ID", "").strip()
           if not fid:
-              f = find_latest_journal(svc)          # juengstes Trading_Journal_*.xlsx im Drive
+              f = find_latest_journal(svc)
               print("Journal:", f["name"], f["modifiedTime"]); fid = f["id"]
           pathlib.Path("work").mkdir(exist_ok=True)
           pathlib.Path("work/in.xlsx").write_bytes(download_file_bytes(svc, fid))
           PY
           STAMP=$(date +%Y%m%d-%H%M)
-          python src/mfe_mae.py --journal work/in.xlsx --out "work/Trading_Journal_$(date +%Y%m%d)_mfe.xlsx" \
-            --csv "work/MFE-MAE-$STAMP.csv" --md "work/MFE-MAE-$STAMP.md"
+          python src/mfe_mae.py --journal work/in.xlsx --csv "work/MFE-MAE-$STAMP.csv" --md "work/MFE-MAE-$STAMP.md"
           python - <<'PY'
           import os, pathlib
           from drive_writer import build_drive_service, write_binary_file, write_markdown_file
@@ -73,7 +120,4 @@ jobs:
               write_binary_file(svc, folder, p.name, p.read_bytes(), "text/csv")
           for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")):
               write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
-          for p in sorted(pathlib.Path("work").glob("Trading_Journal_*_mfe.xlsx")):
-              write_binary_file(svc, folder, p.name, p.read_bytes(),
-                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
           PY
