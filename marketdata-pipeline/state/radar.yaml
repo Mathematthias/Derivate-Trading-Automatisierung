@@ -468,9 +468,9 @@ rows:
   ereignis: 'UK CfD AR8: Ergebnis der Reviews gegen Nichtqualifikation (Folgetermin zu Z65). Erster Termin, an dem die Zahl qualifizierter Projekte praktisch feststeht; oeffentliche Veroeffentlichung nicht zugesagt.'
   werte: ORSTED.CO, SSE.L, VWS.CO, ENR.DE, PRY.MI, NEX.PA
   wirkung: Mengen-Signal ohne Preis (s. Z65).
-  status: offen
+  status: erledigt
   quelle: NESO/DESNZ AR8 indicative timetable (cfdallocationround.uk). Angelegt 2026-09-17 als Zeile 2/3 der Kette Z65.
-  note: '2026-10-05 geprueft, Datum unveraendert. Praezisierung aus dem aktuellen NESO/DESNZ-Zeitplan: 07.10. = Mitteilung des Tier-1-Reassessment-Ergebnisses an die Bewerber (qualifying / non-qualifying); danach 08.-14.10. Fenster fuer Tier-2-Beschwerden bei Ofgem, 15.-21.10. Ofgem-Bewertung, 18.11. Bekanntgabe der Tier-2-Ergebnisse (= Z79). Sealed-Bid-Szenarien unveraendert (Z32). Zwischenschritte 14.10. und 21.10. absichtlich NICHT als eigene Zeilen aufgenommen: rein verfahrensintern, keine oeffentliche Bekanntgabe. Quelle cfdallocationround.uk/ar8-timeline + Indicative_CfD_AR8_Timetable.pdf, Abruf 2026-10-05.'
+  note: '2026-10-08 (User): Ergebnis ging am 07.10. nur an die Bieter, keine Veroeffentlichung; keine Position in den Werten. Folgetermin Z79 2026-11-18.'
 - id: Z79
   date: '2026-11-18'
   kat: 2
@@ -557,4 +557,4 @@ rows:
   id: Z88
   status: offen
   added: '2026-10-05'
-updated: '2026-10-08T16:31:22+02:00'
+updated: '2026-10-08T20:36:28+02:00'

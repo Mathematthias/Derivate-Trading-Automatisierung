@@ -2461,4 +2461,19 @@ entries:
     text: 'nach 2026-10-08 GRINDER-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] (heute 27,21-27,49 GBP) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,57 -> -0,86). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~26,68£) ODER Stack gebrochen ODER Tempo < 0,6. TP1 28,80£ = Sept/Okt-Hoch (abgelesen), 1/3 raus. Rest Trail EMA20-1,25xATR. R:R TP1 1,41 an 27,46 (SL 26,51). Pilot 1 %. ATR 2,1% frei. GBP non-Quanto, Vehikel Direktaktie (EUR-Notiz pruefen).'
   notes: '[NEU 2026-10-08, Grinder-Pitch Tempo 2,33 (vorlaeufig), User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 11:59 (GBX): EMA20/50/100/200-1D 2.735/2.668/2.617/2.544 bullish, Kurs 2.727 = -0,14 ATR zur EMA20, ATR 57,45 (2,1 %), RSI-1D 51,7 < 65,7 (kuehlt von >70 ab). 4h: unter 4h-EMA20/50 (2.802/2.755), Docht bis 2.698 an 4h-EMA100 2.700, RSI-4h 37,3 - noch gegen den Einstieg. Sprung Ende Sept vermutlich FY-Zahlen ueber Prognose (Quelle ohne Datum, ungeprueft); Rueckkauf laeuft (RNS Transactions in own shares). Earnings laut TV in 162 d. Universe fuehrt SMIN.L ohne Daten -> Linien in GBP wie im Digest.'
   trade_nr: null
-updated: '2026-10-08T19:50:00+02:00'
+- symbol: ANET
+  name: Arista Networks, Inc. (ANET, NYSE) - Netzwerk-Switches fuer Rechenzentren/AI-Cluster
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: aktiv
+  added: '2026-10-08'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-08 BREAKOUT-RETEST-LONG: Niveau 212,00$ (20-Tage-Hoch). Breakout per Schluss 06.10. bestaetigt (Vol 1,47x Avg-20d = VOL-DAEMPFER, 1 %). Entry nach Retest: Retest-Kerze 08.10. (Tief 209,51$) im Band 208,49–217,27$ [pullback], Schluss muss >=212,00$ bleiben. Einstieg Stop-Buy ueber Hoch der Retest-Kerze 217,32$ -> 217,45$ (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR) = 206,92$ an 217,45 (ATR 7,02). TIW = 1D-Schluss unter 212,00$. TP1 ~235$ Measured Move (Range ~189-212, Tief abgelesen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,67. Earnings 2026-11-03. 1% Sizing. ATR 3,3% (gelb, KO-Hebel <=7,6). Non-Quanto USD.'
+  notes: '[NEU 2026-10-08, Pitch breakout_long RRprox 3,66, User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 20:21: C 213,12 (-1,26 %), H 217,32 = neues 52W-Hoch (Digest dist52wH -3 %), L 209,51. EMA20/50/100/200-1D 204,88/195,95/183,91/167,16 bullish, Ext 1,17 ATR. RSI-1D 63,0, RSI-4h 61,5 nach ~73 bei gleichem Hoch = leichte baerische 4h-Divergenz. 4h-EMA20 208,68. Pipeline: bo_level 212,00, bo_bars_ago 2, Vol 1,47x. Stop-Buy in EUR auf deutschem Platz: 217,45$/1,1202 = 194,12 EUR, SL 184,72 EUR, TP1 ~209,8 EUR; bei FX-Bewegung >0,5 % neu rechnen. Stop-Limit statt Stop-Market wegen duenner Quotes ausserhalb US-Zeit (Anlass LLY #10). Positionsgroesse 15 Stk Aktie ~2.912 EUR, Risiko ~141 EUR.'
+  trade_nr: null
+updated: '2026-10-08T20:36:28+02:00'
