@@ -290,3 +290,50 @@ def test_csv_mode_and_merge(tmp_path):
     ws2 = load_workbook(tmp_path / "j2.xlsx")["Trade-Audit"]
     assert ws2["C2"].value == "FRE.DE" and ws2["H2"].value == 100 and ws2["K2"].value == 2.0
     assert ws2["A3"].value == "A-010" and ws2["J3"].value == "OFFEN"
+
+
+# ---------------------------------------------------------------------------
+# Gegenfakten (A) und Einstiegs-Kontext (C), 2026-10-08
+# ---------------------------------------------------------------------------
+
+def _ohlc(rows, start="2026-08-03"):
+    idx = pd.bdate_range(start, periods=len(rows))
+    return pd.DataFrame(rows, columns=["Open", "High", "Low", "Close"], index=idx)
+
+
+def test_cf_be_rettet_ruecklaeufer():
+    # Long, Entry 100, SL 98 (R=2). Tag1 Hoch 101,6 (+0,8R), Tag2 faellt auf 97 (SL).
+    df = _ohlc([[100, 100.5, 99.5, 100], [100.2, 101.6, 100.1, 101], [100.5, 100.6, 97.0, 97.5]])
+    d = df.index.date
+    cf = mfe_mae.counterfactuals(df, "Long", 100, 98, d[0], d[2], -1.0)
+    assert cf["CF_BE07"] == 0.0          # +0,7R an Tag 1 erreicht, ab Tag 2 Stop auf Einstand
+    assert cf["CF_BE10"] == -1.0         # +1,0R (102) nie erreicht
+    assert cf["CF_P10"] == -1.0          # 1/3-Teilverkauf nie ausgeloest
+
+
+def test_cf_gap_und_teilverkauf():
+    # Long, Entry 100, SL 98. Tag1 Hoch 102,2 (+1,1R), Tag2 oeffnet mit Gap bei 99 -> -0,5R
+    df = _ohlc([[100, 100.4, 99.8, 100.2], [100.3, 102.2, 100.2, 102], [99.0, 99.2, 97.5, 97.8]])
+    d = df.index.date
+    cf = mfe_mae.counterfactuals(df, "Long", 100, 98, d[0], d[2], -1.05)
+    assert cf["CF_BE07"] == -0.5 and cf["CF_BE10"] == -0.5
+    assert cf["CF_P10"] == round(1/3 + 2/3 * -1.05, 2)
+    assert "Gap" in cf["CF_Hinweis"]
+
+
+def test_cf_short_gespiegelt():
+    # Short, Entry 100, SL 102 (R=2). Tag1 Tief 98,4 (+0,8R), Tag2 steigt auf 103
+    df = _ohlc([[100, 100.5, 99.6, 99.8], [99.7, 99.8, 98.4, 99], [99.5, 103, 99.4, 102.8]])
+    d = df.index.date
+    cf = mfe_mae.counterfactuals(df, "Short", 100, 102, d[0], d[2], -1.0)
+    assert cf["CF_BE07"] == 0.0
+
+
+def test_entry_context_lage_und_gap():
+    rows = [[100, 101, 99, 100]] * 20 + [[103, 104, 102, 103.5], [101, 101.5, 99, 100]]
+    df = _ohlc(rows)
+    d = df.index.date
+    ctx = mfe_mae.entry_context(df, "Long", 104, d[20], d[21])
+    assert ctx["Einstieg_Lage_Pct"] == 100          # Kauf am Tageshoch
+    assert ctx["Gap_Einstieg_ATR"] > 1              # Eroeffnung 103 vs Vortag 100 bei ATR ~2
+    assert ctx["Max_Gap_gegen_ATR"] > 0.5           # Folgetag oeffnet 2,5 unter Schluss 103,5

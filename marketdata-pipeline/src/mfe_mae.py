@@ -222,7 +222,7 @@ def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
     import yfinance as yf
     try:
         df = yf.download(
-            symbol, start=(start - timedelta(days=3)).isoformat(),
+            symbol, start=(start - timedelta(days=40)).isoformat(),
             end=(end + timedelta(days=2)).isoformat(),
             interval="1d", auto_adjust=False, progress=False, threads=False,
         )
@@ -233,8 +233,105 @@ def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
         return None
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
-    return df[["High", "Low"]].dropna()
+    cols = [c for c in ("Open", "High", "Low", "Close") if c in df.columns]
+    return df[cols].dropna()
 
+
+
+# ---------------------------------------------------------------------------
+# Gegenfakten (A) und Einstiegs-Kontext (C) — User-Auftrag 2026-10-08
+# ---------------------------------------------------------------------------
+# Review 2026-10-08: 7 von 11 Verlierern liefen erst 0,5-2,1 R fuer uns und
+# fielen dann bis zum SL. Ob eine Zwischenstufe zwischen Einstieg und TP1
+# geholfen haette, wird hier GEMESSEN, nicht eingefuehrt (Exit-Test laeuft,
+# Anti-Ratsche L23). Tagesbalken, deshalb konservativ:
+#   - Ein Stop, der durch ein Ereignis in Balken t aktiviert wird, gilt erst
+#     ab Balken t+1 (Reihenfolge Hoch/Tief innerhalb eines Tages unbekannt).
+#   - Oeffnet ein Balken jenseits des Stops (Gap), zaehlt der Eroeffnungskurs.
+#   - Tranchen/Teilverkaeufe der Realitaet sind nicht bekannt: Wird die
+#     Gegenfakt-Regel nie ausgeloest, gilt das tatsaechliche R.
+CF_LEVELS = (("CF_BE07", 0.7), ("CF_BE10", 1.0))
+CF_PARTIAL = ("CF_P10", 1.0, 1 / 3)
+CTX_COLS = ["Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR"]
+CF_COLS = [c for c, _ in CF_LEVELS] + [CF_PARTIAL[0], "CF_Hinweis"]
+
+
+def _atr14(df: pd.DataFrame) -> pd.Series:
+    prev = df["Close"].shift(1)
+    tr = pd.concat([df["High"] - df["Low"], (df["High"] - prev).abs(), (df["Low"] - prev).abs()], axis=1).max(axis=1)
+    return tr.ewm(alpha=1 / 14, adjust=False).mean()
+
+
+def counterfactuals(df: pd.DataFrame, direction: str, entry: float, sl: float,
+                    start: date, end: date, result_r: Optional[float]) -> Optional[dict]:
+    """Gegenfakten in R: SL auf Einstand ab +0,7 R / +1,0 R; 1/3 raus bei +1,0 R."""
+    if result_r is None or not {"Open", "High", "Low"} <= set(df.columns):
+        return None
+    short = direction.strip().upper().startswith("S")
+    risk = (sl - entry) if short else (entry - sl)
+    if risk <= 0:
+        return None
+    win = df.loc[(df.index.date >= start) & (df.index.date <= end)]
+    if win.empty:
+        return None
+    fav = (lambda b: (entry - b["Low"]) / risk) if short else (lambda b: (b["High"] - entry) / risk)
+    out, hinweis = {}, []
+    for col, lvl in CF_LEVELS:
+        armed, res = False, result_r
+        for i, (_, b) in enumerate(win.iterrows()):
+            if armed:
+                op = b["Open"]
+                hit = (b["High"] >= entry) if short else (b["Low"] <= entry)
+                if hit:
+                    gap = (op > entry) if short else (op < entry)
+                    res = round(((entry - op) / risk) if (short and gap) else ((op - entry) / risk) if gap else 0.0, 2)
+                    if gap:
+                        hinweis.append(f"{col}: Gap ueber Einstand")
+                    break
+            if fav(b) >= lvl:
+                armed = True
+        out[col] = res
+    col, lvl, part = CF_PARTIAL
+    touched = any(fav(b) >= lvl for _, b in win.iterrows())
+    out[col] = round(part * lvl + (1 - part) * result_r, 2) if touched else result_r
+    out["CF_Hinweis"] = "; ".join(dict.fromkeys(hinweis)) or "Naeherung: Tranchen ignoriert"
+    return out
+
+
+def entry_context(df: pd.DataFrame, direction: str, entry: float, start: date, end: date) -> Optional[dict]:
+    """(C) Lage des Einstiegs in der Tagesspanne und Gaps.
+    Einstieg_Lage_Pct: 100 = am Tagesextrem in Handelsrichtung (Long: Hoch, Short: Tief), 0 = am Gegenextrem.
+    Gap_Einstieg_ATR: Eroeffnung Einstiegstag gegen Vortagesschluss, in ATR-14, positiv = in Handelsrichtung.
+    Max_Gap_gegen_ATR: groesstes Eroeffnungs-Gap GEGEN die Position waehrend des Trades (ATR-14, positiv)."""
+    if not {"Open", "High", "Low", "Close"} <= set(df.columns):
+        return None
+    short = direction.strip().upper().startswith("S")
+    atr = _atr14(df)
+    prev_close = df["Close"].shift(1)
+    day = df.loc[df.index.date == start]
+    if day.empty:
+        return None
+    d = day.iloc[0]; i0 = day.index[0]
+    rng = d["High"] - d["Low"]
+    lage = None
+    if rng > 0:
+        lage = ((d["High"] - entry) if short else (entry - d["Low"])) / rng * 100
+        lage = round(min(max(lage, 0.0), 100.0), 0)
+    a0 = atr.shift(1).loc[i0]
+    gap0 = None
+    if pd.notna(prev_close.loc[i0]) and pd.notna(a0) and a0 > 0:
+        g = (d["Open"] - prev_close.loc[i0]) / a0
+        gap0 = round(-g if short else g, 2)
+    win = df.loc[(df.index.date > start) & (df.index.date <= end)]
+    gmax = 0.0
+    for idx, b in win.iterrows():
+        a = atr.shift(1).loc[idx]
+        if pd.isna(a) or a <= 0 or pd.isna(prev_close.loc[idx]):
+            continue
+        g = (b["Open"] - prev_close.loc[idx]) / a
+        against = g if short else -g
+        gmax = max(gmax, against)
+    return {"Einstieg_Lage_Pct": lage, "Gap_Einstieg_ATR": gap0, "Max_Gap_gegen_ATR": round(gmax, 2)}
 
 
 # ---------------------------------------------------------------------------
@@ -253,7 +350,9 @@ def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
 # werden bis heute gerechnet und als offen markiert.
 
 CSV_OUT_COLS = ["TradeID", "Symbol", "Richtung", "Kauf", "Verkauf", "EntryU", "SL_U", "R",
-                "MFE_R", "MAE_R", "Bars", "MFE_Datum", "MAE_Datum", "Klasse", "Status"]
+                "MFE_R", "MAE_R", "Bars", "MFE_Datum", "MAE_Datum", "Klasse",
+                "CF_BE07", "CF_BE10", "CF_P10", "CF_Hinweis",
+                "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR", "Status"]
 
 
 def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
@@ -300,7 +399,15 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
             table.append({**out, "Status": "keine Kursdaten" if df is None else "Risiko <= 0 oder Fenster leer"})
             continue
         klasse = "offen" if row["offen"] else classify(ex.mfe_r, ex.mae_r, row["result_r"])
-        table.append({**out, "MFE_R": ex.mfe_r, "MAE_R": ex.mae_r, "Bars": ex.bars,
+        extra = {}
+        cf = None if row["offen"] else counterfactuals(df, row["direction"], row["entry"], row["sl"],
+                                                        row["start"], row["end"], row["result_r"])
+        if cf:
+            extra.update(cf)
+        ctx = entry_context(df, row["direction"], row["entry"], row["start"], row["end"])
+        if ctx:
+            extra.update(ctx)
+        table.append({**out, **extra, "MFE_R": ex.mfe_r, "MAE_R": ex.mae_r, "Bars": ex.bars,
                       "MFE_Datum": ex.mfe_date.isoformat() if ex.mfe_date else "",
                       "MAE_Datum": ex.mae_date.isoformat() if ex.mae_date else "",
                       "Klasse": klasse, "Status": "ok (offen)" if row["offen"] else "ok"})
@@ -310,7 +417,48 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
     summ = [{"nr": t["TradeID"], "symbol": t["Symbol"], "direction": t["Richtung"], "mfe_r": t.get("MFE_R"),
              "mae_r": t.get("MAE_R"), "bars": t.get("Bars"), "klasse": t.get("Klasse"),
              "status": "ok" if str(t["Status"]).startswith("ok") else t["Status"]} for t in table]
-    return table, render_summary(summ)
+    return table, render_summary(summ) + "\n\n" + render_counterfactuals(table)
+
+
+def _f(x) -> Optional[float]:
+    try:
+        v = float(x)
+        return None if v != v else v
+    except (TypeError, ValueError):
+        return None
+
+
+def render_counterfactuals(table: list[dict]) -> str:
+    """Summen der Gegenfakten ueber alle geschlossenen Trades mit Daten, plus
+    Einstiegslage je Verlaufsklasse. Messung, keine Empfehlung."""
+    rows = [t for t in table if t.get("Status") == "ok" and _f(t.get("R")) is not None and _f(t.get("CF_BE07")) is not None]
+    if not rows:
+        return "Gegenfakten: keine Daten."
+    n = len(rows)
+    real = sum(_f(t["R"]) for t in rows)
+    lines = ["## Gegenfakten (Tagesbalken, Naeherung)", "",
+             f"{n} geschlossene Trades. Ein durch Balken t ausgeloester Stop gilt ab t+1; Gaps zum Eroeffnungskurs.", "",
+             "| Regel | Σ R | Δ zu real | Trades veraendert | davon besser | davon schlechter |", "|---|---|---|---|---|---|",
+             f"| real | {real:+.2f} | – | – | – | – |"]
+    for col, label in (("CF_BE07", "SL auf Einstand ab +0,7 R"), ("CF_BE10", "SL auf Einstand ab +1,0 R"),
+                       ("CF_P10", "1/3 raus bei +1,0 R")):
+        tot = sum(_f(t[col]) for t in rows)
+        diff = [(_f(t[col]) - _f(t["R"])) for t in rows]
+        ch = [d for d in diff if abs(d) > 0.005]
+        lines.append(f"| {label} | {tot:+.2f} | {tot - real:+.2f} | {len(ch)} | {sum(1 for d in ch if d > 0)} | {sum(1 for d in ch if d < 0)} |")
+    lines += ["", "## Einstiegslage je Verlaufsklasse", "",
+              "| Klasse | n | Ø Lage in Tagesspanne (%) | Ø Gap Einstieg (ATR) | Trades mit Gap gegen ≥ 0,5 ATR |", "|---|---|---|---|---|"]
+    from collections import defaultdict
+    grp = defaultdict(list)
+    for t in table:
+        if str(t.get("Status", "")).startswith("ok") and t.get("Klasse") not in (None, "offen"):
+            grp[t["Klasse"]].append(t)
+    for k, ts in sorted(grp.items()):
+        la = [_f(t.get("Einstieg_Lage_Pct")) for t in ts if _f(t.get("Einstieg_Lage_Pct")) is not None]
+        ga = [_f(t.get("Gap_Einstieg_ATR")) for t in ts if _f(t.get("Gap_Einstieg_ATR")) is not None]
+        gg = sum(1 for t in ts if (_f(t.get("Max_Gap_gegen_ATR")) or 0) >= 0.5)
+        lines.append(f"| {k} | {len(ts)} | {sum(la)/len(la):.0f} | {sum(ga)/len(ga):+.2f} | {gg} |" if la and ga else f"| {k} | {len(ts)} | – | – | {gg} |")
+    return "\n".join(lines)
 
 
 def _tid(nr) -> Optional[str]:
@@ -374,6 +522,12 @@ def merge_into_journal(xlsx_in: Path, results_csv: Path, xlsx_out: Path,
         put(r, "SL_U", t["SL_U"], only_empty=True)
         if str(t["Status"]).startswith("ok"):
             put(r, "MFE_R", t["MFE_R"]); put(r, "MAE_R", t["MAE_R"]); put(r, "Bars", t["Bars"])
+            for extra in CF_COLS + CTX_COLS:
+                if extra in t.index and t[extra] != "":
+                    if extra not in hdr:
+                        ws.cell(row=1, column=ws.max_column + 1, value=extra)
+                        hdr[extra] = ws.max_column
+                    put(r, extra, t[extra])
             stats["gefuellt"] += 1
     xlsx_out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(xlsx_out)
