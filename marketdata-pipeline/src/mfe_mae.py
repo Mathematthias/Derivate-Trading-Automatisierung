@@ -252,7 +252,11 @@ def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
 #     Gegenfakt-Regel nie ausgeloest, gilt das tatsaechliche R.
 CF_LEVELS = (("CF_BE07", 0.7), ("CF_BE10", 1.0))
 CF_PARTIAL = ("CF_P10", 1.0, 1 / 3)
-CTX_COLS = ["Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR"]
+CTX_COLS = ["Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
+            "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart"]
+# Einstieg_Lage_Pct ist NACHLAUFEND (Tagesspanne inkl. Kursverlauf nach dem Fill) und taugt
+# nicht als Ursache: faellt der Kurs nach dem Kauf, bleibt der Einstieg oben in der Spanne.
+# Ex-ante-Groessen sind Abstand_Vortag_ATR, Extension_EMA20_ATR und Einstiegsart.
 CF_COLS = [c for c, _ in CF_LEVELS] + [CF_PARTIAL[0], "CF_Hinweis"]
 
 
@@ -331,7 +335,19 @@ def entry_context(df: pd.DataFrame, direction: str, entry: float, start: date, e
         g = (b["Open"] - prev_close.loc[idx]) / a
         against = g if short else -g
         gmax = max(gmax, against)
-    return {"Einstieg_Lage_Pct": lage, "Gap_Einstieg_ATR": gap0, "Max_Gap_gegen_ATR": round(gmax, 2)}
+    # Ex ante (beim Einstieg bekannt), Entscheid 2026-10-08 Variante A:
+    #   Abstand_Vortag_ATR: Fill gegen Vortageshoch (Long) bzw. -tief (Short), in ATR-14 des Vortags;
+    #     positiv = so weit ueber den Ausbruch hinaus gekauft.
+    #   Extension_EMA20_ATR: Fill gegen EMA20 des Vortagesschlusses, in ATR, positiv = in Handelsrichtung.
+    pos = df.index.get_loc(i0)
+    abst = ext = None
+    if pos > 0 and pd.notna(a0) and a0 > 0:
+        prev = df.iloc[pos - 1]
+        abst = round(((prev["Low"] - entry) if short else (entry - prev["High"])) / a0, 2)
+        ema20 = df["Close"].ewm(span=20, adjust=False).mean().iloc[pos - 1]
+        ext = round(((ema20 - entry) if short else (entry - ema20)) / a0, 2)
+    return {"Einstieg_Lage_Pct": lage, "Gap_Einstieg_ATR": gap0, "Max_Gap_gegen_ATR": round(gmax, 2),
+            "Abstand_Vortag_ATR": abst, "Extension_EMA20_ATR": ext}
 
 
 # ---------------------------------------------------------------------------
@@ -352,7 +368,8 @@ def entry_context(df: pd.DataFrame, direction: str, entry: float, start: date, e
 CSV_OUT_COLS = ["TradeID", "Symbol", "Richtung", "Kauf", "Verkauf", "EntryU", "SL_U", "R",
                 "MFE_R", "MAE_R", "Bars", "MFE_Datum", "MAE_Datum", "Klasse",
                 "CF_BE07", "CF_BE10", "CF_P10", "CF_Hinweis",
-                "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR", "Status"]
+                "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
+                "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "Status"]
 
 
 def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
@@ -368,7 +385,7 @@ def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
                "direction": r.get("Richtung", "").strip(), "start": parse_date(r.get("Kauf", "")),
                "end": end or today, "offen": end is None,
                "entry": _num(r.get("EntryU", "")), "sl": _num(r.get("SL_U", "")),
-               "result_r": _num(r.get("R", ""))}
+               "result_r": _num(r.get("R", "")), "einstiegsart": r.get("Einstiegsart", "").strip() or "unklar"}
         why = []
         if not row["symbol"]:
             why.append("Symbol")
@@ -389,7 +406,7 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
         out = {"TradeID": row["nr"], "Symbol": row["symbol"], "Richtung": row["direction"],
                "Kauf": row["start"].isoformat() if row["start"] else "",
                "Verkauf": "" if row["offen"] else row["end"].isoformat(),
-               "EntryU": row["entry"], "SL_U": row["sl"], "R": row["result_r"]}
+               "EntryU": row["entry"], "SL_U": row["sl"], "R": row["result_r"], "Einstiegsart": row["einstiegsart"]}
         if row["skip"]:
             table.append({**out, "Status": f"uebersprungen ({row['skip']})"})
             continue
@@ -446,7 +463,21 @@ def render_counterfactuals(table: list[dict]) -> str:
         diff = [(_f(t[col]) - _f(t["R"])) for t in rows]
         ch = [d for d in diff if abs(d) > 0.005]
         lines.append(f"| {label} | {tot:+.2f} | {tot - real:+.2f} | {len(ch)} | {sum(1 for d in ch if d > 0)} | {sum(1 for d in ch if d < 0)} |")
-    lines += ["", "## Einstiegslage je Verlaufsklasse", "",
+    lines += ["", "## Ex ante je Verlaufsklasse (beim Einstieg bekannt)", "",
+              "| Klasse | n | Ø Abstand Fill zum Vortageshoch/-tief (ATR) | Ø Extension zur EMA20 (ATR) | Stop-Buy / Limit / Markt / unklar |",
+              "|---|---|---|---|---|"]
+    from collections import defaultdict as _dd
+    g2 = _dd(list)
+    for t in table:
+        if str(t.get("Status", "")).startswith("ok") and t.get("Klasse") not in (None, "offen"):
+            g2[t["Klasse"]].append(t)
+    for k, ts in sorted(g2.items()):
+        ab = [_f(t.get("Abstand_Vortag_ATR")) for t in ts if _f(t.get("Abstand_Vortag_ATR")) is not None]
+        ex = [_f(t.get("Extension_EMA20_ATR")) for t in ts if _f(t.get("Extension_EMA20_ATR")) is not None]
+        arten = [str(t.get("Einstiegsart") or "unklar") for t in ts]
+        cnt = " / ".join(str(arten.count(a)) for a in ("Stop-Buy", "Limit", "Markt", "unklar"))
+        lines.append(f"| {k} | {len(ts)} | {(sum(ab)/len(ab)) if ab else float('nan'):+.2f} | {(sum(ex)/len(ex)) if ex else float('nan'):+.2f} | {cnt} |")
+    lines += ["", "## Einstiegslage je Verlaufsklasse (NACHLAUFEND, nicht als Ursache lesen)", "",
               "| Klasse | n | Ø Lage in Tagesspanne (%) | Ø Gap Einstieg (ATR) | Trades mit Gap gegen ≥ 0,5 ATR |", "|---|---|---|---|---|"]
     from collections import defaultdict
     grp = defaultdict(list)

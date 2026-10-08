@@ -337,3 +337,15 @@ def test_entry_context_lage_und_gap():
     assert ctx["Einstieg_Lage_Pct"] == 100          # Kauf am Tageshoch
     assert ctx["Gap_Einstieg_ATR"] > 1              # Eroeffnung 103 vs Vortag 100 bei ATR ~2
     assert ctx["Max_Gap_gegen_ATR"] > 0.5           # Folgetag oeffnet 2,5 unter Schluss 103,5
+
+
+def test_entry_context_ex_ante():
+    rows = [[100, 101, 99, 100]] * 25 + [[101, 103, 100.5, 102.5], [102.6, 104, 102, 103]]
+    df = _ohlc(rows)
+    d = df.index.date
+    ctx = mfe_mae.entry_context(df, "Long", 103.5, d[26], d[26])
+    # Vortageshoch 103, ATR ~2 -> Fill 0,5 ueber dem Vortageshoch ~ +0,2..0,3 ATR
+    assert 0.1 < ctx["Abstand_Vortag_ATR"] < 0.5
+    assert ctx["Extension_EMA20_ATR"] > 1
+    ctx_s = mfe_mae.entry_context(df, "Short", 103.5, d[26], d[26])
+    assert ctx_s["Extension_EMA20_ATR"] < 0
