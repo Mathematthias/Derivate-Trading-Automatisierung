@@ -43,6 +43,6 @@ D-104,JEN.DE,Long,2026-10-06,2026-10-07,43.51,41.13,-1.07,Stop-Buy,Fill-U ~43.51
 D-105,FPE3.DE,Long,2026-10-08,,43.95,42.78,,Markt,"Fill-U ~43,95 GESCHAETZT (Kurs 13:14 43,96)","L26-Puffer (43,50-42,78)/0,748 = 0,96 ATR",E=belegt;SL=belegt
 A-007,DR0.DE,Long,2026-08-11,2026-08-24,87.60,81.87,0.81,unklar,"Original-SL 81,87 bei Entry 87,60","Original-SL 81,87 bei Entry 87,60",E=belegt;SL=belegt
 A-008,NEX.PA,Long,2026-08-17,2026-09-14,141.50,133.15,-1.07,Markt,"18 Stk @ 141,50EUR = 2.547,00EUR","SL 133,15EUR — HERGELEITET AUS DER TIW",E=belegt;SL=belegt
-A-009,NBIS,Long,2026-08-28,,221.96,188.56,,Limit,"Notes #435: EURUSD 1,16517. LIMIT 190,53 EUR | Rechnung: Fill 190,50 EUR x 1,16517 = 221,96 USD","Notes #458: Gebucht als SL 18,77EUR (MU) und 161,83EUR (NBIS) | Rechnung: 161,83 x 1,16517 = 188,56 USD",E=rueckgerechnet;SL=rueckgerechnet
+A-009,NBIS,Long,2026-08-28,2026-10-08,221.96,188.56,0.61,Limit,"Notes #435: EURUSD 1,16517. LIMIT 190,53 EUR | Rechnung: Fill 190,50 EUR x 1,16517 = 221,96 USD","Notes #458: Gebucht als SL 18,77EUR (MU) und 161,83EUR (NBIS) | Rechnung: 161,83 x 1,16517 = 188,56 USD",E=rueckgerechnet;SL=rueckgerechnet
 A-010,LLY,Long,2026-09-23,2026-10-08,1180.71,1124.00,-0.54,unklar,"Fill-U ~1180.71 USD (GESCHAETZT, EURUSD 1.141)",gesetzt SL 1124.00 USD = 985.10 EUR,E=belegt;SL=belegt
 A-011,SBLK,Long,2026-09-30,,29.785,27.94,,unklar,"Fill-U ~29,785 USD (geschaetzt)","= 27,94 USD (TIW-Term) = 24,64 EUR",E=belegt;SL=belegt
