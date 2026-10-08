@@ -2448,7 +2448,7 @@ entries:
   legs:
   - label: A
     gate: 🟡
-    text: 'nach 2026-10-08 GRINDER-LONG: Touch 27,21-27,49£ [pullback] (EMA20-1D 27,35 -0,25/+0,25 ATR) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,57 -> -0,86). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~26,68£) ODER Stack gebrochen ODER Tempo < 0,6. TP1 28,80£ = Sept/Okt-Hoch (abgelesen), 1/3 raus. Rest Trail EMA20-1,25xATR. R:R TP1 1,41 an 27,46 (SL 26,51). Pilot 1 %. ATR 2,1% frei. GBP non-Quanto, Vehikel Direktaktie (EUR-Notiz pruefen).'
+    text: 'nach 2026-10-08 GRINDER-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] (heute 27,21-27,49 GBP) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,57 -> -0,86). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~26,68£) ODER Stack gebrochen ODER Tempo < 0,6. TP1 28,80£ = Sept/Okt-Hoch (abgelesen), 1/3 raus. Rest Trail EMA20-1,25xATR. R:R TP1 1,41 an 27,46 (SL 26,51). Pilot 1 %. ATR 2,1% frei. GBP non-Quanto, Vehikel Direktaktie (EUR-Notiz pruefen).'
   notes: '[NEU 2026-10-08, Grinder-Pitch Tempo 2,33 (vorlaeufig), User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 11:59 (GBX): EMA20/50/100/200-1D 2.735/2.668/2.617/2.544 bullish, Kurs 2.727 = -0,14 ATR zur EMA20, ATR 57,45 (2,1 %), RSI-1D 51,7 < 65,7 (kuehlt von >70 ab). 4h: unter 4h-EMA20/50 (2.802/2.755), Docht bis 2.698 an 4h-EMA100 2.700, RSI-4h 37,3 - noch gegen den Einstieg. Sprung Ende Sept vermutlich FY-Zahlen ueber Prognose (Quelle ohne Datum, ungeprueft); Rueckkauf laeuft (RNS Transactions in own shares). Earnings laut TV in 162 d. Universe fuehrt SMIN.L ohne Daten -> Linien in GBP wie im Digest.'
   trade_nr: null
-updated: '2026-10-08T12:27:04+02:00'
+updated: '2026-10-08T12:27:32+02:00'
