@@ -216,13 +216,24 @@ def load_merged_pitches(
 
 
 def pitch_symbols(bundle: dict | None) -> set[str]:
-    """Symbole des gemergten Pitch-Satzes — das, was zusaetzlich gepullt wird."""
+    """Symbole des gemergten Pitch- UND Grinder-Satzes — das, was zusaetzlich gepullt wird.
+
+    Fix 2026-10-08: bis hierher nur die Pitches. Die Grinder kamen zwar mit in
+    den Digest (Block `grinders`), ihre Symbole aber nicht in den Pull — ein
+    Grinder ausserhalb des Tier-A-Universums hatte deshalb keinen
+    `universe`-Eintrag (Kurs, ATR, EMAs, 4h) und der Morning Check meldete
+    „keine Universe-Daten — nicht prüfbar". Gemessen am Digest 2026-10-08 19:33:
+    4 von 5 Grindern (EMR, DTE.DE, HD, LONN.SW) betroffen. Dieselbe Lehre wie
+    beim vorgezogenen Pitch-Merge vom 2026-09-15, nur fuer den zweiten Block.
+    """
     if not bundle:
         return set()
-    return {
-        p["symbol"] for p in bundle.get("pitches", [])
-        if isinstance(p, dict) and p.get("symbol")
-    }
+    out: set[str] = set()
+    for key in ("pitches", "grinders"):
+        for p in bundle.get(key, []) or []:
+            if isinstance(p, dict) and p.get("symbol"):
+                out.add(p["symbol"])
+    return out
 
 
 # Tier-A-Sektionen, die Makro-Kontext sind (gepullt, aber vom Setup-Filter
@@ -437,7 +448,8 @@ def main():
         # Laufs — und die Bucket-4-Quote waere de facto ausgehebelt.
         excluded_category_symbols |= extra
         logger.info(
-            f"  Pitch-Merge vorgezogen: {len(pitch_bundle['pitches'])} Pitches, "
+            f"  Pitch-Merge vorgezogen: {len(pitch_bundle['pitches'])} Pitches + "
+            f"{len(pitch_bundle['grinders'])} Grinder, "
             f"{len(extra)} Symbole ({len(neu)} neu im Pull): {sorted(neu)}"
         )
 

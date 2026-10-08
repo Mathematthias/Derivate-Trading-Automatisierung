@@ -154,6 +154,16 @@ class TestPitchSymbols:
         b = {"pitches": [{"symbol": "AAA"}, {"symbol": None}, {}, "murks"]}
         assert ms.pitch_symbols(b) == {"AAA"}
 
+    def test_grinder_symbole_kommen_mit(self):
+        # Fix 2026-10-08: EMR/DTE.DE/HD/LONN.SW standen als Grinder im Digest,
+        # aber ohne Universe-Eintrag, weil nur die Pitches gepullt wurden.
+        b = {"pitches": [{"symbol": "AAA"}],
+             "grinders": [{"symbol": "EMR"}, {"symbol": "DTE.DE"}, {"symbol": "AAA"}]}
+        assert ms.pitch_symbols(b) == {"AAA", "EMR", "DTE.DE"}
+
+    def test_nur_grinder(self):
+        assert ms.pitch_symbols({"grinders": [{"symbol": "HD"}, {}, None]}) == {"HD"}
+
 
 class TestPullVerdrahtung:
     """Die Logik aus main(): Pitch-Symbole rein, Ethik gewinnt, nicht doppelt scannen.
@@ -171,6 +181,11 @@ class TestPullVerdrahtung:
     def test_pitch_symbole_landen_im_pull(self):
         alle, cat = self._verdrahten({"SAP.DE"}, set(), set(), {"pitches": [{"symbol": "TGT"}]})
         assert "TGT" in alle
+
+    def test_grinder_symbole_landen_im_pull(self):
+        alle, cat = self._verdrahten({"SAP.DE"}, set(), set(),
+                                     {"pitches": [], "grinders": [{"symbol": "LONN.SW"}]})
+        assert "LONN.SW" in alle and "LONN.SW" in cat
 
     def test_ethik_gewinnt_gegen_pitch(self):
         """Ein ethik-ausgeschlossenes Symbol wird nie gepullt — auch nicht gerankt."""
