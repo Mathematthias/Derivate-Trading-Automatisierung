@@ -62,3 +62,7 @@ credentials.json
 
 # Skill wird in Claude (Customize > Skills) gepflegt, nicht im Repo
 skills/
+
+# Fix 2026-10-08: MFE/MAE-Ein- und Ausgaben sind Zustand (Workflow B), nicht Wegwerf-CSV
+!marketdata-pipeline/state/trade_audit.csv
+!marketdata-pipeline/state/mfe_mae.csv
