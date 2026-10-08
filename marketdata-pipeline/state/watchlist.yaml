@@ -2421,4 +2421,34 @@ entries:
   notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
     329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
   journal_row: 123
-updated: '2026-10-08T10:22:26+02:00'
+- symbol: WM
+  name: Waste Management, Inc. (WM, NYSE) - Entsorgung/Recycling USA
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-08'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-08 TREND-PULLBACK-SHORT: Touch 208,75-211,10$ [pullback] (EMA20-1D 209,60 -0,25/+0,45 ATR) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze (07.10.: 208,63$, L27). Stopweite entry-relativ +1,5xATR-1D (3,40 -> +5,10). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR) = 213,73$ an 208,63. TIW = 1D-Schluss ueber 211,10$ (Hoch 07.10. = 4h-EMA50). TP1 201,00$ = Okt-Tief (abgelesen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,50 am Basiswert. 1 % Sizing. ATR 1,6% frei. Non-Quanto USD. Earnings 2026-10-27 -> KO-Exit spaetestens 2026-10-26.'
+  notes: '[NEU 2026-10-08, Pitch short_trend_pullback, User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 12:05: EMA20/50/100/200-1D 209,60/215,72/219,81/221,88 bearish, Kurs 208,94 unter 4/4, ATR 3,40 (1,6 %), RSI-1D 44,3 > 32,2 (Bounce von ~201). Docht 07.10. bis 211,08 = 4h-EMA50 211,05, letzte 4h-Kerze rot; RSI-4h 52,9 > 38,5 noch kein Cross. Kein Treiber 2026 gefunden (Stufe 1, 6 Suchen) - reine Geometrie. Produkt-Check 12:22: Short-KO KO 250,18$ BV 0,1, Spread 0,05 (1,37 %) vor US-Open -> R:R am Zertifikat 1,26; Spread nach 15:30 neu pruefen.'
+  trade_nr: null
+- symbol: SMIN.L
+  name: 'Smiths Group plc (SMIN, LSE) - Industrie: Detektion, Dichtungen, Interconnect'
+  direction: LONG
+  klasse: grinder
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-08'
+  expiry: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-08 GRINDER-LONG: Touch 27,21-27,49£ [pullback] (EMA20-1D 27,35 -0,25/+0,25 ATR) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,57 -> -0,86). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~26,68£) ODER Stack gebrochen ODER Tempo < 0,6. TP1 28,80£ = Sept/Okt-Hoch (abgelesen), 1/3 raus. Rest Trail EMA20-1,25xATR. R:R TP1 1,41 an 27,46 (SL 26,51). Pilot 1 %. ATR 2,1% frei. GBP non-Quanto, Vehikel Direktaktie (EUR-Notiz pruefen).'
+  notes: '[NEU 2026-10-08, Grinder-Pitch Tempo 2,33 (vorlaeufig), User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 11:59 (GBX): EMA20/50/100/200-1D 2.735/2.668/2.617/2.544 bullish, Kurs 2.727 = -0,14 ATR zur EMA20, ATR 57,45 (2,1 %), RSI-1D 51,7 < 65,7 (kuehlt von >70 ab). 4h: unter 4h-EMA20/50 (2.802/2.755), Docht bis 2.698 an 4h-EMA100 2.700, RSI-4h 37,3 - noch gegen den Einstieg. Sprung Ende Sept vermutlich FY-Zahlen ueber Prognose (Quelle ohne Datum, ungeprueft); Rueckkauf laeuft (RNS Transactions in own shares). Earnings laut TV in 162 d. Universe fuehrt SMIN.L ohne Daten -> Linien in GBP wie im Digest.'
+  trade_nr: null
+updated: '2026-10-08T12:27:04+02:00'
