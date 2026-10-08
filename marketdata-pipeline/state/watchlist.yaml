@@ -2332,7 +2332,7 @@ entries:
   klasse: breakout_retest
   anker: Range-Hoch
   treiber: ''
-  status: aktiv
+  status: position
   added: '2026-10-07'
   expiry: '2026-10-21'
   legs:
@@ -2341,6 +2341,7 @@ entries:
     text: 'nach 2026-10-07 BREAKOUT-RETEST-LONG: Niveau 43,50€ (Dez-Hochs), Ausbruch per Schluss 06.10. (43,70; Vol 1,14x = Vol-Daempfer). Touch 43,13–44,06€ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stop-Buy ueber Retest-Hoch. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 43,50€. TP1 45,80€, TP2 Chandelier 2,0 ATR. 1% Sizing.'
   notes: '[RE-EVAL AUSGELOEST 2026-10-07, User-Charts 1D+4h 11:36, User-OK] Schluss 06.10. 43,70 > 43,50 (Re-Eval-Bedingung), Volumen 114K vs Avg-20d ~100K = 1,14x: Re-Eval erfuellt, Klassenschwelle 1,2x verfehlt -> Vol-Daempfer, 1 %. EMA20/50/100/200-1D 42,44/41,47/40,49/39,86 bullish, ATR-1D 0,75 (1,7 %), Extension (43,78-42,44)/0,75 = 1,79 ATR (frei), RSI-1D 65,5, 52W-Hoch. Heutige Kerze 43,46-43,80 testet das Niveau. Rechnung an Stop-Buy 43,85: SL = MIN(42,73 ; Retest-Tief 43,46-0,22 = 43,24) = 42,73, R 1,12; TP1 45,80 (Measured Move Range 40,6-43,2) = 1,74 R. Direktaktie bei 1 % = 133 Stk ~5.830 EUR > disponibel -> nur KO. Organ-Transaktion (PDMR) laut TV vor 5 Tagen, Art ungeprueft. EARNINGS 2026-10-30 (User 2026-10-07; Digest fuehrt keinen Termin) -> Entry frei bis 2026-10-22, KO-Exit spaetestens 2026-10-23 (5 HT vorher); Verfall 21.10. liegt davor. Gegenrede: Doppel-Top 43,1-43,2 (Sept), Schluss unter 43,50 stellt es wieder her. || Vorgaenger (archiviert 2026-09-24): [ARCHIVIERT
     2026-09-24, User-Entscheid, Wiedervorlage] Zone EMA50-1D nie erreicht, Kurs lief ohne Fill bis 43,14 = TP1 43,10. TV 09:16 UTC: C 42,68, EMA20/50/100/200-1D 41,59/40,82/40,01/39,57, RSI-1D 62,3, RSI-4h 67,1; moegliches Doppel-Top 43,1-43,2 (09.09. / 24.09.). RE-EVAL bei 1D-Schluss >43,50 (ueber Dezember-Hochs ~43,5, aus Chart geschaetzt) mit Volumen -> dann Ausbruchs-Leg neu rechnen (Measured Move Range 40,6-43,2 = 45,80). BROKER: evtl. offene Order stornieren. || [NEU 2026-09-15 aus'
+  trade_nr: '105'
 - symbol: GILD
   name: Gilead Sciences (GILD, NASDAQ) — News-Catalyst-Continuation
   direction: LONG
@@ -2451,4 +2452,4 @@ entries:
     text: 'nach 2026-10-08 GRINDER-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] (heute 27,21-27,49 GBP) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,57 -> -0,86). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~26,68£) ODER Stack gebrochen ODER Tempo < 0,6. TP1 28,80£ = Sept/Okt-Hoch (abgelesen), 1/3 raus. Rest Trail EMA20-1,25xATR. R:R TP1 1,41 an 27,46 (SL 26,51). Pilot 1 %. ATR 2,1% frei. GBP non-Quanto, Vehikel Direktaktie (EUR-Notiz pruefen).'
   notes: '[NEU 2026-10-08, Grinder-Pitch Tempo 2,33 (vorlaeufig), User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 11:59 (GBX): EMA20/50/100/200-1D 2.735/2.668/2.617/2.544 bullish, Kurs 2.727 = -0,14 ATR zur EMA20, ATR 57,45 (2,1 %), RSI-1D 51,7 < 65,7 (kuehlt von >70 ab). 4h: unter 4h-EMA20/50 (2.802/2.755), Docht bis 2.698 an 4h-EMA100 2.700, RSI-4h 37,3 - noch gegen den Einstieg. Sprung Ende Sept vermutlich FY-Zahlen ueber Prognose (Quelle ohne Datum, ungeprueft); Rueckkauf laeuft (RNS Transactions in own shares). Earnings laut TV in 162 d. Universe fuehrt SMIN.L ohne Daten -> Linien in GBP wie im Digest.'
   trade_nr: null
-updated: '2026-10-08T12:27:32+02:00'
+updated: '2026-10-08T13:31:54+02:00'
