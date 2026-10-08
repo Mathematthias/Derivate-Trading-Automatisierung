@@ -1817,7 +1817,7 @@ entries:
   klasse: position_monitor
   anker: EMA20-1D
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-09-29'
   expiry: '2026-10-08'
   legs:
@@ -1827,6 +1827,9 @@ entries:
   notes: '[ENTRY #102 2026-10-01: 90 x 11,32, Fill-U ~56,55 geschaetzt, Details im Detail-Sheet] || [NEU 2026-09-29, Pitch Grinder long Tempo 1,00, Recherche S0+S1, TIW/Linien von Claude (User-Auftrag)] Stack bullisch, Spanne Jul-Sep 55-58,9, Hoch 58,90 (22.09.) = Deckel fuer TP1; der Grinder lebt vom Bruch ueber 58,9. Kurs 56,96 = +0,49 ATR ueber EMA20, RSI-4h 50 < 54 (Konsolidierung). PRO: Aktienrueckkauf laeuft (2,79 Mio Stk seit 10.08.), Deutsche Bank KZ 62 (17.09.). FLAG: Capital Group unter 3% (24.09.). Earnings ~2026-11-05 (TV). Zwei-Laeufe-Regel nicht geprueft. Pilot-Vergleichsgroesse: passiv 20'
   journal_row: 118
   trade_nr: '102'
+  archived:
+    date: '2026-10-08'
+    reason: '#102 geschlossen 2026-10-08: 90 Stk am SL (9,59/9,60), -163,25 EUR / -1,11 R, Grinder-Pilot'
 - symbol: ALC.SW
   name: Alcon AG (ALC, SIX) - Augenmedizin
   direction: SHORT
@@ -2173,7 +2176,7 @@ entries:
   klasse: position_monitor
   anker: EMA50-1D
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-09-04'
   expiry: '2026-10-12'
   trade_nr: '92'
@@ -2182,6 +2185,9 @@ entries:
     gate: 🟢
     text: 'POSITION-MONITOR (#92, Rest 500 Stk, RUNNER) - kein Entry-Trigger. TP1 1,49 gefuellt 22.09. SL 1,54EUR (U ~66,99; Chandelier 1,5 ATR am Kurs 68,70, 0,66 ATR ueber EMA20-1D 66,23, Veto frei; gesetzt 2026-10-06 ~13:10, User). TIW = 1D-Schluss unter 63,00€. Kein TP-Order (Runner trailt, Entscheid 2026-10-05 Variante B). Schluss >68,10 = Dreiecks-Ausbruch -> SL-Upgrade unter Ausbruchsniveau pruefen (~U 67,16 / Zert ~1,56). Naechster Recheck 2026-10-12. Earnings 2026-11-09. [Volltext: Sheet Trigger-Historie]'
   notes: '[SL-NACHZUG 2026-10-06, User] SL 1,38 (U 65,40) -> 1,54 (U 66,99) = Chandelier 1,5x1,141 am Kurs 68,70 (Hoch 68,75 = 52W-Hoch); sichert ~+149 EUR auf den Rest (vorher ~+69). Zert-Gegenprobe: 1,38 = (65,40-51,60)x0,1 -> Aufgeld ~0. || Reaktiviert 2026-10-05 (Morning Check): Zeile stand nach der Migration auf archiviert, Trade #92 ist offen (Runner 500 Stk, SL 1,34, Recheck 2026-10-07).'
+  archived:
+    date: '2026-10-08'
+    reason: '#92 geschlossen 2026-10-08: Rest 500x1,54 am Trail-SL, Trade +273,00 EUR / +1,76 R'
 - symbol: PFE
   name: Pfizer Inc. (PFE, NYSE) — Pharma
   direction: LONG
@@ -2306,7 +2312,7 @@ entries:
   klasse: position_monitor
   anker: ''
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-09-02'
   expiry: '2026-10-14'
   legs:
@@ -2317,6 +2323,9 @@ entries:
     1,31 R (unter 1,4). Mit TIW 59,50: an der Zonen-UG 61,00 SL 58,35 (ATR) -> 0,94 / 2,26 R; an der Zonen-OG 61,71 SL 58,97 (L25) -> 0,65 / 1,93 R. ATR-1D 1,77 (2,87 %, 🟡 Hebel <= 8,7; praktisch <= '
   journal_row: 63
   trade_nr: '100'
+  archived:
+    date: '2026-10-08'
+    reason: '#100 geschlossen 2026-10-08: Rest 300x1,02 am SL, Trade +2,00 EUR / +0,01 R'
 - symbol: FPE3.DE
   name: FUCHS SE Vz (FPE3, XETRA) — Schmierstoffe
   direction: LONG
@@ -2412,4 +2421,4 @@ entries:
   notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
     329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
   journal_row: 123
-updated: '2026-10-07T21:11:15+02:00'
+updated: '2026-10-08T10:22:26+02:00'
