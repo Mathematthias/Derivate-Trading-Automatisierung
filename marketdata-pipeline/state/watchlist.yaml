@@ -2504,4 +2504,66 @@ entries:
   notes: '[SYNC 2026-10-09 mit Journal-Uebersicht] Entry-Zeile zum Positions-Monitor umgeschrieben; Setup-Text (Breakout-Retest 43,50, Band 43,13-44,06, TP1 45,80) steht in der Trigger-Historie. || [RE-EVAL AUSGELOEST 2026-10-07, User-Charts 1D+4h 11:36, User-OK] Schluss 06.10. 43,70 > 43,50 (Re-Eval-Bedingung), Volumen 114K vs Avg-20d ~100K = 1,14x: Re-Eval erfuellt, Klassenschwelle 1,2x verfehlt -> Vol-Daempfer, 1 %. EMA20/50/100/200-1D 42,44/41,47/40,49/39,86 bullish, ATR-1D 0,75 (1,7 %), Extension (43,78-42,44)/0,75 = 1,79 ATR (frei), RSI-1D 65,5, 52W-Hoch. Heutige Kerze 43,46-43,80 testet das Niveau. Rechnung an Stop-Buy 43,85: SL = MIN(42,73 ; Retest-Tief 43,46-0,22 = 43,24) = 42,73, R 1,12; TP1 45,80 (Measured Move Range 40,6-43,2) = 1,74 R. Direktaktie bei 1 % = 133 Stk ~5.830 EUR > disponibel -> nur KO. Organ-Transaktion (PDMR) laut TV vor 5 Tagen, Art ungeprueft. EARNINGS 2026-10-30 (User 2026-10-07; Digest fuehrt keinen Termin) -> Entry frei bis 2026-10-22, KO-Exit spaetestens
     2026-10-23 (5 HT vorher); Verfall 21.10. liegt davor. Gegenrede: Doppel-Top 43,1-43,2 (Sept), Schluss unter 43,50 stellt es wieder her. || Vorgaenger (archiviert 2026-09-24): [ARCHIVIERT 2026-09-24, User-Entscheid, Wiedervorlage] Zone EMA50-1D nie erreicht, Kurs lief ohne Fill bis 43,14 = TP1 43,10. TV 09:16 UTC: C 42,68, EMA20/50/100/200-1D 41,59/40,82/40,01/39,57, RSI-1D 62,3, RSI-4h 67,1; moegliches Doppel-Top 43,1-43,2 (09.09. / 24.09.). RE-EVAL bei 1D-Schluss >43,50 (ueber Dezember-Hochs ~43,5, aus Chart geschaetzt) mit Volumen -> dann Ausbruchs-Leg neu rechnen (Measured Move Range 40,6-43,2 = 45,80). BROKER: evtl. offene Order stornieren. || [NEU 2026-09-15 aus'
   trade_nr: '105'
-updated: '2026-10-09T15:51:58+02:00'
+- symbol: PSN.L
+  name: Persimmon PLC (PSN, LSE) - UK-Hausbau
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  added: '2026-10-09'
+  expiry: '2026-10-13'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 BREAKOUT-RETEST-LONG: Niveau 12,035€ (Ausbruch vor 9 HT, Vol 3,86x). Touch 11,83–12,35€ [pullback] (= Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 12,035€. TP1 13,62€ (20d-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,95-2,43. 1% Sizing (Pilot). Earnings 2027-03-10. GBP wie Pipeline (€ nur Parser-Konvention), Broker/TV in GBX (x100). Direktaktie.'
+  notes: '[NEU 2026-10-09 16:50, User-Auftrag nach Pitch-Neurechnung, Linien von Claude, Digest 16:03] Pitch breakout_long RRprox 6,66. Kurs 12,095 im Band, EMA20/50/100/200 12,08/11,74/11,58/11,74 (Stack neutral), ATR 0,4167 (3,4 %). Rechnung Stop-Buy 12,40: SL 11,775 (ATR-Term), R 0,625, TP1 13,62 = 1,95 R, 203 Aktien ~2.975 EUR (FX 0,8461 GBP/EUR). GEGENREDE: Der Ausbruch lief bis 13,62 (20d-Hoch) und kam komplett zurueck - kippt der Retest, ist es ein Fehlausbruch. Klassen-Gate Ausbruch <= 10 HT: Montag 10 HT, ab Dienstag verfehlt -> Verfall 2026-10-13. Trading-Update-Termin (UK-Hausbauer, meist Anfang Nov) UNGEPRUEFT.'
+- symbol: NKE
+  name: Nike Inc. (NKE, NYSE) - Sportartikel
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  added: '2026-10-09'
+  expiry: '2026-10-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 BREAKDOWN-RETEST-SHORT: Niveau 35,02$ (Breakdown vor 5 HT, Vol 3,72x). Touch 34,60–35,57$ [pullback] (oberer Bandteil, 1,3 R erst ab Einstieg >=34,13) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 35,02$. TP1 32,00$ (52W-Tief 31,97), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,58-2,07. 1% Sizing (Pilot). Short nur KO, Hebel <=7,8. Earnings 2026-12-17. Non-Quanto USD.'
+  notes: '[NEU 2026-10-09 16:50, User-Auftrag nach Pitch-Neurechnung, Linien von Claude, Digest 16:03] Pitch breakdown_short RRprox 4,86. Kurs 34,605, Stack baerisch 4/4, EMA20/50/100/200 35,61/37,74/40,90/46,85, Faecher 4,71 ATR, ATR 1,0943 (3,2 %). Band Niveau -0,75/+0,50 ATR = 34,20-35,57; Zone bewusst auf den oberen Teil gelegt: Stop-Sell unter dem heutigen Tief 34,10 gaebe nur 1,27 R. Rechnung Einstieg 34,60: SL 36,24, R 1,64, TP1 1,58 R; 35,00: 1,83 R; 35,40: 2,07 R. ~102 Stk-Aequivalent bei 1 %. 52W-Tief 31,97 ist Unterstuetzung, darunter neue Tiefs. Klassen-Gate Breakdown <= 10 HT -> Verfall 2026-10-16.'
+- symbol: MSFT
+  name: Microsoft Corp. (MSFT, NASDAQ)
+  direction: LONG
+  klasse: breakout_retest
+  anker: 52W-Hoch
+  treiber: ''
+  status: archiviert
+  added: '2026-10-09'
+  expiry: '2026-10-09'
+  archived:
+    date: '2026-10-09'
+    reason: 'Pitch breakout_long verworfen: Hindernisse 535,70 (0,24 R) und 52W-Hoch 553,70 (1,29 R)'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'BEOBACHTUNG (Pitch 2026-10-09 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >553,70$ + Vol >Avg-20d, erst nach Earnings 2026-10-28. Dann Breakout-Retest @ 553,70 frisch fassen (TP1 Measured Move Range 487,2-535,7).'
+  notes: '[NEU 2026-10-09 16:50, User-Auftrag nach Pitch-Neurechnung, Linien von Claude, Digest 16:03] Pitch breakout_long RRprox 3,53, bo_level 522,85 vor 4 HT, Vol 1,25x. Stop-Buy 531,60: SL 514,44, R 17,16; erstes Hindernis 535,70 = 0,24 R, 52W-Hoch 553,70 = 1,29 R -> Exit-Test nicht bestanden. Der Mittags-Vorschlag Re-Eval >535,70 traegt nicht (52W-Hoch direkt darueber).'
+- symbol: SGO.PA
+  name: Compagnie de Saint-Gobain (SGO, Euronext Paris)
+  direction: SHORT
+  klasse: breakout_retest
+  anker: 52W-Tief
+  treiber: ''
+  status: archiviert
+  added: '2026-10-09'
+  expiry: '2026-10-09'
+  archived:
+    date: '2026-10-09'
+    reason: 'Pitch breakdown_short verworfen: 52W-Tief 63,52 nur 0,9 ATR entfernt (0,44 R)'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'BEOBACHTUNG (Pitch 2026-10-09 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss <63,52€ + Vol >Avg-20d. Dann Breakdown-Retest @ 63,52 frisch fassen (TP1 Measured Move Range 63,52-71,92 -> ~55,1).'
+  notes: '[NEU 2026-10-09 16:50, User-Auftrag nach Pitch-Neurechnung, Linien von Claude, Digest 16:03] Pitch breakdown_short RRprox 4,0, bd_level 65,66 vor 2 HT, Vol 1,32x. Stop-Sell 64,68: SL 67,34, R 2,66, TP1 63,52 = 0,44 R. RSI 30,4, Extension -2,04 ATR (L18 Gate 1).'
+updated: '2026-10-09T16:49:25+02:00'
