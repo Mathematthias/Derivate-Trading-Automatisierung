@@ -1942,25 +1942,6 @@ entries:
   archived:
     date: '2026-10-06'
     reason: 'Trade #93 geschlossen 2026-10-06: Runner-Rest 93x6,99 (Limit-Sell, U ~292,61), Trade gesamt +246,26 EUR (+1,66 R)'
-- symbol: LLY
-  name: 'Eli Lilly (LLY, NYSE) - Pharma/GLP-1 [MONITOR #10 AV]'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA50-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-09-23'
-  expiry: '2026-10-09'
-  legs:
-  - label: A
-    gate: 🟢
-    text: 'POSITION-MONITOR (#10 AV) - kein Entry-Trigger. Stop 1.009,60EUR (U ~1.129,5$ = TIW 1.139 - 0,3 ATR, bei FX 1,1187; nachgezogen 07.10., User; vorher 985,10). TIW = 1D-Schluss unter 1139,00$. TP1 1240,00$ = BE-Stufe, 1 Stk (L6). TP2 1290,00$ = Runner L6. EXIT-PLAN n.F. (07.10., User): kein 1D-Schluss ueber 1200$ bis 2026-10-09 = schliessen; Exit spaetestens vor Earnings 2026-10-29. Begruendung Verlaengerung: EMA20/50 zurueckerobert, RSI-4h-Cross, relative Staerke +2,5 % am Risk-off-Tag 07.10.'
-  notes: '[REVIEW 2026-10-05, User-Entscheid im Morning Check] Option a, Plan gehalten: Fr-Schluss 1142,85, TIW 0,12 ATR, Kurs auf EMA100-1D 1135,8 = EMA200-4h 1136,3; EUR -0,31 R / USD -0,61 R. Stop in USD-Terms durch FX 15$ lockerer als geplant. || ANGELEGT 2026-09-23 (User-Charts, Stand 22.09.). Uptrend Mai-Aug 900->1290, Ruecksetzer bis ~1115 (Sep), EMA100 1130 hat gehalten; Kurs 1170 wieder ueber EMA20 1158,6/EMA50 1161,5. RSI-4h 58,9 ueber Signal. TIW unter EMA100-1D, ueber dem Sep-Tief. TP1 = Jul/Aug-Hochs 1240-1250. Earnings 2026-10-29 (TV: in 36 Tagen). [HEALTH-CARE mit JNJ/REGN/GILD] ATR-STUFE 🟡 (2.63 %, § ATR-Stufen seit 2026-09-23): Vehikel frei, KO-Hebel <= 9.5. || 23.09.: Zone am 22.09. intraday beruehrt (Tief 1.139,26, 0,29 ATR ueber EMA100 1.130,46), Schluss 1.170,14 (Close-Pos 75%), 4h-Umkehr und RSI-4h-Cross (58,9 > 49,7)'
-  journal_row: 99
-  trade_nr: '10'
-  archived:
-    date: '2026-10-08'
-    reason: '#10 AV geschlossen 2026-10-08: 3 x 1.009,40 EUR am Stop, -80,20 EUR / -0,54 R'
 - symbol: ENI.MI
   name: Eni S.p.A. (ENI, Borsa Italiana) - Oel/Gas integriert
   direction: LONG
@@ -2145,28 +2126,6 @@ entries:
   archived:
     date: '2026-10-07'
     reason: 'Trade #104 am SL ausgestoppt 2026-10-07 (2x31 x 13,66)'
-- symbol: NBIS
-  name: 'Nebius Group N.V. (NBIS) [MONITOR #9 AV] — AI-Infrastruktur'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-08-11'
-  expiry: '2026-10-13'
-  legs:
-  - label: A
-    gate: 🟢
-    text: POSITION-MONITOR (#9 AV, Rest 3 Stk, RUNNER) - kein Entry-Trigger. TP1 222,35EUR gefuellt 2026-10-06 (3 Stk, U ~250,3$). SL 195,00EUR (U ~219,5$ bei FX 1,1255; Stufe 3 unter EMA50-1D/4h-EMA100 224,3 -0,3 ATR, gesetzt 2026-10-06 ~17:00). TIW = 1D-Schluss unter 198,00$ (EMA100-1D). TP2 300,00$ (~266,5EUR) = Runner. Earnings-Datum klaeren (TV ~2026-10-22 vs 2026-11-10). Review 2026-10-13. [Sp. Trigger-Historie]
-  - label: B
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: '[TP1 2026-10-06, User] 3 x 222,35 EUR, +93,55 EUR (+0,53 R). Chart 16:57: 250,77$ +7,8 %, EMA20 232,04, ATR 16,09; Chandelier 1,5 ATR 226,63 per Veto (0,34 ATR unter EMA20) gesperrt. Flag: Insider-Verkaeufe ~19 Mio USD (TV-Headline). || MONITOR-UMBAU 2026-08-28 nach dem Entry #9 AV. Fill 190,50EUR lag 0,03EUR unter dem geplanten Limit 190,53EUR (Note #435) und damit innerhalb der Zone — der TIW-Puffer ist der geplante geblieben. TIW-RE-ANCHOR 193,00 -> 198,00 am 2026-08-27 10:45 CEST (User-Freigabe). GRUND: NVDA hat am 26.08. 23:00 CEST einen Doppel-Beat gemeldet (Q2 FY27 Umsatz 96,22 Mrd USD +106% YoY, Data Center 89 Mrd +117%, Q3-Guide ~108 Mrd); NBIS steht daraufhin vorboerslich bei 227,89 USD (+6,53%). Mit der alten TIW 193,00 lag die L26-Decke bei 219,72 — jedes erreichbare Limit haette den TIW-Puffer unter 0,30 ATR gedr'
-  journal_row: 42
-  trade_nr: '9'
-  archived:
-    date: '2026-10-08'
-    reason: '#9 AV Rest geschlossen 2026-10-08: 3 x 195,00 EUR am Runner-Stop, +11,50 EUR; Trade gesamt +105,05 EUR / +0,61 R'
 - symbol: WMT
   name: 'Walmart Inc. (WMT, NASDAQ) [MONITOR #99] — Einzelhandel'
   direction: SHORT
@@ -2346,21 +2305,6 @@ entries:
     text: 'nach 2026-10-08 GRINDER-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] (heute 27,21-27,49 GBP) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,57 -> -0,86). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~26,68£) ODER Stack gebrochen ODER Tempo < 0,6. TP1 28,80£ = Sept/Okt-Hoch (abgelesen), 1/3 raus. Rest Trail EMA20-1,25xATR. R:R TP1 1,41 an 27,46 (SL 26,51). Pilot 1 %. ATR 2,1% frei. GBP non-Quanto, Vehikel Direktaktie (EUR-Notiz pruefen).'
   notes: '[NEU 2026-10-08, Grinder-Pitch Tempo 2,33 (vorlaeufig), User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 11:59 (GBX): EMA20/50/100/200-1D 2.735/2.668/2.617/2.544 bullish, Kurs 2.727 = -0,14 ATR zur EMA20, ATR 57,45 (2,1 %), RSI-1D 51,7 < 65,7 (kuehlt von >70 ab). 4h: unter 4h-EMA20/50 (2.802/2.755), Docht bis 2.698 an 4h-EMA100 2.700, RSI-4h 37,3 - noch gegen den Einstieg. Sprung Ende Sept vermutlich FY-Zahlen ueber Prognose (Quelle ohne Datum, ungeprueft); Rueckkauf laeuft (RNS Transactions in own shares). Earnings laut TV in 162 d. Universe fuehrt SMIN.L ohne Daten -> Linien in GBP wie im Digest.'
   trade_nr: null
-- symbol: ANET
-  name: Arista Networks, Inc. (ANET, NYSE) - Netzwerk-Switches fuer Rechenzentren/AI-Cluster
-  direction: LONG
-  klasse: breakout_retest
-  anker: Range-Hoch
-  treiber: ''
-  status: aktiv
-  added: '2026-10-08'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-08 BREAKOUT-RETEST-LONG: Niveau 212,00$ (20-Tage-Hoch). Breakout per Schluss 06.10. bestaetigt (Vol 1,47x Avg-20d = VOL-DAEMPFER, 1 %). Entry nach Retest: Retest-Kerze 08.10. (Tief 209,51$) im Band 208,49–217,27$ [pullback], Schluss muss >=212,00$ bleiben. Einstieg Stop-Buy ueber Hoch der Retest-Kerze 217,32$ -> 217,45$ (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR) = 206,92$ an 217,45 (ATR 7,02). TIW = 1D-Schluss unter 212,00$. TP1 ~235$ Measured Move (Range ~189-212, Tief abgelesen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,67. Earnings 2026-11-03. 1% Sizing. ATR 3,3% (gelb, KO-Hebel <=7,6). Non-Quanto USD.'
-  notes: '[NEU 2026-10-08, Pitch breakout_long RRprox 3,66, User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 20:21: C 213,12 (-1,26 %), H 217,32 = neues 52W-Hoch (Digest dist52wH -3 %), L 209,51. EMA20/50/100/200-1D 204,88/195,95/183,91/167,16 bullish, Ext 1,17 ATR. RSI-1D 63,0, RSI-4h 61,5 nach ~73 bei gleichem Hoch = leichte baerische 4h-Divergenz. 4h-EMA20 208,68. Pipeline: bo_level 212,00, bo_bars_ago 2, Vol 1,47x. Stop-Buy in EUR auf deutschem Platz: 217,45$/1,1202 = 194,12 EUR, SL 184,72 EUR, TP1 ~209,8 EUR; bei FX-Bewegung >0,5 % neu rechnen. Stop-Limit statt Stop-Market wegen duenner Quotes ausserhalb US-Zeit (Anlass LLY #10). Positionsgroesse 15 Stk Aktie ~2.912 EUR, Risiko ~141 EUR.'
-  trade_nr: null
 - symbol: V
   name: Visa (V, NYSE) - Zahlungsnetzwerk
   direction: LONG
@@ -2474,4 +2418,75 @@ entries:
     (archiviert 2026-10-07, TIW 51,15 per Schluss gebrochen): [ARCHIVIERT 2026-10-07, User-Entscheid Morning Check] Breakdown vom 02.10. zurueckerobert, zwei Schluesse ueber dem Niveau. RE-EVAL = echter zweiter Breakdown unter die Band-UG 50,02 mit Volumen. Q3 2026-10-22. Vorheriger Leg-Text: nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40.
     Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
   added: '2026-10-09'
-updated: '2026-10-09T13:30:01+02:00'
+- symbol: ANET
+  name: Arista Networks, Inc. (ANET, NYSE) - Netzwerk-Switches fuer Rechenzentren/AI-Cluster
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: aktiv
+  added: '2026-10-08'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 BREAKOUT-RETEST-LONG (Rueckeroberung): Niveau 212,00$ nach Shakeout (Schluss 08.10. 210,97, Tief 209,51). Touch 212,00–219,00$ [pullback] (Chase-Grenze Niveau +1 ATR) + 4h-Bullish-Reverse-Close ueber 212,00 (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 209,51$. TP1 235,00$ Measured Move, 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,38-2,18. 1% Sizing (Pilot). Earnings 2026-11-03. Non-Quanto USD.'
+  - label: B
+    gate: 🟡
+    text: 'nach 2026-10-09 BREAKOUT-RETEST-LONG (alternativ zu A): Niveau 217,32$ (52W-Hoch). Ausbruch erst per 1D-Schluss ueber 217,32$ mit Vol >= 1,2x Avg-20d (MANUELL). Dann Retest im Band 213,81–222,58$ [breakout] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 217,32$. TP1 235,00$ Measured Move, 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,13-2,03. 1% Sizing (Pilot). Non-Quanto USD.'
+  notes: '[NEU GEFASST 2026-10-09 15:15, User-Entscheid, Linien von Claude] Alte TIW 212 per Schluss 08.10. (210,97) um 0,147 ATR gebrochen -> alte Zeile nach L23 erledigt. Neu als zwei Legs, nur EINES wird gefuellt: A = Rueckeroberung nach Shakeout (Ausloeser 4h-Schluss > 212, NICHT der Tagesschluss; TIW am Shakeout-Tief 209,51), B = neuer Ausbruch ueber das 52W-Hoch 217,32. Leg A bei Stop-Buy 216,10: SL 205,57 (ATR-Term), 1,79 R. Chase-Grenze: Kerzenhoch > ~219 = auslassen. Kontext: Citigroup KZ 248 (von 215, 2026-10-08), vorboerslich 214 (+1,5 %); Gegenrede: baerische 4h-Divergenz vom 08.10. (gleiches Hoch, RSI 61 statt 73). Risiko A: zweiter Fehlausbruch per Tagesschluss < 212 bei intakter TIW. || VORGAENGER: [NEU 2026-10-08, Pitch breakout_long RRprox 3,66, User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 20:21: C 213,12 (-1,26 %), H 217,32 = neues 52W-Hoch (Digest dist52wH -3 %), L 209,51. EMA20/50/100/200-1D 204,88/195,95/183,91/167,16 bullish, Ext 1,17 ATR. RSI-1D 63,0, RSI-4h
+    61,5 nach ~73 bei gleichem Hoch = leichte baerische 4h-Divergenz. 4h-EMA20 208,68. Pipeline: bo_level 212,00, bo_bars_ago 2, Vol 1,47x. Stop-Buy in EUR auf deutschem Platz: 217,45$/1,1202 = 194,12 EUR, SL 184,72 EUR, TP1 ~209,8 EUR; bei FX-Bewegung >0,5 % neu rechnen. Stop-Limit statt Stop-Market wegen duenner Quotes ausserhalb US-Zeit (Anlass LLY #10). Positionsgroesse 15 Stk Aktie ~2.912 EUR, Risiko ~141 EUR.'
+  trade_nr: null
+- symbol: LLY
+  name: 'Eli Lilly (LLY, NYSE) - Pharma/GLP-1 [MONITOR #10 AV]'
+  direction: LONG
+  klasse: position_monitor
+  anker: EMA50-1D
+  treiber: ''
+  status: archiviert
+  added: '2026-09-23'
+  expiry: '2026-10-09'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-08 (#10 AV am Stop) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >1.210,00$ + Vol >Avg-20d. Dann Breakout-Retest @ 1.210 frisch fassen: TP1 Jul/Aug-Hochs 1.240-1.290 (52W-Hoch 1.292,7), 1,3 R an 1.290 nur bei Entry <=1.222. Harter Exit vor Earnings 2026-10-29. [Sp. Trigger-Historie]'
+  notes: '[RE-EVAL GESETZT 2026-10-09, User-Auftrag, Routine 2 v62] #10 AV am 08.10. am Stop raus (-0,54 R). Schluss 08.10. 1.169,60 (-1,61 %), EMA20/50 1.163,4/1.163,1 = Kurs knapp darueber, EMA100 1.138,0, ATR 34,89 (2,98 %). RSI-4h 46,1 unter Signal 49,0, 4h-Stack baerisch -> heute kein Pullback-Setup. 1.210 = 1,16 ATR ueber dem Schluss, knapp unter dem 20d-Hoch 1.215,0. Zeitfenster eng: Earnings 2026-10-29. || [REVIEW 2026-10-05, User-Entscheid im Morning Check] Option a, Plan gehalten: Fr-Schluss 1142,85, TIW 0,12 ATR, Kurs auf EMA100-1D 1135,8 = EMA200-4h 1136,3; EUR -0,31 R / USD -0,61 R. Stop in USD-Terms durch FX 15$ lockerer als geplant. || ANGELEGT 2026-09-23 (User-Charts, Stand 22.09.). Uptrend Mai-Aug 900->1290, Ruecksetzer bis ~1115 (Sep), EMA100 1130 hat gehalten; Kurs 1170 wieder ueber EMA20 1158,6/EMA50 1161,5. RSI-4h 58,9 ueber Signal. TIW unter EMA100-1D, ueber dem Sep-Tief. TP1 = Jul/Aug-Hochs 1240-1250. Earnings 2026-10-29 (TV: in 36 Tagen). [HEALTH-CARE mit JNJ/REGN/GILD]
+    ATR-STUFE 🟡 (2.63 %, § ATR-Stufen seit 2026-09-23): Vehikel frei, KO-Hebel <= 9.5. || 23.09.: Zone am 22.09. intraday beruehrt (Tief 1.139,26, 0,29 ATR ueber EMA100 1.130,46), Schluss 1.170,14 (Close-Pos 75%), 4h-Umkehr und RSI-4h-Cross (58,9 > 49,7)'
+  journal_row: 99
+  trade_nr: '10'
+  archived:
+    date: '2026-10-08'
+    reason: '#10 AV geschlossen 2026-10-08: 3 x 1.009,40 EUR am Stop, -80,20 EUR / -0,54 R'
+- symbol: NBIS
+  name: Nebius Group N.V. (NBIS, NASDAQ) - AI-Infrastruktur
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-09'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 TREND-PULLBACK-LONG: Touch EMA100-1D -0,25/+0,20 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA100-1D -0,50 ATR. TP1 250,00$ (Hochs 06./07.10.), 1/3 raus; Rest Chandelier 2,0 ATR, Runner-Ziel 300,00$ (52W-Hoch). R:R TP1 1,43-1,73. ATR-Stufe 🔴: 1% Deckel, Hebel <=3,3. Earnings 2026-11-10. Non-Quanto USD.'
+  notes: '[NEU 2026-10-09 15:30, User-Auftrag, Linien von Claude, Daten Digest 14:30 = Schluss 08.10.] Nachfolger von #9 AV (Rest am 08.10. am Runner-Stop, Trade +0,61 R). Schluss 08.10. 219,71 (-7,35 %, Vol 1,36x), EMA20/50/100/200-1D 231,24/224,62/211,25/180,75 bullish, Kurs unter EMA20+EMA50, ueber EMA100. ATR 16,57 = 7,54 % -> Hoch-ATR-Platz (max. 3). RSI-1D 46,2; RSI-4h 41,8 unter Signal 53,5 (Cross vor 2 Bars) -> KEIN Entry ins fallende Messer, nur Touch + 4h-Umkehr. Zone heute 207,10-214,56, TIW heute 202,96 (knapp unter dem 20d-Tief 203,9). Geometrie: SL 189,70 (OG) / 182,24 (UG), R 24,86 = ATR-Term in der ganzen Zone; 1,3 R an 250 bis Entry <=217,7. Relative TIW: These = ''EMA100 haelt'', Klasse trend_pullback erlaubt. Flags: Insider-Verkaeufe ~19 Mio USD (TV, 06.10.), Tech/AI-Cluster mit ANET/NVDA (L7: max. zwei Tech-Positionen). || VORGAENGER #9 AV: [TP1 2026-10-06, User] 3 x 222,35 EUR, +93,55 EUR (+0,53 R). Chart 16:57: 250,77$ +7,8 %, EMA20 232,04, ATR 16,09; Chandelier 1,5
+    ATR 226,63 per Veto (0,34 ATR unter EMA20) gesperrt. Flag: Insider-Verkaeufe ~19 Mio USD (TV-Headline). || MONITOR-UMBAU 2026-08-28 nach dem Entry #9 AV. Fill 190,50EUR lag 0,03EUR unter dem geplanten Limit 190,53EUR (Note #435) und damit innerhalb der Zone — der TIW-Puffer ist der geplante geblieben. TIW-RE-ANCHOR 193,00 -> 198,00 am 2026-08-27 10:45 CEST (User-Freigabe). GRUND: NVDA hat am 26.08. 23:00 CEST einen Doppel-Beat gemeldet (Q2 FY27 Umsatz 96,22 Mrd USD +106% YoY, Data Center 89 Mrd +117%, Q3-Guide ~108 Mrd); NBIS steht daraufhin vorboerslich bei 227,89 USD (+6,53%). Mit der alten TIW 193,00 lag die L26-Decke bei 219,72 — jedes erreichbare Limit haette den TIW-Puffer unter 0,30 ATR gedr'
+- symbol: DPLM.L
+  name: Diploma PLC (DPLM, LSE) - Industrie-Distribution
+  direction: LONG
+  klasse: grinder
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-09'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stopweite entry-relativ -1,5xATR-1D (1,619 -> -2,43), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 79,80€ = BE-Stufe (52W-Hoch), 1/3 raus, R:R 1,38-1,61; Rest Trail EMA20-1,25xATR. 1% Pilot. Earnings 2026-11-17. GBP wie Pipeline (€ nur Parser-Konvention), Broker/TV in GBX (x100).'
+  - label: B
+    gate: 🔴
+    text: 'nach 2026-10-09 AUSBRUCH-OPTION - kein Entry-Trigger. RE-EVAL: 1D-Schluss >79,80€ + Vol >=1,2x Avg-20d. Dann Breakout-Retest @ 79,80 frisch fassen (Band -0,5/+0,75 ATR, Invalidierung = Schluss zurueck unters Niveau, TP1 Measured Move). Leg A und B schliessen sich aus.'
+  notes: '[NEU 2026-10-09 15:30, User-Auftrag, Linien von Claude, Daten MARKETDATA-FULL-EU 14:51, intraday 09.10.] Kurs 78,03 (+0,68 %), EMA20/50/200-1D 76,29/74,41/67,23 bullish, RSI-1D 62,1, ATR 1,619 = 2,07 % (Grinder-Grenze 2,5 ✓). 30d +11,1 %, 52W-Hoch 79,80 = -2,2 %, Weekly HH/HL ✓, EMA200-Abstand 16 %. Kurs 1,07 ATR ueber EMA20 -> Zone 75,89-76,45 noch nicht erreicht. FLAG GATE: DPLM.L lag bisher nur in Tier B, daher keine Pipeline-Grinder-Kennzahlen (Tempo, Faecher, Zwei-Laeufe-Regel). Mit dieser Zeile wird das Symbol im Tier-A-Lauf mitgezogen; Grinder-Gate vor Entry manuell bzw. ab dem zweiten Lauf pruefen. Geometrie: 1,3 R an 79,80 nur bis Entry <=76,64 - steigt die EMA20 darueber, TP1 neu fassen (Measured Move). Vehikel (KO auf Diploma) vor Entry pruefen.'
+updated: '2026-10-09T15:20:50+02:00'
