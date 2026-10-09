@@ -192,15 +192,35 @@ def _de_zahl(s: str) -> Optional[float]:
         return None
 
 
+# Relative TIW (Skill v58, 2026-10-09): „TIW = 1D-Schluss unter EMA50-1D -0,30 ATR".
+# Dieselbe Grammatik wie skill/tiw_rel.py. Das Level loest der Morning Check mit
+# den Universe-Werten auf (EMA/ATR, am laufenden Balken zurueckgerechnet).
+_TIW_REL_META_RE = re.compile(
+    r"TIW[^.]{0,40}?(?P<dir>unter|ueber|über)\s*(?P<anker>EMA\s?(?:20|50|100|200))(?:-1D)?"
+    r"(?:\s*(?P<sign>[+\-−–])\s*(?P<off>\d+(?:,\d+)?)\s*(?:x\s*)?ATR(?:-1D|-14)?)?",
+    re.IGNORECASE)
+
+
 def _leg_tiw(text: str) -> Optional[dict]:
-    """TIW-Schlussbedingung aus einem Leg-Text: {"seite": "unter"|"ueber", "level": x}."""
+    """TIW-Schlussbedingung aus einem Leg-Text.
+
+    Fest:     {"seite": "unter"|"ueber", "level": x}
+    Relativ:  {"seite": …, "level": None, "anker": "EMA50", "off": -0.3}
+    """
     m = _TIW_META_RE.search(str(text or ""))
-    if not m:
+    if m:
+        v = _de_zahl(m.group("val"))
+        if v is not None:
+            return {"seite": "ueber" if m.group("dir").lower().startswith(("ue", "üb")) else "unter",
+                    "level": v}
+    r = _TIW_REL_META_RE.search(str(text or ""))
+    if not r:
         return None
-    v = _de_zahl(m.group("val"))
-    if v is None:
-        return None
-    return {"seite": "ueber" if m.group("dir").lower().startswith(("ue", "üb")) else "unter", "level": v}
+    off = _de_zahl(r.group("off")) if r.group("off") else 0.0
+    if off and r.group("sign") in ("-", "−", "–"):
+        off = -off
+    return {"seite": "ueber" if r.group("dir").lower().startswith(("ue", "üb")) else "unter",
+            "level": None, "anker": r.group("anker").upper().replace(" ", ""), "off": off or 0.0}
 
 
 def _leg_reeval(text: str) -> Optional[dict]:

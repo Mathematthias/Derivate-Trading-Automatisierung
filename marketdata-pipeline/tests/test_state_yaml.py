@@ -319,3 +319,15 @@ class TestRepoState:
         assert all(r["status"] in ("offen", "erledigt", "verworfen", "verschoben") for r in st["radar"]["rows"])
         ids = [t["id"] for t in st["thesen"]["thesen"]]
         assert "A" in ids
+
+
+def test_leg_tiw_relativ_und_fest():
+    """Skill v58 (2026-10-09): relative TIW auf einer EMA, feste TIW unveraendert."""
+    from state_yaml import _leg_tiw
+    assert _leg_tiw("TIW = 1D-Schluss unter 421,10$ (EMA50-1D = 4h-EMA100).") == {
+        "seite": "unter", "level": 421.10}
+    assert _leg_tiw("TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 28,80") == {
+        "seite": "unter", "level": None, "anker": "EMA50", "off": -0.3}
+    assert _leg_tiw("TIW = 1D-Schluss ueber EMA20-1D. TP1 230,50$") == {
+        "seite": "ueber", "level": None, "anker": "EMA20", "off": 0.0}
+    assert _leg_tiw("kein Invalidator") is None
