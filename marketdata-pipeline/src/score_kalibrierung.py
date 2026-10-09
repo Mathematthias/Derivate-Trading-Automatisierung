@@ -23,7 +23,11 @@ AUSGABE  Markdown fuer den 20er-Block-Review:
     2. Score-Baender: n, Trefferquote mit Wilson-95-%, Mittel/Median R, Mittel MFE
     3. Spearman-Rangkorrelation Score <-> R
     4. Gegenrechnung: Score-Sizing gegen flaches 1 % (Summe R x Gewicht)
-    Urteil erst ab n >= 20 gescorter Trades (L28), vorher nur Prozessbefund.
+    5. Einstiegsqualitaet (Weg 3, User-Entscheid 2026-10-09): je Einstiegsart und
+       Setup_Klasse n, Einstiegsfehler-Quote (MFE-Klasse "Einstiegsfehler"), Treffer,
+       Mittel R. Entscheidet L27 bei n >= 20 je Einstiegsart und geht mit dem
+       Exit-Test in den 20er-Review.
+    Urteil erst ab n >= 20 (L28), vorher nur Prozessbefund.
 """
 from __future__ import annotations
 
@@ -70,7 +74,7 @@ def _zahl(x) -> Optional[float]:
 
 def lade(audit_csv: Path, mfe_csv: Optional[Path] = None) -> pd.DataFrame:
     df = pd.read_csv(audit_csv, dtype=str).fillna("")
-    for col in ("Score", "Sizing_Pct", "Score_Quelle"):
+    for col in ("Score", "Sizing_Pct", "Score_Quelle", "Einstiegsart", "Setup_Klasse"):
         if col not in df.columns:
             df[col] = ""
     df["score"] = df["Score"].map(_zahl)
@@ -84,6 +88,9 @@ def lade(audit_csv: Path, mfe_csv: Optional[Path] = None) -> pd.DataFrame:
         df["mfe"] = df.get("MFE_R", pd.Series(dtype=str)).map(_zahl)
     else:
         df["mfe"] = None
+    if "Klasse" not in df.columns:
+        df["Klasse"] = ""
+    df["Klasse"] = df["Klasse"].fillna("")
     return df
 
 
@@ -125,6 +132,21 @@ def auswerten(df: pd.DataFrame) -> dict:
             "urteil_moeglich": len(sc) >= URTEIL_AB_N}
 
 
+def einstiegsqualitaet(df: pd.DataFrame) -> dict:
+    """Einstiegsfehler-Quote je Einstiegsart und Setup-Klasse (geschlossene Trades mit R)."""
+    zu = df[df["geschlossen"] & df["r"].notna()].copy()
+    zu["efehler"] = zu["Klasse"].astype(str).str.startswith("Einstiegsfehler")
+    def _grp(col):
+        out = []
+        for k, g in zu.groupby(zu[col].replace("", "unklar")):
+            n = len(g)
+            out.append({"gruppe": k, "n": n, "efehler": int(g["efehler"].sum()),
+                        "treffer": int((g["r"] > 0).sum()), "r_mittel": float(g["r"].mean())})
+        return sorted(out, key=lambda x: -x["n"])
+    return {"einstiegsart": _grp("Einstiegsart"), "setup_klasse": _grp("Setup_Klasse"),
+            "gesamt": len(zu), "efehler_gesamt": int(zu["efehler"].sum())}
+
+
 def _p(x: Optional[float]) -> str:
     return "—" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x * 100:.0f} %"
 
@@ -155,6 +177,16 @@ def render(res: dict, stichtag: str = "") -> str:
           "", f"Gegenrechnung Sizing: flach 1 % = {_r(res['summe_flat_r'])} R, "
           f"Score-Sizing (1/2/3 %, < 5,0 = 0) = {_r(res['summe_score_sizing_r'])} R-Einheiten à 1 %. "
           "Liegt Score-Sizing nicht klar darueber, verdient die Staffel ihr Risiko nicht."]
+    eq = res.get("einstieg")
+    if eq:
+        z += ["", "## Einstiegsqualität (Weg 3)", "",
+              f"Einstiegsfehler (MFE < 0,5 R bei MAE ≥ 0,8 R) insgesamt: {eq['efehler_gesamt']} von {eq['gesamt']}. "
+              f"Entscheid zu L27 erst bei n ≥ {URTEIL_AB_N} je Einstiegsart."]
+        for titel, key in (("Einstiegsart", "einstiegsart"), ("Setup-Klasse", "setup_klasse")):
+            z += ["", f"| {titel} | n | Einstiegsfehler | Quote | Treffer | Ø R |", "|---|---|---|---|---|---|"]
+            for g in eq[key]:
+                z.append(f"| {g['gruppe']} | {g['n']} | {g['efehler']} | {_p(g['efehler'] / g['n'])} | "
+                         f"{g['treffer']} | {_r(g['r_mittel'])} |")
     if res["sizing_verteilung"]:
         z += ["", "Tatsaechliches Risiko je Trade (% RK → Anzahl): " +
               ", ".join(f"{k:g} → {v}" for k, v in res["sizing_verteilung"].items())]
@@ -168,7 +200,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--md", default=None, help="Markdown in Datei schreiben (sonst stdout)")
     ap.add_argument("--stichtag", default="")
     a = ap.parse_args(argv)
-    res = auswerten(lade(Path(a.audit_csv), Path(a.mfe_csv) if a.mfe_csv else None))
+    df = lade(Path(a.audit_csv), Path(a.mfe_csv) if a.mfe_csv else None)
+    res = auswerten(df)
+    res["einstieg"] = einstiegsqualitaet(df)
     txt = render(res, a.stichtag)
     if a.md:
         Path(a.md).parent.mkdir(parents=True, exist_ok=True)

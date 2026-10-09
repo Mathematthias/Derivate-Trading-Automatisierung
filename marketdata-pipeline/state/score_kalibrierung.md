@@ -16,4 +16,24 @@ Spearman ρ (Score ↔ R): **+0,77** (n = 6). Faustregel: |ρ| < 0,3 trennt prak
 
 Gegenrechnung Sizing: flach 1 % = -3,42 R, Score-Sizing (1/2/3 %, < 5,0 = 0) = -6,99 R-Einheiten à 1 %. Liegt Score-Sizing nicht klar darueber, verdient die Staffel ihr Risiko nicht.
 
+## Einstiegsqualität (Weg 3)
+
+Einstiegsfehler (MFE < 0,5 R bei MAE ≥ 0,8 R) insgesamt: 12 von 43. Entscheid zu L27 erst bei n ≥ 20 je Einstiegsart.
+
+| Einstiegsart | n | Einstiegsfehler | Quote | Treffer | Ø R |
+|---|---|---|---|---|---|
+| unklar | 21 | 3 | 14 % | 9 | +0,01 |
+| Limit | 10 | 3 | 30 % | 3 | -0,25 |
+| Markt | 10 | 4 | 40 % | 2 | -0,53 |
+| Stop-Buy | 2 | 2 | 100 % | 0 | -1,04 |
+
+| Setup-Klasse | n | Einstiegsfehler | Quote | Treffer | Ø R |
+|---|---|---|---|---|---|
+| unklar | 25 | 3 | 12 % | 13 | +0,28 |
+| trend_pullback | 11 | 5 | 45 % | 1 | -0,87 |
+| reversal | 3 | 1 | 33 % | 0 | -1,00 |
+| thesen_korb | 2 | 1 | 50 % | 0 | -1,06 |
+| breakout_retest | 1 | 1 | 100 % | 0 | -1,07 |
+| grinder | 1 | 1 | 100 % | 0 | -1,09 |
+
 Tatsaechliches Risiko je Trade (% RK → Anzahl): 0.3 → 1, 0.9 → 1, 1 → 11, 1.1 → 1, 1.2 → 2, 1.3 → 1, 1.5 → 1, 1.6 → 1, 2 → 1, 2.3 → 1

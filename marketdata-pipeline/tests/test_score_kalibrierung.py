@@ -41,3 +41,20 @@ def test_alte_csv_ohne_score_spalten(tmp_path):
                  "D-1,A,Long,2026-01-01,2026-01-05,10,9,-1.0,Markt\n", encoding="utf-8")
     res = sk.auswerten(sk.lade(p, None))
     assert res["gescort"] == 0 and res["trades"] == 1
+
+
+def test_einstiegsqualitaet_je_art(tmp_path):
+    p = tmp_path / "trade_audit.csv"
+    p.write_text("TradeID,Symbol,Richtung,Kauf,Verkauf,EntryU,SL_U,R,Einstiegsart,Setup_Klasse\n"
+                 "D-1,A,Long,2026-01-01,2026-01-05,10,9,-1.0,Limit,trend_pullback\n"
+                 "D-2,B,Long,2026-01-01,2026-01-05,10,9,1.5,Limit,trend_pullback\n"
+                 "D-3,C,Long,2026-01-01,2026-01-05,10,9,-1.0,Markt,grinder\n", encoding="utf-8")
+    m = tmp_path / "mfe.csv"
+    m.write_text("TradeID,MFE_R,Klasse\nD-1,0.2,Einstiegsfehler (lief nie)\nD-2,2.0,Gewinner (lief)\n"
+                 "D-3,0.1,Einstiegsfehler (lief nie)\n", encoding="utf-8")
+    eq = sk.einstiegsqualitaet(sk.lade(p, m))
+    arten = {g["gruppe"]: g for g in eq["einstiegsart"]}
+    assert arten["Limit"]["n"] == 2 and arten["Limit"]["efehler"] == 1 and arten["Markt"]["efehler"] == 1
+    assert eq["efehler_gesamt"] == 2
+    res = sk.auswerten(sk.lade(p, m)); res["einstieg"] = eq
+    assert "Einstiegsqualität" in sk.render(res)
