@@ -43,6 +43,12 @@ rohstoffe_forex:
   EURUSD:     "EURUSD=X"
   USDJPY:     "USDJPY=X"
   EURGBP:     "EURGBP=X"
+  # EUR-Kurse fuer die Stueckzahl-Rechnung im Morning Check (Skill v60, 2026-10-09):
+  # Watchlist/Universum notiert auch in CHF (.SW), SEK (.ST), DKK (.CO), NOK (.OL).
+  EURCHF:     "EURCHF=X"
+  EURSEK:     "EURSEK=X"
+  EURDKK:     "EURDKK=X"
+  EURNOK:     "EURNOK=X"
 
 # ============================================================
 # KRYPTO (Bison/Kraken-Referenz)
