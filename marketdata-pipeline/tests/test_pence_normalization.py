@@ -117,7 +117,9 @@ def test_4h_pfad_normiert_uk_listing_wie_der_tagespfad():
 
     uk, de = out["NG.L"], out["XYZ.DE"]
     assert uk.bars_available == de.bars_available > 50
-    assert 10.0 < uk.close < 13.0                     # Pound, nicht Pence
+    # Seit 2026-10-09 zaehlt der 17:00-Teilblock des letzten (laengst vergangenen) Tages als
+    # geschlossen (zeitbasierte Pruefung) -> Close ein Balken spaeter, knapp ueber 13.
+    assert 10.0 < uk.close < 14.0                     # Pound, nicht Pence
     assert de.close > 1000.0                          # .DE unveraendert
     for feld in ("open", "high", "low", "close", "prev_open", "prev_close",
                  "ema9", "ema20", "ema50", "atr14"):

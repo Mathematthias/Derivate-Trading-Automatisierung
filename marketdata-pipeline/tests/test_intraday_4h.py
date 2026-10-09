@@ -489,3 +489,28 @@ class TestRsiCrossEreignis:
 
     def test_lookback_default_in_config(self, config):
         assert config["intraday_4h"]["rsi_cross_lookback"] == 2
+
+
+# --- 2026-10-09: voller, aber laufender Block (Befund NG.L 16:33 Berlin) -----------
+def test_voller_block_laeuft_noch_wird_verworfen():
+    import pandas as pd
+    from src.intraday_4h import resample_1h_to_4h
+    idx = pd.date_range("2026-10-09 09:00", periods=8, freq="1h", tz="Europe/Berlin")   # 09..16 Uhr
+    df = pd.DataFrame({"Open": 1.0, "High": 2.0, "Low": 0.5, "Close": 1.5}, index=idx)
+    jetzt = pd.Timestamp("2026-10-09 16:33", tz="Europe/Berlin")
+    out = resample_1h_to_4h(df, closed_only=True, now=jetzt)
+    assert list(out.index.strftime("%H:%M")) == ["09:00"]          # 13:00-Block laeuft bis 17:00
+    out2 = resample_1h_to_4h(df, closed_only=True, now=pd.Timestamp("2026-10-09 17:01", tz="Europe/Berlin"))
+    assert list(out2.index.strftime("%H:%M")) == ["09:00", "13:00"]
+
+
+def test_teilblock_nach_handelsschluss_bleibt_mit_now():
+    import pandas as pd
+    from src.intraday_4h import resample_1h_to_4h
+    idx = pd.DatetimeIndex([pd.Timestamp(f"2026-10-08 {h}", tz="America/New_York")
+                            for h in ("09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30")])
+    df = pd.DataFrame({"Open": 1.0, "High": 2.0, "Low": 0.5, "Close": 1.5}, index=idx)
+    out = resample_1h_to_4h(df, closed_only=True, now=pd.Timestamp("2026-10-08 18:00", tz="America/New_York"))
+    assert list(out.index.strftime("%H:%M")) == ["09:30", "13:30"]
+    out2 = resample_1h_to_4h(df, closed_only=True, now=pd.Timestamp("2026-10-08 15:45", tz="America/New_York"))
+    assert list(out2.index.strftime("%H:%M")) == ["09:30"]
