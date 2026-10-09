@@ -74,7 +74,7 @@ def _zahl(x) -> Optional[float]:
 
 def lade(audit_csv: Path, mfe_csv: Optional[Path] = None) -> pd.DataFrame:
     df = pd.read_csv(audit_csv, dtype=str).fillna("")
-    for col in ("Score", "Sizing_Pct", "Score_Quelle", "Einstiegsart", "Setup_Klasse"):
+    for col in ("Score", "Sizing_Pct", "Score_Quelle", "Einstiegsart", "Setup_Klasse", "Vol_Mult"):
         if col not in df.columns:
             df[col] = ""
     df["score"] = df["Score"].map(_zahl)
@@ -136,6 +136,8 @@ def einstiegsqualitaet(df: pd.DataFrame) -> dict:
     """Einstiegsfehler-Quote je Einstiegsart und Setup-Klasse (geschlossene Trades mit R)."""
     zu = df[df["geschlossen"] & df["r"].notna()].copy()
     zu["efehler"] = zu["Klasse"].astype(str).str.startswith("Einstiegsfehler")
+    if "Vol_Mult" not in zu.columns:
+        zu["Vol_Mult"] = ""
     def _grp(col):
         out = []
         for k, g in zu.groupby(zu[col].replace("", "unklar")):
@@ -143,7 +145,12 @@ def einstiegsqualitaet(df: pd.DataFrame) -> dict:
             out.append({"gruppe": k, "n": n, "efehler": int(g["efehler"].sum()),
                         "treffer": int((g["r"] > 0).sum()), "r_mittel": float(g["r"].mean())})
         return sorted(out, key=lambda x: -x["n"])
+    # 2026-10-09: Volumen am Ausbruchstag (Boden 1,0 / Daempfer 1,3) — nur Trades mit Wert
+    vm = zu["Vol_Mult"].map(_zahl) if "Vol_Mult" in zu.columns else pd.Series(dtype=float)
+    zu["vol_band"] = [("" if v is None or (isinstance(v, float) and math.isnan(v))
+                       else ("1,0-1,3 (gedaempft)" if v < 1.3 else ">= 1,3")) for v in vm]
     return {"einstiegsart": _grp("Einstiegsart"), "setup_klasse": _grp("Setup_Klasse"),
+            "vol_band": [g for g in _grp("vol_band") if g["gruppe"] != "unklar"],
             "gesamt": len(zu), "efehler_gesamt": int(zu["efehler"].sum())}
 
 
@@ -182,7 +189,10 @@ def render(res: dict, stichtag: str = "") -> str:
         z += ["", "## Einstiegsqualität (Weg 3)", "",
               f"Einstiegsfehler (MFE < 0,5 R bei MAE ≥ 0,8 R) insgesamt: {eq['efehler_gesamt']} von {eq['gesamt']}. "
               f"Entscheid zu L27 erst bei n ≥ {URTEIL_AB_N} je Einstiegsart."]
-        for titel, key in (("Einstiegsart", "einstiegsart"), ("Setup-Klasse", "setup_klasse")):
+        for titel, key in (("Einstiegsart", "einstiegsart"), ("Setup-Klasse", "setup_klasse"),
+                           ("Ausbruchs-Volumen (seit 2026-10-09)", "vol_band")):
+            if not eq.get(key):
+                continue
             z += ["", f"| {titel} | n | Einstiegsfehler | Quote | Treffer | Ø R |", "|---|---|---|---|---|---|"]
             for g in eq[key]:
                 z.append(f"| {g['gruppe']} | {g['n']} | {g['efehler']} | {_p(g['efehler'] / g['n'])} | "

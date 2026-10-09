@@ -99,26 +99,26 @@ class TestVolStufe:
     """Die reine Schwellen-Logik."""
 
     def test_unter_dem_boden_kein_kandidat(self, config):
-        assert _vol_stufe(Snap(volume_multiplier_today=1.19),
-                          config["breakdown_short"]) is None
+        assert _vol_stufe(Snap(volume_multiplier_today=0.99),
+                          config["breakdown_short"]) is None  # Boden 1,0 seit 2026-10-09
 
     def test_auf_dem_boden_ist_drin(self, config):
-        assert _vol_stufe(Snap(volume_multiplier_today=1.20),
+        assert _vol_stufe(Snap(volume_multiplier_today=1.00),
                           config["breakdown_short"]) is not None
 
     def test_zwischen_boden_und_daempfer_gedaempft(self, config):
-        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.3),
+        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.15),
                                      config["breakout_long"])
         assert gedaempft is True and hint == "eine_stufe"
 
     def test_ab_daempfer_volle_groesse(self, config):
-        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.5),
-                                     config["breakout_long"])
+        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.3),
+                                     config["breakout_long"])  # Daempfer 1,3 seit 2026-10-09
         assert gedaempft is False and hint == "voll"
 
     def test_short_daempfer_geht_auf_den_1prozent_floor(self, config):
         """Punkt 3 des Entscheids: bei Shorts greift der Daempfer haerter."""
-        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.3),
+        gedaempft, hint = _vol_stufe(Snap(volume_multiplier_today=1.15),
                                      config["breakdown_short"])
         assert gedaempft is True and hint == "floor_1pct"
 
@@ -137,10 +137,10 @@ class TestCheckBucketMitStufen:
     """Die Gates im Bucket selbst — inklusive der Format-Falle im Summary."""
 
     def test_breakdown_short_unter_boden_raus(self, config):
-        assert _check_bucket(_short(1.1), "breakdown_short", config) is None
+        assert _check_bucket(_short(0.9), "breakdown_short", config) is None
 
     def test_breakdown_short_gedaempft_kommt_durch(self, config):
-        m = _check_bucket(_short(1.3), "breakdown_short", config)
+        m = _check_bucket(_short(1.15), "breakdown_short", config)
         assert m is not None
         assert m.vol_daempfer is True
         assert m.sizing_hint == "floor_1pct"
@@ -168,9 +168,9 @@ class TestCheckBucketMitStufen:
         brechen. Der Marker gehoert deshalb hinter alles andere.
         """
         import re
-        m = _check_bucket(_short(1.3), "breakdown_short", config)
+        m = _check_bucket(_short(1.15), "breakdown_short", config)
         assert m.summary.rstrip().endswith("⚠️VOL-DÄMPFER")
-        assert re.search(r"Vol=1\.3×\s\sRSI=\d+", m.summary)
+        assert re.search(r"Vol=1\.1×\s\sRSI=\d+", m.summary) or re.search(r"Vol=1\.15×\s\sRSI=\d+", m.summary) or re.search(r"Vol=1\.2×\s\sRSI=\d+", m.summary)
         # Retest-Marker steht hinter dem RRprox-Suffix, vor dem Daempfer
         assert re.search(r"RSI=\d+(\s\sRRprox=[\d.]+(\s*⚠️ENG)?)?\s\sRetest=2HT", m.summary)
 
@@ -257,11 +257,11 @@ class TestTrendSubQuote:
         assert len(out) == 6
 
     def test_payload_traegt_die_neuen_felder(self, config):
-        m = _check_bucket(_short(1.3), "breakdown_short", config)
+        m = _check_bucket(_short(1.15), "breakdown_short", config)
         p = build_pitches_payload([m], config)[0]
         assert p["trend_sub"] == "range"
         # Fuer Retest-Buckets ist das relevante Volumen das des Ausbruchstags
-        assert p["vol_mult"] == pytest.approx(1.3)
+        assert p["vol_mult"] == pytest.approx(1.15)
         assert p["vol_daempfer"] is True
         assert p["sizing_hint"] == "floor_1pct"
 

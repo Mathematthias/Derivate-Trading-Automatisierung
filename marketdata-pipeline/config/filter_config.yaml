@@ -118,8 +118,13 @@ short_trend_pullback:
 # Reward für den R:R-Proxy bleibt der Measured Move (Range-Höhe ab Niveau).
 breakout_long:
   max_bars_since_breakout: 10       # Throwback kommt im Mittel am 6. Tag (Bulkowski)
-  volume_multiplier_min: 1.2        # Volumen AM AUSBRUCHSTAG, harter Boden
-  volume_multiplier_daempfer: 1.5   # darunter: eine Sizing-Stufe tiefer
+  # 🆕 2026-10-09 (User-Entscheid): Boden 1,0 / Daempfer 1,3 ueberall (Universe-Scan,
+  # Klasse, handgeschriebene Trigger). Herleitung: Volumen-Gate-Messung 2026-09-18 —
+  # der Backtest stuetzt nur den Boden 1,0x; 1,5x lag beim ~92. Perzentil und daempfte
+  # praktisch jeden Ausbruch. Band 1,0-1,3 wird ab jetzt im Trade-Audit gemessen
+  # (Spalte Vol_Mult) und im 20er-Review ausgewertet.
+  volume_multiplier_min: 1.0        # Volumen AM AUSBRUCHSTAG, harter Boden (vorher 1.2)
+  volume_multiplier_daempfer: 1.3   # darunter: eine Sizing-Stufe tiefer (vorher 1.5)
   retest_lo_atr: 0.5                # Zone: Niveau - 0,5 ATR ...
   retest_hi_atr: 0.75               # ... bis Niveau + 0,75 ATR
   require_bullish_ema_stack: true
@@ -127,8 +132,8 @@ breakout_long:
 
 breakdown_short:
   max_bars_since_breakout: 10
-  volume_multiplier_min: 1.2
-  volume_multiplier_daempfer: 1.5
+  volume_multiplier_min: 1.0        # 2026-10-09, vorher 1.2
+  volume_multiplier_daempfer: 1.3   # 2026-10-09, vorher 1.5
   # Short-Härte (2026-09-18): gedämpfter Short geht auf den 1-%-Floor.
   daempfer_sizing: floor_1pct       # long: "eine_stufe"
   retest_lo_atr: 0.5

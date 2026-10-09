@@ -58,3 +58,17 @@ def test_einstiegsqualitaet_je_art(tmp_path):
     assert eq["efehler_gesamt"] == 2
     res = sk.auswerten(sk.lade(p, m)); res["einstieg"] = eq
     assert "Einstiegsqualität" in sk.render(res)
+
+
+def test_vol_band_2026_10_09(tmp_path):
+    import pandas as pd
+    from src import score_kalibrierung as sk
+    p = tmp_path / "a.csv"
+    pd.DataFrame([
+        {"TradeID": "1", "R": "1.5", "Verkauf": "x", "Vol_Mult": "1,1"},
+        {"TradeID": "2", "R": "-1", "Verkauf": "x", "Vol_Mult": "1.6"},
+        {"TradeID": "3", "R": "0.5", "Verkauf": "x", "Vol_Mult": ""},
+    ]).to_csv(p, index=False)
+    eq = sk.einstiegsqualitaet(sk.lade(p))
+    b = {g["gruppe"]: g for g in eq["vol_band"]}
+    assert b["1,0-1,3 (gedaempft)"]["n"] == 1 and b[">= 1,3"]["n"] == 1
