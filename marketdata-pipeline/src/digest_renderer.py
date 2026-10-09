@@ -126,8 +126,16 @@ def _is_position_monitor(entry: Any) -> bool:
     """Positions-Monitor: YAML-Status "position" ODER das bisherige Kriterium
     (Richtung "POSITION-MONITOR …" aus journal_utils, "[MONITOR"-Token im
     Namen). Eine Stelle für Stufe-1-Filter, position_monitors und Ex-Tag-Radar."""
-    if getattr(entry, "state_status", None) == "position":
+    status = getattr(entry, "state_status", None)
+    if status == "position":
         return True
+    # Archivierte Zeilen sind nie Monitore (Fix 2026-10-09): Ihr Name traegt
+    # das "[MONITOR #NN]"-Token weiter, nachdem der Trade geschlossen ist. Bis
+    # zum Fix standen sechs geschlossene Trades (DHL #102, LLY #10, G1A #92,
+    # NBIS #9, WMT #99, JST #100) in position_monitors, der Morning Check
+    # zeigte 10 statt 4 offene Positionen.
+    if status == "archiviert":
+        return False
     direction = (getattr(entry, "direction", "") or "").upper()
     name = (getattr(entry, "name", "") or "").upper()
     return direction.startswith("POSITION-MONITOR") or "[MONITOR" in name
