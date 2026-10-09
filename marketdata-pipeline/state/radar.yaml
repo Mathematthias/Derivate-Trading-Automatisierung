@@ -557,4 +557,13 @@ rows:
   id: Z88
   status: offen
   added: '2026-10-05'
-updated: '2026-10-09T15:20:50+02:00'
+- date: '2026-10-12'
+  kat: 5
+  ereignis: 'OCP Global Summit 2026 (San Jose, 2026-10-12 bis 10-15): Marvell zeigt AI-Rechenzentrums-Infrastruktur (Teralynx T100 102,4T-Switch, Structera CXL, Ara DSP 1,6T Optik), 14 Sessions.'
+  werte: MRVL; Sektor-Read-across ANET, NVDA, AVGO
+  wirkung: 'Produkt-/Narrativ-Katalysator ohne Zahlen: kann MRVL ohne Ruecksetzer Richtung Widerstand 300 tragen (EMA20-Zeile verfaellt) oder nach dem Event ''sell the news'' den Ruecksetzer an die EMA20 liefern.'
+  quelle: Benzinga via TradingView 'Why Is Marvell Technology Stock Gaining Friday?' (2026-10-09), Abruf 2026-10-09. confidence mittel (Sekundaerquelle).
+  id: Z89
+  status: offen
+  added: '2026-10-09'
+updated: '2026-10-09T15:31:41+02:00'
