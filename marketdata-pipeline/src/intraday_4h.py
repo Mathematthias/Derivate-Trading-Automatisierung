@@ -83,7 +83,8 @@ class Indicators4h:
 
 
 def resample_1h_to_4h(df: pd.DataFrame, closed_only: bool = True,
-                      bars_per_block: int = BARS_PER_BLOCK) -> pd.DataFrame:
+                      bars_per_block: int = BARS_PER_BLOCK,
+                      now: Optional[pd.Timestamp] = None) -> pd.DataFrame:
     """1h-OHLCV -> session-verankerte 4h-Balken.
 
     Gruppiert je Handelstag und fasst die Balken in ihrer zeitlichen Reihenfolge
@@ -128,6 +129,26 @@ def resample_1h_to_4h(df: pd.DataFrame, closed_only: bool = True,
     out.index.name = None
     out = out.sort_index()
 
+    if closed_only and not out.empty and now is not None:
+        # 🆕 2026-10-09 (Befund Morning Check 16:33): Ein VOLLER Block ist nicht
+        # automatisch geschlossen. yfinance liefert den laufenden 1h-Balken mit —
+        # um 16:33 Berlin hatte der XETRA/LSE-Block 13:00-17:00 schon seine vier
+        # 1h-Balken (13, 14, 15, 16 Uhr), der letzte lief aber noch. NG.L stand
+        # damit mit einer "Reverse-Close" auf einer offenen Kerze im Digest.
+        # Regel mit Zeitstempel: Ende = Start + 4h (voller Block) bzw. Start des
+        # letzten 1h-Balkens + 1h (Teilblock, konservativ). Offen = now < Ende.
+        start = out.index[-1]
+        n = int(out["_bars"].iloc[-1])
+        ende = (start + pd.Timedelta(hours=bars_per_block)) if n >= bars_per_block \
+            else (df.index[-1] + pd.Timedelta(hours=1))
+        jetzt = now if now.tzinfo is not None else now.tz_localize("UTC")
+        if ende.tzinfo is not None:
+            jetzt = jetzt.tz_convert(ende.tzinfo)
+        else:                                   # naiver Index (Tests): als UTC lesen
+            jetzt = jetzt.tz_convert("UTC").tz_localize(None)
+        if jetzt < ende:
+            out = out.iloc[:-1]
+        return out.drop(columns=["_bars"], errors="ignore")
     if closed_only and not out.empty:
         last_day = df.index[-1].date()
         last_key_day = out.index[-1].date()
@@ -270,10 +291,12 @@ def rsi_cross_state(rsi: Optional[pd.Series], signal: Optional[pd.Series]
 
 
 def compute_4h(df_1h: pd.DataFrame, rsi_signal_len: int = 14,
-               bars_per_block: int = BARS_PER_BLOCK) -> Indicators4h:
-    """1h-Rohdaten -> Indikatoren auf dem letzten geschlossenen 4h-Balken."""
+               bars_per_block: int = BARS_PER_BLOCK,
+               now: Optional[pd.Timestamp] = None) -> Indicators4h:
+    """1h-Rohdaten -> Indikatoren auf dem letzten geschlossenen 4h-Balken.
+    `now` (tz-aware) schaltet die zeitbasierte Offen-Pruefung ein (seit 2026-10-09)."""
     ind = Indicators4h()
-    df = resample_1h_to_4h(df_1h, closed_only=True, bars_per_block=bars_per_block)
+    df = resample_1h_to_4h(df_1h, closed_only=True, bars_per_block=bars_per_block, now=now)
     if df.empty:
         return ind
     ind.bars_available = len(df)
@@ -336,11 +359,12 @@ def pull_4h(symbols: list[str], period: str = "60d",
     from market_data import _normalize_price_units
 
     out: dict[str, Indicators4h] = {}
+    jetzt = pd.Timestamp.now(tz="UTC")       # 2026-10-09: laufende Bloecke zeitbasiert verwerfen
     for sym in symbols:
         try:
             sub = raw[sym] if isinstance(raw.columns, pd.MultiIndex) else raw
             sub = _normalize_price_units(sym, sub)
-            out[sym] = compute_4h(sub, rsi_signal_len=rsi_signal_len)
+            out[sym] = compute_4h(sub, rsi_signal_len=rsi_signal_len, now=jetzt)
         except Exception as exc:
             logger.debug(f"4h-Layer: {sym} übersprungen ({exc})")
             out[sym] = Indicators4h()

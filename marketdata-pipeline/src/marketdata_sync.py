@@ -635,6 +635,19 @@ def main():
         merged_grinders = bundle["grinders"]
         g_meta = bundle["meta"]
 
+        # 🆕 2026-10-09: Zwei-Läufe-Regel sichtbar machen (streak je Grinder).
+        # Fehler hier duerfen den Digest nie kippen.
+        try:
+            import grinder_streak as gs
+            hist = read_latest_json_file(drive_service, briefing_folder_id, gs.PREFIX)
+            neu = gs.aktualisieren(hist, today, merged_grinders)
+            write_json_file(drive_service, briefing_folder_id,
+                            f"{gs.PREFIX}{timestamp.strftime('%Y-%m-%d-%H%M')}.json", neu)
+            cleanup_old_files(drive_service, briefing_folder_id, gs.PREFIX, keep_count=3)
+            g_meta["streak_tage"] = sorted(neu.get("tage", {}))
+        except Exception as exc:
+            logger.warning(f"Grinder-Streak uebersprungen: {exc}")
+
         # Sync-Kontrolle: jedes Pitch-Symbol MUSS jetzt einen Snapshot haben.
         # Faellt ein Symbol im Pull aus (Ticker bei Yahoo verschwunden, Timeout),
         # ist das kein Grund den Lauf zu kippen — aber es gehoert ins Log, sonst
