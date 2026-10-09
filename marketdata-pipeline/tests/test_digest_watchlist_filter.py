@@ -175,3 +175,20 @@ def test_monitor_indikatoren_bleiben_im_universe():
     assert "JST.DE" in d["universe"] and d["universe"]["JST.DE"]["kurs"] == 59.4
     assert d["buckets"] == {}
     assert [m["symbol"] for m in d["position_monitors"]] == ["JST.DE"]
+
+
+def test_archivierter_monitor_ist_keine_position():
+    """Fix 2026-10-09: Geschlossene Trades behalten das "[MONITOR #NN]"-Token im
+    Namen. Mit Status archiviert duerfen sie nicht in position_monitors landen
+    (Morning Check 2026-10-09: 10 statt 4 Positionen)."""
+    by = _entries(
+        _yaml_entry("NBIS", "archiviert", name="Nebius Group N.V. (NBIS) [MONITOR #9 AV]"),
+        _yaml_entry("RACE.MI", "position", name="Ferrari NV [MONITOR #103]"),
+    )
+    assert not _is_position_monitor(by["NBIS"])
+    assert _is_position_monitor(by["RACE.MI"])
+    assert _watchlist_status(by["NBIS"]) == "archiviert"
+    d = _digest([_ready(by["NBIS"]), _ready(by["RACE.MI"])])
+    assert [m["symbol"] for m in d["position_monitors"]] == ["RACE.MI"]
+    # Buckets: archivierte Zeilen haben in der Pipeline nur 🔴-Legs und
+    # landen ueber die Filter-Engine in "paused" — das deckt dieser Test nicht ab.
