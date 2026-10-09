@@ -62,13 +62,17 @@ jobs:
           STAMP=$(date +%Y%m%d-%H%M)
           python src/mfe_mae.py --audit-csv state/trade_audit.csv --results-csv state/mfe_mae.csv \
             --md "work/MFE-MAE-$STAMP.md"
+          # L12/L23-Messung (2026-10-09): Score <-> R, Sizing-Gegenrechnung, fuer den 20er-Review
+          python src/score_kalibrierung.py --audit-csv state/trade_audit.csv --mfe-csv state/mfe_mae.csv \
+            --stichtag "$(date +%Y-%m-%d)" --md state/score_kalibrierung.md
+          cp state/score_kalibrierung.md "work/SCORE-KALIBRIERUNG-$STAMP.md"
 
       - name: Commit results
         if: hashFiles('marketdata-pipeline/state/trade_audit.csv') != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add marketdata-pipeline/state/mfe_mae.csv
+          git add marketdata-pipeline/state/mfe_mae.csv marketdata-pipeline/state/score_kalibrierung.md
           git commit -m "state: MFE/MAE neu gerechnet ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
           git pull --rebase origin main
           git push origin HEAD:main
@@ -85,7 +89,7 @@ jobs:
           import os, pathlib
           from drive_writer import build_drive_service, write_markdown_file
           svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
-          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")):
+          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")) + sorted(pathlib.Path("work").glob("SCORE-KALIBRIERUNG-*.md")):
               write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
           PY
 
