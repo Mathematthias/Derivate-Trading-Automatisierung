@@ -1098,22 +1098,6 @@ entries:
   archived:
     date: '2026-09-17'
     reason: kein Entry-Trigger (#95
-- symbol: DUE.DE
-  name: 'Duerr AG (DUE, XETR) [MONITOR #101] — Maschinenbau/Lackieranlagen'
-  direction: SHORT
-  klasse: position_monitor
-  anker: ''
-  treiber: ''
-  status: position
-  added: '2026-09-07'
-  expiry: '2026-10-12'
-  legs:
-  - label: A
-    gate: 🟢
-    text: POSITION-MONITOR (#101) - kein Entry-Trigger. SL 3,07EUR (U ~17,89). TIW = 1D-Schluss ueber 17,75€. TP1 4,56EUR (U 16,40) = BE-Stufe, 80 Stk + SL->BE (L6). TP2 5,56EUR (U 15,40) = Runner L6. Review 2026-10-07. [Sp. Trigger-Historie]
-  notes: '[ENTRY #101 2026-09-30: 160 x 3,90 (Limit 3,95), Fill-U ~17,06 geschaetzt, Details im Detail-Sheet] || [30.09. 13:43, User] 4h-Trigger bestaetigt (Schluss 13:00, RSI-4h-Cross unter Signal). LIMIT-KAUF tagesgueltig: Short-Zert (KO 20,30, Basispreis ~20,96 rueckgerechnet aus Zert 4,06 bei U 16,90, BV 1) Limit 3,95 = U ~17,01. Plan bei Fill: 170 Stk, SL 3,07 (U 17,89, L25), TP1 4,56 (U 16,40) fuer 85 Stk, TP2 5,56 (U 15,40). R:R 0,69/1,83. 1%. Vorstandswechsel 01.10. = Risiko in der Haltedauer. || [NEU GEFASST 2026-09-22, User-Charts 1D+4h] Alte Zone an der EMA50 (17,65-17,89) lag -2,53 ATR entfe'
-  journal_row: 69
-  trade_nr: '101'
 - symbol: AG1.DE
   name: AUTO1 Group SE (AG1, XETR) — Online-Gebrauchtwagen
   direction: SHORT
@@ -2195,22 +2179,6 @@ entries:
   archived:
     date: '2026-10-08'
     reason: '#100 geschlossen 2026-10-08: Rest 300x1,02 am SL, Trade +2,00 EUR / +0,01 R'
-- symbol: FPE3.DE
-  name: FUCHS SE Vz (FPE3, XETRA) — Schmierstoffe
-  direction: LONG
-  klasse: breakout_retest
-  anker: Range-Hoch
-  treiber: ''
-  status: position
-  added: '2026-10-07'
-  expiry: '2026-10-21'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-07 BREAKOUT-RETEST-LONG: Niveau 43,50€ (Dez-Hochs), Ausbruch per Schluss 06.10. (43,70; Vol 1,14x = Vol-Daempfer). Touch 43,13–44,06€ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stop-Buy ueber Retest-Hoch. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 43,50€. TP1 45,80€, TP2 Chandelier 2,0 ATR. 1% Sizing.'
-  notes: '[RE-EVAL AUSGELOEST 2026-10-07, User-Charts 1D+4h 11:36, User-OK] Schluss 06.10. 43,70 > 43,50 (Re-Eval-Bedingung), Volumen 114K vs Avg-20d ~100K = 1,14x: Re-Eval erfuellt, Klassenschwelle 1,2x verfehlt -> Vol-Daempfer, 1 %. EMA20/50/100/200-1D 42,44/41,47/40,49/39,86 bullish, ATR-1D 0,75 (1,7 %), Extension (43,78-42,44)/0,75 = 1,79 ATR (frei), RSI-1D 65,5, 52W-Hoch. Heutige Kerze 43,46-43,80 testet das Niveau. Rechnung an Stop-Buy 43,85: SL = MIN(42,73 ; Retest-Tief 43,46-0,22 = 43,24) = 42,73, R 1,12; TP1 45,80 (Measured Move Range 40,6-43,2) = 1,74 R. Direktaktie bei 1 % = 133 Stk ~5.830 EUR > disponibel -> nur KO. Organ-Transaktion (PDMR) laut TV vor 5 Tagen, Art ungeprueft. EARNINGS 2026-10-30 (User 2026-10-07; Digest fuehrt keinen Termin) -> Entry frei bis 2026-10-22, KO-Exit spaetestens 2026-10-23 (5 HT vorher); Verfall 21.10. liegt davor. Gegenrede: Doppel-Top 43,1-43,2 (Sept), Schluss unter 43,50 stellt es wieder her. || Vorgaenger (archiviert 2026-09-24): [ARCHIVIERT
-    2026-09-24, User-Entscheid, Wiedervorlage] Zone EMA50-1D nie erreicht, Kurs lief ohne Fill bis 43,14 = TP1 43,10. TV 09:16 UTC: C 42,68, EMA20/50/100/200-1D 41,59/40,82/40,01/39,57, RSI-1D 62,3, RSI-4h 67,1; moegliches Doppel-Top 43,1-43,2 (09.09. / 24.09.). RE-EVAL bei 1D-Schluss >43,50 (ueber Dezember-Hochs ~43,5, aus Chart geschaetzt) mit Volumen -> dann Ausbruchs-Leg neu rechnen (Measured Move Range 40,6-43,2 = 45,80). BROKER: evtl. offene Order stornieren. || [NEU 2026-09-15 aus'
-  trade_nr: '105'
 - symbol: GILD
   name: Gilead Sciences (GILD, NASDAQ) — News-Catalyst-Continuation
   direction: LONG
@@ -2504,4 +2472,36 @@ entries:
     text: 'nach 2026-10-09 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 301,30$ (Investor-Day-Hoch 06.10.), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,75-2,08. ATR-Stufe 🔴: 1% Deckel, Hebel <=4,7. Earnings ~2026-11-26/12-01 (ungeklaert). Non-Quanto USD.'
   notes: '[NEU 2026-10-09 15:35, User-Entscheid nach Pitch mit Recherche, Linien von Claude, Daten Digest 14:04 = Schluss 08.10., Chart 15:25] Pipeline-Pitch breakout_long (bo_level 280, 2 Bars, Vol 2,97x, late_entry) VERWORFEN: Schluss 08.10. 274,66 = 0,37 ATR unter 280 (TIW gebrochen); Rueckeroberung a la ANET faellt durch den Exit-Test: Stop-Buy ~283, SL 261,28, R 21,72, erstes Hindernis 301,30 = 0,84 R. Chart: EMA20/50/100/200-1D 259,76/242,53/222,65/187,43 bullish, Ext 1,03 ATR, R2 0,83, Trend-20 +26,6 %, RSI-1D 61,2 < Signal 63,3, RSI-4h 51,4 < Signal 64,1. ATR 14,48 = 5,27 % (TV zeigt 13,45 inkl. laufendem Nullbalken). Zone heute 256,14-263,38, Konfluenz 4h-EMA50 ~254-255 und Ende-Sept-Konsolidierung. TIW heute 252,52. SL = ATR-Term in der ganzen Zone (241,66 OG / 234,42 UG), R 21,72 -> 7 Stk Direktaktie bei FX 1,1197. RECHERCHE: Investor Day 06.10. (FY28-Umsatz ~20 Mrd $ vs. Konsens 18,2; Custom FY29 >12 Mrd; FY31 70-90 Mrd), Kurs +6-10 %, H 301,30. 08.10. -3,5 % sektorweit (AVGO
     -4,4 %, NVDA -2,9 %). Analysten 07.10.: UBS 350, JPM 360, Jefferies 450, Konsens 348,72 (Benzinga). KATALYSATOR: OCP Global Summit 2026-10-12 bis 10-15 (Radar) - Risiko, dass der Kurs ohne Ruecksetzer Richtung 300 laeuft (Zeile verfaellt); ''sell the news'' danach = gesuchter Ruecksetzer. GEGENREDE: YTD ~+223 %, KGV 90,9, 46 % ueber EMA200; Google-Optionsschein bis ~59 Mio Aktien; Insider-Verkaeufe COO ~2 Mio $ (09/2026), CEO 1,77 Mio $ (Datum ungeprueft); Weekly HH/HL nicht erfuellt. L7: Tech/AI-Cluster mit ANET/NVDA/NBIS - max. zwei Tech-Positionen; Hoch-ATR-Plaetze beachten.'
-updated: '2026-10-09T15:31:41+02:00'
+- symbol: DUE.DE
+  name: 'Duerr AG (DUE, XETR) [MONITOR #101] — Maschinenbau/Lackieranlagen'
+  direction: SHORT
+  klasse: position_monitor
+  anker: ''
+  treiber: ''
+  status: position
+  added: '2026-09-07'
+  expiry: '2026-10-15'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#101, Rest 80 Stk, RUNNER) - kein Entry-Trigger. TP1 4,65EUR gefuellt 2026-10-08 (80 Stk, U ~16,31). SL 3,64EUR (U ~17,30, Stufe 3 ueber 4h-Lower-High/4h-EMA100, scharf 2026-10-08 ~10:35, User). TIW = 1D-Schluss ueber 17,75€. TP2 5,56EUR (U 15,40) = Runner. Recheck 2026-10-15. Earnings 2026-11-12. [Sp. Trigger-Historie]
+  notes: '[SYNC 2026-10-09 mit Journal-Uebersicht, Anlass Morning Check] TP1 80x4,65 am 2026-10-08 (+52,00 EUR / +0,39 R), Rest-Risiko 80x(3,95-3,64)=24,80 EUR + 4,00 Gebuehr; Chandelier U 16,93 und BE U ~16,96 per Veto (<0,50 ATR) gesperrt. Gegenargument: bullishe RSI-Divergenz 4h. || [ENTRY #101 2026-09-30: 160 x 3,90 (Limit 3,95), Fill-U ~17,06 geschaetzt, Details im Detail-Sheet] || [30.09. 13:43, User] 4h-Trigger bestaetigt (Schluss 13:00, RSI-4h-Cross unter Signal). LIMIT-KAUF tagesgueltig: Short-Zert (KO 20,30, Basispreis ~20,96 rueckgerechnet aus Zert 4,06 bei U 16,90, BV 1) Limit 3,95 = U ~17,01. Plan bei Fill: 170 Stk, SL 3,07 (U 17,89, L25), TP1 4,56 (U 16,40) fuer 85 Stk, TP2 5,56 (U 15,40). R:R 0,69/1,83. 1%. Vorstandswechsel 01.10. = Risiko in der Haltedauer. || [NEU GEFASST 2026-09-22, User-Charts 1D+4h] Alte Zone an der EMA50 (17,65-17,89) lag -2,53 ATR entfe'
+  journal_row: 69
+  trade_nr: '101'
+- symbol: FPE3.DE
+  name: FUCHS SE Vz (FPE3, XETRA) — Schmierstoffe
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: position
+  added: '2026-10-07'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'POSITION-MONITOR (#105, 1.150 Stk) - kein Entry-Trigger. Entry 2026-10-08 1.150 x 0,90EUR. OCO scharf 2026-10-08 ~13:35 (User): SL 0,78EUR / TP1 1,07EUR fuer 383 Stk (1/3, Exit-Test v49), Rest Chandelier 2,0 ATR. TIW = 1D-Schluss unter 43,50€. Review 2026-10-15 (5 HT). KO-Exit vor Earnings spaetestens 2026-10-23. [Sp. Trigger-Historie]'
+  notes: '[SYNC 2026-10-09 mit Journal-Uebersicht] Entry-Zeile zum Positions-Monitor umgeschrieben; Setup-Text (Breakout-Retest 43,50, Band 43,13-44,06, TP1 45,80) steht in der Trigger-Historie. || [RE-EVAL AUSGELOEST 2026-10-07, User-Charts 1D+4h 11:36, User-OK] Schluss 06.10. 43,70 > 43,50 (Re-Eval-Bedingung), Volumen 114K vs Avg-20d ~100K = 1,14x: Re-Eval erfuellt, Klassenschwelle 1,2x verfehlt -> Vol-Daempfer, 1 %. EMA20/50/100/200-1D 42,44/41,47/40,49/39,86 bullish, ATR-1D 0,75 (1,7 %), Extension (43,78-42,44)/0,75 = 1,79 ATR (frei), RSI-1D 65,5, 52W-Hoch. Heutige Kerze 43,46-43,80 testet das Niveau. Rechnung an Stop-Buy 43,85: SL = MIN(42,73 ; Retest-Tief 43,46-0,22 = 43,24) = 42,73, R 1,12; TP1 45,80 (Measured Move Range 40,6-43,2) = 1,74 R. Direktaktie bei 1 % = 133 Stk ~5.830 EUR > disponibel -> nur KO. Organ-Transaktion (PDMR) laut TV vor 5 Tagen, Art ungeprueft. EARNINGS 2026-10-30 (User 2026-10-07; Digest fuehrt keinen Termin) -> Entry frei bis 2026-10-22, KO-Exit spaetestens
+    2026-10-23 (5 HT vorher); Verfall 21.10. liegt davor. Gegenrede: Doppel-Top 43,1-43,2 (Sept), Schluss unter 43,50 stellt es wieder her. || Vorgaenger (archiviert 2026-09-24): [ARCHIVIERT 2026-09-24, User-Entscheid, Wiedervorlage] Zone EMA50-1D nie erreicht, Kurs lief ohne Fill bis 43,14 = TP1 43,10. TV 09:16 UTC: C 42,68, EMA20/50/100/200-1D 41,59/40,82/40,01/39,57, RSI-1D 62,3, RSI-4h 67,1; moegliches Doppel-Top 43,1-43,2 (09.09. / 24.09.). RE-EVAL bei 1D-Schluss >43,50 (ueber Dezember-Hochs ~43,5, aus Chart geschaetzt) mit Volumen -> dann Ausbruchs-Leg neu rechnen (Measured Move Range 40,6-43,2 = 45,80). BROKER: evtl. offene Order stornieren. || [NEU 2026-09-15 aus'
+  trade_nr: '105'
+updated: '2026-10-09T15:51:58+02:00'
