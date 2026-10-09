@@ -209,6 +209,12 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "late_entry": bool(getattr(snap, "late_entry", False)),
         "bo_level": getattr(snap, "bo_level", None),
         "bo_bars_ago": getattr(snap, "bo_bars_ago", None),
+        # 2026-10-09: Volumen-Vielfaches am Ausbruchs-/Breakdown-Tag — ersetzt den
+        # Handcheck „Vol MANUELL" in den Watchlist-Zeilen (Boden 1,0 / Daempfer 1,3).
+        "bo_vol_mult": (round(getattr(snap, "bo_vol_mult"), 2)
+                        if getattr(snap, "bo_vol_mult", None) is not None else None),
+        "bd_vol_mult": (round(getattr(snap, "bd_vol_mult"), 2)
+                        if getattr(snap, "bd_vol_mult", None) is not None else None),
         "bd_level": getattr(snap, "bd_level", None),
         "bd_bars_ago": getattr(snap, "bd_bars_ago", None),
         "move30d": _r(snap.move_30d_pct, 2),
