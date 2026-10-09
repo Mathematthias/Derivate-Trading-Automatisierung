@@ -233,6 +233,35 @@ def _leg_reeval(text: str) -> Optional[dict]:
     return None if v is None else {"op": m.group("op"), "level": v}
 
 
+# Positions-Monitor-Meta (v63, 2026-10-09): SL, TP1 (gefuellt?), Review/Recheck aus
+# Leg A einer `status: position`-Zeile. Der Morning Check gleicht das gegen die
+# Journal-Uebersicht ab (Anlass DUE #101: TP1 am 08.10. gefuellt, SL nachgezogen,
+# Monitor-Zeile stand noch auf dem Einstiegsplan).
+_MON_SL_RE = re.compile(r"\b(?:SL|Stop)\s+(?P<val>\d{1,3}(?:\.\d{3})*,\d+|\d+,\d+|\d+(?:\.\d+)?)\s*(?:EUR|€)",
+                        re.IGNORECASE)
+_MON_TP1_RE = re.compile(r"\bTP1\s+(?P<val>\d{1,3}(?:\.\d{3})*,\d+|\d+,\d+|\d+(?:\.\d+)?)\s*(?:EUR|€)(?P<rest>[^.]{0,40})",
+                         re.IGNORECASE)
+_MON_REVIEW_RE = re.compile(r"\b(?:Review|Recheck)\s+(?P<d>\d{4}-\d{2}-\d{2})", re.IGNORECASE)
+
+
+def _leg_monitor(text: str) -> Optional[dict]:
+    """{"sl", "tp1", "tp1_gefuellt", "review"} aus einem Positions-Monitor-Leg,
+    None wenn nichts davon erkennbar ist. Werte in Zertifikats-/Positionswaehrung
+    (EUR), wie die Uebersicht sie fuehrt."""
+    t = str(text or "")
+    sl = _MON_SL_RE.search(t)
+    tp = _MON_TP1_RE.search(t)
+    rv = _MON_REVIEW_RE.search(t)
+    if not (sl or tp or rv):
+        return None
+    return {
+        "sl": _de_zahl(sl.group("val")) if sl else None,
+        "tp1": _de_zahl(tp.group("val")) if tp else None,
+        "tp1_gefuellt": bool(tp and re.search(r"gef(?:ue|ü)llt", tp.group("rest"), re.IGNORECASE)),
+        "review": rv.group("d") if rv else None,
+    }
+
+
 def watchlist_meta(block: dict) -> list[dict]:
     """Schlanke Metadaten je Eintrag fuer den Digest (Klasse, Anker, Treiber,
     Verfall, Gates) — das, was der Morning Check braucht und bisher nirgends
@@ -261,6 +290,8 @@ def watchlist_meta(block: dict) -> list[dict]:
             "trade_nr": e.get("trade_nr"),
             "tiw": tiw,
             "reeval": reeval,
+            # v63: nur fuer Positionen — Abgleich gegen die Journal-Uebersicht
+            "monitor": (_leg_monitor(legs[0].get("text")) if legs and e.get("status") == "position" else None),
         })
     return out
 
