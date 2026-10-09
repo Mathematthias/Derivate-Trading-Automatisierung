@@ -6,14 +6,14 @@ thesen:
   verdikt: spielen
   korb_budget_pct: 4
   crowdedness_pp: 4.52
-  re_check: '2026-10-09'
+  re_check: '2026-10-16'
   falsifikat: (a) Hyperscaler-Capex-Cut (Messtermin Q3-Calls Ende Oktober, Alphabet 2026-10-28); (b) book-to-bill < 1 (PRY 2026-10-29, ENR 2026-11-11)
   ausdruecke:
   - ETN
   - ABBN.SW
   - PWR
   - PRY.MI
-  note: 'Korb A Umbau 2026-10-05 (User): ETN, ABBN.SW, PWR (Universum seit PR #4) + PRY.MI (Kabel, RE-EVAL >133,40). NEX.PA und ENR.DE raus (seit Wochen seitwaerts, r2 <=0,23). Budget 4 % RK / 4 = 150 EUR je Ausdruck. SU.PA nicht: PTC-Uebernahme 22,6 Mrd USD (2026-10-05, -10 %) = frischer Gegen-Katalysator.'
+  note: 'Re-Check 2026-10-09 (Kurs-Check aus Digest 12:03, News-Stufe offen): Falsifikate (a) Hyperscaler-Capex und (b) book-to-bill erst ab Ende Okt. messbar (Alphabet 10-28, PRY 10-29, ENR 11-11) -> nicht ausgeloest. Korb-Kurse: ETN 3/4 EMAs, 0,24 ATR ueber TIW 421,10, Docht 439->424,5; PWR Stack bullish 4/4, Ausbruch 692,90 vor 2 HT, heute zurueck darunter (685,33); ABBN.SW 1/4, Stack neutral, Earnings 10-20; PRY.MI 1/4, Stack neutral. Zwei von vier Ausdruecken im Trend, zwei seitwaerts. || Korb A Umbau 2026-10-05 (User): ETN, ABBN.SW, PWR (Universum seit PR #4) + PRY.MI (Kabel, RE-EVAL >133,40). NEX.PA und ENR.DE raus (seit Wochen seitwaerts, r2 <=0,23). Budget 4 % RK / 4 = 150 EUR je Ausdruck. SU.PA nicht: PTC-Uebernahme 22,6 Mrd USD (2026-10-05, -10 %) = frischer Gegen-Katalysator.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -23,6 +23,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: null
     source: morning-check
+  - date: '2026-10-09'
+    verdikt: spielen
+    crowdedness_pp: null
+    source: chat-recheck
 - id: OEL
   titel: Oel/Hormus
   verdikt: spielen
@@ -57,4 +61,4 @@ thesen:
   re_check: '2026-10-29'
   falsifikat: ''
   ausdruecke: []
-updated: '2026-10-08T20:36:28+02:00'
+updated: '2026-10-09T13:30:01+02:00'

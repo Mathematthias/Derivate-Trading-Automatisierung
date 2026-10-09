@@ -1062,22 +1062,6 @@ entries:
     text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (17,25 -> -25,88). TIW = 1D-Schluss unter 315,00$. TP1 369,00$ = BE-Stufe (L6). TP2 400,00$ = Runner L6. R:R Runner 2,49-2,89. 1% Sizing. [Sp. Trigger-Historie]'
   notes: '[NEU GEFASST 2026-09-30, Morning Check, User-Charts 1D+4h 12:25] ANLASS: TP1 325 lag UNTER der mitgewanderten Zone (325,2-335,6), TIW 283 3,9 ATR weg. CHART: Kurs 352,26 (29.09.), ATH ~369 (24.09.), 4h-Ruecksetzer bis ~341 (26.09.), 4h-EMA20 344,55. 1D-EMA 330,42/305,56/279,15/248,71 bullisch, RSI-1D 62,7 ~ Signal 62,1, RSI-4h 59,5 < 64,9. ATR-1D 17,25 = 4,90% (🟡 knapp unter 🔴, Hebel <=5,1). LINIEN: TIW 315 = Higher-Low 18.09. (~316, 4h abgelesen). TP1 369 = ATH. TP2 400 = Orientierung (Blue Sky; Measured Move 425 waere 5,5 ATR, L13 zu weit). R:R TP1 1,29-1,69 / TP2 2,49-2,89; L25: ATR-Term ge'
   journal_row: 62
-- symbol: RACE.MI
-  name: 'Ferrari NV (RACE, Borsa Italiana) [MONITOR #103]'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA100-1D
-  treiber: ''
-  status: position
-  added: '2026-09-02'
-  expiry: '2026-10-09'
-  legs:
-  - label: A
-    gate: 🟢
-    text: POSITION-MONITOR (#103) - kein Entry-Trigger. SL 5,47EUR (U ~329,00). TIW = 1D-Schluss unter 335,00€. TP1 7,87EUR (U 353,00) = BE-Stufe, 55 Stk + SL->BE (L6). TP2 9,47EUR (U 369,00) = Runner L6. Review 2026-10-09. [Sp. Trigger-Historie]
-  notes: '[ENTRY #103 2026-10-02: 110 x 6,75, Fill-U ~341,65 geschaetzt, Details im Detail-Sheet] || [NEU GEFASST 2026-10-02, Linien von Claude (User-Auftrag), Charts 1D+4h 14:00] Alte These (EMA50, TIW 343) per Schluss 01.10. 342,01 widerlegt. Neu: Pullback an EMA100 339,02 nach Tief ~342; 4h 09-13 Bullish-Engulfing + RSI-4h-Cross frisch (40,1>38,4). Faecher 2/4 = Grenzfall -> 1%. Ziele: 353 = EMA20-1D/4h-Cluster EMA50/100, 369 = Sept-Hoch. R:R TP1 0,46-1,11 (TP1 ist reine BE-Stufe), Runner 1,60-2,39. Kurs 346,35 am oberen Zonenrand. || [NEU GEFASST 2026-09-14, User-Charts 1D+4h 12:21 UTC] DREI AENDERU'
-  journal_row: 64
-  trade_nr: '103'
 - symbol: ROST
   name: Ross Stores (ROST, NASDAQ) — Off-Price-Retail
   direction: LONG
@@ -1460,21 +1444,6 @@ entries:
   archived:
     date: '2026-09-29'
     reason: 'Short-Trend-Pullback ohne Fill: Bounce blieb aus, Kurs 272,58 = 3,3 ATR unter der EMA20-1D ARCHIVIERT 2026-09-29 - Zone nie erreicht, Kurs durchgelaufen. RE-EVA'
-- symbol: MCD
-  name: McDonald's Corporation (MCD, NYSE) — Systemgastronomie
-  direction: SHORT
-  klasse: trend_pullback
-  anker: EMA20-4H
-  treiber: ''
-  status: aktiv
-  added: '2026-09-17'
-  expiry: '2026-10-14'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-24 SHORT-TREND-PULLBACK: Touch 246,50-249,50$ [pullback] (4h-EMA20 / Open Investor-Day) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Stopweite entry-relativ +1,5xATR-1D (5,10 -> +7,65). TIW = 1D-Schluss ueber 252,00$. TP1 234,00$ = BE-Stufe (Event-Tief, 50% + SL->BE, L6). Kein TP2 (L13), Runner trailt. R:R TP1 1,63-2,03. 1% Sizing. Non-Quanto USD.'
-  notes: '[NEU GEFASST 2026-09-24, User-Entscheid, User-Chart 1D+4h 09:15 UTC] Binaeres Ereignis durch: Investor Day 23.09. (>NEXT: operative Marge low-mid 50% bis 2030, 8,5 Mrd USD Franchisee-Support bis 2036) -> Tag -4,81%, H 250,32 / L 234,03 / C 238,32, Vol 16,61 Mio. Alte Zone 252-256 gegenstandslos (2,7-3,4 ATR), altes TP2 237 ohne Entry erreicht. EMA20/50/100/200-1D 254,08/262,44/272,06/283,54, Kurs unter 4/4. RSI-1D 25,9 ueberverkauft, Extension -3,1 ATR -> kein Entry am Markt, Bounce abwarten. SL an der Zone ATR-bestimmt 254,15-257,15 (L25 frei, Puffer 0,42 ATR). EARNINGS: TV zeigt 28 Tage (~22'
-  journal_row: 92
 - symbol: MCK
   name: McKesson Corporation (MCK, NYSE) — Pharma-Grosshandel
   direction: LONG
@@ -1589,21 +1558,6 @@ entries:
     text: 'nach 2026-09-23 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D +0,00/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (1,83 -> -2,75). TIW = 1D-Schluss unter 50,50$. TP1 57,50$ = BE-Stufe (50% + SL->BE, L6). TP2 61,00$ = Runner L6. R:R TP1 0,81-1,32 / Runner 1,65-2,39. 1% Sizing (30d >15%, L8). Non-Quanto USD.'
   notes: 'ANGELEGT 2026-09-23 (User-Charts, Stand 22.09.). Rally Aug 41 -> 57,20; Stack bullisch 53,21/49,92/46,74/45,04. Extension (57,20-53,21)/1,83 = 2,18 ATR (Gate 1: 2-4 ATR) und RSI-4h 73,3 -> KEIN Entry jetzt, nur Pullback an die steigende EMA20. 57,5-58 = Jul-2025-Hochs (Widerstand) = TP1; TP2 61 ohne Chart-Level darueber (Orientierung). TIW = Sep-Tiefbereich 50,3-50,6. Morgan Stanley Top-Pick (News 21.09.). Earnings 2026-11-04 (TV: in 42 Tagen). [TECH/SOFTWARE, Rangregel] ATR-STUFE 🟡 (3.20 %, § ATR-Stufen seit 2026-09-23): Vehikel frei, KO-Hebel <= 7.8.'
   journal_row: 102
-- symbol: V
-  name: Visa (V, NYSE) - Zahlungsnetzwerk
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA100-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-09-23'
-  expiry: '2026-10-13'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-23 TREND-PULLBACK-LONG: Touch EMA100-1D -0,40/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (6,13 -> -9,20). TIW = 1D-Schluss unter 343,00$. TP1 370,50$ = BE-Stufe (50% + SL->BE, L6). TP2 384,00$ = Runner L6 (Aug-Hoch). R:R TP1 0,93-1,85 / Runner 1,82-3,16. 1% Sizing. Non-Quanto USD.'
-  notes: 'ANGELEGT 2026-09-23 (User-Charts, Stand 22.09.). Rally Jun-Aug 300 -> 385, Ruecksetzer 22.09. -2,14% auf 362,04 (unter EMA20 370,5 / EMA50 364,8, Stack weiter bullisch). RSI-4h 33,8, RSI-1D 40,8 fallend -> Zone an der EMA100 abwarten. Umfeld: Haendlerklage gegen den Interchange-Vergleich (Anhoerung 16.11.), UK-PDC; MA #98 am 22.09. ausgestoppt. TIW unter EMA200 344,06. Earnings 2026-11-03 (TV: in 41 Tagen). KORRELATION: V und MA = EIN Block (L7).'
-  journal_row: 103
 - symbol: NG.L
   name: National Grid (NG., LSE) - Netzbetreiber UK
   direction: SHORT
@@ -2039,41 +1993,6 @@ entries:
   notes: '[KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] Linien unveraendert (Range 155-170), Exit auf v49 umgeschrieben, Sizing auf Korb-Anteil. L25 an OG 160,62: SL 154,44 -> 1,52/2,33 R; an UG 158,85: SL 153,56 -> 2,11/3,05 R. Kurs 164,01 = 1,0 ATR ueber Zone. Ausbruchs-Leg >170 verworfen: TP1 176,41 (Maerz-Hoch) nur 1,14 R. || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] TD Cowen: Kursziel angehoben, Buy, erwartet Q3-Beat durch Raffineriemargen bei schwaecherem Upstream (TV-Kernfakten, nur Ueberschrift). CHART: Range 155-170 seit August, Kurs 161,35 an der EMA20-1D 161,82; RSI-1D 50,0 < 53,5. TIW 155,50 = Tiefs Aug/Sept. TP1 170 = Sept-Hoch, TP2 175 = April-Hoch. ATR 2,25%. Einsatz h5 ~840-870 EUR. KORB: These Oel/Hormus spielen, Budget 1% gesamt, 0/2 - XOM ODER ENI.MI (Z71), nicht beide. Anfang Oktober ueblich: 8-K "earnings
     considerations" (Schaetzung, ungeprueft). Earnings 2026-10-30.'
   journal_row: 124
-- symbol: PSX
-  name: Phillips 66 (PSX, NYSE) - Raffinerien
-  direction: LONG
-  klasse: thesen_korb
-  anker: EMA20-1D / Sept-Tiefs
-  treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-12)
-  status: aktiv
-  added: '2026-09-29'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-05 KORB-OEL TREND-PULLBACK-LONG (Korb 3/4): Touch 250,00-257,00$ [pullback] (Sept-Tiefs 248,5/250,1 bis EMA20-1D) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (8,75 -> -13,12). TIW = 1D-Schluss unter 246,00$. TP1 276,00$ = ATH-Zone Sept (1/3 raus, Exit-Test v49). Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,39-1,98. Korb-Anteil 75 EUR Risk. ATR 3,3% 🟡: KO Hebel <=3 (Einsatz >=400). Non-Quanto USD.'
-  - label: B
-    gate: 🟡
-    text: 'nach 2026-10-05 KORB-OEL BREAKOUT-LONG (Korb 3/4, alternativ zu A): Kurs 277,60-284,00$ [breakout] (Stop-Buy ueber ATH 277,12). Stopweite entry-relativ -1,5xATR-1D (8,75 -> -13,12). TIW = 1D-Schluss unter 268,00$. TP1 305,70$ = Measured Move Range 248,51-277,12 (1/3 raus, Exit-Test v49). Rest 2/3 Chandelier 2,0 ATR. R:R TP1 2,14. Korb-Anteil 75 EUR Risk. KO Hebel <=3. Non-Quanto USD.'
-  notes: '[KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] NEU GEFASST: alte EMA50-Zone (241) 2,7 ATR unter Kurs, TP1 262 lag unter dem Kurs. Leg A Pullback 250-257 (L25: OG SL 243,38 -> 1,39 R, UG SL 236,88 -> 1,98 R); Leg B Breakout ueber ATH 277,12 (SL 264,48, TP1 MM 305,70 = 2,14 R). Nur EIN Leg wird gefuellt. Verfall 10-20 wegen Earnings 2026-10-28. || [NEU 2026-09-29, Pitch long_trend_pullback RRprox 1,84, Recherche S0+S1, Linien von Claude (User-Auftrag)] Trend +60% seit Juli (170 -> ATH 276 am 18.09.), jetzt 251,96 knapp unter EMA20-1D 255,05, RSI-1D 50 fallend, RSI-4h 42,8 < 46,9. Einstieg an der EMA50 statt hier. TIW 234 = unter Swing-Tief Ende Aug (~236). L25: Zonen-OG 242,10 -> SL 229,67 (ATR), UG 237,12 -> SL 224,69. TP1 262 = Sept-Konsolidierung, TP2 276 = ATH. PRO: Diesel-Margen hoch, UBS ueber Rekordhoch, positiver Ausblick
-    vor Q3 (~2026-10-28). Oelpreis-Rueckgang kein Gegensignal (Input-Kosten). KORB: Kandidat K-1 Raffinerie-Engp'
-  journal_row: 119
-- symbol: FRA.DE
-  name: Fraport AG (FRA, XETRA) — Flughafenbetreiber
-  direction: SHORT
-  klasse: thesen_korb
-  anker: EMA20-1D
-  treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-12)
-  status: aktiv
-  added: '2026-09-28'
-  expiry: '2026-10-16'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-09-28 SHORT-TREND-PULLBACK (Korb Oel 4/4, Gegenrichtung): Touch EMA20-1D +0,25/+0,50 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Stopweite entry-relativ +1,5xATR-1D (1,57 -> +2,35). TIW = 1D-Schluss ueber 64,30€. TP1 58,50€ = Sept-Tief 58,30 (1/3 raus, Exit-Test v49). Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,48-1,76. Korb-Anteil 75 EUR Risk. ATR 2,5% 🟡: KO Hebel <=4 (Einsatz >=400).'
-  notes: '[KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] In den Oel-Korb uebernommen (Gegenrichtung, zaehlt gegen dessen Budget, kein eigener 1-%-Trade mehr). TP1 60,00 -> 58,50 (Sept-Tief 58,30): 60,00 ergab an der Zonen-UG nur 0,89 R < 1,3 (Exit-Test v49). Jetzt 1,48 (UG) / 1,76 R (OG); am heutigen Kurs 61,80 nur 1,18 R -> nur aus der Zone. || [ANGELEGT 2026-09-28, User-Auftrag "nach deinen Vorschlaegen", User-Charts 1D+4h 14:42 CEST] Fraport AG (FRA, XETRA, MDAX) — Flughafenbetreiber. Herkunft Stufe-2-Pitch EU 11:35 (short_trend_pullback, RRprox 1,55), an der 5er-Pullback-Quote gescheitert. CHART: Abwaertstrend seit Juli-Hoch ~76,5; September-Boden 57,5-58,3; Reaktion bis 64,2 an die EMA50-1D, Abweisung 22./23.09.; heute zurueck an der EMA20. EMA-1D 20/50/100/200 = 61,95 / 63,90 / 66,47 / 68,43 (baerisch, Kurs 62,10 unter 3/4 -> trendkonform,
-    kein Counter-Deckel). RSI-1D 48,8 ueber Signal 40,8; ATR-1D 1,649 = 2,66 % (🟡). 4h: EMA 61'
-  journal_row: 117
 - symbol: ABBN.SW
   name: ABB Ltd (ABBN, SIX) - Elektrifizierung/Automation
   direction: LONG
@@ -2268,24 +2187,6 @@ entries:
   archived:
     date: '2026-10-08'
     reason: '#99 geschlossen 2026-10-08: Rest 225x2,20 am SL-Nachzug, Trade -26,50 EUR / -0,18 R'
-- symbol: VOS.DE
-  name: Vossloh AG (VOS, XETRA) — Bahninfrastruktur
-  direction: SHORT
-  klasse: breakout_retest
-  anker: Range-Tief
-  treiber: Warburg Hold (KZ 65->60) 2026-10-01, Deutsche Bank KZ 82->75 nach CMD 2026-09-28; Q3 2026-10-22
-  status: archiviert
-  expiry: '2026-10-15'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-10-07 - TIW 51,15 per Schluss gebrochen (05.10. 51,20, 06.10. 51,85). RE-EVAL: 1D-Schluss <50,02€ + Vol >Avg-20d.'
-  notes: '[ARCHIVIERT 2026-10-07, User-Entscheid Morning Check] Breakdown vom 02.10. zurueckerobert, zwei Schluesse ueber dem Niveau. RE-EVAL = echter zweiter Breakdown unter die Band-UG 50,02 mit Volumen. Q3 2026-10-22. Vorheriger Leg-Text: nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40. Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter
-    EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
-  added: '2026-10-05'
-  archived:
-    date: '2026-10-07'
-    reason: TIW 51,15 per Schluss gebrochen (05.10. 51,20, 06.10. 51,85)
 - symbol: HOLN.SW
   name: Holcim Ltd (HOLN, SIX) — Zement/Baustoffe
   direction: SHORT
@@ -2415,22 +2316,6 @@ entries:
     text: 'nach 2026-10-07 BREAKOUT-RETEST-LONG: Niveau 236,50$ (Juli-Hoch, geschaetzt), Ausbruch 06.10. (H 243,37, Schluss 239,24). Touch 233,59–240,87$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stop-Buy ueber Retest-Hoch. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 236,50$. TP1 263,50$, TP2 Chandelier 2,0 ATR. 1% Sizing. USD Non-Quanto.'
   notes: '[NEU 2026-10-07, User-Wunsch, Charts 1D+4h 14:17] Stack 1D bullish (EMA20/50/100/200 227,47/220,97/214,09/202,93), ATR-1D 5,82, RSI-1D 67,2, RSI-4h 70,3. Ausbruch ueber Juli-Hoch ~236,5 (AUS CHART GESCHAETZT) am 03./06.10., 06.10. H 243,37 / Schluss 239,24, vorboerslich 07.10. 236,88 = Retest des Niveaus. Extension Schluss 06.10. (239,24-227,47)/5,82 = 2,02 ATR (L18 Grenze), am Niveau ~1,6 ATR (frei). Band 233,59-240,87 = Niveau -0,5/+0,75 ATR. Beispielrechnung Retest-Tief 235,0 / Stop-Buy 240,0: SL = MIN(231,27 ; 233,25) = 231,27, R 8,73; TP1 263,50 = Measured Move Basis Aug/Sep ~209,5 bis 236,5 (+27) = 2,69 R (4 ATR, plausibel ueber 2-3 Wochen). VOLUMEN Ausbruchstag 06.10. 101,7 Mio - Avg-20d Handcheck (Klasse >= 1,2x, sonst Vol-Daempfer). Earnings ~2026-11-25 (TV: in 49 Tagen). L7/Tech-Cluster: NBIS #9 (Runner, Restrisiko 0) und QCOM-Zeile im selben Block, max. zwei Tech-Positionen. Ausweichvariante, falls TIW bricht: Trend-Pullback EMA20-1D (226,0-228,9), TIW Schluss unter
     220,00, TP1 243,37 = 1,36 R / TP2 263,50 = 3,24 R. Gegenrede: Morgan-Stanley-Hinweis auf Strom-/Energiegrenzen bei Kunden (TV Key Facts), Krypto-/Risk-off heute.'
-- symbol: AAPL
-  name: Apple Inc. (AAPL, NASDAQ)
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA50-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-09-30'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-07 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 312,00$. TP1 345,00$, TP2 360,00$. R:R TP1 1,34-1,85. 1% Sizing. Non-Quanto USD.'
-  notes: '[ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs
-    329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
-  journal_row: 123
 - symbol: WM
   name: Waste Management, Inc. (WM, NYSE) - Entsorgung/Recycling USA
   direction: SHORT
@@ -2476,4 +2361,117 @@ entries:
     text: 'nach 2026-10-08 BREAKOUT-RETEST-LONG: Niveau 212,00$ (20-Tage-Hoch). Breakout per Schluss 06.10. bestaetigt (Vol 1,47x Avg-20d = VOL-DAEMPFER, 1 %). Entry nach Retest: Retest-Kerze 08.10. (Tief 209,51$) im Band 208,49–217,27$ [pullback], Schluss muss >=212,00$ bleiben. Einstieg Stop-Buy ueber Hoch der Retest-Kerze 217,32$ -> 217,45$ (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR) = 206,92$ an 217,45 (ATR 7,02). TIW = 1D-Schluss unter 212,00$. TP1 ~235$ Measured Move (Range ~189-212, Tief abgelesen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,67. Earnings 2026-11-03. 1% Sizing. ATR 3,3% (gelb, KO-Hebel <=7,6). Non-Quanto USD.'
   notes: '[NEU 2026-10-08, Pitch breakout_long RRprox 3,66, User-Auftrag Watchlist, Linien von Claude] Chart 1D+4h 20:21: C 213,12 (-1,26 %), H 217,32 = neues 52W-Hoch (Digest dist52wH -3 %), L 209,51. EMA20/50/100/200-1D 204,88/195,95/183,91/167,16 bullish, Ext 1,17 ATR. RSI-1D 63,0, RSI-4h 61,5 nach ~73 bei gleichem Hoch = leichte baerische 4h-Divergenz. 4h-EMA20 208,68. Pipeline: bo_level 212,00, bo_bars_ago 2, Vol 1,47x. Stop-Buy in EUR auf deutschem Platz: 217,45$/1,1202 = 194,12 EUR, SL 184,72 EUR, TP1 ~209,8 EUR; bei FX-Bewegung >0,5 % neu rechnen. Stop-Limit statt Stop-Market wegen duenner Quotes ausserhalb US-Zeit (Anlass LLY #10). Positionsgroesse 15 Stk Aktie ~2.912 EUR, Risiko ~141 EUR.'
   trade_nr: null
-updated: '2026-10-08T20:36:28+02:00'
+- symbol: V
+  name: Visa (V, NYSE) - Zahlungsnetzwerk
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-09-23'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 TREND-PULLBACK-LONG (Momentum-Continuation): Touch EMA20-1D -0,25/+0,07 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 359,00$. TP1 384,00$ (Aug-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,77. 1% Sizing. Non-Quanto USD.'
+  notes: '[NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03, keine Charts] EMA100-Zone 2,60 ATR unter Kurs (375,10). Neu: Anker EMA20-1D 368,39 (Momentum-Continuation), ATR 6,15. TIW 359,00 = Tief Anfang Okt. (Pipeline bd_level 359,80, 6 HT). L25: SL = 359,00-1,84 = 357,16 (TIW-Term ueber die ganze Zone); Grenze Entry <= (384 + 1,3x357,16)/2,3 = 368,83 -> Zone -0,25/+0,07 ATR (366,85-368,83), R:R TP1 1,30-1,77. ACHTUNG r2 0,06, Trend-20 -1,1 %: Stack bullish, aber Trendqualitaet schwach (GOOGL-Lehre). EARNINGS: Digest 2026-10-27, alte Notiz 11-03 -> gegenpruefen; Verfall 10-20 = KO-Exit-Frist bei 10-27. V und MA = ein Block (L7). || ANGELEGT 2026-09-23 (User-Charts, Stand 22.09.). Rally Jun-Aug 300 -> 385, Ruecksetzer 22.09. -2,14% auf 362,04 (unter EMA20 370,5 / EMA50 364,8, Stack weiter bullisch). RSI-4h 33,8, RSI-1D 40,8 fallend -> Zone an der EMA100 abwarten. Umfeld: Haendlerklage gegen den Interchange-Vergleich (Anhoerung 16.11.),
+    UK-PDC; MA #98 am 22.09. ausgestoppt. TIW unter EMA200 344,06. Earnings 2026-11-03 (TV: in 41 Tagen). KORRELATION: V und MA = EIN Block (L7).'
+  journal_row: 103
+- symbol: AAPL
+  name: Apple Inc. (AAPL, NASDAQ)
+  direction: LONG
+  klasse: breakout_retest
+  anker: Range-Hoch
+  treiber: ''
+  status: aktiv
+  added: '2026-09-30'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 BREAKOUT-RETEST-LONG: Niveau 345,30$ (Doppeltop Jul/Sept = ATH). Ausbruch erst per 1D-Schluss ueber 345,30$ mit Vol >= 1,2x Avg-20d (MANUELL). Dann Retest im Band 342,04–350,19$ [breakout] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 345,30$. TP1 378,00$ Measured Move (Range 312-345), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 2,84-3,39. 1% Sizing (Pilot). Non-Quanto USD.'
+  notes: '[NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03] EMA50-Zone 2,21 ATR unter Kurs 340,42, altes TP1 345 nur 0,7 ATR ueber Kurs -> Pullback-Long unter dem Doppeltop traegt nicht mehr (EMA20-Variante 1,06 R). Umgesetzt ist der RE-EVAL-VERMERK vom 07.10.: Breakout-Retest ueber 345,30 (52W-Hoch laut Digest dist52wH -1,42 %). Band = Niveau -0,5/+0,75 ATR (ATR 6,52). L25 an 350,19: SL MIN(340,42 ; 343,34) = 340,42 -> 2,84 R; an 345,30: 3,39 R. MM = 345,30 + (345,30-312) = 378,6 -> 378,00. Klassen-Gate bleibt bis zum Ausbruch per Schluss zu (bo_level fehlt). Earnings 2026-11-02 -> KO-Exit bis 2026-10-26. || [ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17
+    R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs 329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
+  journal_row: 123
+- symbol: PSX
+  name: Phillips 66 (PSX, NYSE) - Raffinerien
+  direction: LONG
+  klasse: thesen_korb
+  anker: EMA20-1D / Sept-Tiefs
+  treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-12)
+  status: aktiv
+  added: '2026-09-29'
+  expiry: '2026-10-20'
+  legs:
+  - label: B
+    gate: 🟡
+    text: 'nach 2026-10-05 KORB-OEL BREAKOUT-LONG (Korb 3/4, alternativ zu A): Kurs 277,60-284,00$ [breakout] (Stop-Buy ueber ATH 277,12). Stopweite entry-relativ -1,5xATR-1D (8,75 -> -13,12). TIW = 1D-Schluss unter 268,00$. TP1 305,70$ = Measured Move Range 248,51-277,12 (1/3 raus, Exit-Test v49). Rest 2/3 Chandelier 2,0 ATR. R:R TP1 2,14. Korb-Anteil 75 EUR Risk. KO Hebel <=3. Non-Quanto USD.'
+  notes: '[LEG A ENTFERNT 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren"] Pullback-Zone 250-257 lag 2,87 ATR unter Kurs 281,60. Eine EMA20-Variante (260,2-264,5) laege weiter 2,0 ATR entfernt und waere nach dem Ausbruch ueber das ATH ein Rueckfall unter Leg-B-TIW 268. Nur ein Leg wird gefuellt, Leg B (Breakout) traegt die Zeile. Hinweis Morning Check: Ext 2,25 ATR + RSI-1D 74,7 = L22(d), Korb-Anteil 75 EUR -> KO unter 400 EUR (L2), nur Direktaktie. || [KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] NEU GEFASST: alte EMA50-Zone (241) 2,7 ATR unter Kurs, TP1 262 lag unter dem Kurs. Leg A Pullback 250-257 (L25: OG SL 243,38 -> 1,39 R, UG SL 236,88 -> 1,98 R); Leg B Breakout ueber ATH 277,12 (SL 264,48, TP1 MM 305,70 = 2,14 R). Nur EIN Leg wird gefuellt. Verfall 10-20 wegen Earnings 2026-10-28. || [NEU 2026-09-29, Pitch long_trend_pullback
+    RRprox 1,84, Recherche S0+S1, Linien von Claude (User-Auftrag)] Trend +60% seit Juli (170 -> ATH 276 am 18.09.), jetzt 251,96 knapp unter EMA20-1D 255,05, RSI-1D 50 fallend, RSI-4h 42,8 < 46,9. Einstieg an der EMA50 statt hier. TIW 234 = unter Swing-Tief Ende Aug (~236). L25: Zonen-OG 242,10 -> SL 229,67 (ATR), UG 237,12 -> SL 224,69. TP1 262 = Sept-Konsolidierung, TP2 276 = ATH. PRO: Diesel-Margen hoch, UBS ueber Rekordhoch, positiver Ausblick vor Q3 (~2026-10-28). Oelpreis-Rueckgang kein Gegensignal (Input-Kosten). KORB: Kandidat K-1 Raffinerie-Engp'
+  journal_row: 119
+- symbol: FRA.DE
+  name: Fraport AG (FRA, XETRA) — Flughafenbetreiber
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-12)
+  status: aktiv
+  added: '2026-09-28'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 KORB-OEL BREAKDOWN-RETEST-SHORT (Gegenrichtung): Niveau 58,30€ (Sept-Boden). Breakdown per Schluss 08.10. (57,30; Vol MANUELL pruefen, Klassenschwelle 1,2x). Touch 57,10–59,10€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 58,30€. TP1 52,40€ Measured Move (Sept-Range 58,30-64,20), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,97-2,80. Korb-Anteil 75 EUR Risk. KO Hebel <=4 (Einsatz >=400).'
+  notes: '[NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03] EMA20-Zone 2,34 ATR ueber Kurs 57,40; altes TP1 58,50 ohne Entry unterschritten. Pipeline: bd_level 58,30 vor 1 HT (Schluss 08.10. 57,30). EMA20/50/100/200-1D 60,74/62,77/65,44/67,73 baerisch, ATR 1,595 (2,8 %). L25 an 57,10: SL MAX(59,49 ; 58,78) = 59,49 -> 1,97 R; an 59,10: 2,80 R. GEGENREDE: RSI-1D 31,8, RSI-4h 21,6 ueberverkauft, 52W-Tief 0,7 % entfernt, Extension -2,09 ATR (L18 gespiegelt -> halbe Groesse, Korb-Anteil 75 EUR = 0,5 % passt). Earnings 2026-11-04. || [KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] In den Oel-Korb uebernommen (Gegenrichtung, zaehlt gegen dessen Budget, kein eigener 1-%-Trade mehr). TP1 60,00 -> 58,50 (Sept-Tief 58,30): 60,00 ergab an der Zonen-UG nur 0,89 R < 1,3 (Exit-Test v49). Jetzt
+    1,48 (UG) / 1,76 R (OG); am heutigen Kurs 61,80 nur 1,18 R -> nur aus der Zone. || [ANGELEGT 2026-09-28, User-Auftrag "nach deinen Vorschlaegen", User-Charts 1D+4h 14:42 CEST] Fraport AG (FRA, XETRA, MDAX) — Flughafenbetreiber. Herkunft Stufe-2-Pitch EU 11:35 (short_trend_pullback, RRprox 1,55), an der 5er-Pullback-Quote gescheitert. CHART: Abwaertstrend seit Juli-Hoch ~76,5; September-Boden 57,5-58,3; Reaktion bis 64,2 an die EMA50-1D, Abweisung 22./23.09.; heute zurueck an der EMA20. EMA-1D 20/50/100/200 = 61,95 / 63,90 / 66,47 / 68,43 (baerisch, Kurs 62,10 unter 3/4 -> trendkonform, kein Counter-Deckel). RSI-1D 48,8 ueber Signal 40,8; ATR-1D 1,649 = 2,66 % (🟡). 4h: EMA 61'
+  journal_row: 117
+- symbol: MCD
+  name: McDonald's Corporation (MCD, NYSE) — Systemgastronomie
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-09-17'
+  expiry: '2026-10-23'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 SHORT-TREND-PULLBACK: Touch EMA20-1D +0,05/+0,50 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 246,50$. TP1 230,50$ (Tief 08.10. 230,20), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,36-1,79. 1% Sizing. Non-Quanto USD.'
+  notes: '[NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03, keine Charts] Alte Zone 246,50-249,50 (4h-EMA20 vom 24.09.) 2,15 ATR ueber Kurs 236,90; altes TP1 234 ohne Entry unterschritten. Neu: Anker EMA20-1D 240,26, ATR 4,47, Stack baerisch, r2 0,81. TIW 246,50 = alte Zonen-UG, VORLAEUFIG: keine Swing-Struktur aus dem Digest ablesbar -> am Chart gegen das Erholungshoch pruefen. L25: UG 240,48 -> SL MAX(247,18 ; 247,84) = 247,84, 1,36 R; OG 242,49 -> SL 249,19, 1,79 R. Gestern +2,6 % Umkehrkerze vom 52W-Tief (L 230,20), RSI-4h 48,9 > Sig 29,1 -> Bounce laeuft, Zone abwarten. Earnings 2026-11-04. || [NEU GEFASST 2026-09-24, User-Entscheid, User-Chart 1D+4h 09:15 UTC] Binaeres Ereignis durch: Investor Day 23.09. (>NEXT: operative Marge low-mid 50% bis 2030, 8,5 Mrd USD Franchisee-Support bis 2036) -> Tag -4,81%, H 250,32 / L 234,03 / C 238,32, Vol 16,61 Mio. Alte Zone 252-256 gegenstandslos (2,7-3,4 ATR), altes TP2 237 ohne Entry
+    erreicht. EMA20/50/100/200-1D 254,08/262,44/272,06/283,54, Kurs unter 4/4. RSI-1D 25,9 ueberverkauft, Extension -3,1 ATR -> kein Entry am Markt, Bounce abwarten. SL an der Zone ATR-bestimmt 254,15-257,15 (L25 frei, Puffer 0,42 ATR). EARNINGS: TV zeigt 28 Tage (~22'
+  journal_row: 92
+- symbol: RACE.MI
+  name: 'Ferrari NV (RACE, Borsa Italiana) [MONITOR #103]'
+  direction: LONG
+  klasse: position_monitor
+  anker: EMA100-1D
+  treiber: ''
+  status: position
+  added: '2026-09-02'
+  expiry: '2026-10-16'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#103) - kein Entry-Trigger. SL 5,47EUR (U ~329,00). TIW = 1D-Schluss unter 335,00€. TP1 7,87EUR (U 353,00) = BE-Stufe, 55 Stk + SL->BE (L6). TP2 9,47EUR (U 369,00) = Runner L6. Review 2026-10-16. [Sp. Trigger-Historie]
+  notes: '[POSITIONS-REVIEW 2026-10-09, User-Charts 1D+4h 13:21] Weiterlaufen, naechster Review 2026-10-16 (5 HT). Fortschritt +0,54 R (U 348,40 vs. Fill ~341,65, SL 329,00), TP1 353 0,60 ATR entfernt, TIW 335 mit 1,79 ATR intakt. 1D: Kurs zwischen EMA50 348,33 und EMA20 349,65, RSI-1D 48,07 > Sig 46,74 (frischer Cross), flacher Doppelboden 341-342 ueber EMA100 339,50, keine belastbare RSI-Divergenz. 4h: Kerze 09-13 gruen ueber EMA20-4h 346,11/EMA200-4h 345,57, RSI-4h 52,69 > Sig 43,25 = Bestaetigung; Huerde EMA50/100-4h 349,62/350,94 + EMA20-1D = Cluster 349,6-351 direkt vor TP1. Volumen 111,6K vs Avg-30d 360K = Anstieg ohne Volumen. Finanzierungs-Drag ~3 EUR (Schaetzung), Deckel 14 EUR. Earnings 2026-11-03 -> KO-Exit spaetestens 2026-10-27. || [ENTRY #103 2026-10-02: 110 x 6,75, Fill-U ~341,65 geschaetzt, Details im Detail-Sheet] || [NEU GEFASST 2026-10-02, Linien von Claude (User-Auftrag), Charts 1D+4h 14:00] Alte These (EMA50, TIW 343) per Schluss 01.10. 342,01 widerlegt. Neu: Pullback
+    an EMA100 339,02 nach Tief ~342; 4h 09-13 Bullish-Engulfing + RSI-4h-Cross frisch (40,1>38,4). Faecher 2/4 = Grenzfall -> 1%. Ziele: 353 = EMA20-1D/4h-Cluster EMA50/100, 369 = Sept-Hoch. R:R TP1 0,46-1,11 (TP1 ist reine BE-Stufe), Runner 1,60-2,39. Kurs 346,35 am oberen Zonenrand. || [NEU GEFASST 2026-09-14, User-Charts 1D+4h 12:21 UTC] DREI AENDERU'
+  journal_row: 64
+  trade_nr: '103'
+- symbol: VOS.DE
+  name: Vossloh AG (VOS, XETRA) — Bahninfrastruktur
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: Warburg Hold (KZ 65->60) 2026-10-01, Deutsche Bank KZ 82->75 nach CMD 2026-09-28; Q3 2026-10-22
+  status: aktiv
+  expiry: '2026-10-14'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-09 BREAKDOWN-RETEST-SHORT: Niveau 50,25€ (20-Tage-Tief, Pipeline bd_level). Breakdown per Schluss 08.10. (49,40; Vol MANUELL pruefen, Klassenschwelle 1,2x). Touch 49,14–50,99€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 50,25€. TP1 44,80€ (Measured Move), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 2,09 an 49,45. 1% Sizing (Pilot). Earnings 2026-10-22 -> KO-Exit bis 2026-10-15.'
+  notes: '[RE-EVAL AUSGELOEST 2026-10-09, User-Auftrag, User-Charts 1D+4h 13:21, Linien von Claude] Vossloh AG (VOS, XETRA, SDAX) - Bahninfrastruktur (Schienenbefestigungen, Weichen, Services). Re-Eval-Bedingung Schluss <50,02 erfuellt (08.10. 49,40); Volumen 08.10. nicht verifiziert (Avg-30d 29,03K laut TV). Heute Rueckeroberungsversuch: O 49,50 H 50,70 L 49,50, Kurs 50,25 = genau am Niveau -> der Xetra-Schluss 17:35 entscheidet: Schluss > 50,25 = TIW gebrochen, Zeile parkt; Schluss < 50,25 = Retest intakt. 1D: EMA20/50/100/200 52,99/56,17/60,09/64,91 baerisch, RSI 34,20 > Sig 32,51, ATR 1,485, r2 0,88, 52W-Tief 2,25 % entfernt (Stuetzmagnet, Short-Squeeze-Risiko). 4h: EMA20 50,93 ueber Kurs (Widerstand), RSI-4h 38,43 > Sig 33,89 = gegen den Short, kein Bearish-Reverse. L25 an Stop-Sell 49,45 (unter Tagestief 49,50): SL MAX(51,68 ; 50,70+0,45=51,15) = 51,68, d 2,23, TP1 44,80 = 2,09 R. 1 % = 67 Stk, E@h3 ~1.104 EUR. Treiber: Warburg Hold KZ 60 (01.10.), DB KZ 75 (28.09.). || VORGAENGER
+    (archiviert 2026-10-07, TIW 51,15 per Schluss gebrochen): [ARCHIVIERT 2026-10-07, User-Entscheid Morning Check] Breakdown vom 02.10. zurueckerobert, zwei Schluesse ueber dem Niveau. RE-EVAL = echter zweiter Breakdown unter die Band-UG 50,02 mit Volumen. Q3 2026-10-22. Vorheriger Leg-Text: nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40.
+    Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
+  added: '2026-10-09'
+updated: '2026-10-09T13:30:01+02:00'
