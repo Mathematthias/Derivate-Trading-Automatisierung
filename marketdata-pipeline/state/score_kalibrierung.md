@@ -1,4 +1,4 @@
-# Score-Kalibrierung L12/L23 — 2026-10-09
+# Score-Kalibrierung L12/L23 — 2026-10-10
 
 Geschlossene Trades mit R: **43**, davon mit Score: **6**, mit dokumentiertem Risiko: 21.
 Score-Quellen: Journal-Notiz 4, alt X/7 2.
