@@ -36,14 +36,14 @@ thesen:
   verdikt: spielen
   korb_budget_pct: 2
   crowdedness_pp: -6.11
-  re_check: '2026-10-12'
+  re_check: '2026-10-19'
   falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
   ausdruecke:
   - ENI.MI
   - XOM
   - PSX
   - FRA.DE
-  note: 'Re-Check 2026-10-12 bleibt stehen. Falsifikat intakt: Brent 104,17 USD (Digest 2026-10-09) = 18,4 % Luft bis 88; keine Deeskalation, Tankerangriffe auf Kriegshoechststand (CNBC 2026-10-09, WaPo 2026-10-08), Iran nennt US-Gespraeche ''meaningless'' (Iran Intl 2026-10-05). Crowdedness Katalysator-Proxy Brent 30d -3,21 % gegen ^GSPC +2,90 % = -6,11 PP (Vorwoche +6,81) -> Zone <10, Budget 2 % unveraendert. Gap-Risiko unveraendert ueber Vehikel begrenzt, nicht ueber Budget.'
+  note: 'Re-Check 2026-10-12 (Morning Check, User-Auftrag): Falsifikat intakt. Brent 105,47 USD (Digest 2026-10-12 11:32) = 19,9 % ueber 88; ueber EMA20 102,25 und EMA50 98,20. Keine Meldung zu Waffenruhe/Deeskalation USA-Iran gefunden (4 Suchen, Treffer nur Juli-Meldungen - Wochenend-Lage duenn belegt). Naechster Re-Check 2026-10-19.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -53,6 +53,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: -6.11
     source: thesen-lauf
+  - date: '2026-10-12'
+    verdikt: spielen
+    crowdedness_pp: null
+    source: null
 - id: STAHL
   titel: EU-Stahl melt-and-pour
   verdikt: spielen
@@ -120,4 +124,4 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
-updated: '2026-10-12T10:08:07+00:00'
+updated: '2026-10-12T12:20:30+02:00'
