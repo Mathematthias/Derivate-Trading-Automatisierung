@@ -5,7 +5,7 @@ thesen:
   titel: AI-Strom/Elektrifizierung
   verdikt: spielen
   korb_budget_pct: 4
-  crowdedness_pp: 4.52
+  crowdedness_pp: 4.58
   re_check: '2026-10-16'
   falsifikat: (a) Hyperscaler-Capex-Cut (Messtermin Q3-Calls Ende Oktober, Alphabet 2026-10-28); (b) book-to-bill < 1 (PRY 2026-10-29, ENR 2026-11-11)
   ausdruecke:
@@ -13,7 +13,7 @@ thesen:
   - ABBN.SW
   - PWR
   - PRY.MI
-  note: 'Re-Check 2026-10-09 (Kurs-Check aus Digest 12:03, News-Stufe offen): Falsifikate (a) Hyperscaler-Capex und (b) book-to-bill erst ab Ende Okt. messbar (Alphabet 10-28, PRY 10-29, ENR 11-11) -> nicht ausgeloest. Korb-Kurse: ETN 3/4 EMAs, 0,24 ATR ueber TIW 421,10, Docht 439->424,5; PWR Stack bullish 4/4, Ausbruch 692,90 vor 2 HT, heute zurueck darunter (685,33); ABBN.SW 1/4, Stack neutral, Earnings 10-20; PRY.MI 1/4, Stack neutral. Zwei von vier Ausdruecken im Trend, zwei seitwaerts. || Korb A Umbau 2026-10-05 (User): ETN, ABBN.SW, PWR (Universum seit PR #4) + PRY.MI (Kabel, RE-EVAL >133,40). NEX.PA und ENR.DE raus (seit Wochen seitwaerts, r2 <=0,23). Budget 4 % RK / 4 = 150 EUR je Ausdruck. SU.PA nicht: PTC-Uebernahme 22,6 Mrd USD (2026-10-05, -10 %) = frischer Gegen-Katalysator.'
+  note: 'Re-Check nicht faellig (2026-10-16). Crowdedness neu gemessen 30d je Ausdruck gegen eigenen Index (Digest 2026-10-09 22:33): ETN +2,11 / PWR +11,20 / ABBN.SW +3,81 / PRY.MI +1,20 PP, Mittel +4,58 PP (Vorwoche +4,52) -> Zone <10, Budget 4 % unveraendert. Beide Falsifikate weiter nicht messbar, erster Termin Alphabet 2026-10-28.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -27,11 +27,15 @@ thesen:
     verdikt: spielen
     crowdedness_pp: null
     source: chat-recheck
+  - date: '2026-10-12'
+    verdikt: spielen
+    crowdedness_pp: 4.58
+    source: thesen-lauf
 - id: OEL
   titel: Oel/Hormus
   verdikt: spielen
   korb_budget_pct: 2
-  crowdedness_pp: 6.81
+  crowdedness_pp: -6.11
   re_check: '2026-10-12'
   falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
   ausdruecke:
@@ -39,26 +43,81 @@ thesen:
   - XOM
   - PSX
   - FRA.DE
-  note: 'Re-Check 2026-10-05 (User): Budget 2 % RK bestaetigt (Crowdedness 6,81 PP < 10-PP-Linie); Gap-Risiko ueber Vehikel (KO-Hebel <=5, Stop-Buy statt Limit) statt ueber Budget. Brent 102,48 vs Falsifikat 88 = 16,4 % Luft. Korb: ENI.MI, XOM, PSX long + FRA.DE short (Gegenrichtung, ein Korb), je 75 EUR.'
+  note: 'Re-Check 2026-10-12 bleibt stehen. Falsifikat intakt: Brent 104,17 USD (Digest 2026-10-09) = 18,4 % Luft bis 88; keine Deeskalation, Tankerangriffe auf Kriegshoechststand (CNBC 2026-10-09, WaPo 2026-10-08), Iran nennt US-Gespraeche ''meaningless'' (Iran Intl 2026-10-05). Crowdedness Katalysator-Proxy Brent 30d -3,21 % gegen ^GSPC +2,90 % = -6,11 PP (Vorwoche +6,81) -> Zone <10, Budget 2 % unveraendert. Gap-Risiko unveraendert ueber Vehikel begrenzt, nicht ueber Budget.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
     crowdedness_pp: null
     source: morning-check
+  - date: '2026-10-12'
+    verdikt: spielen
+    crowdedness_pp: -6.11
+    source: thesen-lauf
 - id: STAHL
   titel: EU-Stahl melt-and-pour
-  verdikt: beobachten
-  korb_budget_pct: 0
-  crowdedness_pp: -11.84
-  re_check: '2026-10-10'
-  falsifikat: HRC Nordeuropa unter 745 EUR/t am 2026-11-12
+  verdikt: spielen
+  korb_budget_pct: 3
+  crowdedness_pp: -7.59
+  re_check: '2026-10-24'
+  falsifikat: HRC Nordeuropa unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t Stand 2026-09-28)
   ausdruecke: []
+  note: 'Re-Check faellig heute, Verdikt von beobachten auf spielen. Konviktions-Gate 4b alle drei harten Kriterien erfuellt (gerichtet long EU-Produzenten, Kausalkette Importvolumen->EU-Preisniveau->Marge, Falsifikat datiert). Preisseite hat gedreht: HRC Nordeuropa 740-750 EUR/t DDP, Werksabschluesse 745-760 (SMM 2026-10-09), Mills heben Angebote, Kaeuferlager niedrig, Restocking ab November = genau im Messfenster. Kurs-Katalysator 2026-10-09: UBS Neutral->Buy, Kursziel 56->71 EUR, SZG.DE Schluss 49,94 EUR +13,40 %, MT.AS +4,6 %. Crowdedness 30d SZG.DE -5,26 / MT.AS -9,92 PP, Mittel -7,59 PP (Vorwoche -11,84) -> Zone <10, Raum vorhanden, Korb 3 % RK. ACHTUNG: kein Ausdruck heute konstruierbar, beide Namen unter EMA20 mit neutralem Stack (SZG 49,94 vs EMA20 50,21; MT 57,28 vs 59,64) - Ausdruecke entscheidet Matthias im Chat. Ethik: SZG.DE, MT.AS, ACX.MC, APAM.AS frei; TKA.DE wegen TKMS-Mehrheit ausgeschlossen bis 30-%-Pruefung.'
+  historie:
+  - date: '2026-10-12'
+    verdikt: spielen
+    crowdedness_pp: -7.59
+    source: thesen-lauf
 - id: N2
   titel: UK-Ersterwerber (N-2)
   verdikt: beobachten
   korb_budget_pct: 0
-  crowdedness_pp: null
+  crowdedness_pp: 9.39
   re_check: '2026-10-29'
-  falsifikat: ''
+  falsifikat: Autumn Budget 2026-10-28 bringt kein Ersterwerber-Programm mit bezifferter Foerderung (First-Time-Buyer-ISA-Bonus, Stamp-Duty-Entlastung oder Nachfolger von Help-to-Buy) -> verworfen
   ausdruecke: []
-updated: '2026-10-09T18:09:35+02:00'
+  note: 'Falsifikat erstmals gesetzt - die These lief seit Anlage mit leerem Kriterium und verletzte damit Gate 3 des Konviktions-Gates. Belegt: FTB-ISA-Konsultation am 2026-08-18 geschlossen, Ergebnis unveroeffentlicht, Bonushoehe/Jahreslimit/Preisdeckel auf ''a future fiscal event'' verschoben = der Termin 2026-10-28; Stamp-Duty-Aenderungen bisher nicht angekuendigt, jaehrliche Grundsteuer fuer diesen Haushalt ausgeschlossen (Richify-Budget-Tracker, Abruf 2026-10-10, Sekundaerquelle, confidence mittel). Crowdedness PSN.L 30d +8,85 % gegen ^FTSE -0,54 % = +9,39 PP, n=1 - die Stichprobe traegt die Zahl nicht. Re-Check 2026-10-29 liegt bewusst einen Tag nach dem Haushalt.'
+  historie:
+  - date: '2026-10-12'
+    verdikt: beobachten
+    crowdedness_pp: 9.39
+    source: thesen-lauf
+- id: N3
+  titel: Deutscher Kapazitaetsmarkt - Zuschlag 2026-11-03
+  verdikt: beobachten
+  re_check: '2026-11-06'
+  crowdedness_pp: null
+  korb_budget_pct: 0
+  falsifikat: Zuschlagsvolumen am 2026-11-03 deutlich unter den ausgeschriebenen 4.500 MW ODER Gasturbinen-/Neubauanteil im Zuschlag marginal (Schwerpunkt Bestandsanlagen) -> verworfen
+  note: 'Kandidat aus Gruppe 2 (Vergabe-/Auktionstermine, Radar Z66). Erste deutsche Kapazitaetsmarkt-Auktion nach StromVKG, Gebotsschluss war 2026-09-08, Zuschlagsbekanntgabe 2026-11-03, 4.500 MW, Hoechstpreis 244.000 EUR/MW*a, Vertragslaufzeit 15 Jahre, Batteriespeicher faktisch ausgeschlossen (10-h-Kriterium). Kausalkette: Zuschlagsmenge je Technologie -> gesicherter Auftragsbestand im Gasturbinen-/Kraftwerksbau. Nur ENR.DE im Universum (145,36 EUR, 30d +3,22 %, Stack neutral, Q4-Zahlen 2026-11-11); UN01.DE und RWE.DE nicht gefuehrt, Crowdedness daher nicht belastbar messbar. Quelle: bundesnetzagentur.de / boersen-zeitung.de, Abruf 2026-08-04; Split der Zeile 2026-09-07.'
+  historie:
+  - date: '2026-10-12'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+- id: N4
+  titel: Euro 7 Typgenehmigungs-Stichtag 2026-11-29
+  verdikt: beobachten
+  re_check: '2026-11-21'
+  crowdedness_pp: null
+  korb_budget_pct: 0
+  falsifikat: Kommission verschiebt den Stichtag oder entschaerft die Brems-/Reifenabriebgrenzwerte per Uebergangsfrist bzw. die Durchfuehrungsrechtsakte zum Abriebmessverfahren liegen am 2026-11-29 nicht vor -> verworfen
+  note: 'Kandidat aus Gruppe 2 (Regulierungs-/Fristenkalender, Radar Z23, CATALYST-CALENDAR 2026-10-10). VO (EU) 2024/1257 gilt ab 2026-11-29 fuer neue Typgenehmigungen Pkw/leichte Nutzfahrzeuge und bringt erstmals Grenzwerte fuer Brems- und Reifenabrieb. Kausalkette: Stichtag am Inverkehrbringen -> Content-per-Vehicle bei Abriebminderung und Abgasnachbehandlung steigt, Vorzieheffekt davor. Genannte Werte UMI.BR, JMAT.L, BAS.DE, CON.DE, ML.PA, TYRES.HE - KEINER im Universum, Crowdedness nicht messbar. VORBEHALT: Datum und Abriebgrenzwerte stehen nur im Kalender-Seed (EUR-Lex 2024/1257, Abruf 2026-08-04), Primaerquelle nicht gegengelesen - vor jeder Vertiefung Artikel und Anhang pruefen. Gleiche Schwaeche wie K-3 am 2026-10-03: ein Vorzieheffekt ist aus veroeffentlichten Zahlen kaum von Saisonalitaet zu trennen.'
+  historie:
+  - date: '2026-10-12'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+- id: N5
+  titel: SpaceX-Lockup-Vollablauf 2026-12-09
+  verdikt: beobachten
+  re_check: '2026-11-28'
+  crowdedness_pp: null
+  korb_budget_pct: 0
+  falsifikat: Lockup wird verlaengert oder per Waiver aufgehoben, ODER der Kurs schliesst in den fuenf Handelstagen nach 2026-12-09 hoeher als am 2026-12-08 (Angebot absorbiert) -> verworfen
+  note: 'Kandidat aus Gruppe 2 (Lockup-/Kapitalmassnahmen-Kalender, Radar Z26). Am 2026-12-09 fallen alle Restbeschraenkungen des 180-Tage-Lockups ausser der 366-Tage-Gruppe um Musk (2027-06-13); Streubesitz waechst von rund 5 % Richtung Mehrheit. Kausalkette: datierter Angebotsschock im Papier selbst, unabhaengig vom Geschaeft. Gegenargument im eigenen Haus: der Spektrumskauf von Grain Management (800-MHz-Low-Band, bis 14 MHz paired, angekuendigt 2026-10-08) hat am 2026-10-09 den Telekomsektor umgepreist und waere eine Story gegen den Angebotsdruck. SPCX nicht im Universum, kein KO-Vehikel bekannt - nach Reform 2026-08-04 eine Vehikelfrage, kein Ausschlussgrund (Kriterium 4 ist kein Gate mehr).'
+  historie:
+  - date: '2026-10-12'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+updated: '2026-10-12T05:40:51+00:00'
