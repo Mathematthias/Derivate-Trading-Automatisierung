@@ -76,7 +76,13 @@ long_trend_pullback:
   require_bullish_ema_stack: true   # EMA20 > EMA50 > EMA200 (Daily)
   ema_distance_min_pct: -1.0        # Kurs darf 1% unter EMA20 stehen (Touch)
   ema_distance_max_pct: 2.5         # Kurs darf bis 2.5% über EMA20 stehen
-  trigger_ema_priority: ["EMA20", "EMA50"]
+  # 2026-10-12 (User „C bitte", Anlass INTC an der EMA100): die Liste wird jetzt
+  # gelesen. EMA20 mit dem %-Band oben + 30d-Move > 0 wie bisher; danach EMA50,
+  # EMA100 mit ATR-Band und Kurs über EMA200 (kein 30d-Filter — wer an der EMA50/100
+  # steht, hat Rücklauf hinter sich). Fächer-Grenze der Trend-Lane je Anker wie
+  # Skill-Gate v68: EMA20/50 ≤ 1 EMA über dem Kurs · EMA100 ≤ 2.
+  trigger_ema_priority: ["EMA20", "EMA50", "EMA100"]
+  deep_anchor_band_atr: [0.25, 0.50]  # Kurs EMA −0,25 / +0,50 ATR
   rsi_max: 65                       # nicht überkauft
   min_distance_from_52w_high_pct: 2.0  # Mindestabstand vom 52W-Hoch
 
@@ -88,7 +94,8 @@ short_trend_pullback:
   require_bearish_ema_stack: true   # EMA20 < EMA50 < EMA200
   ema_distance_min_pct: -2.5        # Kurs darf 2.5% unter EMA20 stehen
   ema_distance_max_pct: 1.0         # Kurs darf 1% über EMA20 stehen (Touch)
-  trigger_ema_priority: ["EMA20", "EMA50"]
+  trigger_ema_priority: ["EMA20", "EMA50", "EMA100"]   # 2026-10-12, Spiegel zu Long
+  deep_anchor_band_atr: [0.25, 0.50]  # Kurs EMA +0,25 / −0,50 ATR (Short gespiegelt)
   rsi_min: 35                        # nicht überverkauft
   min_distance_from_52w_low_pct: 2.0   # Mindestabstand vom 52W-Tief
 
@@ -385,6 +392,11 @@ pitches:
     trend_sub:
       range: 5        # breakout_long + breakdown_short
       pullback: 5     # long_trend_pullback + short_trend_pullback
+      # 2026-10-12: davon hoechstens N mit tiefem Anker (EMA50/EMA100). Tiefe Anker
+      # stehen per Konstruktion weiter vom 20d-Hoch weg (hoeheres rrprox) und
+      # wuerden die EMA20-Pullbacks sonst verdraengen. Deckel, keine feste
+      # Teilung: ohne tiefe Treffer bleiben alle 5 Plaetze bei EMA20.
+      pullback_deep_max: 2
   top_n: 14          # historischer Gesamtdeckel, = trend + counter
   # GILT NUR FUER DIE COUNTER-TREND-LANE. Fuer ein Reversal ist die Bewegung die
   # These; fuer einen Trend-Pullback ist sie ein Ausschlusskriterium ohne Bezug
