@@ -996,24 +996,6 @@ entries:
   archived:
     date: '2026-10-01'
     reason: Counter-Trend nach FDA-Warning-Letter an Fresenius Kabi (L23 Veto 2
-- symbol: FNTN.DE
-  name: freenet AG (FNTN)
-  direction: SHORT
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-08-26'
-  expiry: '2026-10-14'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '🔴 ARCHIVIERT 2026-10-12 - kein Entry-Trigger (Kurs 2,07 ATR unter der Zone, auf 52W-Tief 21,80). RE-EVAL: 1D-Schluss >23,10€ (Ruecklauf an EMA20-1D 23,11, Stand 2026-10-12). Zone dann frisch fassen.'
-  notes: '[ARCHIVIERT 2026-10-12, User-Entscheid Morning Check] Kurs 21,80 = 52W-Tief, RSI 29,9; Short ohne Pullback kein Setup. || [REAKTIVIERT 2026-09-24, User-Entscheid, User-Charts 1D+4h 09:14 UTC, Websuche S1] RE-EVAL erfuellt: Stack wieder baerisch sortiert (EMA20/50/100/200-1D 24,35/24,41/24,90/25,92), Kurs 23,58 unter 4/4 = trendkonform, Deckel entfaellt. TIW NEU GERECHNET: 24,60 (ueber EMA20/50-Cluster und 4h-EMA200 24,58), die alte 25,60 ist verworfen. Zone = Retest des gebrochenen Aug/Sep-Range-Bodens 24,0-24,25 (4h-EMA20 24,25). SL an der Zone ATR-bestimmt 24,74-24,92, Puffer 0,33-0,73 ATR. JETZT KEIN ENTRY: RSI-4h 26,7 ueberverkauft, Extension -1,77 ATR, R:R am Markt 0,50. AUSLOESER 18.09. (-2,9%) SEKTORWEIT: '
-  journal_row: 59
-  archived:
-    date: '2026-10-12'
-    reason: Verfall, Zone verfehlt
 - symbol: ASML.AS
   name: ASML Holding N.V. (ASML.AS, Euronext Amsterdam) (ehem. Monitor)
   direction: LONG
@@ -2705,23 +2687,6 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D. TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 58,80€ (unter 52W-Hoch 58,90), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,89. 1% Sizing. Earnings 2026-11-05.'
   notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Pitch offen seit 2026-10-09, User-Auftrag 2026-10-12. Chart: 1D EMA 56,19/55,86/54,50/51,59 bullish, Range 54,5-58,9 seit Juli (r2 0,10), Okt-Tief 54,7 an EMA100; 4h ueber allen EMAs, RSI 54,5. Wiedereinstieg 4 HT nach #102 (Grinder, SL 08.10., -1,11 R) - andere Klasse, eigenes Setup. TV-Key-Facts melden BNetzA-Preisobergrenzen Brief +20,35 % (2027-28), Paket +10,72 %, Kommentierung bis 30.10.; Recherche fand die Quelle NICHT -> als Treiber unbelegt.'
-- symbol: PRU.L
-  name: Prudential plc (PRU, LSE) — Versicherer Asien/Afrika
-  direction: SHORT
-  klasse: breakout_retest
-  anker: 52W-Tief
-  treiber: null
-  status: archiviert
-  added: '2026-10-12'
-  expiry: '2026-10-30'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '🔴 BEOBACHTUNG (Pitch 2026-10-12 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss <8,674€ + Vol >Avg-20d (neues 52W-Tief). GBP (€ nur Parser-Konvention), Broker/TV in GBX (x100).'
-  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Breakdown-Retest @ 9,054 verfehlt den Exit-Test: TP1 = 52W-Tief 8,67-8,70 liegt nur 0,8-1,1 R unter jedem Entry unterhalb der TIW. Gegenrede zusaetzlich: laufender Rueckkauf 1,2 Mrd USD. Kein Ex-Tag in 30 d.'
-  archived:
-    date: '2026-10-12'
-    reason: Pitch 2026-10-12 verworfen, Beobachtung
 - symbol: ALGN
   name: Align Technology (ALGN, Nasdaq) — Aligner/Dental
   direction: SHORT
@@ -2832,4 +2797,34 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), Entry max. 1003$ (darueber TP1 unter 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 930,00$ (Sept-Tiefs, ueber der 100er-Linie 912). TP1 1120,00$ (Sept/Okt-Range-Hoch 1110-1130), 1/3 raus; TP2 1240,00$ (unter ATH ~1255), Rest Chandelier 2,0 ATR. R:R TP1 1,43 / TP2 2,86 bei Entry 1000. 1% Sizing (2 Stk). ATR 4,7 % 🟡: KO Hebel max 5,3, Einsatz mind. 400 EUR, also Hebel max 4. Earnings 2026-12-23. Non-Quanto USD.'
   notes: '[NEU 2026-10-12, User-Chart 1D+4h 16:00, Linien von Claude] Kurs 984,6 (-4,3 %) bricht intraday unter EMA50 994; 1D EMA 1034/994/914/749 bullish, RSI 44,1 < 57,5; 4h unter EMA100-4h 994, RSI-4h 34. Aufwaertstrend Maerz-Juni 300->1250, seit Juni Range 900-1130. Gate (3/4 EMAs) erst bei Entry ueber EMA50 erfuellt -> Stop-Buy statt Limit. Gegenrede: Ausloeser des Abverkaufs 12.10. ungeklaert (Sektor: NBIS -4,3 %, ADBE -2,5 %); Tech-Cluster mit NBIS/ANET/MRVL/NVDA beachten (L7). Fruehere Zeile MU = Trade #86 (+0,99 R, 2026-09-24).'
-updated: '2026-10-12T16:23:57+02:00'
+- symbol: PRU.L
+  name: Prudential plc (PRU, LSE) — Versicherer Asien/Afrika
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,50/+0,50 ATR [pullback] (Stand 9,34, Konfluenz 4h-EMA50 9,29) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 9,45€. TP1 8,70€ (ueber 52W-Tief 8,67), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,91 bei Entry 9,30, unter 9,11 kein Entry (Exit-Test). 1% Sizing (kein Treiber). GBP (€ nur Parser-Konvention), Broker/TV in GBX (x100). Earnings 2027-03-17.'
+  notes: '[REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts 1D+4h 16:47] Breakdown-Retest @ 9,054 bleibt verworfen (0,89 R bis 52W-Tief); stattdessen Trend-Pullback-Short an EMA20-1D 9,34 / 4h-EMA50 9,29. Chart 16:47: 902 GBX am Bruchniveau und 4h-EMA20 905,5, RSI-1D 33,2 ueber Signal 30,5, RSI-4h 42,5 steigend = Erholung Richtung Zone. ATR-1D 0,2089, EMA20 faellt ~0,03/Tag -> bei Touch ATR-Drift-Nachzug. Gegenrede: kein Treiber, Rueckkauf 1,2 Mrd USD. Abweisung an 905 waere kein Entry. || [NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Breakdown-Retest @ 9,054 verfehlt den Exit-Test: TP1 = 52W-Tief 8,67-8,70 liegt nur 0,8-1,1 R unter jedem Entry unterhalb der TIW. Gegenrede zusaetzlich: laufender Rueckkauf 1,2 Mrd USD. Kein Ex-Tag in 30 d.'
+- symbol: FNTN.DE
+  name: freenet AG (FNTN)
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-08-26'
+  expiry: '2026-10-28'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,20/+0,30 ATR [pullback] (Stand 23,11 und fallend, Konfluenz 4h-EMA50 23,08) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 23,45€. TP1 21,75€ (ueber 52W-Tief 21,68), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,60 bei Entry 22,95, unter 22,73 kein Entry (Exit-Test). 1% Sizing (Vol-Daempfer). Earnings 2026-11-11 -> KO-Exit bis 2026-11-04.'
+  notes: '[REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts 1D+4h 16:47] Ersetzt RE-EVAL >23,10 von 2026-10-12 (haette erst mitten in der Zone ausgeloest). Breakdown-Retest @ 22,16 verworfen (0,40 R bis 52W-Tief). Chart 16:47: 21,76, 52W-Tief 21,68, RSI-1D 29,6, RSI-4h 23,0 ueberverkauft -> Erholung an EMA20 abwarten. ATR-1D 0,5005; EMA20 faellt bis ~0,13/Tag, Treffpunkt eher ~22,9 (Schaetzung) -> R:R ~1,47. || [ARCHIVIERT 2026-10-12, User-Entscheid Morning Check] Kurs 21,80 = 52W-Tief, RSI 29,9; Short ohne Pullback kein Setup. || [REAKTIVIERT 2026-09-24, User-Entscheid, User-Charts 1D+4h 09:14 UTC, Websuche S1] RE-EVAL erfuellt: Stack wieder baerisch sortiert (EMA20/50/100/200-1D 24,35/24,41/24,90/25,92), Kurs 23,58 unter 4/4 = trendkonform, Deckel entfaellt. TIW NEU GERECHNET: 24,60 (ueber EMA20/50-Cluster und 4h-EMA200 24,58), die alte 25,60 ist verworfen. Zone = Retest des gebrochenen Aug/Sep-Range-Bodens 24,0-24,25 (4h-EMA20 24,25). SL an der Zone ATR-bestimmt 24,74-24,92,
+    Puffer 0,33-0,73 ATR. JETZT KEIN ENTRY: RSI-4h 26,7 ueberverkauft, Extension -1,77 ATR, R:R am Markt 0,50. AUSLOESER 18.09. (-2,9%) SEKTORWEIT: '
+  journal_row: 59
+updated: '2026-10-12T17:18:11+02:00'
