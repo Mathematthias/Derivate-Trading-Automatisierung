@@ -873,21 +873,6 @@ entries:
   archived:
     date: '2026-08-28'
     reason: 'Position #84 ausgestoppt'
-- symbol: GIVN.SW
-  name: Givaudan SA (GIVN, SIX) — Aromen/Duftstoffe
-  direction: LONG
-  klasse: breakout_retest
-  anker: Struktur
-  treiber: ''
-  status: aktiv
-  added: '2026-08-21'
-  expiry: '2026-10-19'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-05 BREAKOUT-RETEST-LONG: Niveau 3481,00€ (Range-Hoch). Bedingung: Daily-Close >3481,00€ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 3481,00€ -0,50/+0,75 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 3481,00€. TP1 Measured Move (Range-Hoehe), TP2 Runner/Chandelier.'
-  notes: '[VERLAENGERT 2026-10-12 18:1x, Tagesschluss-Task, User-Freigabe] Schluss 3488 > 3481 mit Vol 1,14x (Digest 18:03), Close-Pos 100 %; Verfall +5 HT auf 2026-10-19. Offen: 4h-Bullish-Reverse. || [REAKTIVIERT 2026-09-22, User, User-Charts 1D+4h] RE-EVAL (Touch EMA50-1D +0/+3 ATR) erfuellt, Pipeline-Pitch breakout_long mit Vol-Daempfer (1,24x). Kurs 3438 (+2,02%, Hoch 3458) direkt unter dem Range-Hoch Aug/Sept ~3460. Setup = Tagesschluss ueber 3460+0,3 ATR. TIW 3380 = zurueck unter die 4h-Spitze vom 21.09. (Fehlausbruch). L25: SL MIN(E-102,9; 3359,4) -> 3359 an der UG; Obergrenze 3530 = R:R-1,4-Kante zum MM 3770 (Range 3150-3460, Hoehe 310). TP1 3560 = Juli-Hoch (Widerstand). Extension 3,06 ATR ueber EMA20 -> 0,5% (L18), deckt sich mit dem Vol-Daempfer. Einsatz h5 ~429 EUR (knapp ueber '
-  journal_row: 52
 - symbol: HEN3.DE
   name: Henkel AG & Co. KGaA Vz (HEN3) — Konsum/Klebstoffe
   direction: LONG
@@ -2834,4 +2819,23 @@ entries:
   notes: '[REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts 1D+4h 16:47] Ersetzt RE-EVAL >23,10 von 2026-10-12 (haette erst mitten in der Zone ausgeloest). Breakdown-Retest @ 22,16 verworfen (0,40 R bis 52W-Tief). Chart 16:47: 21,76, 52W-Tief 21,68, RSI-1D 29,6, RSI-4h 23,0 ueberverkauft -> Erholung an EMA20 abwarten. ATR-1D 0,5005; EMA20 faellt bis ~0,13/Tag, Treffpunkt eher ~22,9 (Schaetzung) -> R:R ~1,47. || [ARCHIVIERT 2026-10-12, User-Entscheid Morning Check] Kurs 21,80 = 52W-Tief, RSI 29,9; Short ohne Pullback kein Setup. || [REAKTIVIERT 2026-09-24, User-Entscheid, User-Charts 1D+4h 09:14 UTC, Websuche S1] RE-EVAL erfuellt: Stack wieder baerisch sortiert (EMA20/50/100/200-1D 24,35/24,41/24,90/25,92), Kurs 23,58 unter 4/4 = trendkonform, Deckel entfaellt. TIW NEU GERECHNET: 24,60 (ueber EMA20/50-Cluster und 4h-EMA200 24,58), die alte 25,60 ist verworfen. Zone = Retest des gebrochenen Aug/Sep-Range-Bodens 24,0-24,25 (4h-EMA20 24,25). SL an der Zone ATR-bestimmt 24,74-24,92,
     Puffer 0,33-0,73 ATR. JETZT KEIN ENTRY: RSI-4h 26,7 ueberverkauft, Extension -1,77 ATR, R:R am Markt 0,50. AUSLOESER 18.09. (-2,9%) SEKTORWEIT: '
   journal_row: 59
-updated: '2026-10-12T19:39:19+02:00'
+- symbol: GIVN.SW
+  name: Givaudan SA (GIVN, SIX) — Aromen/Duftstoffe
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D / EMA50-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-08-21'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 3402,00€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA50-1D. TP1 3534,00€ (Juli-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR, Runner-Hindernis 3583 (52W-Hoch 2025-10-20). R:R TP1 1,38 bei Entry 3395, gilt nur solange 3480 als Unterstuetzung haelt. 1% Sizing. Earnings 2027-01-27.'
+  - label: B
+    gate: 🟡
+    text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA50-1D -0,00/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 3344,00€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA100-1D. TP1 3480,00€ (Sept/Okt-Hochs), 1/3 raus; TP2 3534,00€; Rest Chandelier 2,0 ATR. R:R TP1 1,44 / TP2 1,97 bei Entry 3335. 1% Sizing. Earnings 2027-01-27.'
+  notes: '[NEU GEFASST 2026-10-12 20:2x, User-Entscheid, User-Charts 1D+4h 19:56 und 1D lang 20:02] Breakout-Retest 3481 verworfen: TP1 Juli-Hoch 3534 nur 0,34 R. Breakout ueber 3534 verworfen: 52W-Hoch 3583 (2025-10-20) nach 0,38 R, darueber Kurse H1 2025. Stattdessen zwei Pullback-Legs. Leg B Zone nur bis +0,25 ATR, weil ab Entry ~3341 der TIW-Stop greift und d waechst (Max-Entry 3344). EMAs steigen (~+10/+6 pro Tag) bei festen TP -> Legs kurzlebig. Alter Trigger: nach 2026-10-05 BREAKOUT-RETEST-LONG: Niveau 3481,00€ (Range-Hoch). Bedingung: Daily-Close >3481,00€ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 3481,00€ -0,50/+0,75 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 3481,00€. TP1 Measured Move (Range-Hoehe), TP2 Runner/Chandelier. || [VERLAENGERT 2026-10-12 18:1x, Tagesschluss-Task, User-Freigabe] Schluss 3488 > 3481 mit Vol 1,14x (Digest
+    18:03), Close-Pos 100 %; Verfall +5 HT auf 2026-10-19. Offen: 4h-Bullish-Reverse. || [REAKTIVIERT 2026-09-22, User, User-Charts 1D+4h] RE-EVAL (Touch EMA50-1D +0/+3 ATR) erfuellt, Pipeline-Pitch breakout_long mit Vol-Daempfer (1,24x). Kurs 3438 (+2,02%, Hoch 3458) direkt unter dem Range-Hoch Aug/Sept ~3460. Setup = Tagesschluss ueber 3460+0,3 ATR. TIW 3380 = zurueck unter die 4h-Spitze vom 21.09. (Fehlausbruch). L25: SL MIN(E-102,9; 3359,4) -> 3359 an der UG; Obergrenze 3530 = R:R-1,4-Kante zum MM 3770 (Range 3150-3460, Hoehe 310). TP1 3560 = Juli-Hoch (Widerstand). Extension 3,06 ATR ueber EMA20 -> 0,5% (L18), deckt sich mit dem Vol-Daempfer. Einsatz h5 ~429 EUR (knapp ueber '
+  journal_row: 52
+updated: '2026-10-12T20:20:25+02:00'
