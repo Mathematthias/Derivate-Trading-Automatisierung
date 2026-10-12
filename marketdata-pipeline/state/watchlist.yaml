@@ -1982,14 +1982,16 @@ entries:
   klasse: thesen_korb
   anker: EMA20/50/100-1D-Cluster
   treiber: These A AI-Strom (spielen, Korb 4 % RK, Re-Check 2026-10-09; Hyperscaler-Q3-Calls ab 2026-10-28)
-  status: aktiv
-  expiry: '2026-10-12'
+  status: position
+  expiry: '2026-10-19'
   legs:
   - label: A
     gate: 🟡
-    text: 'nach 2026-10-05 KORB-A TREND-PULLBACK-LONG (Korb 2/4, KURSE IN CHF - Euro-Zeichen nur fuer den Parser): Touch 79,30-80,00€ [pullback] (EMA100-1D 79,28 bis EMA20/50-1D 80,23) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (1,95 -> -2,92). TIW = 1D-Schluss unter 78,80€ (unter Range-Tief ~79,0 seit 2026-09-22). TP1 84,00€ = Range-Hoch (1/3 raus, Exit-Test v49). TP2 88,00€ = Jul-Hochs. Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,37-1,61 / TP2 2,74-2,98. Korb-Anteil 150 EUR Risk. Non-Quanto CHF. Earnings 2026-10-20: Einstieg nur bis 2026-10-12.'
-  notes: '[NEU 2026-10-05 18:5x, Korb A, User-Charts 1D+4h] ABB - Elektrifizierung, Netz- und Rechenzentrums-Ausruestung. 1D C 81,70 (H 82,80 L 80,62), EMA 80,24/80,23/79,28/74,77; Rally Apr-Jun 64 -> ~89, seitdem Range 75,5-88; seit 2026-09-22 enger 79,0-84,0. Digest-Ausbruch 82,62 vor 9 HT: Schluss 81,70 heute DARUNTER = Fehlausbruch nach Klassendefinition -> kein Breakout-Retest, sondern Pullback an den EMA-Cluster. 4h EMA 81,02/80,50/80,30/80,23, RSI-4h 57,4 > 51,5. ATR 1,949 (2,4 %). Range-Ausbruch >84,10 verworfen: Aug-Hoch 86 nur 0,65 R. Aber: EMA20 = EMA50 (flach), r2 0,27 - traegt duenn. Earnings 2026-10-20, Aktienrueckkauf laeuft. Sizing in EUR: Stk = 150 x EURCHF / 2,92 (Kurs bei Entry live).'
+    text: 'POSITION-MONITOR (#12 AV) - kein Entry-Trigger. SL 83,52EUR (U 77,75 CHF bei FX 0,931; L25 am Fill: MIN(80,42-1,5xATR 77,75 ; TIW-0,30xATR 78,27)). TIW = 1D-Schluss unter 78,80 CHF. TP1 90,23EUR (U 84,00 CHF Range-Hoch) fuer 9 Stk (1/3, Exit-Test v49), Rest 18 Stk Chandelier 2,0 ATR, TP2 94,52EUR (U 88,00 CHF Jul-Hochs). Review 2026-10-19 (vor Earnings 2026-10-20: halten oder raus). Stop in EUR -> bei EURCHF-Bewegung >1 % nachrechnen. Direktaktie, 0,5 % Earnings-Abschlag.'
+  notes: '[ENTRY 2026-10-12 ~16:1x, User] 27 Stk x 86,38 EUR (CH0012221716), Stop-Buy ueber EMA-Cluster 80,35 CHF ausgeloest, Fill ~80,42 CHF (FX 0,931). Gebuehr 0,00 (SB+-Default, gegen Abrechnung pruefen). Max-Verlust 77,35 EUR = 0,52 % RK (geplant 0,5 %: 26 Stk -> 27 Stk). L26-Puffer 0,59 ATR. Trigger alt: nach 2026-10-05 KORB-A TREND-PULLBACK-LONG (Korb 2/4, KURSE IN CHF - Euro-Zeichen nur fuer den Parser): Touch 79,30-80,00€ [pullback] (EMA100-1D 79,28 bis EMA20/50-1D 80,23) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. S || [NEU 2026-10-05 18:5x, Korb A, User-Charts 1D+4h] ABB - Elektrifizierung, Netz- und Rechenzentrums-Ausruestung. 1D C 81,70 (H 82,80 L 80,62), EMA 80,24/80,23/79,28/74,77; Rally Apr-Jun 64 -> ~89, seitdem Range 75,5-88; seit 2026-09-22 enger 79,0-84,0. Digest-Ausbruch 82,62 vor 9 HT: Schluss 81,70 heute DARUNTER = Fehlausbruch nach Klassendefinition -> kein Breakout-Retest, sondern Pullback an den EMA-Cluster. 4h EMA 81,02/80,50/80,30/80,23,
+    RSI-4h 57,4 > 51,5. ATR 1,949 (2,4 %). Range-Ausbruch >84,10 verworfen: Aug-Hoch 86 nur 0,65 R. Aber: EMA20 = EMA50 (flach), r2 0,27 - traegt duenn. Earnings 2026-10-20, Aktienrueckkauf laeuft. Sizing in EUR: Stk = 150 x EURCHF / 2,92 (Kurs bei Entry live).'
   added: '2026-10-05'
+  trade_nr: 12
 - symbol: PWR
   name: Quanta Services (PWR, NYSE) - Netzbau/Engineering
   direction: LONG
@@ -2830,4 +2832,4 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), Entry max. 1003$ (darueber TP1 unter 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 930,00$ (Sept-Tiefs, ueber der 100er-Linie 912). TP1 1120,00$ (Sept/Okt-Range-Hoch 1110-1130), 1/3 raus; TP2 1240,00$ (unter ATH ~1255), Rest Chandelier 2,0 ATR. R:R TP1 1,43 / TP2 2,86 bei Entry 1000. 1% Sizing (2 Stk). ATR 4,7 % 🟡: KO Hebel max 5,3, Einsatz mind. 400 EUR, also Hebel max 4. Earnings 2026-12-23. Non-Quanto USD.'
   notes: '[NEU 2026-10-12, User-Chart 1D+4h 16:00, Linien von Claude] Kurs 984,6 (-4,3 %) bricht intraday unter EMA50 994; 1D EMA 1034/994/914/749 bullish, RSI 44,1 < 57,5; 4h unter EMA100-4h 994, RSI-4h 34. Aufwaertstrend Maerz-Juni 300->1250, seit Juni Range 900-1130. Gate (3/4 EMAs) erst bei Entry ueber EMA50 erfuellt -> Stop-Buy statt Limit. Gegenrede: Ausloeser des Abverkaufs 12.10. ungeklaert (Sektor: NBIS -4,3 %, ADBE -2,5 %); Tech-Cluster mit NBIS/ANET/MRVL/NVDA beachten (L7). Fruehere Zeile MU = Trade #86 (+0,99 R, 2026-09-24).'
-updated: '2026-10-12T16:03:30+02:00'
+updated: '2026-10-12T16:17:22+02:00'
