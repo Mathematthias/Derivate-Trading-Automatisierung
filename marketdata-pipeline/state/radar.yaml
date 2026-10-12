@@ -96,9 +96,9 @@ rows:
   ereignis: FDA-PDUFA Ifinatamab Deruxtecan (I-DXd) bei vorbehandeltem ES-SCLC, Priority Review
   werte: 'MRK [= Merck & Co., US — NICHT MRK.DE/Merck KGaA], 4568.T ⚠️ TICKER-KOLLISION (Pflegelauf 07.09., nachgetragen 10.09.): MRK = Merck & Co. (US). NICHT MRK.DE (Merck KGaA).'
   wirkung: + bei Zulassung; fuer MRK klein, fuer Daiichi material
-  status: offen
+  status: verworfen
   quelle: merck.com, 2026-08-04
-  note: '2026-10-05 geprueft: PDUFA-Zieldatum 10.10.2026 unveraendert, Priority Review seit 13.04.2026. Keine Verschiebung und kein AdCom-Termin belegt. Quelle curetoday.com ''FDA Decision on Ifinatamab Deruxtecan ... Expected by Oct. 10'' + merck.com Pressemitteilung, Abruf 2026-10-05.'
+  note: '2026-10-12 Pflegelauf: Termin entfallen. Merck & Co. und Daiichi Sankyo haben die BLA fuer Ifinatamab Deruxtecan am 2026-09-25 freiwillig zurueckgezogen — nach FDA-Gespraech erfuellen die Phase-2-Daten (IDeate-Lung01) die Anforderungen fuer Accelerated Approval in der beantragten Indikation nicht. Damit KEINE FDA-Entscheidung am 2026-10-10 und kein neues Datum; Phase-3 IDeate-Lung02 (NCT06203210) nahe Vollrekrutierung, primaere Fertigstellung laut Registereintrag 2028-01 — eine Neueinreichung ist angekuendigt, aber undatiert. Der Pflege-Check vom 2026-10-05 hatte nur das Datum geprueft (Zieldatum unveraendert) und den Rueckzug uebersehen: PDUFA-Zeilen brauchen die Frage ''Antrag noch anhaengig?'', nicht nur ''Datum unveraendert?''. Quelle onclive.com ''Ifinatamab Deruxtecan BLA Voluntarily Withdrawn in Previously Treated Extensive-Stage SCLC'' und biopharmadive.com 2026-09-28, Abruf 2026-10-12.'
 - id: Z18
   date: '2026-11-01'
   kat: 2
@@ -107,7 +107,7 @@ rows:
   wirkung: + Projektierer bei Ueberzeichnung
   status: offen
   quelle: bundesnetzagentur.de, 2026-08-04
-  note: '2026-10-05 geprueft: Gebotstermin 01.11.2026 und Hoechstwert 7,25 ct/kWh (§ 85a EEG) auf der BNetzA-Seite bestaetigt, Abruf 2026-10-05. Das Ausschreibungsvolumen (Basis 2.500 MW) nennt die Seite nicht — bleibt aus § 28a EEG abgeleitet, nicht primaer belegt.'
+  note: '2026-10-12 geprueft: BNetzA fuehrt den naechsten Gebotstermin Wind an Land weiter als ''Gebotstermin 1. November 2026''; Hoechstwert 7,25 ct/kWh ist dort woertlich ''fuer die Gebotstermine im Jahr 2026'' festgelegt (bundesnetzagentur.de, Fachthemen > Ausschreibungen > Wind_Onshore, Abruf 2026-10-12). Das Ausschreibungsvolumen (Basis 2.500 MW) nennt die Seite weiterhin nicht — bleibt aus Par. 28a EEG abgeleitet, nicht primaer belegt. Hinweis: 2026-11-01 ist ein Sonntag; der gesetzliche Gebotstermin ist kalenderfest, die Ergebnisbekanntgabe folgt ohnehin erst Tage spaeter. Keine aktive Watchlist-Zeile auf NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE.'
 - id: Z19
   date: '2027-01-10'
   kat: 1
@@ -379,6 +379,7 @@ rows:
   wirkung: + Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher als Gegenseite. Erst mit dem Zuschlag steht die Menge je Technologie fest.
   status: offen
   quelle: bundesnetzagentur.de / boersen-zeitung.de, 2026-08-04; Split 2026-09-07.
+  note: '2026-10-12 geprueft: Der Termin ist eine FRIST, kein fixer Bekanntgabetag. Die Gebote lagen zum Gebotstermin 2026-09-08 vor, die Zuschlaege werden ''bis spaetestens 3. November 2026'' erteilt (techzeitgeist.de ''Die Gebote sind da — Zuschlaege fuer Langzeitkapazitaeten fehlen noch'', 2026-09-12, Abruf 2026-10-12) — eine Veroeffentlichung davor ist moeglich. Fuer die Zufuhr heisst das: ab Mitte Oktober taeglich moeglich, nicht erst am 03.11. ENR.DE traegt die passende aktive Zeile (event_watch, Anker TIEF, Verfall exakt 2026-11-03), Feld treiber dort aber leer. Zugleich Messtermin fuer These N3 (Verdikt beobachten, Re-Check 2026-11-06).'
 - id: Z67
   date: '2026-09-21'
   kat: 4
@@ -420,7 +421,8 @@ rows:
   werte: AD.AS
   wirkung: Binaer. Guidance-Senkung bestaetigt die Short-These (JPM-Ziel 24,07 EUR); bestaetigte Guidance loest bei Konsensziel 38,58 EUR und 0,00% gemeldeten Shorts eine Gegenbewegung aus.
   status: offen
-  quelle: aholddelhaize.com/investors Finanzkalender, Abruf 2026-09-08. confidence hoch. Angelegt im Zuge der AD.AS-Recherche 08.09.
+  quelle: aholddelhaize.com/investors, Finanzkalender woertlich '4 November — Results Q3 2026', Abruf 2026-10-12 (Primaerquelle, ersetzt den Kalenderstand vom 2026-09-08). confidence hoch.
+  note: '2026-10-12 geprueft: Datum 2026-11-04 im IR-Finanzkalender unveraendert; Folgetermine dort 17.02. (Q4/FY 2026) und 03.03. (Geschaeftsbericht). Unveraendert gilt der Befund vom 2026-10-05: beide AD.AS-Watchlist-Zeilen sind archiviert (letzte 2026-09-28, Trade #96 per Review-Frist geschlossen) — Z71 und Z72 stehen auf einer These ohne Traeger. Zweiter Lauf in Folge mit diesem Befund; Entscheidung (neue Zeile oder Zeilen streichen) liegt beim User.'
 - id: Z72
   date: '2026-10-13'
   kat: 1
@@ -429,7 +431,7 @@ rows:
   wirkung: Gering. Personalie ohne Zahlenbezug. Nur relevant, falls die Agenda etwas anderes enthaelt — vor dem Termin nachlesen.
   status: offen
   quelle: newsroom.aholddelhaize.com 'Ahold Delhaize publishes convocation of the EGM' + aholddelhaize.com/investors/egm-2026 (Datum und Uhrzeit woertlich), Abruf 2026-10-05. confidence hoch fuer Datum und Tagesordnung.
-  note: '2026-10-05: Agenda-Luecke geschlossen. Inhalt bleibt eine Personalie ohne Zahlenbezug — Wirkung gering, wie eingetragen. Zusatzbefund: beide AD.AS-Watchlist-Zeilen sind archiviert (letzte 2026-09-28, Trade #96 per Review-Frist geschlossen); Z72 und Z71 stehen damit auf einer These ohne Traeger.'
+  note: '2026-10-12 geprueft, unveraendert: ausserordentliche HV morgen, 2026-10-13. Einberufung und Tagesordnung weiter oeffentlich (media.aholddelhaize.com, ''Agenda and explanatory notes EGM 2026''; Abruf 2026-10-12); der IR-Finanzkalender listet die EGM nicht mehr, was kein Gegenbeleg ist, sondern dem Kalenderaufbau entspricht (nur Finanz-/Dividendentermine). Inhalt bleibt eine Personalie ohne Zahlenbezug, Wirkung gering. Kein Traeger: AD.AS ohne aktive Zeile (s. Z71).'
 - id: Z73
   date: '2026-12-29'
   kat: 2
@@ -492,19 +494,19 @@ rows:
   kat: 1
   ereignis: USTR-Section-301-Hafengebuehren auf chinesisch betriebene/gebaute Schiffe (Annex I/II) und auf Nicht-US-Autotransporter (Annex III) werden wieder faellig; zeitgleich endet die Aussetzung der chinesischen Gegen-Hafengebuehren auf US-Schiffe — Aussetzung lief 2025-11-10 bis 2026-11-09, keine Verlaengerung publiziert
   werte: SBLK, MAERSK-B.CO, HLAG.DE, ZIM, 1919.HK, WAWI.OL, GOGL
-  wirkung: 'Kostenbasis je US-Hafenanlauf fuer Betreiber chinesisch gebauter bzw. betriebener Tonnage, bei Autotransportern nach Nettotonnage; Anreiz zur Flottenumschichtung auf Nicht-China-Tonnage fuer US-Routen. Chinesische Gegengebuehren belasten US-verbundene Schiffe in chinesischen Haefen. Gehoert zum 10.11.-Cluster (Z20/Z21) und haengt am Trump-Xi-Gipfel (Z15) — eine Verlaengerung im Gipfelpaket wuerde den Termin entwerten. Getrackt: SBLK Z27 (aktiv bis 07.10.), MAERSK-B.CO Z29 (aktiv bis 23.09.).'
+  wirkung: 'Kostenbasis je US-Hafenanlauf fuer Betreiber chinesisch gebauter bzw. betriebener Tonnage, bei Autotransportern nach Nettotonnage; Anreiz zur Flottenumschichtung auf Nicht-China-Tonnage fuer US-Routen. Chinesische Gegengebuehren belasten US-verbundene Schiffe in chinesischen Haefen. Gehoert zum 10.11.-Cluster (Z20/Z21) und haengt am Trump-Xi-Gipfel (Z15) — eine Verlaengerung im Gipfelpaket wuerde den Termin entwerten. Watchlist-Beruehrung Stand 2026-10-12: SBLK ist OFFENE POSITION (Trade #11, Positions-Monitor bis 2026-10-14), MAERSK-B.CO aktive Zeile (LONG trend_pullback, Verfall 2026-10-20) — beide ohne datierten treiber. HLAG.DE, ZIM, 1919.HK, WAWI.OL, GOGL ohne Zeile; Tickerliste bleibt illustrativ, Flottenanteil ungeprueft.'
   status: offen
   quelle: Watson Farley & Williams, 'Suspension and Amendments to US and China Port Fees – Current Status' (wfw.com, 21.11.2025), woertlich Aussetzung 'November 10, 2025 through November 9, 2026'; Holland & Knight, 'USTR Port Fee Suspension' (hklaw.com, 11/2025). Abruf 2026-09-21 | confidence MITTEL — Datum hart belegt, Verlaengerung im Gipfel moeglich; Tickerliste illustrativ, Flottenanteil NICHT geprueft
-  note: 'ZUSATZ 2026-09-28: Widerspruch offen - Untersuchung Schiffbau weiter pausiert, publiziertes Ende der Gebuehren-Aussetzung unveraendert 2026-11-09 23:59 EST. Datum bleibt bis zur Federal-Register-Notice.'
+  note: '2026-10-12 Pflegelauf: Querverweise im Feld wirkung berichtigt. Die alten Angaben ''SBLK Z27 (aktiv bis 07.10.)'' und ''MAERSK-B.CO Z29 (aktiv bis 23.09.)'' stammten aus der Journal-Zeilennummerierung vor der Migration — seit 2026-10-04 bezeichnet Z<n> eine RADAR-Zeile (Z27 = Nasdaq-100-Rekonstitution, Z29 = EU-LNG-Importverbot). Watchlist-Werte werden hier ab jetzt nur ueber das Symbol referenziert. Sachstand unveraendert: publiziertes Ende der Gebuehren-Aussetzung 2026-11-09 23:59 EST, keine Verlaengerung publiziert; Datum bleibt bis zur Federal-Register-Notice. Liegt am 2026-10-12 noch 29 Tage entfernt und rueckt naechste Woche ins 28-Tage-Fenster.'
 - id: Z82
   date: '2026-10-28'
   kat: 1
   ereignis: 'UK Autumn Budget 2026 (Chancellor John Healey) — Steuer- und Abgabenpaket inkl. Business Rates; bereits zugesagt: Steuersenkung fuer Pubs und Clubs, Beteiligung der Mayors an Einkommensteuer und Business Rates'
   werte: WTB.L, BARC.L, HSBA.L, LLOY.L, NWG.L, TSCO.L, SBRY.L
-  wirkung: 'Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Getrackt: WTB.L Z76 (Short, Verfall 30.09. — liegt VOR dem Termin).'
+  wirkung: 'Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Watchlist-Beruehrung Stand 2026-10-12: keine der sieben Werte traegt eine aktive Zeile; STAN.L ist aktiv (LONG, Verfall 2026-10-14), steht aber nicht in werte — Exposure ueber UK-Abgaben gering, Geschaeft ueberwiegend Asien/Afrika. Zugleich Messtermin fuer These N2 (UK-Ersterwerber, Verdikt beobachten).'
   status: offen
   quelle: 'Grant Thornton UK ''Autumn Budget 2026: what we know so far'', woertlich ''The Autumn Budget will take place on 28 October 2026''; Which? 14.09.2026. Abruf 2026-09-21 | confidence HOCH fuer das Datum, NIEDRIG fuer den Inhalt'
-  note: '2026-10-05 geprueft: Termin 28.10.2026 von mehreren UK-Beratungsquellen bestaetigt, keine Verschiebung. Inhalt weiter unbelegt (confidence NIEDRIG bleibt). Hinweis im Feld wirkung auf ''Getrackt: WTB.L Z76'' ist ueberholt — die WTB.L-Watchlist-Zeile ist seit 2026-09-29 archiviert (zum Verfall 30.09. auslaufen gelassen); Z76 ist ausserdem die EmpCo-Richtlinie, nicht der WTB.L-Trade. Querverweis beim naechsten Lauf bereinigen.'
+  note: '2026-10-12 geprueft: Termin 2026-10-28 weiter von mehreren UK-Steuerquellen als bestaetigt gefuehrt (u.a. professionalpensions.com ''Government confirms date for Autumn Budget 2026'', uktaxdrag.co.uk Budget-Tracker; Abruf 2026-10-12), keine Verschiebung. Inhalt weiter unbelegt (confidence NIEDRIG bleibt). Der im Pflegelauf 2026-10-05 beanstandete Querverweis ''Getrackt: WTB.L Z76'' ist aus dem Feld wirkung entfernt — er war doppelt falsch (WTB.L-Zeile seit 2026-09-29 archiviert; Z76 ist die EmpCo-Richtlinie, nicht der WTB.L-Trade).'
 - id: Z83
   date: '2027-03-10'
   kat: 5
@@ -553,10 +555,11 @@ rows:
   ereignis: 'Alphabet Q3-2026-Zahlen und Call: erster datierter Messtermin fuer Falsifikat (a) der These A (Hyperscaler-Capex-Cut) - 2027-Capex-Guidance der Big-5 in den Q3-Calls Ende Oktober. Zeile aus Thesen-Lauf 2026-10-03 (Journal-20261004 Z85), bei der Migration nach radar.yaml verloren, am 2026-10-05 nachgetragen.'
   werte: GOOGL; Messwert fuer These A (PRY.MI, NEX.PA, ENR.DE)
   wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: bestaetigt oder kippt das AI-Strom-Narrativ ueber die Nachfrageseite (Rechenzentren-Capex). Guidance-Cut = Falsifikat (a) eingetreten -> Korb A auf Verdikt pruefen.'
-  quelle: Thesen-Lauf 2026-10-03 (Sekundaerkalender, IR-Kalender nicht gegengelesen, confidence MITTEL).
+  quelle: 'Alphabet-IR ''Alphabet Announces Date of Third Quarter 2026 Financial Results Conference Call'' (abc.xyz/investor/news, Pressemitteilung 2026-10-06): Mittwoch 2026-10-28, 13:30 Pacific / 22:30 CEST. Abruf 2026-10-12. confidence hoch (Primaerquelle, ersetzt den Sekundaerkalender aus dem Thesen-Lauf 2026-10-03).'
   id: Z88
   status: offen
   added: '2026-10-05'
+  note: '2026-10-12 geprueft und aufgewertet: Datum jetzt primaer belegt (IR-Mitteilung 2026-10-06), confidence MITTEL -> HOCH. Beruehrt zwei Dinge: (a) GOOGL traegt eine aktive Watchlist-Zeile (trend_pullback EMA50-1D, Verfall 2026-10-13) — bei Verlaengerung ueber 2026-10-21 hinaus greift der Universal-Disqualifier ''Earnings <= 7 Tage''; (b) These A nennt Falsifikat (a) an genau diesem Termin, die drei Korb-Ausdruecke ABBN.SW/PWR/ETN verfallen aber am 2026-10-12/20/23 — der Messtermin liegt hinter dem Traeger. Entscheidung Watchlist/Korb beim User.'
 - date: '2026-10-12'
   kat: 5
   ereignis: 'OCP Global Summit 2026 (San Jose, 2026-10-12 bis 10-15): Marvell zeigt AI-Rechenzentrums-Infrastruktur (Teralynx T100 102,4T-Switch, Structera CXL, Ara DSP 1,6T Optik), 14 Sessions.'
@@ -566,6 +569,7 @@ rows:
   id: Z89
   status: offen
   added: '2026-10-09'
+  note: '2026-10-12 geprueft und primaer belegt: OCP Global Summit laeuft 2026-10-12 bis 2026-10-15 im San Jose McEnery Convention Center, Veranstaltung ausverkauft (opencompute.org/events/ocp-summit/2026-ocp-global-summit, Abruf 2026-10-12) — Startdatum ist heute. MRVL traegt eine aktive Watchlist-Zeile (LONG trend_pullback, Anker EMA20-1D, Verfall 2026-10-30), Feld treiber dort leer, obwohl der Radar den datierten Treiber kennt. Read-across ANET und NVDA ebenfalls mit aktiver Zeile. Wirkungsrichtung bleibt offen (Narrativ-Schub gegen sell-the-news) — der Termin ist keine These.'
 - date: '2026-11-12'
   kat: 1
   ereignis: 'Messtermin Falsifikat These STAHL: HRC-Spotpreis Nordeuropa gegen Referenz 745 EUR/t (Stand 2026-09-28) - faellt zusammen mit Salzgitter Q3-Zahlen am 2026-11-12 (Digest-Feld earn_next)'
@@ -575,4 +579,40 @@ rows:
   id: Z90
   status: offen
   added: '2026-10-12'
-updated: '2026-10-12T05:40:51+00:00'
+- date: '2026-10-29'
+  kat: 5
+  ereignis: 'Prysmian Q3/9M-2026-Zahlen (Mailand). Datierter Messpunkt fuer Falsifikat (b) der These A (AI-Strom): book-to-bill < 1. Die These nennt den Termin, der Radar fuehrte ihn bisher nicht.'
+  werte: PRY.MI; Messwert fuer These A (ENR.DE, NEX.PA, ABBN.SW, PWR, ETN)
+  wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: Auftragseingang und Auftragsbestand im Netz-/Hochspannungsgeschaeft zeigen die Nachfrageseite der Elektrifizierungs-These. book-to-bill unter 1 = Falsifikat (b) eingetreten -> Korb A auf Verdikt pruefen.'
+  quelle: prysmian.com/en/investors/financial-calendar, woertlich 'Third quarter results — Milan, Italy — Oct 29, 2026', Abruf 2026-10-12. confidence hoch (Primaerquelle).
+  id: Z91
+  status: offen
+  added: '2026-10-12'
+- date: '2026-11-11'
+  kat: 5
+  ereignis: Siemens Energy Extended Q4-FY2026-Call (Geschaeftsjahresende 30.09.) — zweiter datierter Messpunkt fuer Falsifikat (b) der These A (book-to-bill < 1). Von der These benannt, im Radar bisher nicht gefuehrt.
+  werte: ENR.DE; Messwert fuer These A (PRY.MI, NEX.PA, ABBN.SW, PWR, ETN)
+  wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: Auftragseingang Grid Technologies und Gas Services misst die Nachfrageseite der AI-Strom-These; zugleich erste Guidance FY2027. book-to-bill unter 1 = Falsifikat (b) eingetreten -> Korb A auf Verdikt pruefen. ACHTUNG Terminkollision: ENR.DE traegt die event_watch-Zeile auf Z66 (Kapazitaetsmarkt-Zuschlag, Verfall 2026-11-03); liegt eine Zeile am 2026-11-11 noch, greift der Universal-Disqualifier ''Earnings <= 7 Tage'' ab 2026-11-04.'
+  quelle: siemens-energy.com/global/en/home/investor-relations.html, Finanzkalender 'Extended Q4 FY2026 Call — November 11, 2026' (Quiet Period ab 2026-10-01), Abruf 2026-10-12. confidence hoch (Primaerquelle).
+  id: Z92
+  status: offen
+  added: '2026-10-12'
+- date: '2026-12-23'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Anito-cel (Anitocabtagene autoleucel, BCMA-CAR-T) bei vorbehandeltem multiplem Myelom. Wirkstoff kam mit der Arcellx-Uebernahme zu Gilead.
+  werte: GILD
+  wirkung: 'Angebotsseite: bei Zulassung tritt ein dritter BCMA-CAR-T in einen Markt, den bisher Carvykti (JNJ/Legend) und Abecma (BMS/2seventy) teilen; Umsatzbeitrag haengt an Herstellungskapazitaet und Slot-Verfuegbarkeit, nicht am Zulassungstag. Fuer GILD die erste Zulassung aus dem Arcellx-Deal.'
+  quelle: ajmc.com 'Upcoming 2026 FDA Decisions Could Expand Treatment Options Across Oncology and Hepatitis B' (PDUFA 'December 23rd'), gestuetzt durch pdufa.bio/calendar (2026-12-23, GILD, anito-cel). Abruf 2026-10-12. confidence mittel — Jahreszahl in der Sekundaerquelle nur implizit, Gilead-Pressemitteilung mit dem Zieldatum nicht gegengelesen.
+  id: Z93
+  status: offen
+  added: '2026-10-12'
+- date: '2027-01-01'
+  kat: 1
+  ereignis: 'UK Basel 3.1 tritt in Kraft: die PRA-Regeln gelten ab Januar 2027 ''as previously planned'', ausgenommen die Anpassungen am internen Modellansatz fuer das Marktrisiko (IMA) — fuer die hat die PRA am 2026-06-19 den 2028-01-01 festgelegt. Gegenstueck zum EU-Termin Z77 (FRTB/CRR3, ebenfalls 2027-01-01).'
+  werte: BARC.L, HSBA.L, LLOY.L, NWG.L, STAN.L
+  wirkung: 'Kostenbasis Eigenkapital: neue Berechnung der risikogewichteten Aktiva (Kreditrisiko-Standardansatz, Output-Floor im Einlaufpfad) hebt oder senkt die Mindestkapitalanforderung je Portfolio; die IMA-Verschiebung auf 2028 laesst handelsintensiven Haeusern ein Jahr laenger die bestehenden Marktrisikomodelle. Kein Einzelwert-Katalysator — wirkt ueber Kapitalquote und damit ueber den Spielraum fuer Ausschuettungen und Rueckkaeufe.'
+  quelle: Bank of England, News Release 'PRA sets out adjustments to the market risk internal model approach under Basel 3.1' (2026-06-19), woertlich 'all other rules come into force in January 2027, as previously planned' und 'implementation date of 1 January 2028' fuer die IMA-Anpassungen; Konsultation CP9/26. Abruf 2026-10-12. confidence hoch fuer die Daten, Pfad des Output-Floors nicht im Detail gegengelesen.
+  id: Z94
+  status: offen
+  added: '2026-10-12'
+updated: '2026-10-12T10:08:07+00:00'

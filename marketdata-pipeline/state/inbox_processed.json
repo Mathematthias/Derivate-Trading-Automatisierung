@@ -7,6 +7,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1CTAFmZxI_2Xh4q1VMJ1ml3OoXZM_HYPU": {
+  "actions": 18,
+  "at": "2026-10-12T10:08:07+00:00",
+  "name": "INBOX-termin-radar-20261012-0822.json",
+  "source": "termin-radar",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1FJM8n1-gO3ajzCaNJWq9KonefKDTwoaZ": {
   "actions": 16,
   "at": "2026-10-05T10:01:50+00:00",
