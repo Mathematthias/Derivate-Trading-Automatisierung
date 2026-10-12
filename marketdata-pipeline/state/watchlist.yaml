@@ -2618,4 +2618,156 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-09 GRINDER-CONTINUATION-SHORT: Touch EMA20-1D -0,20/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (2,567 -> +3,85), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss ueber EMA50-1D +0,30 ATR. TP1 123,50$ (52W-/20d-Tief), 1/3 raus, R:R 1,32-1,62. Rest Trail EMA20+1,25xATR. 1% Pilot. Short nur KO. Earnings 2027-02-02. Non-Quanto USD.'
   notes: '[NEU 2026-10-09 17:25, User-Auftrag, Linien von Claude, Digest 16:33] KATALYSATOR (Short-Grinder-Regel 2026-10-04): Q3 am 2026-10-08 - Core-cc-EPS-Guidance 2026 auf +1 bis +2 % gesenkt (vorher unteres Ende von +4 bis +6 %), Core-EPS +2,5 bis +3,5 % (vorher unteres Ende +5 bis +7 %); Umsatz-Guidance dagegen angehoben (netto ~+6 %), organisch ~+3 %. CEO: weitere strukturelle Kostensenkungen ''in den kommenden Monaten''; PBNA-Volumen organisch -3 %. Quelle: 8-K Exhibit 99.1 (SEC). Chart: 09.10. -2,15 % auf 125,58 bei 2,3x Volumen, 1,37 ATR unter EMA20 129,11 -> heute kein Entry, nur nach Erholung in die Zone (128,60-129,75). Tempo 1,47, R2 0,84, ATR 1,97 %. Rechnung: TP1 123,50 = (129,75-123,50)/3,85 = 1,62 R an der OG, 1,32 R an der UG. 52W-Tief 123,5 ist Unterstuetzung; darunter neue Tiefs. GEGENREDE: Umsatz-Guidance angehoben, Defensivwert, Kostensenkungsprogramm kann den Kurs stuetzen.'
-updated: '2026-10-12T12:20:30+02:00'
+- symbol: YSN.DE
+  name: secunet Security Networks AG (YSN, XETR) — IT-Sicherheit/Behoerden
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 266,00
+  treiber: Bundeswehr-Netze 1,7 Mrd EUR freigegeben 2026-09-23 (noch kein Auftrag); Berenberg Buy KZ 260 2026-09-28
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 BREAKOUT-RETEST-LONG: Niveau 266,00€ (Range-Hoch seit 2026-09-23, Ausbruch 2026-10-09). Touch 260,00–269,00€ [pullback] (= Niveau -0,50/+0,25 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 266,00€. TP1 306,00€ Measured Move (Range 226-266), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 2,05-2,55. 1% Sizing (Pilot, Reife 30d +33,6 %, Extension 2,23 ATR). ATR 4,5 % 🟡: KO Hebel <=5,5 oder Direktaktie. Earnings 2026-11-12.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 238,4/214,7/201,7/194,8 bullish, RSI 68,9; 4h Range 226-266 seit 2026-09-24, Schluss 267,5 am 12.10. mittags. Gegenrede: Kurs ueber Berenberg-Ziel 260, Fantasie auf noch nicht vergebenen Auftrag, L18 Gate 1 (2-4 ATR) nur mit enger Struktur -> Retest abwarten. Liquiditaet ~2,3 Mio EUR/Tag. Verdikt: traegt duenn.'
+- symbol: LHA.DE
+  name: Deutsche Lufthansa AG (LHA, XETR) — Airline
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief 7,208
+  treiber: Kerosin-Mehrkosten 2026 ueber Plan 1,5 Mrd EUR (2026-10-06); Konsens 4x Verkaufen
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-26'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 BREAKDOWN-RETEST-SHORT: Niveau 7,208€ (20-Tage-Tief, Bruch 2026-10-09, Vol 1,12x -> Daempfer 1 %). Touch 7,10–7,25€ [pullback] (= Niveau -0,60/+0,25 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 7,208€. TP1 6,75€ (ueber 52W-Tief 6,72), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,86, unter 7,10 kein Entry. 1% Sizing. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 7,54/7,84/8,07/8,11 bearish, RSI 31,8 (>=30); 4h RSI 25,8, Range 7,10-7,30 seit 08.10. Gegenrede: nahe 52W-Tief, KGV 7,8, Kerosin 2026 groesstenteils gesichert, Oelpreis-Rueckgang = Squeeze-Risiko. L7: Short Airline + Oel-Long-Korb (ENI.MI) = derselbe Oelpreis-Block. Kein Ex-Tag bis HV 2027.'
+- symbol: MO
+  name: Altria Group (MO, NYSE) — Tabak
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 71,05
+  treiber: null
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 BREAKOUT-RETEST-LONG: Niveau 71,05$ (Range-Hoch Sept, Ausbruch 2026-10-09, Vol 1,51x). Touch 70,70–71,00$ [pullback] (= Niveau -0,25/-0,04 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 70,64$ (Niveau -0,30 ATR, Retest-Raum). TP1 73,80$ (Juli-Congestion 73,5-74,5), 1/3 raus; TP2 76,80$ (unter 52W-Hoch 77,06), Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,50 / TP2 2,81-2,95. 1% Sizing (Pilot). Earnings 2026-10-29 -> KO-Exit bis 2026-10-22. Non-Quanto USD.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA-Buendel 69,1/69,0/68,9/67,5 (Seitwaertsphase Aug-Okt, r2 0,01), RSI 65,4; 4h RSI 71,5 = Retest wahrscheinlich. Zone bewusst unter dem Niveau: Ueber 71,00 faellt TP1 unter 1,3 R. Gegenrede: Kurs ueber mittlerem Kursziel ~70, Barclays Underweight KZ 58 (2026-08-11), keine frische Nachricht = reine Geometrie. Verdikt: traegt duenn.'
+- symbol: EXC
+  name: Exelon Corp (EXC, Nasdaq) — US-Versorger
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: Kurszielsenkungen MS 53->50 (2026-09-18), Argus 52->49 (2026-09-22)
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,20/+0,50 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D. TIW = 1D-Schluss ueber EMA20-1D +1,00 ATR. TP1 39,80$ (ueber Okt-/52W-Tief 39,73), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,67-2,13. 1% Sizing. Earnings 2026-10-30 -> KO-Exit bis 2026-10-23; Ex-Tag ca. 2026-11-10 (u) liegt danach. Non-Quanto USD.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 41,64/42,97/44,15/44,81 bearish, Abwaertstrend seit Juli 48 -> 39,7, Bounce an EMA20; 4h unter EMA50 41,88, RSI 58,5 steigend (Bounce laeuft noch). Gegenrede: Konsens-KZ ~48,5, defensiver Versorger mit Rechenzentren-Capex, nahe 52W-Tief; Vol 0,51x. Relative TIW zulaessig (Trend-Pullback, jenseits der Zone).'
+- symbol: DRW3.DE
+  name: Draegerwerk AG & Co. KGaA Vz (DRW3, XETR) — Medizin-/Sicherheitstechnik
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20/50-Band
+  treiber: null
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-21'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch 113,00–115,00€ [pullback] (Band zwischen 50er- und 20er-Tageslinie, Stand 111,9 / 116,0) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 110,00€ (Tief 2026-10-09 ~110,3). TP1 124,00€ (Hoch Ende Sept ~124,5), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,48-2,07. 1% Sizing. ATR 3,1 % 🟡: KO Hebel <=8. Earnings 2026-10-29 (u) -> KO-Exit bis 2026-10-22.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 116,0/111,9/105,0/95,8 bullish, Pullback vom Sept-Hoch auf EMA50 (09.10.), Bounce auf 117; 4h RSI 50,4. Einstieg JETZT bei 116-117 verfehlt den Exit-Test (TP1 0,86 R) -> nur in der Zone. Gegenrede: keine frische Nachricht, nahe MWB-Ziel 130, H1-EBIT mit Zollrueckerstattung 7,8 Mio. Liquiditaet ~2 Mio EUR/Tag.'
+- symbol: DHL.DE
+  name: DHL Group (DHL, XETR) — Logistik/Post
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: Porto-Vorschlag BNetzA (TV-Key-Facts, NICHT verifiziert)
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-28'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D. TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 58,80€ (unter 52W-Hoch 58,90), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,89. 1% Sizing. Earnings 2026-11-05.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Pitch offen seit 2026-10-09, User-Auftrag 2026-10-12. Chart: 1D EMA 56,19/55,86/54,50/51,59 bullish, Range 54,5-58,9 seit Juli (r2 0,10), Okt-Tief 54,7 an EMA100; 4h ueber allen EMAs, RSI 54,5. Wiedereinstieg 4 HT nach #102 (Grinder, SL 08.10., -1,11 R) - andere Klasse, eigenes Setup. TV-Key-Facts melden BNetzA-Preisobergrenzen Brief +20,35 % (2027-28), Paket +10,72 %, Kommentierung bis 30.10.; Recherche fand die Quelle NICHT -> als Treiber unbelegt.'
+- symbol: PRU.L
+  name: Prudential plc (PRU, LSE) — Versicherer Asien/Afrika
+  direction: SHORT
+  klasse: breakout_retest
+  anker: 52W-Tief
+  treiber: null
+  status: archiviert
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🔴
+    text: '🔴 BEOBACHTUNG (Pitch 2026-10-12 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss <8,674€ + Vol >Avg-20d (neues 52W-Tief). GBP (€ nur Parser-Konvention), Broker/TV in GBX (x100).'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Breakdown-Retest @ 9,054 verfehlt den Exit-Test: TP1 = 52W-Tief 8,67-8,70 liegt nur 0,8-1,1 R unter jedem Entry unterhalb der TIW. Gegenrede zusaetzlich: laufender Rueckkauf 1,2 Mrd USD. Kein Ex-Tag in 30 d.'
+  archived:
+    date: '2026-10-12'
+    reason: Pitch 2026-10-12 verworfen, Beobachtung
+- symbol: ALGN
+  name: Align Technology (ALGN, Nasdaq) — Aligner/Dental
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Okt-Tief
+  treiber: null
+  status: archiviert
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🔴
+    text: '🔴 BEOBACHTUNG (Pitch 2026-10-12 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss <138,00$ + Vol >Avg-20d (unter Okt-Tief), erst nach Earnings 2026-10-28.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Breakdown 142,24 per Schluss 09.10. zurueckerobert (142,71) = Rueckfall, Klassen-Gate verletzt. Short-Pullback an EMA20 146,2 verfehlt den Exit-Test (TP1 Okt-Tief ~139 = 0,95-1,27 R). Treiber fuer spaeter: Evercore-Abstufung 05.10., Stifel KZ 210->175 (09.10.).'
+  archived:
+    date: '2026-10-12'
+    reason: Pitch 2026-10-12 verworfen, Beobachtung
+- symbol: SHB-A.ST
+  name: Svenska Handelsbanken A (SHB-A, OMXS) — Bank
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: null
+  status: archiviert
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🔴
+    text: '🔴 BEOBACHTUNG (Pitch 2026-10-12 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >158,00€ + Vol >Avg-20d (ueber Hoch 2026-10-01), erst nach Earnings 2026-10-21. SEK (€ nur Parser-Konvention).'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Trend-Pullback an EMA50 sauber, aber Earnings 2026-10-21 = Einstiegsfenster nur bis 2026-10-13 (<=7 d Disqualifier). Nach den Zahlen frisch fassen.'
+  archived:
+    date: '2026-10-12'
+    reason: Pitch 2026-10-12 verworfen, Beobachtung
+- symbol: MCO
+  name: Moody's Corp (MCO, NYSE) — Ratings/Analytics
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA50/100/200-Cluster 471-472
+  treiber: null
+  status: archiviert
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🔴
+    text: '🔴 BEOBACHTUNG (Pitch 2026-10-12 verworfen) - kein Entry-Trigger. RE-EVAL: 1D-Schluss <455,00$ + Vol >Avg-20d (Abweisung am EMA-Cluster 471-472), erst nach Earnings 2026-10-21.'
+  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Pullback laeuft in den EMA-Cluster 471-472, aber Earnings 2026-10-21 (Fenster bis 2026-10-13). MS KZ 512->470 (07.10.); Gegenrede: starkes Emissionsgeschaeft moeglich, Konsens nicht baerisch.'
+  archived:
+    date: '2026-10-12'
+    reason: Pitch 2026-10-12 verworfen, Beobachtung
+updated: '2026-10-12T12:53:58+02:00'
