@@ -881,12 +881,12 @@ entries:
   treiber: ''
   status: aktiv
   added: '2026-08-21'
-  expiry: '2026-10-12'
+  expiry: '2026-10-19'
   legs:
   - label: A
     gate: 🟡
     text: 'nach 2026-10-05 BREAKOUT-RETEST-LONG: Niveau 3481,00€ (Range-Hoch). Bedingung: Daily-Close >3481,00€ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 3481,00€ -0,50/+0,75 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze. SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 3481,00€. TP1 Measured Move (Range-Hoehe), TP2 Runner/Chandelier.'
-  notes: '[REAKTIVIERT 2026-09-22, User, User-Charts 1D+4h] RE-EVAL (Touch EMA50-1D +0/+3 ATR) erfuellt, Pipeline-Pitch breakout_long mit Vol-Daempfer (1,24x). Kurs 3438 (+2,02%, Hoch 3458) direkt unter dem Range-Hoch Aug/Sept ~3460. Setup = Tagesschluss ueber 3460+0,3 ATR. TIW 3380 = zurueck unter die 4h-Spitze vom 21.09. (Fehlausbruch). L25: SL MIN(E-102,9; 3359,4) -> 3359 an der UG; Obergrenze 3530 = R:R-1,4-Kante zum MM 3770 (Range 3150-3460, Hoehe 310). TP1 3560 = Juli-Hoch (Widerstand). Extension 3,06 ATR ueber EMA20 -> 0,5% (L18), deckt sich mit dem Vol-Daempfer. Einsatz h5 ~429 EUR (knapp ueber '
+  notes: '[VERLAENGERT 2026-10-12 18:1x, Tagesschluss-Task, User-Freigabe] Schluss 3488 > 3481 mit Vol 1,14x (Digest 18:03), Close-Pos 100 %; Verfall +5 HT auf 2026-10-19. Offen: 4h-Bullish-Reverse. || [REAKTIVIERT 2026-09-22, User, User-Charts 1D+4h] RE-EVAL (Touch EMA50-1D +0/+3 ATR) erfuellt, Pipeline-Pitch breakout_long mit Vol-Daempfer (1,24x). Kurs 3438 (+2,02%, Hoch 3458) direkt unter dem Range-Hoch Aug/Sept ~3460. Setup = Tagesschluss ueber 3460+0,3 ATR. TIW 3380 = zurueck unter die 4h-Spitze vom 21.09. (Fehlausbruch). L25: SL MIN(E-102,9; 3359,4) -> 3359 an der UG; Obergrenze 3530 = R:R-1,4-Kante zum MM 3770 (Range 3150-3460, Hoehe 310). TP1 3560 = Juli-Hoch (Widerstand). Extension 3,06 ATR ueber EMA20 -> 0,5% (L18), deckt sich mit dem Vol-Daempfer. Einsatz h5 ~429 EUR (knapp ueber '
   journal_row: 52
 - symbol: HEN3.DE
   name: Henkel AG & Co. KGaA Vz (HEN3) — Konsum/Klebstoffe
@@ -2366,16 +2366,19 @@ entries:
   klasse: breakout_retest
   anker: Range-Tief
   treiber: Warburg Hold (KZ 65->60) 2026-10-01, Deutsche Bank KZ 82->75 nach CMD 2026-09-28; Q3 2026-10-22
-  status: aktiv
+  status: archiviert
   expiry: '2026-10-14'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-09 BREAKDOWN-RETEST-SHORT: Niveau 50,25€ (20-Tage-Tief, Pipeline bd_level). Breakdown per Schluss 08.10. (49,40; Vol im Digest bd_vol_mult, Boden 1,0x / Daempfer 1,3x). Touch 49,14–50,99€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 50,25€. TP1 44,80€ (Measured Move), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 2,09 an 49,45. 1% Sizing (Pilot). Earnings 2026-10-22 -> KO-Exit bis 2026-10-15.'
-  notes: '[RE-EVAL AUSGELOEST 2026-10-09, User-Auftrag, User-Charts 1D+4h 13:21, Linien von Claude] Vossloh AG (VOS, XETRA, SDAX) - Bahninfrastruktur (Schienenbefestigungen, Weichen, Services). Re-Eval-Bedingung Schluss <50,02 erfuellt (08.10. 49,40); Volumen 08.10. nicht verifiziert (Avg-30d 29,03K laut TV). Heute Rueckeroberungsversuch: O 49,50 H 50,70 L 49,50, Kurs 50,25 = genau am Niveau -> der Xetra-Schluss 17:35 entscheidet: Schluss > 50,25 = TIW gebrochen, Zeile parkt; Schluss < 50,25 = Retest intakt. 1D: EMA20/50/100/200 52,99/56,17/60,09/64,91 baerisch, RSI 34,20 > Sig 32,51, ATR 1,485, r2 0,88, 52W-Tief 2,25 % entfernt (Stuetzmagnet, Short-Squeeze-Risiko). 4h: EMA20 50,93 ueber Kurs (Widerstand), RSI-4h 38,43 > Sig 33,89 = gegen den Short, kein Bearish-Reverse. L25 an Stop-Sell 49,45 (unter Tagestief 49,50): SL MAX(51,68 ; 50,70+0,45=51,15) = 51,68, d 2,23, TP1 44,80 = 2,09 R. 1 % = 67 Stk, E@h3 ~1.104 EUR. Treiber: Warburg Hold KZ 60 (01.10.), DB KZ 75 (28.09.). || VORGAENGER
-    (archiviert 2026-10-07, TIW 51,15 per Schluss gebrochen): [ARCHIVIERT 2026-10-07, User-Entscheid Morning Check] Breakdown vom 02.10. zurueckerobert, zwei Schluesse ueber dem Niveau. RE-EVAL = echter zweiter Breakdown unter die Band-UG 50,02 mit Volumen. Q3 2026-10-22. Vorheriger Leg-Text: nach 2026-10-05 BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40.
-    Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
+    gate: 🔴
+    text: '🔴 ARCHIVIERT 2026-10-12 - kein Entry-Trigger (TIW 50,25 per Schluss 2026-10-12 gebrochen, 51,10). RE-EVAL: 1D-Schluss <50,25€. Dann Breakdown-Retest frisch fassen.'
+  notes: '[ARCHIVIERT 2026-10-12, Tagesschluss-Task, User-Freigabe] Schluss 51,10 ueber TIW 50,25 (Digest 18:03); Re-Eval auf die TIW. Alter Trigger: nach 2026-10-09 BREAKDOWN-RETEST-SHORT: Niveau 50,25€ (20-Tage-Tief, Pipeline bd_level). Breakdown per Schluss 08.10. (49,40; Vol im Digest bd_vol_mult, Boden 1,0x / Daempfer 1,3x). Touch 49,14–50,99€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 50,25€. TP1 44,80€ (Measured Move), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 2,09 an 49,45. 1% Sizing (Pilot). Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || [RE-EVAL AUSGELOEST 2026-10-09, User-Auftrag, User-Charts 1D+4h 13:21, Linien von Claude] Vossloh AG (VOS, XETRA, SDAX) - Bahninfrastruktur (Schienenbefestigungen, Weichen, Services). Re-Eval-Bedingung Schluss <50,02 erfuellt (08.10. 49,40); Volumen 08.10. nicht verifiziert (Avg-30d 29,03K
+    laut TV). Heute Rueckeroberungsversuch: O 49,50 H 50,70 L 49,50, Kurs 50,25 = genau am Niveau -> der Xetra-Schluss 17:35 entscheidet: Schluss > 50,25 = TIW gebrochen, Zeile parkt; Schluss < 50,25 = Retest intakt. 1D: EMA20/50/100/200 52,99/56,17/60,09/64,91 baerisch, RSI 34,20 > Sig 32,51, ATR 1,485, r2 0,88, 52W-Tief 2,25 % entfernt (Stuetzmagnet, Short-Squeeze-Risiko). 4h: EMA20 50,93 ueber Kurs (Widerstand), RSI-4h 38,43 > Sig 33,89 = gegen den Short, kein Bearish-Reverse. L25 an Stop-Sell 49,45 (unter Tagestief 49,50): SL MAX(51,68 ; 50,70+0,45=51,15) = 51,68, d 2,23, TP1 44,80 = 2,09 R. 1 % = 67 Stk, E@h3 ~1.104 EUR. Treiber: Warburg Hold KZ 60 (01.10.), DB KZ 75 (28.09.). || VORGAENGER (archiviert 2026-10-07, TIW 51,15 per Schluss gebrochen): [ARCHIVIERT 2026-10-07, User-Entscheid Morning Check] Breakdown vom 02.10. zurueckerobert, zwei Schluesse ueber dem Niveau. RE-EVAL = echter zweiter Breakdown unter die Band-UG 50,02 mit Volumen. Q3 2026-10-22. Vorheriger Leg-Text: nach 2026-10-05
+    BREAKDOWN-RETEST-SHORT: Niveau 51,15 (20-Tage-Tief), Breakdown bestaetigt 2026-10-02 per Tagesschluss, Volumen 2,4x. Jetzt: Touch 50,02–51,90€ [pullback] (= Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze. SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 51,15€. TP1 44,80€ (Measured Move), TP2 Runner/Chandelier 2,0 ATR. 0,5% Sizing (REIFE 30d -15% + Extension -2,1 ATR, L18 gespiegelt), KO <=3 wegen Mindesteinsatz. Earnings 2026-10-22 -> KO-Exit bis 2026-10-15. || Pitch Stufe 2 2026-10-05 (RRprox 5,38). Breakdown 2026-10-02 unter 51,15 (Vol 2,37x), Band 50,02-51,90. MM 44,8 = 2,48 R ab Stop-Sell 50,40. Reife 30d -15,3%, RSI-1D 31, Extension -2,1 ATR unter EMA20 -> L18 gespiegelt: halbe Groesse 75 EUR, Einsatz >=400 EUR nur mit KO <=3 (E@h3 ~560 EUR). Ex-Tag: Jahresdividende Mai, kein Short-Block. Gegenrede: RSI 31 = Bounce-Risiko bis EMA20 54,2 (2,5 ATR).'
   added: '2026-10-09'
+  archived:
+    date: '2026-10-12'
+    reason: TIW gebrochen
 - symbol: ANET
   name: Arista Networks, Inc. (ANET, NYSE) - Netzwerk-Switches fuer Rechenzentren/AI-Cluster
   direction: LONG
@@ -2623,14 +2626,18 @@ entries:
   klasse: breakout_retest
   anker: Range-Tief 7,208
   treiber: Kerosin-Mehrkosten 2026 ueber Plan 1,5 Mrd EUR (2026-10-06); Konsens 4x Verkaufen
-  status: aktiv
+  status: archiviert
   added: '2026-10-12'
   expiry: '2026-10-26'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-12 BREAKDOWN-RETEST-SHORT: Niveau 7,208€ (20-Tage-Tief, Bruch 2026-10-09, Vol 1,12x -> Daempfer 1 %). Touch 7,10–7,25€ [pullback] (= Niveau -0,60/+0,25 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 7,208€. TP1 6,75€ (ueber 52W-Tief 6,72), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,86, unter 7,10 kein Entry. 1% Sizing. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27.'
-  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 7,54/7,84/8,07/8,11 bearish, RSI 31,8 (>=30); 4h RSI 25,8, Range 7,10-7,30 seit 08.10. Gegenrede: nahe 52W-Tief, KGV 7,8, Kerosin 2026 groesstenteils gesichert, Oelpreis-Rueckgang = Squeeze-Risiko. L7: Short Airline + Oel-Long-Korb (ENI.MI) = derselbe Oelpreis-Block. Kein Ex-Tag bis HV 2027.'
+    gate: 🔴
+    text: '🔴 ARCHIVIERT 2026-10-12 - kein Entry-Trigger (TIW 7,208 per Schluss 2026-10-12 gebrochen, 7,248). RE-EVAL: 1D-Schluss <7,208€. Dann Breakdown-Retest frisch fassen.'
+  notes: '[ARCHIVIERT 2026-10-12, Tagesschluss-Task, User-Freigabe] Schluss 7,248 ueber TIW 7,208 (Digest 18:03); Re-Eval auf die TIW. Alter Trigger: nach 2026-10-12 BREAKDOWN-RETEST-SHORT: Niveau 7,208€ (20-Tage-Tief, Bruch 2026-10-09, Vol 1,12x -> Daempfer 1 %). Touch 7,10–7,25€ [pullback] (= Niveau -0,60/+0,25 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 7,208€. TP1 6,75€ (ueber 52W-Tief 6,72), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,86, unter 7,10 kein Entry. 1% Sizing. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27. || [NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 7,54/7,84/8,07/8,11 bearish, RSI 31,8 (>=30); 4h RSI 25,8, Range 7,10-7,30 seit 08.10. Gegenrede: nahe 52W-Tief, KGV 7,8, Kerosin 2026 groesstenteils gesichert, Oelpreis-Rueckgang = Squeeze-Risiko.
+    L7: Short Airline + Oel-Long-Korb (ENI.MI) = derselbe Oelpreis-Block. Kein Ex-Tag bis HV 2027.'
+  archived:
+    date: '2026-10-12'
+    reason: TIW gebrochen
 - symbol: MO
   name: Altria Group (MO, NYSE) — Tabak
   direction: LONG
@@ -2827,4 +2834,4 @@ entries:
   notes: '[REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts 1D+4h 16:47] Ersetzt RE-EVAL >23,10 von 2026-10-12 (haette erst mitten in der Zone ausgeloest). Breakdown-Retest @ 22,16 verworfen (0,40 R bis 52W-Tief). Chart 16:47: 21,76, 52W-Tief 21,68, RSI-1D 29,6, RSI-4h 23,0 ueberverkauft -> Erholung an EMA20 abwarten. ATR-1D 0,5005; EMA20 faellt bis ~0,13/Tag, Treffpunkt eher ~22,9 (Schaetzung) -> R:R ~1,47. || [ARCHIVIERT 2026-10-12, User-Entscheid Morning Check] Kurs 21,80 = 52W-Tief, RSI 29,9; Short ohne Pullback kein Setup. || [REAKTIVIERT 2026-09-24, User-Entscheid, User-Charts 1D+4h 09:14 UTC, Websuche S1] RE-EVAL erfuellt: Stack wieder baerisch sortiert (EMA20/50/100/200-1D 24,35/24,41/24,90/25,92), Kurs 23,58 unter 4/4 = trendkonform, Deckel entfaellt. TIW NEU GERECHNET: 24,60 (ueber EMA20/50-Cluster und 4h-EMA200 24,58), die alte 25,60 ist verworfen. Zone = Retest des gebrochenen Aug/Sep-Range-Bodens 24,0-24,25 (4h-EMA20 24,25). SL an der Zone ATR-bestimmt 24,74-24,92,
     Puffer 0,33-0,73 ATR. JETZT KEIN ENTRY: RSI-4h 26,7 ueberverkauft, Extension -1,77 ATR, R:R am Markt 0,50. AUSLOESER 18.09. (-2,9%) SEKTORWEIT: '
   journal_row: 59
-updated: '2026-10-12T17:18:11+02:00'
+updated: '2026-10-12T18:12:34+02:00'
