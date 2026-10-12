@@ -64,13 +64,20 @@ thesen:
   crowdedness_pp: -7.59
   re_check: '2026-10-24'
   falsifikat: HRC Nordeuropa unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t Stand 2026-09-28)
-  ausdruecke: []
-  note: 'Re-Check faellig heute, Verdikt von beobachten auf spielen. Konviktions-Gate 4b alle drei harten Kriterien erfuellt (gerichtet long EU-Produzenten, Kausalkette Importvolumen->EU-Preisniveau->Marge, Falsifikat datiert). Preisseite hat gedreht: HRC Nordeuropa 740-750 EUR/t DDP, Werksabschluesse 745-760 (SMM 2026-10-09), Mills heben Angebote, Kaeuferlager niedrig, Restocking ab November = genau im Messfenster. Kurs-Katalysator 2026-10-09: UBS Neutral->Buy, Kursziel 56->71 EUR, SZG.DE Schluss 49,94 EUR +13,40 %, MT.AS +4,6 %. Crowdedness 30d SZG.DE -5,26 / MT.AS -9,92 PP, Mittel -7,59 PP (Vorwoche -11,84) -> Zone <10, Raum vorhanden, Korb 3 % RK. ACHTUNG: kein Ausdruck heute konstruierbar, beide Namen unter EMA20 mit neutralem Stack (SZG 49,94 vs EMA20 50,21; MT 57,28 vs 59,64) - Ausdruecke entscheidet Matthias im Chat. Ethik: SZG.DE, MT.AS, ACX.MC, APAM.AS frei; TKA.DE wegen TKMS-Mehrheit ausgeschlossen bis 30-%-Pruefung.'
+  ausdruecke:
+  - SZG.DE
+  - MT.AS
+  - VOE.VI
+  note: 'Ausdruecke 2026-10-12 (User-Auftrag nach Kandidaten-Recherche): SZG.DE (HRC-Hebel hoch, UBS Buy KZ 71), MT.AS (mittel-hoch), VOE.VI (UBS Buy KZ 64; Universum per PR #25). Ausgeschlossen: TKA.DE (51 % TKMS, Ethik), SSAB bis Armox-Pruefung; Edelstahl (APAM/ACX/OUT1V) passt nicht zur HRC-These. Regulierung: VO (EU) 2026/1384 seit 2026-07-01 (Quoten -47 %, 50 % Zoll), melt-and-pour-Nachweis seit 2026-10-01; HRC NW-Europa 740-750 EUR/t (SMM 2026-10-09). Korb 3 % RK = 150 EUR je Ausdruck.'
   historie:
   - date: '2026-10-12'
     verdikt: spielen
     crowdedness_pp: -7.59
     source: thesen-lauf
+  - date: '2026-10-12'
+    verdikt: spielen
+    crowdedness_pp: null
+    source: null
 - id: N2
   titel: UK-Ersterwerber (N-2)
   verdikt: beobachten
@@ -124,4 +131,4 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
-updated: '2026-10-12T12:53:58+02:00'
+updated: '2026-10-12T13:16:32+02:00'

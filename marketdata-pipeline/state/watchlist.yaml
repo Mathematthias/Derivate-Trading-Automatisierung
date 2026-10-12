@@ -2770,4 +2770,32 @@ entries:
   archived:
     date: '2026-10-12'
     reason: Pitch 2026-10-12 verworfen, Beobachtung
-updated: '2026-10-12T12:53:58+02:00'
+- symbol: SZG.DE
+  name: Salzgitter AG (SZG, XETR) — Flachstahl EU
+  direction: LONG
+  klasse: thesen_korb
+  anker: UBS-Impuls 09.10. / 200er-Linie
+  treiber: These STAHL EU-Stahl melt-and-pour (spielen, Korb 3 % RK, Re-Check 2026-10-24; Falsifikat HRC NW-Europa <745 EUR/t am 2026-11-12)
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 KORB-STAHL TREND-PULLBACK-LONG (Korb 1/3): Touch 47,30–48,00€ [pullback] (obere Haelfte des UBS-Impulses 09.10., 200er-Tageslinie 48,45 und 4h-Mittellinie 48,2) + 4h-Bullish-Reverse-Close (MANUELL). Limit erlaubt (Thesen-Korb, L27 nur 1 %), sonst Stop-Buy ueber Hoch der Bestaetigungskerze. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 45,50€ (Schluss 08.10. = UBS-Gap komplett abverkauft). TP1 53,50€ (Swing-Hoch Anfang Okt, vor 4h-EMA200 52,35/EMA50-1D 51,97), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,31-1,48. Korb-Anteil 150 EUR Risk (3 % RK / 3). ATR 5,7 % 🔴: Direktaktie. Earnings 2026-11-12.'
+  notes: '[NEU 2026-10-12, These STAHL Korb, User-Auftrag, Linien von Claude an User-Charts 1D+4h 13:12, Recherche Subagent] Chart 12.10. 13:12: 1D EMA 50,16/51,97/51,86/48,45 (neutral), RSI 47/40,6; 4h EMA 48,21/49,92/51,55/52,35, RSI 54. UBS Neutral->Buy KZ 56->71 (09.10.), +13 % Tag. Jetzt bei 49,6 kein Entry: TP1 53,5 = 0,9 R vom Kurs. Gegenrede: Abgabe nach dem Upgrade, EMA-Cluster 51,9-52,4 als Deckel, HRC ''nahe Produktionskosten''; ATR-Stufe rot = max. 3 solche Werte.'
+- symbol: MT.AS
+  name: ArcelorMittal SA (MT, Euronext Amsterdam) — Stahl EU/global
+  direction: LONG
+  klasse: thesen_korb
+  anker: 200er-Linie / Okt-Tief
+  treiber: These STAHL EU-Stahl melt-and-pour (spielen, Korb 3 % RK, Re-Check 2026-10-24; Falsifikat HRC NW-Europa <745 EUR/t am 2026-11-12)
+  status: aktiv
+  added: '2026-10-12'
+  expiry: '2026-10-28'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-12 KORB-STAHL TREND-PULLBACK-LONG (Korb 2/3): Touch 54,00–55,00€ [pullback] (200er-Tageslinie 53,95 bis 4h-Basis 09.10. ~55,1) + 4h-Bullish-Reverse-Close (MANUELL). Limit erlaubt (Thesen-Korb, L27 nur 1 %), sonst Stop-Buy ueber Hoch der Bestaetigungskerze. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 53,00€ (unter Okt-Tief 53,3 und 200er-Linie). TP1 59,20€ (4h-Hoch 06.10., vor EMA-Cluster 59-60,7), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,67. Korb-Anteil 150 EUR Risk. ATR 3,7 % 🟡: KO Hebel <=6,8. Earnings 2026-11-05 -> KO-Exit bis 2026-10-29.'
+  notes: '[NEU 2026-10-12, These STAHL Korb, User-Auftrag, Linien von Claude an User-Charts 1D+4h 13:12, Recherche Subagent] Chart 12.10. 13:12: 1D EMA 59,35/60,66/59,04/53,95, Kurs 56,6 unter 20/50/100, ueber 200; Okt-Tief 53,3 an der 200er; RSI 38,5/36,5; 4h unter EMA20 57,03, RSI 45. HRC-Hebel mittel-hoch (viel Amerika/Indien). Gegenrede: keine frische News, Trend kurzfristig abwaerts; Korb-Gleichlauf mit SZG = ein Trade im Audit.'
+updated: '2026-10-12T13:16:32+02:00'
