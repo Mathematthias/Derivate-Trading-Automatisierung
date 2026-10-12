@@ -111,7 +111,8 @@ def test_echte_tier_a_config_laedt_thesen_koerbe():
     cfg_path = os.path.join(os.path.dirname(_HERE), "config", "tickers_tier_a.yaml")
     cfg = yaml.safe_load(open(cfg_path, encoding="utf-8"))
     all_s, _, excl_cat = build_pull_universe("tier_a", cfg, _wl())
-    erwartet = {"PRY.MI", "NEX.PA", "NKT.CO", "SU.PA", "ABBN.SW", "LR.PA", "GEV", "VRT", "ETN", "PWR"}
+    erwartet = {"PRY.MI", "NEX.PA", "NKT.CO", "SU.PA", "ABBN.SW", "LR.PA", "GEV", "VRT", "ETN", "PWR",
+                "MT.AS", "VOE.VI"}
     assert erwartet <= all_s
     assert not (erwartet & excl_cat)
 

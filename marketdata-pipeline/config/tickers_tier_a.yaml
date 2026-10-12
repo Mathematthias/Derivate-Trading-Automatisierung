@@ -97,6 +97,10 @@ thesen_koerbe:
   Vertiv:             "VRT"        # Rechenzentrums-Strom/Kuehlung, NYSE, USD
   Eaton:              "ETN"        # Elektrotechnik/Power-Management, NYSE, USD (auch Tier C)
   Quanta_Services:    "PWR"        # Netzbau, NYSE, USD (auch Tier C)
+  # These STAHL — EU-Stahl melt-and-pour (Ausdruecke 2026-10-12; SZG.DE kommt aus Tier B)
+  ArcelorMittal:      "MT.AS"      # Flachstahl EU/global, Amsterdam, EUR (bisher nur ueber Katalysator-Seeds)
+  voestalpine:        "VOE.VI"     # Flachstahl + Spezialsparten, Wien, EUR; Ethik: Ruestung kein Kerngeschaeft (Recherche 2026-10-12, u)
+  # NICHT aufgenommen: TKA.DE (51 % TKMS = Kampfplattformen, Ethik), SSAB (Armox-Anteil ungeprueft)
 
 # ============================================================
 # NEBENWERTE-COVERAGE — DE Mid/Small-Caps mit Hidden-Catalyst-Potenzial
