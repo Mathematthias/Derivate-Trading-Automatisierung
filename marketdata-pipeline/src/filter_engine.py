@@ -107,6 +107,11 @@ class CandidateMatch:
     # L8 v3 ("Reife steuert die Groesse, nicht das Ob", 2026-06-29). Jetzt
     # Flag: der Kandidat bleibt sichtbar, das Briefing deckelt ihn auf 1 %.
     late_entry: bool = False
+    # --- Anker (2026-10-12, User „C bitte", Anlass INTC an der EMA100) ------
+    # Trend-Pullbacks: an welcher Daily-EMA der Kurs steht ("EMA20" | "EMA50" |
+    # "EMA100"). Bis dahin pruefte der Scan nur die EMA20; `trigger_ema_priority`
+    # stand mit EMA50 in der Config, kein Code las den zweiten Eintrag.
+    anchor: Optional[str] = None
 
 
 # ============================================================
@@ -1342,7 +1347,7 @@ def _vol_stufe(snap: Any, cfg: dict) -> Optional[tuple[bool, str]]:
     return True, cfg.get("daempfer_sizing", "eine_stufe")
 
 
-def _pitch_lane(bucket: str, direction: str, snap: Any) -> tuple[str, Optional[str]]:
+def _pitch_lane(bucket: str, direction: str, snap: Any, anchor: Optional[str] = None) -> tuple[str, Optional[str]]:
     """Bestimmt die Lane und begruendet eine Herabstufung.
 
     Erst die Setup-Klasse, dann die Faecher-Gegenprobe: ein trendkonformes Label
@@ -1358,9 +1363,22 @@ def _pitch_lane(bucket: str, direction: str, snap: Any) -> tuple[str, Optional[s
     below = _fan_below(snap)
     if below is None:
         return "trend", None
-    if direction == "long" and below > 1:
+    # 2026-10-12: Faecher-Grenze je Anker (Skill-Gate v68) und Touch-Toleranz am
+    # Anker selbst (Skill v69 „Gate beim Fill"): steht der Kurs knapp auf der
+    # falschen Seite der Anker-EMA, zaehlt sie noch als richtig.
+    max_below = pitch_anker_below_max(anchor) if bucket in _PITCH_PULLBACK_BUCKETS else 1
+    eff = below
+    if anchor and bucket in _PITCH_PULLBACK_BUCKETS:
+        av = getattr(snap, str(anchor).lower(), None)
+        price = getattr(snap, "price", None)
+        if av is not None and price is not None:
+            if direction == "long" and price < av:
+                eff = below - 1
+            elif direction == "short" and price > av:
+                eff = below + 1
+    if direction == "long" and eff > max_below:
         return "counter", f"Kurs unter {below} von 4 EMAs — Faecher nicht trendkonform"
-    if direction == "short" and below < 3:
+    if direction == "short" and eff < 4 - max_below:
         return "counter", f"Kurs unter nur {below} von 4 EMAs — Stack-Reclaim"
     return "trend", None
 
@@ -1378,6 +1396,8 @@ def _pitch_quota(config: dict) -> dict[str, int]:
     if sub:
         out["trend_range"] = int(sub.get("range", 0))
         out["trend_pullback"] = int(sub.get("pullback", 0))
+        if sub.get("pullback_deep_max") is not None:
+            out["trend_pullback_deep"] = int(sub["pullback_deep_max"])
     return out
 
 
@@ -1409,6 +1429,15 @@ def apply_pitch_quota(pitches: list[dict], config: dict) -> list[dict]:
         # werden getrennt gerendert, die Sortierung innerhalb bleibt rrprox.
         # KEIN Uebertrag: unbesetzte Plaetze der einen Sorte verfallen.
         for sub in ("range", "pullback"):
+            if sub == "pullback" and "trend_pullback_deep" in quota:
+                # 2026-10-12: Deckel fuer tiefe Anker. Ohne tiefe Treffer bleibt alles
+                # wie vorher (5 EMA20-Pullbacks); tiefe nehmen hoechstens N Plaetze.
+                deep_n = min(quota["trend_pullback_deep"], quota["trend_pullback"])
+                tief = _by_rr([p for p in subs[sub] if (p.get("anchor") or "EMA20") != "EMA20"])[:deep_n]
+                flach = [p for p in subs[sub] if (p.get("anchor") or "EMA20") == "EMA20"]
+                out.extend(_by_rr(flach)[: quota["trend_pullback"] - len(tief)])
+                out.extend(tief)
+                continue
             out.extend(_by_rr(subs[sub])[: quota[f"trend_{sub}"]])
     else:
         out.extend(_by_rr(trend_rows)[: quota["trend"]])
@@ -1799,7 +1828,7 @@ def build_pitches_payload(
             continue
         if snap.ema20 is None or snap.price is None:
             continue
-        lane, fan_note = _pitch_lane(m.bucket, direction, snap)
+        lane, fan_note = _pitch_lane(m.bucket, direction, snap, getattr(m, "anchor", None))
         move30 = snap.move_30d_pct
         # Der 30d-Move-Filter gilt AUSSCHLIESSLICH fuer die Counter-Trend-Lane.
         # Fuer ein Reversal IST die Bewegung die These — ohne sie gibt es nichts
@@ -1817,6 +1846,7 @@ def build_pitches_payload(
             "symbol": sym,
             "dir": direction,
             "setup": m.bucket,
+            "anchor": getattr(m, "anchor", None),
             "lane": lane,
             "price": round(snap.price, 4),
             "ema20": round(snap.ema20, 4),
@@ -1873,6 +1903,47 @@ def _exdiv_blocks_short(snap: TickerSnapshot, cfg: dict, today: Optional[date]) 
     return d is not None and 0 <= d <= int(days)
 
 
+_DEEP_ANKER_MAX_BELOW = {"EMA20": 1, "EMA50": 1, "EMA100": 2, "EMA200": 3}
+"""Wie viele der vier EMAs bei Long ueber dem Kurs liegen duerfen (Short gespiegelt),
+damit der Pitch trendkonform bleibt — dieselbe Staffel wie das Skill-Gate v68
+(EMA20/50 >= 3/4 · EMA100 >= 2/4 · EMA200 >= 1/4)."""
+
+
+def _deep_anchor_match(snap: TickerSnapshot, cfg: dict, direction: str) -> Optional[tuple[str, float]]:
+    """Tiefere Anker fuer Trend-Pullbacks (2026-10-12): erster Anker aus
+    `trigger_ema_priority` nach EMA20, in dessen ATR-Band der Kurs steht.
+
+    Long: Band [EMA − lo·ATR, EMA + hi·ATR] (`deep_anchor_band_atr: [lo, hi]`,
+    Default [0,25; 0,50]) und Kurs ueber der EMA200 (Trend intakt). Short gespiegelt.
+    Rueckgabe (Anker, Abstand in ATR, + = auf der Trendseite) oder None.
+    Der 30d-Move-Filter der EMA20-Variante gilt hier bewusst NICHT: Wer an der
+    EMA50/100 steht, hat 30 Tage Ruecklauf hinter sich (INTC −1,6 % am 2026-10-12).
+    """
+    atr = getattr(snap, "atr14", None)
+    price = getattr(snap, "price", None)
+    e200 = getattr(snap, "ema200", None)
+    if not atr or atr <= 0 or price is None or e200 is None:
+        return None
+    if (direction == "long" and price <= e200) or (direction == "short" and price >= e200):
+        return None
+    lo, hi = (cfg.get("deep_anchor_band_atr") or [0.25, 0.50])[:2]
+    for name in (cfg.get("trigger_ema_priority") or ["EMA20"]):
+        name = str(name).upper()
+        if name == "EMA20":
+            continue
+        val = getattr(snap, name.lower(), None)
+        if val is None:
+            continue
+        d = (price - val) / atr if direction == "long" else (val - price) / atr
+        if -float(lo) <= d <= float(hi):
+            return name, d
+    return None
+
+
+def pitch_anker_below_max(anchor: Optional[str]) -> int:
+    return _DEEP_ANKER_MAX_BELOW.get(str(anchor or "EMA20").upper(), 1)
+
+
 def _check_bucket(
     snap: TickerSnapshot,
     bucket: str,
@@ -1890,29 +1961,43 @@ def _check_bucket(
             return None
         if snap.ema20 is None:
             return None
-        # 30d-Move muss positiv sein für echten Long-Trend
-        if snap.move_30d_pct is None or snap.move_30d_pct <= 0:
-            return None
-        ema_dist = (snap.price - snap.ema20) / snap.ema20 * 100
-        if not (cfg["ema_distance_min_pct"] <= ema_dist <= cfg["ema_distance_max_pct"]):
-            return None
         if snap.rsi14 is None or snap.rsi14 > cfg["rsi_max"]:
             return None
         if snap.distance_from_52w_high_pct is None:
             return None
         if abs(snap.distance_from_52w_high_pct) < cfg["min_distance_from_52w_high_pct"]:
             return None
-        # Score: niedriger ema_dist (näher an EMA) + niedriger RSI = besser
-        score = -abs(ema_dist) - snap.rsi14 * 0.1
+        ema_dist = (snap.price - snap.ema20) / snap.ema20 * 100
+        # EMA20 (wie bisher): 30d-Move muss positiv sein für echten Long-Trend
+        if (snap.move_30d_pct is not None and snap.move_30d_pct > 0
+                and cfg["ema_distance_min_pct"] <= ema_dist <= cfg["ema_distance_max_pct"]):
+            score = -abs(ema_dist) - snap.rsi14 * 0.1
+            summary = (
+                f"{snap.symbol}: {snap.price:.2f}  EMA20={snap.ema20:.2f} "
+                f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
+                f"30d={snap.move_30d_pct:+.1f}%"
+            )
+            summary += _rr_proxy_suffix(snap, "long", config, bucket=bucket)
+            return CandidateMatch(
+                symbol=snap.symbol, bucket=bucket, snapshot=snap,
+                score=score, summary=summary, anchor="EMA20",
+            )
+        # Tiefere Anker (2026-10-12): EMA50/EMA100 laut trigger_ema_priority
+        deep = _deep_anchor_match(snap, cfg, "long")
+        if deep is None:
+            return None
+        anker, d_atr = deep
+        val = getattr(snap, anker.lower())
+        score = -abs(d_atr) * 2.0 - snap.rsi14 * 0.1 - 1.0     # hinter gleich nahen EMA20-Treffern
         summary = (
-            f"{snap.symbol}: {snap.price:.2f}  EMA20={snap.ema20:.2f} "
-            f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
-            f"30d={snap.move_30d_pct:+.1f}%"
+            f"{snap.symbol}: {snap.price:.2f}  {anker}={val:.2f} "
+            f"Dist={d_atr:+.2f} ATR  RSI={snap.rsi14:.0f}  "
+            f"30d={(snap.move_30d_pct or 0):+.1f}%  @{anker}"
         )
         summary += _rr_proxy_suffix(snap, "long", config, bucket=bucket)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
-            score=score, summary=summary,
+            score=score, summary=summary, anchor=anker,
         )
 
     # Short-Trend-Pullback (Spiegel)
@@ -1923,28 +2008,42 @@ def _check_bucket(
             return None
         if snap.ema20 is None:
             return None
-        # 30d-Move muss negativ sein für echten Short-Trend
-        if snap.move_30d_pct is None or snap.move_30d_pct >= 0:
-            return None
-        ema_dist = (snap.price - snap.ema20) / snap.ema20 * 100
-        if not (cfg["ema_distance_min_pct"] <= ema_dist <= cfg["ema_distance_max_pct"]):
-            return None
         if snap.rsi14 is None or snap.rsi14 < cfg["rsi_min"]:
             return None
         if snap.distance_from_52w_low_pct is None:
             return None
         if abs(snap.distance_from_52w_low_pct) < cfg["min_distance_from_52w_low_pct"]:
             return None
-        score = -abs(ema_dist) + snap.rsi14 * 0.1
+        ema_dist = (snap.price - snap.ema20) / snap.ema20 * 100
+        # EMA20 (wie bisher): 30d-Move muss negativ sein für echten Short-Trend
+        if (snap.move_30d_pct is not None and snap.move_30d_pct < 0
+                and cfg["ema_distance_min_pct"] <= ema_dist <= cfg["ema_distance_max_pct"]):
+            score = -abs(ema_dist) + snap.rsi14 * 0.1
+            summary = (
+                f"{snap.symbol}: {snap.price:.2f}  EMA20={snap.ema20:.2f} "
+                f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
+                f"30d={snap.move_30d_pct:+.1f}%"
+            )
+            summary += _rr_proxy_suffix(snap, "short", config, bucket=bucket)
+            return CandidateMatch(
+                symbol=snap.symbol, bucket=bucket, snapshot=snap,
+                score=score, summary=summary, anchor="EMA20",
+            )
+        deep = _deep_anchor_match(snap, cfg, "short")          # 2026-10-12
+        if deep is None:
+            return None
+        anker, d_atr = deep
+        val = getattr(snap, anker.lower())
+        score = -abs(d_atr) * 2.0 + snap.rsi14 * 0.1 - 1.0
         summary = (
-            f"{snap.symbol}: {snap.price:.2f}  EMA20={snap.ema20:.2f} "
-            f"Dist={ema_dist:+.2f}%  RSI={snap.rsi14:.0f}  "
-            f"30d={snap.move_30d_pct:+.1f}%"
+            f"{snap.symbol}: {snap.price:.2f}  {anker}={val:.2f} "
+            f"Dist={d_atr:+.2f} ATR  RSI={snap.rsi14:.0f}  "
+            f"30d={(snap.move_30d_pct or 0):+.1f}%  @{anker}"
         )
         summary += _rr_proxy_suffix(snap, "short", config, bucket=bucket)
         return CandidateMatch(
             symbol=snap.symbol, bucket=bucket, snapshot=snap,
-            score=score, summary=summary,
+            score=score, summary=summary, anchor=anker,
         )
 
     # Breakout-Retest Long (Neudefinition 2026-10-04, System-Review)
