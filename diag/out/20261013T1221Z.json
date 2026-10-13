@@ -1,0 +1,2306 @@
+{
+ "stamp_utc": "20261013T1221Z",
+ "yfinance": "1.7.0",
+ "pandas": "3.0.6",
+ "ticker": {
+  "SAP.DE": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "Europe/Berlin",
+     "gmtoffset": 7200,
+     "regularMarketTime": 1791893203,
+     "regularMarketPrice": 194.76,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "CEST",
+       "start": 1791867600,
+       "end": 1791874800,
+       "gmtoffset": 7200
+      },
+      "regular": {
+       "timezone": "CEST",
+       "start": 1791874800,
+       "end": 1791905400,
+       "gmtoffset": 7200
+      },
+      "post": {
+       "timezone": "CEST",
+       "start": 1791905400,
+       "end": 1791916200,
+       "gmtoffset": 7200
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791270000,
+      "utc": "2026-10-06T07:00:00+00:00",
+      "open": 186.55999755859375,
+      "high": 190.22000122070312,
+      "low": 186.05999755859375,
+      "close": 188.60000610351562,
+      "volume": 1261950
+     },
+     {
+      "ts": 1791356400,
+      "utc": "2026-10-07T07:00:00+00:00",
+      "open": 187.0,
+      "high": 188.72000122070312,
+      "low": 186.0399932861328,
+      "close": 187.6199951171875,
+      "volume": 1672939
+     },
+     {
+      "ts": 1791442800,
+      "utc": "2026-10-08T07:00:00+00:00",
+      "open": 187.0399932861328,
+      "high": 189.82000732421875,
+      "low": 183.75999450683594,
+      "close": 184.6199951171875,
+      "volume": 1543500
+     },
+     {
+      "ts": 1791529200,
+      "utc": "2026-10-09T07:00:00+00:00",
+      "open": 188.97999572753906,
+      "high": 192.5800018310547,
+      "low": 188.86000061035156,
+      "close": 191.4600067138672,
+      "volume": 2369793
+     },
+     {
+      "ts": 1791788400,
+      "utc": "2026-10-12T07:00:00+00:00",
+      "open": null,
+      "high": null,
+      "low": null,
+      "close": null,
+      "volume": null
+     },
+     {
+      "ts": 1791874800,
+      "utc": "2026-10-13T07:00:00+00:00",
+      "open": 196.0,
+      "high": 197.3000030517578,
+      "low": 194.47999572753906,
+      "close": 194.75999450683594,
+      "volume": 470291
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00+02:00",
+     "Open": 185.05999755859375,
+     "High": 188.5,
+     "Low": 184.66000366210938,
+     "Close": 185.0399932861328,
+     "Volume": 1363827.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 186.55999755859375,
+     "High": 190.22000122070312,
+     "Low": 186.05999755859375,
+     "Close": 188.60000610351562,
+     "Volume": 1261950.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 187.0,
+     "High": 188.72000122070312,
+     "Low": 186.0399932861328,
+     "Close": 187.6199951171875,
+     "Volume": 1672939.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 187.0399932861328,
+     "High": 189.82000732421875,
+     "Low": 183.75999450683594,
+     "Close": 184.6199951171875,
+     "Volume": 1543500.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 188.97999572753906,
+     "High": 192.5800018310547,
+     "Low": 188.86000061035156,
+     "Close": 191.4600067138672,
+     "Volume": 2369793.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 196.0,
+     "High": 197.3000030517578,
+     "Low": 194.47999572753906,
+     "Close": 194.75999450683594,
+     "Volume": 470291.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00+02:00",
+     "Open": 185.05999755859375,
+     "High": 188.5,
+     "Low": 184.66000366210938,
+     "Close": 185.0399932861328,
+     "Volume": 1363827.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 186.55999755859375,
+     "High": 190.22000122070312,
+     "Low": 186.05999755859375,
+     "Close": 188.60000610351562,
+     "Volume": 1261950.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 187.0,
+     "High": 188.72000122070312,
+     "Low": 186.0399932861328,
+     "Close": 187.6199951171875,
+     "Volume": 1672939.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 187.0399932861328,
+     "High": 189.82000732421875,
+     "Low": 183.75999450683594,
+     "Close": 184.6199951171875,
+     "Volume": 1543500.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 188.97999572753906,
+     "High": 192.5800018310547,
+     "Low": 188.86000061035156,
+     "Close": 191.4600067138672,
+     "Volume": 2369793.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 196.0,
+     "High": 197.3000030517578,
+     "Low": 194.47999572753906,
+     "Close": 194.75999450683594,
+     "Volume": 470291.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 185.05999755859375,
+     "High": 188.5,
+     "Low": 184.66000366210938,
+     "Close": 185.0399932861328,
+     "Volume": 1363827.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 186.55999755859375,
+     "High": 190.22000122070312,
+     "Low": 186.05999755859375,
+     "Close": 188.60000610351562,
+     "Volume": 1261950.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 187.0,
+     "High": 188.72000122070312,
+     "Low": 186.0399932861328,
+     "Close": 187.6199951171875,
+     "Volume": 1672939.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 187.0399932861328,
+     "High": 189.82000732421875,
+     "Low": 183.75999450683594,
+     "Close": 184.6199951171875,
+     "Volume": 1543500.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 188.97999572753906,
+     "High": 192.5800018310547,
+     "Low": 188.86000061035156,
+     "Close": 191.4600067138672,
+     "Volume": 2369793.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 196.0,
+     "High": 197.3000030517578,
+     "Low": 194.47999572753906,
+     "Close": 194.75999450683594,
+     "Volume": 470393.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-12 00:00:00"
+   ]
+  },
+  "ABBN.SW": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "Europe/Zurich",
+     "gmtoffset": 7200,
+     "regularMarketTime": 1791893186,
+     "regularMarketPrice": 80.02,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "CEST",
+       "start": 1791874800,
+       "end": 1791874800,
+       "gmtoffset": 7200
+      },
+      "regular": {
+       "timezone": "CEST",
+       "start": 1791874800,
+       "end": 1791905400,
+       "gmtoffset": 7200
+      },
+      "post": {
+       "timezone": "CEST",
+       "start": 1791905400,
+       "end": 1791905400,
+       "gmtoffset": 7200
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791270000,
+      "utc": "2026-10-06T07:00:00+00:00",
+      "open": 81.80000305175781,
+      "high": 82.83999633789062,
+      "low": 81.41999816894531,
+      "close": 82.58000183105469,
+      "volume": 1487083
+     },
+     {
+      "ts": 1791356400,
+      "utc": "2026-10-07T07:00:00+00:00",
+      "open": 81.9800033569336,
+      "high": 82.08000183105469,
+      "low": 79.86000061035156,
+      "close": 79.87999725341797,
+      "volume": 2064242
+     },
+     {
+      "ts": 1791442800,
+      "utc": "2026-10-08T07:00:00+00:00",
+      "open": 79.30000305175781,
+      "high": 79.54000091552734,
+      "low": 78.5999984741211,
+      "close": 78.80000305175781,
+      "volume": 1777846
+     },
+     {
+      "ts": 1791529200,
+      "utc": "2026-10-09T07:00:00+00:00",
+      "open": 79.0199966430664,
+      "high": 79.63999938964844,
+      "low": 78.5,
+      "close": 79.63999938964844,
+      "volume": 1397896
+     },
+     {
+      "ts": 1791788400,
+      "utc": "2026-10-12T07:00:00+00:00",
+      "open": null,
+      "high": null,
+      "low": null,
+      "close": null,
+      "volume": null
+     },
+     {
+      "ts": 1791874800,
+      "utc": "2026-10-13T07:00:00+00:00",
+      "open": 79.05999755859375,
+      "high": 81.19999694824219,
+      "low": 78.73999786376953,
+      "close": 80.0199966430664,
+      "volume": 571629
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00+02:00",
+     "Open": 81.9000015258789,
+     "High": 82.80000305175781,
+     "Low": 80.62000274658203,
+     "Close": 81.69999694824219,
+     "Volume": 2169313.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 81.80000305175781,
+     "High": 82.83999633789062,
+     "Low": 81.41999816894531,
+     "Close": 82.58000183105469,
+     "Volume": 1487083.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 81.9800033569336,
+     "High": 82.08000183105469,
+     "Low": 79.86000061035156,
+     "Close": 79.87999725341797,
+     "Volume": 2064242.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 79.30000305175781,
+     "High": 79.54000091552734,
+     "Low": 78.5999984741211,
+     "Close": 78.80000305175781,
+     "Volume": 1777846.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 79.0199966430664,
+     "High": 79.63999938964844,
+     "Low": 78.5,
+     "Close": 79.63999938964844,
+     "Volume": 1397896.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 79.05999755859375,
+     "High": 81.19999694824219,
+     "Low": 78.73999786376953,
+     "Close": 80.0199966430664,
+     "Volume": 571629.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00+02:00",
+     "Open": 81.9000015258789,
+     "High": 82.80000305175781,
+     "Low": 80.62000274658203,
+     "Close": 81.69999694824219,
+     "Volume": 2169313.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 81.80000305175781,
+     "High": 82.83999633789062,
+     "Low": 81.41999816894531,
+     "Close": 82.58000183105469,
+     "Volume": 1487083.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 81.9800033569336,
+     "High": 82.08000183105469,
+     "Low": 79.86000061035156,
+     "Close": 79.87999725341797,
+     "Volume": 2064242.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 79.30000305175781,
+     "High": 79.54000091552734,
+     "Low": 78.5999984741211,
+     "Close": 78.80000305175781,
+     "Volume": 1777846.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 79.0199966430664,
+     "High": 79.63999938964844,
+     "Low": 78.5,
+     "Close": 79.63999938964844,
+     "Volume": 1397896.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 79.05999755859375,
+     "High": 81.19999694824219,
+     "Low": 78.73999786376953,
+     "Close": 80.0199966430664,
+     "Volume": 571629.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 81.9000015258789,
+     "High": 82.80000305175781,
+     "Low": 80.62000274658203,
+     "Close": 81.69999694824219,
+     "Volume": 2169313.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 81.80000305175781,
+     "High": 82.83999633789062,
+     "Low": 81.41999816894531,
+     "Close": 82.58000183105469,
+     "Volume": 1487083.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 81.9800033569336,
+     "High": 82.08000183105469,
+     "Low": 79.86000061035156,
+     "Close": 79.87999725341797,
+     "Volume": 2064242.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 79.30000305175781,
+     "High": 79.54000091552734,
+     "Low": 78.5999984741211,
+     "Close": 78.80000305175781,
+     "Volume": 1777846.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 79.0199966430664,
+     "High": 79.63999938964844,
+     "Low": 78.5,
+     "Close": 79.63999938964844,
+     "Volume": 1397896.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 79.05999755859375,
+     "High": 81.19999694824219,
+     "Low": 78.73999786376953,
+     "Close": 80.0199966430664,
+     "Volume": 571629.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-12 00:00:00"
+   ]
+  },
+  "RACE.MI": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "Europe/Rome",
+     "gmtoffset": 7200,
+     "regularMarketTime": 1791893202,
+     "regularMarketPrice": 348.55,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "CEST",
+       "start": 1791871200,
+       "end": 1791874800,
+       "gmtoffset": 7200
+      },
+      "regular": {
+       "timezone": "CEST",
+       "start": 1791874800,
+       "end": 1791905400,
+       "gmtoffset": 7200
+      },
+      "post": {
+       "timezone": "CEST",
+       "start": 1791905400,
+       "end": 1791905400,
+       "gmtoffset": 7200
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791270000,
+      "utc": "2026-10-06T07:00:00+00:00",
+      "open": 343.5,
+      "high": 348.3500061035156,
+      "low": 342.3999938964844,
+      "close": 345.25,
+      "volume": 238126
+     },
+     {
+      "ts": 1791356400,
+      "utc": "2026-10-07T07:00:00+00:00",
+      "open": 342.5,
+      "high": 345.6499938964844,
+      "low": 341.29998779296875,
+      "close": 345.1499938964844,
+      "volume": 277571
+     },
+     {
+      "ts": 1791442800,
+      "utc": "2026-10-08T07:00:00+00:00",
+      "open": 343.0,
+      "high": 345.70001220703125,
+      "low": 342.1499938964844,
+      "close": 342.79998779296875,
+      "volume": 245734
+     },
+     {
+      "ts": 1791529200,
+      "utc": "2026-10-09T07:00:00+00:00",
+      "open": 347.45001220703125,
+      "high": 350.3999938964844,
+      "low": 346.3500061035156,
+      "close": 347.8500061035156,
+      "volume": 324386
+     },
+     {
+      "ts": 1791788400,
+      "utc": "2026-10-12T07:00:00+00:00",
+      "open": null,
+      "high": null,
+      "low": null,
+      "close": null,
+      "volume": null
+     },
+     {
+      "ts": 1791874800,
+      "utc": "2026-10-13T07:00:00+00:00",
+      "open": 349.5,
+      "high": 351.3500061035156,
+      "low": 347.8999938964844,
+      "close": 348.54998779296875,
+      "volume": 62663
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00+02:00",
+     "Open": 344.1000061035156,
+     "High": 345.20001220703125,
+     "Low": 340.45001220703125,
+     "Close": 341.20001220703125,
+     "Volume": 235190.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 343.5,
+     "High": 348.3500061035156,
+     "Low": 342.3999938964844,
+     "Close": 345.25,
+     "Volume": 238126.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 342.5,
+     "High": 345.6499938964844,
+     "Low": 341.29998779296875,
+     "Close": 345.1499938964844,
+     "Volume": 277571.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 343.0,
+     "High": 345.70001220703125,
+     "Low": 342.1499938964844,
+     "Close": 342.79998779296875,
+     "Volume": 245734.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 347.45001220703125,
+     "High": 350.3999938964844,
+     "Low": 346.3500061035156,
+     "Close": 347.8500061035156,
+     "Volume": 324386.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 349.5,
+     "High": 351.3500061035156,
+     "Low": 347.8999938964844,
+     "Close": 348.54998779296875,
+     "Volume": 62663.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00+02:00",
+     "Open": 344.1000061035156,
+     "High": 345.20001220703125,
+     "Low": 340.45001220703125,
+     "Close": 341.20001220703125,
+     "Volume": 235190.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 343.5,
+     "High": 348.3500061035156,
+     "Low": 342.3999938964844,
+     "Close": 345.25,
+     "Volume": 238126.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 342.5,
+     "High": 345.6499938964844,
+     "Low": 341.29998779296875,
+     "Close": 345.1499938964844,
+     "Volume": 277571.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 343.0,
+     "High": 345.70001220703125,
+     "Low": 342.1499938964844,
+     "Close": 342.79998779296875,
+     "Volume": 245734.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 347.45001220703125,
+     "High": 350.3999938964844,
+     "Low": 346.3500061035156,
+     "Close": 347.8500061035156,
+     "Volume": 324386.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 349.5,
+     "High": 351.3500061035156,
+     "Low": 347.8999938964844,
+     "Close": 348.54998779296875,
+     "Volume": 62663.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 344.1000061035156,
+     "High": 345.20001220703125,
+     "Low": 340.45001220703125,
+     "Close": 341.20001220703125,
+     "Volume": 235190.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 343.5,
+     "High": 348.3500061035156,
+     "Low": 342.3999938964844,
+     "Close": 345.25,
+     "Volume": 238126.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 342.5,
+     "High": 345.6499938964844,
+     "Low": 341.29998779296875,
+     "Close": 345.1499938964844,
+     "Volume": 277571.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 343.0,
+     "High": 345.70001220703125,
+     "Low": 342.1499938964844,
+     "Close": 342.79998779296875,
+     "Volume": 245734.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 347.45001220703125,
+     "High": 350.3999938964844,
+     "Low": 346.3500061035156,
+     "Close": 347.8500061035156,
+     "Volume": 324386.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 349.5,
+     "High": 351.3500061035156,
+     "Low": 347.8999938964844,
+     "Close": 348.5,
+     "Volume": 62673.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-12 00:00:00"
+   ]
+  },
+  "SMIN.L": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "Europe/London",
+     "gmtoffset": 3600,
+     "regularMarketTime": 1791893189,
+     "regularMarketPrice": 2733.0,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "BST",
+       "start": 1791872100,
+       "end": 1791874800,
+       "gmtoffset": 3600
+      },
+      "regular": {
+       "timezone": "BST",
+       "start": 1791874800,
+       "end": 1791905400,
+       "gmtoffset": 3600
+      },
+      "post": {
+       "timezone": "BST",
+       "start": 1791905400,
+       "end": 1791908100,
+       "gmtoffset": 3600
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791270000,
+      "utc": "2026-10-06T07:00:00+00:00",
+      "open": 2868.0,
+      "high": 2881.0,
+      "low": 2834.0,
+      "close": 2847.0,
+      "volume": 741298
+     },
+     {
+      "ts": 1791356400,
+      "utc": "2026-10-07T07:00:00+00:00",
+      "open": 2827.0,
+      "high": 2837.0,
+      "low": 2762.0,
+      "close": 2762.0,
+      "volume": 1038324
+     },
+     {
+      "ts": 1791442800,
+      "utc": "2026-10-08T07:00:00+00:00",
+      "open": 2745.0,
+      "high": 2745.0,
+      "low": 2698.0,
+      "close": 2710.0,
+      "volume": 1451345
+     },
+     {
+      "ts": 1791529200,
+      "utc": "2026-10-09T07:00:00+00:00",
+      "open": 2749.0,
+      "high": 2762.0,
+      "low": 2722.0,
+      "close": 2730.0,
+      "volume": 6201401
+     },
+     {
+      "ts": 1791788400,
+      "utc": "2026-10-12T07:00:00+00:00",
+      "open": null,
+      "high": null,
+      "low": null,
+      "close": null,
+      "volume": null
+     },
+     {
+      "ts": 1791874800,
+      "utc": "2026-10-13T07:00:00+00:00",
+      "open": 2770.0,
+      "high": 2781.0,
+      "low": 2733.0,
+      "close": 2733.0,
+      "volume": 220078
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00+01:00",
+     "Open": 2815.0,
+     "High": 2843.0,
+     "Low": 2800.326904296875,
+     "Close": 2841.0,
+     "Volume": 734417.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+01:00",
+     "Open": 2868.0,
+     "High": 2881.0,
+     "Low": 2834.0,
+     "Close": 2847.0,
+     "Volume": 741298.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+01:00",
+     "Open": 2827.0,
+     "High": 2837.0,
+     "Low": 2762.0,
+     "Close": 2762.0,
+     "Volume": 1038324.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+01:00",
+     "Open": 2745.0,
+     "High": 2745.0,
+     "Low": 2698.0,
+     "Close": 2710.0,
+     "Volume": 1451345.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+01:00",
+     "Open": 2749.0,
+     "High": 2762.0,
+     "Low": 2722.0,
+     "Close": 2730.0,
+     "Volume": 6201401.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+01:00",
+     "Open": 2770.0,
+     "High": 2781.0,
+     "Low": 2733.0,
+     "Close": 2733.0,
+     "Volume": 220078.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00+01:00",
+     "Open": 2815.0,
+     "High": 2843.0,
+     "Low": 2800.326904296875,
+     "Close": 2841.0,
+     "Volume": 734417.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+01:00",
+     "Open": 2868.0,
+     "High": 2881.0,
+     "Low": 2834.0,
+     "Close": 2847.0,
+     "Volume": 741298.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+01:00",
+     "Open": 2827.0,
+     "High": 2837.0,
+     "Low": 2762.0,
+     "Close": 2762.0,
+     "Volume": 1038324.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+01:00",
+     "Open": 2745.0,
+     "High": 2745.0,
+     "Low": 2698.0,
+     "Close": 2710.0,
+     "Volume": 1451345.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+01:00",
+     "Open": 2749.0,
+     "High": 2762.0,
+     "Low": 2722.0,
+     "Close": 2730.0,
+     "Volume": 6201401.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+01:00",
+     "Open": 2770.0,
+     "High": 2781.0,
+     "Low": 2733.0,
+     "Close": 2733.0,
+     "Volume": 220078.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 2815.0,
+     "High": 2843.0,
+     "Low": 2800.326904296875,
+     "Close": 2841.0,
+     "Volume": 734417.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 2868.0,
+     "High": 2881.0,
+     "Low": 2834.0,
+     "Close": 2847.0,
+     "Volume": 741298.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 2827.0,
+     "High": 2837.0,
+     "Low": 2762.0,
+     "Close": 2762.0,
+     "Volume": 1038324.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 2745.0,
+     "High": 2745.0,
+     "Low": 2698.0,
+     "Close": 2710.0,
+     "Volume": 1451345.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 2749.0,
+     "High": 2762.0,
+     "Low": 2722.0,
+     "Close": 2730.0,
+     "Volume": 6201401.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 2770.0,
+     "High": 2781.0,
+     "Low": 2733.0,
+     "Close": 2733.0,
+     "Volume": 220078.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-12 00:00:00"
+   ]
+  },
+  "EURUSD=X": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "Europe/London",
+     "gmtoffset": 3600,
+     "regularMarketTime": 1791894087,
+     "regularMarketPrice": 1.1191,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "BST",
+       "start": 1791846000,
+       "end": 1791846000,
+       "gmtoffset": 3600
+      },
+      "regular": {
+       "timezone": "BST",
+       "start": 1791846000,
+       "end": 1791932340,
+       "gmtoffset": 3600
+      },
+      "post": {
+       "timezone": "BST",
+       "start": 1791932340,
+       "end": 1791932340,
+       "gmtoffset": 3600
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791241200,
+      "utc": "2026-10-05T23:00:00+00:00",
+      "open": 1.1217427253723145,
+      "high": 1.1275863647460938,
+      "low": 1.120360255241394,
+      "close": 1.1217050552368164,
+      "volume": 0
+     },
+     {
+      "ts": 1791327600,
+      "utc": "2026-10-06T23:00:00+00:00",
+      "open": 1.1252517700195312,
+      "high": 1.1256190538406372,
+      "low": 1.1166073083877563,
+      "close": 1.1253530979156494,
+      "volume": 0
+     },
+     {
+      "ts": 1791414000,
+      "utc": "2026-10-07T23:00:00+00:00",
+      "open": 1.1201343536376953,
+      "high": 1.122296690940857,
+      "low": 1.1172560453414917,
+      "close": 1.1201343536376953,
+      "volume": 0
+     },
+     {
+      "ts": 1791500400,
+      "utc": "2026-10-08T23:00:00+00:00",
+      "open": 1.1213151216506958,
+      "high": 1.1243535280227661,
+      "low": 1.11906898021698,
+      "close": 1.1213024854660034,
+      "volume": 0
+     },
+     {
+      "ts": 1791846000,
+      "utc": "2026-10-12T23:00:00+00:00",
+      "open": 1.1156978607177734,
+      "high": 1.1199462413787842,
+      "low": 1.1156978607177734,
+      "close": null,
+      "volume": 0
+     },
+     {
+      "ts": 1791894087,
+      "utc": "2026-10-13T12:21:27+00:00",
+      "open": 1.1156978607177734,
+      "high": 1.1199462413787842,
+      "low": 1.1156978607177734,
+      "close": 1.11906898021698,
+      "volume": 0
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00+01:00",
+     "Open": 1.1254544258117676,
+     "High": 1.1257457733154297,
+     "Low": 1.116233468055725,
+     "Close": 1.1254544258117676,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+01:00",
+     "Open": 1.1217427253723145,
+     "High": 1.1275863647460938,
+     "Low": 1.120360255241394,
+     "Close": 1.1217050552368164,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+01:00",
+     "Open": 1.1252517700195312,
+     "High": 1.1256190538406372,
+     "Low": 1.1166073083877563,
+     "Close": 1.1253530979156494,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+01:00",
+     "Open": 1.1201343536376953,
+     "High": 1.122296690940857,
+     "Low": 1.1172560453414917,
+     "Close": 1.1201343536376953,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+01:00",
+     "Open": 1.1213151216506958,
+     "High": 1.1243535280227661,
+     "Low": 1.11906898021698,
+     "Close": 1.1213024854660034,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+01:00",
+     "Open": 1.1156978607177734,
+     "High": 1.1199462413787842,
+     "Low": 1.1156978607177734,
+     "Close": 1.11906898021698,
+     "Volume": 0.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00+01:00",
+     "Open": 1.1254544258117676,
+     "High": 1.1257457733154297,
+     "Low": 1.116233468055725,
+     "Close": 1.1254544258117676,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00+01:00",
+     "Open": 1.1217427253723145,
+     "High": 1.1275863647460938,
+     "Low": 1.120360255241394,
+     "Close": 1.1217050552368164,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+01:00",
+     "Open": 1.1252517700195312,
+     "High": 1.1256190538406372,
+     "Low": 1.1166073083877563,
+     "Close": 1.1253530979156494,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+01:00",
+     "Open": 1.1201343536376953,
+     "High": 1.122296690940857,
+     "Low": 1.1172560453414917,
+     "Close": 1.1201343536376953,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+01:00",
+     "Open": 1.1213151216506958,
+     "High": 1.1243535280227661,
+     "Low": 1.11906898021698,
+     "Close": 1.1213024854660034,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+01:00",
+     "Open": 1.1156978607177734,
+     "High": 1.1199462413787842,
+     "Low": 1.1156978607177734,
+     "Close": 1.11906898021698,
+     "Volume": 0.0
+    }
+   ],
+   "hist_2y_repair_err": "base.py\", line 129, in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 573, in history\n    df = self._fix_zeroes(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1610, in _fix_zeroes\n    df2 = self._reconstruct_intervals_batch(df2, interval, prepost, tag)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 820, in _reconstruct_intervals_batch\n    from sklearn.cluster import DBSCAN\nModuleNotFoundError: No module named 'sklearn'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 1.1254544258117676,
+     "High": 1.1257457733154297,
+     "Low": 1.116233468055725,
+     "Close": 1.1254544258117676,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 1.1217427253723145,
+     "High": 1.1275863647460938,
+     "Low": 1.120360255241394,
+     "Close": 1.1217050552368164,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 1.1252517700195312,
+     "High": 1.1256190538406372,
+     "Low": 1.1166073083877563,
+     "Close": 1.1253530979156494,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 1.1201343536376953,
+     "High": 1.122296690940857,
+     "Low": 1.1172560453414917,
+     "Close": 1.1201343536376953,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 1.1213151216506958,
+     "High": 1.1243535280227661,
+     "Low": 1.11906898021698,
+     "Close": 1.1213024854660034,
+     "Volume": 0.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 1.1156978607177734,
+     "High": 1.1199462413787842,
+     "Low": 1.1156978607177734,
+     "Close": 1.11906898021698,
+     "Volume": 0.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-12 00:00:00"
+   ]
+  },
+  "BTC-EUR": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "UTC",
+     "gmtoffset": 0,
+     "regularMarketTime": 1791894105,
+     "regularMarketPrice": 74299.52,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "UTC",
+       "end": 1791849600,
+       "start": 1791849600,
+       "gmtoffset": 0
+      },
+      "regular": {
+       "timezone": "UTC",
+       "end": 1791935940,
+       "start": 1791849600,
+       "gmtoffset": 0
+      },
+      "post": {
+       "timezone": "UTC",
+       "end": 1791935940,
+       "start": 1791935940,
+       "gmtoffset": 0
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791417600,
+      "utc": "2026-10-08T00:00:00+00:00",
+      "open": 74356.609375,
+      "high": 74543.0546875,
+      "low": 71640.921875,
+      "close": 72842.140625,
+      "volume": 41221747379
+     },
+     {
+      "ts": 1791504000,
+      "utc": "2026-10-09T00:00:00+00:00",
+      "open": 72842.140625,
+      "high": 74391.265625,
+      "low": 72680.71875,
+      "close": 73672.5078125,
+      "volume": 21885009810
+     },
+     {
+      "ts": 1791590400,
+      "utc": "2026-10-10T00:00:00+00:00",
+      "open": 73672.5078125,
+      "high": 74169.4375,
+      "low": 73607.109375,
+      "close": 74008.9453125,
+      "volume": 11144380818
+     },
+     {
+      "ts": 1791676800,
+      "utc": "2026-10-11T00:00:00+00:00",
+      "open": 74008.9453125,
+      "high": 74992.09375,
+      "low": 73839.2421875,
+      "close": 74683.5859375,
+      "volume": 11188731373
+     },
+     {
+      "ts": 1791763200,
+      "utc": "2026-10-12T00:00:00+00:00",
+      "open": 74683.5859375,
+      "high": 75190.40625,
+      "low": 73184.4609375,
+      "close": 73265.5546875,
+      "volume": 23787519116
+     },
+     {
+      "ts": 1791849600,
+      "utc": "2026-10-13T00:00:00+00:00",
+      "open": 73258.3125,
+      "high": 75128.03125,
+      "low": 72779.3828125,
+      "close": 74299.5234375,
+      "volume": 28558743552
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-08 00:00:00+00:00",
+     "Open": 74356.609375,
+     "High": 74543.0546875,
+     "Low": 71640.921875,
+     "Close": 72842.140625,
+     "Volume": 41221747379.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+00:00",
+     "Open": 72842.140625,
+     "High": 74391.265625,
+     "Low": 72680.71875,
+     "Close": 73672.5078125,
+     "Volume": 21885009810.0
+    },
+    {
+     "idx": "2026-10-10 00:00:00+00:00",
+     "Open": 73672.5078125,
+     "High": 74169.4375,
+     "Low": 73607.109375,
+     "Close": 74008.9453125,
+     "Volume": 11144380818.0
+    },
+    {
+     "idx": "2026-10-11 00:00:00+00:00",
+     "Open": 74008.9453125,
+     "High": 74992.09375,
+     "Low": 73839.2421875,
+     "Close": 74683.5859375,
+     "Volume": 11188731373.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00+00:00",
+     "Open": 74683.5859375,
+     "High": 75190.40625,
+     "Low": 73184.4609375,
+     "Close": 73265.5546875,
+     "Volume": 23787519116.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+00:00",
+     "Open": 73258.3125,
+     "High": 75128.03125,
+     "Low": 72779.3828125,
+     "Close": 74299.5234375,
+     "Volume": 28558743552.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-08 00:00:00+00:00",
+     "Open": 74356.609375,
+     "High": 74543.0546875,
+     "Low": 71640.921875,
+     "Close": 72842.140625,
+     "Volume": 41221747379.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+00:00",
+     "Open": 72842.140625,
+     "High": 74391.265625,
+     "Low": 72680.71875,
+     "Close": 73672.5078125,
+     "Volume": 21885009810.0
+    },
+    {
+     "idx": "2026-10-10 00:00:00+00:00",
+     "Open": 73672.5078125,
+     "High": 74169.4375,
+     "Low": 73607.109375,
+     "Close": 74008.9453125,
+     "Volume": 11144380818.0
+    },
+    {
+     "idx": "2026-10-11 00:00:00+00:00",
+     "Open": 74008.9453125,
+     "High": 74992.09375,
+     "Low": 73839.2421875,
+     "Close": 74683.5859375,
+     "Volume": 11188731373.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00+00:00",
+     "Open": 74683.5859375,
+     "High": 75190.40625,
+     "Low": 73184.4609375,
+     "Close": 73265.5546875,
+     "Volume": 23787519116.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+00:00",
+     "Open": 73258.3125,
+     "High": 75128.03125,
+     "Low": 72779.3828125,
+     "Close": 74299.5234375,
+     "Volume": 28558743552.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 74356.609375,
+     "High": 74543.0546875,
+     "Low": 71640.921875,
+     "Close": 72842.140625,
+     "Volume": 41221747379.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 72842.140625,
+     "High": 74391.265625,
+     "Low": 72680.71875,
+     "Close": 73672.5078125,
+     "Volume": 21885009810.0
+    },
+    {
+     "idx": "2026-10-10 00:00:00",
+     "Open": 73672.5078125,
+     "High": 74169.4375,
+     "Low": 73607.109375,
+     "Close": 74008.9453125,
+     "Volume": 11144380818.0
+    },
+    {
+     "idx": "2026-10-11 00:00:00",
+     "Open": 74008.9453125,
+     "High": 74992.09375,
+     "Low": 73839.2421875,
+     "Close": 74683.5859375,
+     "Volume": 11188731373.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00",
+     "Open": 74683.5859375,
+     "High": 75190.40625,
+     "Low": 73184.4609375,
+     "Close": 73265.5546875,
+     "Volume": 23787519116.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 73258.3125,
+     "High": 75128.03125,
+     "Low": 72779.3828125,
+     "Close": 74299.5234375,
+     "Volume": 28558743552.0
+    }
+   ],
+   "batch_2y_nan_rows": []
+  },
+  "^GDAXI": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "Europe/Berlin",
+     "gmtoffset": 7200,
+     "regularMarketTime": 1791893215,
+     "regularMarketPrice": 25309.17,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "CEST",
+       "start": 1791867600,
+       "end": 1791874800,
+       "gmtoffset": 7200
+      },
+      "regular": {
+       "timezone": "CEST",
+       "start": 1791874800,
+       "end": 1791905400,
+       "gmtoffset": 7200
+      },
+      "post": {
+       "timezone": "CEST",
+       "start": 1791905400,
+       "end": 1791916200,
+       "gmtoffset": 7200
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791270000,
+      "utc": "2026-10-06T07:00:00+00:00",
+      "open": 25390.75,
+      "high": 25522.08984375,
+      "low": 25354.83984375,
+      "close": 25449.189453125,
+      "volume": 42539000
+     },
+     {
+      "ts": 1791356400,
+      "utc": "2026-10-07T07:00:00+00:00",
+      "open": 25280.669921875,
+      "high": 25347.08984375,
+      "low": 25038.509765625,
+      "close": 25104.359375,
+      "volume": 55061700
+     },
+     {
+      "ts": 1791442800,
+      "utc": "2026-10-08T07:00:00+00:00",
+      "open": 24884.619140625,
+      "high": 24997.259765625,
+      "low": 24792.7890625,
+      "close": 24806.970703125,
+      "volume": 49785000
+     },
+     {
+      "ts": 1791529200,
+      "utc": "2026-10-09T07:00:00+00:00",
+      "open": 24976.970703125,
+      "high": 25164.740234375,
+      "low": 24955.7109375,
+      "close": 25087.26953125,
+      "volume": 59039100
+     },
+     {
+      "ts": 1791788400,
+      "utc": "2026-10-12T07:00:00+00:00",
+      "open": 25206.94921875,
+      "high": 25315.75,
+      "low": 25166.5703125,
+      "close": 25277.6796875,
+      "volume": 39349200
+     },
+     {
+      "ts": 1791874800,
+      "utc": "2026-10-13T07:00:00+00:00",
+      "open": 25316.7109375,
+      "high": 25453.2890625,
+      "low": 25297.19921875,
+      "close": 25309.169921875,
+      "volume": 0
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 25390.75,
+     "High": 25522.08984375,
+     "Low": 25354.83984375,
+     "Close": 25449.189453125,
+     "Volume": 42539000.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 25280.669921875,
+     "High": 25347.08984375,
+     "Low": 25038.509765625,
+     "Close": 25104.359375,
+     "Volume": 55061700.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 24884.619140625,
+     "High": 24997.259765625,
+     "Low": 24792.7890625,
+     "Close": 24806.970703125,
+     "Volume": 49785000.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 24976.970703125,
+     "High": 25164.740234375,
+     "Low": 24955.7109375,
+     "Close": 25087.26953125,
+     "Volume": 59039100.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00+02:00",
+     "Open": 25206.94921875,
+     "High": 25315.75,
+     "Low": 25166.5703125,
+     "Close": 25277.6796875,
+     "Volume": 39349200.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 25316.7109375,
+     "High": 25453.2890625,
+     "Low": 25297.19921875,
+     "Close": 25309.169921875,
+     "Volume": 0.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-06 00:00:00+02:00",
+     "Open": 25390.75,
+     "High": 25522.08984375,
+     "Low": 25354.83984375,
+     "Close": 25449.189453125,
+     "Volume": 42539000.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00+02:00",
+     "Open": 25280.669921875,
+     "High": 25347.08984375,
+     "Low": 25038.509765625,
+     "Close": 25104.359375,
+     "Volume": 55061700.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00+02:00",
+     "Open": 24884.619140625,
+     "High": 24997.259765625,
+     "Low": 24792.7890625,
+     "Close": 24806.970703125,
+     "Volume": 49785000.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00+02:00",
+     "Open": 24976.970703125,
+     "High": 25164.740234375,
+     "Low": 24955.7109375,
+     "Close": 25087.26953125,
+     "Volume": 59039100.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00+02:00",
+     "Open": 25206.94921875,
+     "High": 25315.75,
+     "Low": 25166.5703125,
+     "Close": 25277.6796875,
+     "Volume": 39349200.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00+02:00",
+     "Open": 25316.7109375,
+     "High": 25453.2890625,
+     "Low": 25297.19921875,
+     "Close": 25309.169921875,
+     "Volume": 0.0
+    }
+   ],
+   "hist_2y_repair_err": "\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 561, in history\n    df_last = self._fix_zeroes(df.iloc[-1:], interval, tz_exchange, prepost)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1610, in _fix_zeroes\n    df2 = self._reconstruct_intervals_batch(df2, interval, prepost, tag)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 820, in _reconstruct_intervals_batch\n    from sklearn.cluster import DBSCAN\nModuleNotFoundError: No module named 'sklearn'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 25390.75,
+     "High": 25522.08984375,
+     "Low": 25354.83984375,
+     "Close": 25449.189453125,
+     "Volume": 42539000.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 25280.669921875,
+     "High": 25347.08984375,
+     "Low": 25038.509765625,
+     "Close": 25104.359375,
+     "Volume": 55061700.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 24884.619140625,
+     "High": 24997.259765625,
+     "Low": 24792.7890625,
+     "Close": 24806.970703125,
+     "Volume": 49785000.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 24976.970703125,
+     "High": 25164.740234375,
+     "Low": 24955.7109375,
+     "Close": 25087.26953125,
+     "Volume": 59039100.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00",
+     "Open": 25206.94921875,
+     "High": 25315.75,
+     "Low": 25166.5703125,
+     "Close": 25277.6796875,
+     "Volume": 39349200.0
+    },
+    {
+     "idx": "2026-10-13 00:00:00",
+     "Open": 25316.7109375,
+     "High": 25453.2890625,
+     "Low": 25297.19921875,
+     "Close": 25309.25,
+     "Volume": 0.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00"
+   ]
+  },
+  "AAPL": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "America/New_York",
+     "gmtoffset": -14400,
+     "regularMarketTime": 1791835201,
+     "regularMarketPrice": 340.97,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "EDT",
+       "start": 1791878400,
+       "end": 1791898200,
+       "gmtoffset": -14400
+      },
+      "regular": {
+       "timezone": "EDT",
+       "start": 1791898200,
+       "end": 1791921600,
+       "gmtoffset": -14400
+      },
+      "post": {
+       "timezone": "EDT",
+       "start": 1791921600,
+       "end": 1791936000,
+       "gmtoffset": -14400
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791207000,
+      "utc": "2026-10-05T13:30:00+00:00",
+      "open": 332.82000732421875,
+      "high": 336.2099914550781,
+      "low": 331.6499938964844,
+      "close": 332.8900146484375,
+      "volume": 34400900
+     },
+     {
+      "ts": 1791293400,
+      "utc": "2026-10-06T13:30:00+00:00",
+      "open": 332.2799987792969,
+      "high": 334.3800048828125,
+      "low": 330.6199951171875,
+      "close": 333.6300048828125,
+      "volume": 30449000
+     },
+     {
+      "ts": 1791379800,
+      "utc": "2026-10-07T13:30:00+00:00",
+      "open": 336.9599914550781,
+      "high": 338.6700134277344,
+      "low": 332.7799987792969,
+      "close": 336.6700134277344,
+      "volume": 34147900
+     },
+     {
+      "ts": 1791466200,
+      "utc": "2026-10-08T13:30:00+00:00",
+      "open": 336.82000732421875,
+      "high": 341.57000732421875,
+      "low": 335.8999938964844,
+      "close": 340.4200134277344,
+      "volume": 35332400
+     },
+     {
+      "ts": 1791552600,
+      "utc": "2026-10-09T13:30:00+00:00",
+      "open": 331.70001220703125,
+      "high": 338.6099853515625,
+      "low": 330.70001220703125,
+      "close": 336.6400146484375,
+      "volume": 37881200
+     },
+     {
+      "ts": 1791811800,
+      "utc": "2026-10-12T13:30:00+00:00",
+      "open": 338.2200012207031,
+      "high": 342.6300048828125,
+      "low": 337.6000061035156,
+      "close": 340.9700012207031,
+      "volume": 25848300
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00-04:00",
+     "Open": 332.82000732421875,
+     "High": 336.2099914550781,
+     "Low": 331.6499938964844,
+     "Close": 332.8900146484375,
+     "Volume": 34400900.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00-04:00",
+     "Open": 332.2799987792969,
+     "High": 334.3800048828125,
+     "Low": 330.6199951171875,
+     "Close": 333.6300048828125,
+     "Volume": 30449000.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00-04:00",
+     "Open": 336.9599914550781,
+     "High": 338.6700134277344,
+     "Low": 332.7799987792969,
+     "Close": 336.6700134277344,
+     "Volume": 34147900.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00-04:00",
+     "Open": 336.82000732421875,
+     "High": 341.57000732421875,
+     "Low": 335.8999938964844,
+     "Close": 340.4200134277344,
+     "Volume": 35332400.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00-04:00",
+     "Open": 331.70001220703125,
+     "High": 338.6099853515625,
+     "Low": 330.70001220703125,
+     "Close": 336.6400146484375,
+     "Volume": 37881200.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00-04:00",
+     "Open": 338.2200012207031,
+     "High": 342.6300048828125,
+     "Low": 337.6000061035156,
+     "Close": 340.9700012207031,
+     "Volume": 25848300.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00-04:00",
+     "Open": 332.82000732421875,
+     "High": 336.2099914550781,
+     "Low": 331.6499938964844,
+     "Close": 332.8900146484375,
+     "Volume": 34400900.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00-04:00",
+     "Open": 332.2799987792969,
+     "High": 334.3800048828125,
+     "Low": 330.6199951171875,
+     "Close": 333.6300048828125,
+     "Volume": 30449000.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00-04:00",
+     "Open": 336.9599914550781,
+     "High": 338.6700134277344,
+     "Low": 332.7799987792969,
+     "Close": 336.6700134277344,
+     "Volume": 34147900.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00-04:00",
+     "Open": 336.82000732421875,
+     "High": 341.57000732421875,
+     "Low": 335.8999938964844,
+     "Close": 340.4200134277344,
+     "Volume": 35332400.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00-04:00",
+     "Open": 331.70001220703125,
+     "High": 338.6099853515625,
+     "Low": 330.70001220703125,
+     "Close": 336.6400146484375,
+     "Volume": 37881200.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00-04:00",
+     "Open": 338.2200012207031,
+     "High": 342.6300048828125,
+     "Low": 337.6000061035156,
+     "Close": 340.9700012207031,
+     "Volume": 25848300.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 332.82000732421875,
+     "High": 336.2099914550781,
+     "Low": 331.6499938964844,
+     "Close": 332.8900146484375,
+     "Volume": 34400900.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 332.2799987792969,
+     "High": 334.3800048828125,
+     "Low": 330.6199951171875,
+     "Close": 333.6300048828125,
+     "Volume": 30449000.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 336.9599914550781,
+     "High": 338.6700134277344,
+     "Low": 332.7799987792969,
+     "Close": 336.6700134277344,
+     "Volume": 34147900.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 336.82000732421875,
+     "High": 341.57000732421875,
+     "Low": 335.8999938964844,
+     "Close": 340.4200134277344,
+     "Volume": 35332400.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 331.70001220703125,
+     "High": 338.6099853515625,
+     "Low": 330.70001220703125,
+     "Close": 336.6400146484375,
+     "Volume": 37881200.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00",
+     "Open": 338.2200012207031,
+     "High": 342.6300048828125,
+     "Low": 337.6000061035156,
+     "Close": 340.9700012207031,
+     "Volume": 25848300.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-13 00:00:00"
+   ]
+  },
+  "SBLK": {
+   "raw": {
+    "meta": {
+     "exchangeTimezoneName": "America/New_York",
+     "gmtoffset": -14400,
+     "regularMarketTime": 1791835200,
+     "regularMarketPrice": 29.84,
+     "currentTradingPeriod": {
+      "pre": {
+       "timezone": "EDT",
+       "start": 1791878400,
+       "end": 1791898200,
+       "gmtoffset": -14400
+      },
+      "regular": {
+       "timezone": "EDT",
+       "start": 1791898200,
+       "end": 1791921600,
+       "gmtoffset": -14400
+      },
+      "post": {
+       "timezone": "EDT",
+       "start": 1791921600,
+       "end": 1791936000,
+       "gmtoffset": -14400
+      }
+     },
+     "dataGranularity": "1d",
+     "validRanges": [
+      "1d",
+      "5d",
+      "1mo",
+      "3mo",
+      "6mo",
+      "1y",
+      "2y",
+      "5y",
+      "10y",
+      "ytd",
+      "max"
+     ]
+    },
+    "tail": [
+     {
+      "ts": 1791207000,
+      "utc": "2026-10-05T13:30:00+00:00",
+      "open": 30.8799991607666,
+      "high": 31.030000686645508,
+      "low": 30.06999969482422,
+      "close": 30.84000015258789,
+      "volume": 1224200
+     },
+     {
+      "ts": 1791293400,
+      "utc": "2026-10-06T13:30:00+00:00",
+      "open": 30.600000381469727,
+      "high": 30.68000030517578,
+      "low": 29.56999969482422,
+      "close": 29.860000610351562,
+      "volume": 2455400
+     },
+     {
+      "ts": 1791379800,
+      "utc": "2026-10-07T13:30:00+00:00",
+      "open": 29.68000030517578,
+      "high": 30.030000686645508,
+      "low": 29.649999618530273,
+      "close": 29.690000534057617,
+      "volume": 1376100
+     },
+     {
+      "ts": 1791466200,
+      "utc": "2026-10-08T13:30:00+00:00",
+      "open": 29.850000381469727,
+      "high": 30.520000457763672,
+      "low": 29.850000381469727,
+      "close": 30.469999313354492,
+      "volume": 1437600
+     },
+     {
+      "ts": 1791552600,
+      "utc": "2026-10-09T13:30:00+00:00",
+      "open": 30.25,
+      "high": 30.25,
+      "low": 29.559999465942383,
+      "close": 29.700000762939453,
+      "volume": 1237300
+     },
+     {
+      "ts": 1791811800,
+      "utc": "2026-10-12T13:30:00+00:00",
+      "open": 29.8700008392334,
+      "high": 30.520000457763672,
+      "low": 29.75,
+      "close": 29.84000015258789,
+      "volume": 1497300
+     }
+    ]
+   },
+   "hist_1mo": [
+    {
+     "idx": "2026-10-05 00:00:00-04:00",
+     "Open": 30.8799991607666,
+     "High": 31.030000686645508,
+     "Low": 30.06999969482422,
+     "Close": 30.84000015258789,
+     "Volume": 1224200.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00-04:00",
+     "Open": 30.600000381469727,
+     "High": 30.68000030517578,
+     "Low": 29.56999969482422,
+     "Close": 29.860000610351562,
+     "Volume": 2455400.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00-04:00",
+     "Open": 29.68000030517578,
+     "High": 30.030000686645508,
+     "Low": 29.649999618530273,
+     "Close": 29.690000534057617,
+     "Volume": 1376100.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00-04:00",
+     "Open": 29.850000381469727,
+     "High": 30.520000457763672,
+     "Low": 29.850000381469727,
+     "Close": 30.469999313354492,
+     "Volume": 1437600.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00-04:00",
+     "Open": 30.25,
+     "High": 30.25,
+     "Low": 29.559999465942383,
+     "Close": 29.700000762939453,
+     "Volume": 1237300.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00-04:00",
+     "Open": 29.8700008392334,
+     "High": 30.520000457763672,
+     "Low": 29.75,
+     "Close": 29.84000015258789,
+     "Volume": 1497300.0
+    }
+   ],
+   "hist_2y": [
+    {
+     "idx": "2026-10-05 00:00:00-04:00",
+     "Open": 30.8799991607666,
+     "High": 31.030000686645508,
+     "Low": 30.06999969482422,
+     "Close": 30.84000015258789,
+     "Volume": 1224200.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00-04:00",
+     "Open": 30.600000381469727,
+     "High": 30.68000030517578,
+     "Low": 29.56999969482422,
+     "Close": 29.860000610351562,
+     "Volume": 2455400.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00-04:00",
+     "Open": 29.68000030517578,
+     "High": 30.030000686645508,
+     "Low": 29.649999618530273,
+     "Close": 29.690000534057617,
+     "Volume": 1376100.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00-04:00",
+     "Open": 29.850000381469727,
+     "High": 30.520000457763672,
+     "Low": 29.850000381469727,
+     "Close": 30.469999313354492,
+     "Volume": 1437600.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00-04:00",
+     "Open": 30.25,
+     "High": 30.25,
+     "Low": 29.559999465942383,
+     "Close": 29.700000762939453,
+     "Volume": 1237300.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00-04:00",
+     "Open": 29.8700008392334,
+     "High": 30.520000457763672,
+     "Low": 29.75,
+     "Close": 29.84000015258789,
+     "Volume": 1497300.0
+    }
+   ],
+   "hist_2y_repair_err": ", in history\n    return self._lazy_load_price_history().history(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 570, in history\n    df = self._fix_unit_mixups(df, interval, tz_exchange, prepost)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1299, in _fix_unit_mixups\n    df3 = self._fix_unit_random_mixups(df2, interval, tz_exchange, prepost)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/utils.py\", line 124, in wrapper\n    result = func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/yfinance/scrapers/history.py\", line 1338, in _fix_unit_random_mixups\n    from scipy import ndimage as _ndimage\nModuleNotFoundError: No module named 'scipy'\n",
+   "batch_2y": [
+    {
+     "idx": "2026-10-05 00:00:00",
+     "Open": 30.8799991607666,
+     "High": 31.030000686645508,
+     "Low": 30.06999969482422,
+     "Close": 30.84000015258789,
+     "Volume": 1224200.0
+    },
+    {
+     "idx": "2026-10-06 00:00:00",
+     "Open": 30.600000381469727,
+     "High": 30.68000030517578,
+     "Low": 29.56999969482422,
+     "Close": 29.860000610351562,
+     "Volume": 2455400.0
+    },
+    {
+     "idx": "2026-10-07 00:00:00",
+     "Open": 29.68000030517578,
+     "High": 30.030000686645508,
+     "Low": 29.649999618530273,
+     "Close": 29.690000534057617,
+     "Volume": 1376100.0
+    },
+    {
+     "idx": "2026-10-08 00:00:00",
+     "Open": 29.850000381469727,
+     "High": 30.520000457763672,
+     "Low": 29.850000381469727,
+     "Close": 30.469999313354492,
+     "Volume": 1437600.0
+    },
+    {
+     "idx": "2026-10-09 00:00:00",
+     "Open": 30.25,
+     "High": 30.25,
+     "Low": 29.559999465942383,
+     "Close": 29.700000762939453,
+     "Volume": 1237300.0
+    },
+    {
+     "idx": "2026-10-12 00:00:00",
+     "Open": 29.8700008392334,
+     "High": 30.520000457763672,
+     "Low": 29.75,
+     "Close": 29.84000015258789,
+     "Volume": 1497300.0
+    }
+   ],
+   "batch_2y_nan_rows": [
+    "2026-10-10 00:00:00",
+    "2026-10-11 00:00:00",
+    "2026-10-13 00:00:00"
+   ]
+  }
+ }
+}
