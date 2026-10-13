@@ -1,0 +1,35 @@
+name: diag-vortagesbalken
+
+# Nur auf dem Diagnose-Branch: Yahoo-Rohdaten vs. yfinance fuer den fehlenden
+# Vortagesbalken (2026-10-13). Wird nach der Klaerung mit dem Branch geloescht.
+
+on:
+  push:
+    branches: [diag/vortagesbalken]
+    paths: [diag/vortagesbalken.py, .github/workflows/diag-vortagesbalken.yml, diag/trigger.txt]
+
+permissions:
+  contents: write
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: |
+          pip install --upgrade pip
+          pip install -r marketdata-pipeline/requirements.txt
+      - name: Run
+        run: python diag/vortagesbalken.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add diag/out
+          git commit -m "diag: Rohdaten Vortagesbalken" || exit 0
+          git push
