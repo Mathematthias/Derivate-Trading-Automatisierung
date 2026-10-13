@@ -2842,21 +2842,6 @@ entries:
     text: 'nach 2026-10-13 BREAKDOWN-RETEST-SHORT: Niveau 25,62€ (Breakdown per Schluss 09.10., Vol 2,63x). Touch 25,27-25,97€ [pullback] (= Niveau -0,50/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27), unter 24,91€ kein Entry (TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 25,62€. TP1 23,53€ (52W-Tief), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,76 bei Entry 25,40. 1% Sizing (Pilot). Short nur KO, Hebel <=8,9. Earnings 2026-11-05 -> Verfall 2026-10-28.'
   notes: '[NEU 2026-10-13, Pitch-Top Morning Check, User: auf die Watchlist] Stack 4/4 bearish, 30d -10,8 %. L7: mit DUE #101 und FRA.DE dritter DE-Short - nur zwei gleichzeitig. Digest ohne 12.10.-Balken (Yahoo-Luecke), Niveau am Chart pruefen.'
   trade_nr: null
-- symbol: CSCO
-  name: Cisco Systems Inc. (CSCO, NASDAQ) — Netzwerktechnik
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau
-  treiber: ''
-  status: aktiv
-  added: '2026-10-13'
-  expiry: '2026-10-30'
-  legs:
-  - label: A
-    gate: ⏳
-    text: 'nach 2026-10-13 BREAKOUT-RETEST-LONG: Niveau 113,19$ (Ausbruch vor 4 HT, Vol 1,13x = Daempfer). Touch 111,75-114,63$ [pullback] (= Niveau -0,50/+0,50 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 113,19$. TP1 OFFEN (User setzt am Chart; Hoch 12.10. 118,27 waere 0,99 R, 52W-Hoch 130,37 = 5,7 ATR). 1% Sizing (Vol-Daempfer). ATR 2,5 % frei. Earnings 2026-11-12. Non-Quanto USD.'
-  notes: '[NEU 2026-10-13, Pitch-Top Morning Check, User: auf die Watchlist] Gate ⏳ bis TP1 chartdefiniert ist.'
-  trade_nr: null
 - symbol: DDOG
   name: Datadog Inc. (DDOG, NASDAQ) — Cloud-Monitoring
   direction: LONG
@@ -2875,4 +2860,19 @@ entries:
   archived:
     date: '2026-10-13'
     reason: Exit-Test am Niveau gescheitert, Re-Eval ueber 52W-Hoch
-updated: '2026-10-13T12:42:03+00:00'
+- symbol: CSCO
+  name: Cisco Systems Inc. (CSCO, NASDAQ) — Netzwerktechnik
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  added: '2026-10-13'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-13 BREAKOUT-RETEST-LONG: Niveau 113,19$ (Ausbruch vor 4 HT, Vol 1,13x = Daempfer). Touch 111,75-114,63$ [pullback] (= Niveau -0,50/+0,50 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 113,19$. TP1 124,00$ (Aug-Hoch, User-Chart), 1/3 raus; Zwischenhuerde 118,27$ (Hoch nach Ausbruch 12.10.); Rest Chandelier 2,0 ATR, Runner-Ziel 130,37$ (52W-Hoch). R:R TP1 2,17-2,78 ueber die Zone. 1% Sizing (Vol-Daempfer). ATR 2,5 % frei. Earnings 2026-11-12. Non-Quanto USD.'
+  notes: '[TP1 2026-10-13 14:51, User] TP1 124 = Aug-Hoch (User-Ablesung), Gate ⏳ -> 🟡. d = 4,32 in der ganzen Zone (ATR-Stop weiter als TIW-0,3 ATR). || [NEU 2026-10-13, Pitch-Top Morning Check, User: auf die Watchlist] Gate ⏳ bis TP1 chartdefiniert ist.'
+  trade_nr: null
+updated: '2026-10-13T12:53:09+00:00'
