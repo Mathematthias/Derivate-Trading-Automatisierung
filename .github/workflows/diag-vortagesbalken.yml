@@ -6,7 +6,7 @@ name: diag-vortagesbalken
 on:
   push:
     branches: [diag/vortagesbalken]
-    paths: [diag/vortagesbalken.py, .github/workflows/diag-vortagesbalken.yml, diag/trigger.txt]
+    paths: [diag/vortagesbalken.py, diag/live_check.py, .github/workflows/diag-vortagesbalken.yml]
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           pip install --upgrade pip
           pip install -r marketdata-pipeline/requirements.txt scipy scikit-learn
       - name: Run
-        run: python diag/vortagesbalken.py
+        run: python diag/live_check.py
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
