@@ -136,6 +136,20 @@ WEEKLY_TREND_LOOKBACK_WK = 26    # Wochen-HH/HL-Check Fenster
 # Aktivierung per ENV: EARNINGS_PULL=1
 EARNINGS_PULL_ENABLED = os.environ.get("EARNINGS_PULL", "0") == "1"
 
+# === Rekonstruktion fehlender Tagesbalken (2026-10-13) ===
+# Befund (diag/vortagesbalken, Rohantwort v8/chart): Yahoo liefert den
+# Tagesbalken des Vortags Di-Fr von etwa Mitternacht bis in den Nachmittag
+# hinein mit OHLCV = null (EU-Aktien) oder gar nicht (FX); belegt fuer den
+# 07.10., 08.10. und 12.10. yfinance und unser dropna verwerfen die Leerzeile
+# korrekt — der Balken fehlt dann in jeder Rechnung. Die 1h-Reihe desselben
+# Tages ist vollstaendig. Deshalb: fehlende Werktage der letzten Tage aus 1h
+# nachbauen, nur fuer betroffene Ticker, ein Batch-Call. Abschalten mit
+# GAP_REPAIR=0.
+GAP_REPAIR_ENABLED = os.environ.get("GAP_REPAIR", "1") == "1"
+GAP_REPAIR_PERIOD = "5d"          # 1h-Fenster; reicht fuer bis zu 4 HT zurueck
+GAP_REPAIR_MIN_BARS = 3           # weniger 1h-Balken = Teiltag, nicht einsetzen
+GAP_REPAIR_MAX_TAGE = 7           # nur Luecken der letzten 7 Kalendertage
+
 
 # === Anomaly-Layer V1 (2026-05-15, Note #50) ===
 # Vier statistische Anomalie-Detektoren oberhalb der schwellenwert-basierten
@@ -206,10 +220,16 @@ class TickerSnapshot:
     """True, wenn zwischen vorletztem und letztem Balken ein Werktag fehlt
     (Anlass Morning Check 2026-10-07: alle EU-Ticker hatten morgens den
     laufenden 07.10.-Balken, aber nicht den 06.10.; prev_close war der Schluss
-    vom 05.10., chg/gap falsch, z.B. JEN +0,47 % statt -3,3 %). Ursache im
-    yfinance-Batch noch offen. Folge hier: change_pct und gap_pct = None, und
-    die Filter-Engine nutzt prev_close nicht als „letzten Schluss". Ein
-    Feiertag erzeugt dasselbe Signal — das ist gewollt konservativ."""
+    vom 05.10., chg/gap falsch, z.B. JEN +0,47 % statt -3,3 %). Ursache seit
+    2026-10-13 geklaert: Yahoo liefert den Vortag zeitweise mit OHLCV = null
+    (siehe GAP_REPAIR_*); die Luecke wird vorher aus 1h nachgebaut
+    (`rekonstruiert`). Bleibt sie trotzdem (1h leer, Feiertag): change_pct
+    und gap_pct = None, und die Filter-Engine nutzt prev_close nicht als
+    „letzten Schluss". Ein Feiertag erzeugt dasselbe Signal — gewollt
+    konservativ."""
+    rekonstruiert: tuple = ()
+    """ISO-Daten der Tagesbalken, die aus 1h-Balken nachgebaut wurden
+    (2026-10-13). Volumen ohne Schlussauktion, also leicht zu niedrig."""
 
     # Indikatoren auf Daily-Basis
     ema20: Optional[float] = None
@@ -519,6 +539,7 @@ def fetch_ticker_data(
 
     snapshots: dict[str, TickerSnapshot] = {}
     failed: list[str] = []
+    dfs: dict[str, pd.DataFrame] = {}
 
     for symbol in symbols:
         try:
@@ -537,7 +558,23 @@ def fetch_ticker_data(
             if len(df) < 2:
                 failed.append(symbol)
                 continue
+            dfs[symbol] = df
 
+        except (KeyError, ValueError, TypeError) as e:
+            logger.warning(f"  Failed {symbol}: {type(e).__name__}: {e}")
+            failed.append(symbol)
+
+    # Fehlende Vortagesbalken aus 1h nachbauen (Yahoo-null, 2026-10-13).
+    # Vor der Einheiten-Normierung: 1h und 1d kommen in derselben Einheit.
+    rekonstruiert: dict[str, list[str]] = {}
+    if GAP_REPAIR_ENABLED and dfs:
+        try:
+            rekonstruiert = repair_missing_daily_bars(dfs)
+        except Exception as e:  # noqa: BLE001 — Reparatur darf den Pull nie kippen
+            logger.warning(f"  Luecken-Reparatur uebersprungen: {type(e).__name__}: {e}")
+
+    for symbol, df in dfs.items():
+        try:
             # Preis-Einheiten normieren (z.B. UK-Listings Pence → Pound)
             df = _normalize_price_units(symbol, df)
 
@@ -545,6 +582,7 @@ def fetch_ticker_data(
             if snap is None:
                 failed.append(symbol)
             else:
+                snap.rekonstruiert = tuple(rekonstruiert.get(symbol, ()))
                 snapshots[symbol] = snap
 
         except (KeyError, ValueError, TypeError) as e:
@@ -571,6 +609,116 @@ def fetch_ticker_data(
         )
 
     return snapshots
+
+
+def fehlende_werktage(df: pd.DataFrame, heute: date,
+                      max_tage: int = GAP_REPAIR_MAX_TAGE) -> list[date]:
+    """Werktage (Mo-Fr), die in der Tagesreihe fehlen: zwischen dem vorletzten
+    Balken und `heute` (exklusiv), nicht aelter als `max_tage`.
+
+    Deckt beide Erscheinungsformen ab: die Luecke zwischen Vortag und laufendem
+    Balken (nach Handelsbeginn) und den fehlenden Vortag am Ende der Reihe (vor
+    Handelsbeginn, dort sieht `_werktag_fehlt` nichts). Feiertage erscheinen hier
+    auch; sie fallen spaeter heraus, weil die 1h-Reihe fuer sie leer ist.
+    """
+    if df is None or len(df) < 2:
+        return []
+    vorhanden = {ts.date() for ts in pd.DatetimeIndex(df.index)}
+    start = pd.Timestamp(df.index[-2]).date()
+    grenze = heute - timedelta(days=max_tage)
+    out: list[date] = []
+    d = max(start, grenze) + timedelta(days=1)
+    while d < heute:
+        if d.weekday() < 5 and d not in vorhanden:
+            out.append(d)
+        d += timedelta(days=1)
+    return out
+
+
+def _tagesbalken_aus_1h(h1: pd.DataFrame, tag: date,
+                        min_bars: int = GAP_REPAIR_MIN_BARS) -> Optional[dict]:
+    """OHLCV eines Tages aus 1h-Balken in Boersen-Ortszeit (naiver Index)."""
+    if h1 is None or h1.empty or "Close" not in h1.columns:
+        return None
+    h1 = h1.dropna(subset=["Close"])
+    idx = pd.DatetimeIndex(h1.index)
+    if idx.tz is not None:
+        idx = idx.tz_localize(None)
+    tag_df = h1[idx.normalize() == pd.Timestamp(tag)]
+    if len(tag_df) < min_bars:
+        return None
+    vol = tag_df["Volume"].fillna(0).sum() if "Volume" in tag_df.columns else 0.0
+    return {
+        "Open": float(tag_df["Open"].iloc[0]),
+        "High": float(tag_df["High"].max()),
+        "Low": float(tag_df["Low"].min()),
+        "Close": float(tag_df["Close"].iloc[-1]),
+        "Volume": float(vol),
+    }
+
+
+def _row_einsetzen(df: pd.DataFrame, tag: date, ohlcv: dict) -> pd.DataFrame:
+    """Setzt einen nachgebauten Tagesbalken in die Tagesreihe ein (Spalten wie df)."""
+    werte = {}
+    for c in df.columns:
+        if c in ohlcv:
+            werte[c] = ohlcv[c]
+        elif c == "Adj Close":
+            werte[c] = ohlcv["Close"]
+        elif c in ("Dividends", "Stock Splits", "Capital Gains"):
+            werte[c] = 0.0
+        else:
+            werte[c] = np.nan
+    ts = pd.Timestamp(tag)
+    if isinstance(df.index, pd.DatetimeIndex) and df.index.tz is not None:
+        ts = ts.tz_localize(df.index.tz)
+    neu = pd.DataFrame([werte], index=pd.DatetimeIndex([ts], name=df.index.name))
+    return pd.concat([df, neu]).sort_index()
+
+
+def _default_h1_downloader(symbols: list[str]) -> pd.DataFrame:
+    return _yf_download_with_retry(
+        symbols, period=GAP_REPAIR_PERIOD, interval="1h", group_by="ticker",
+        auto_adjust=False, progress=False, threads=True, ignore_tz=True,
+    )
+
+
+def repair_missing_daily_bars(dfs: dict[str, pd.DataFrame], heute: Optional[date] = None,
+                              downloader=None) -> dict[str, list[str]]:
+    """Ergaenzt fehlende Werktage in `dfs` (in place) aus 1h-Balken.
+
+    Returns: {symbol: [ISO-Datum, ...]} fuer jeden nachgebauten Balken.
+    Ein Download fuer alle betroffenen Ticker; ohne Treffer kein Call.
+    """
+    heute = heute or datetime.now(timezone.utc).date()
+    kandidaten = {s: fehlende_werktage(df, heute) for s, df in dfs.items()}
+    kandidaten = {s: tage for s, tage in kandidaten.items() if tage}
+    if not kandidaten:
+        return {}
+    downloader = downloader or _default_h1_downloader
+    syms = sorted(kandidaten)
+    logger.info(f"  Luecken-Reparatur: {len(syms)} Ticker mit fehlendem Werktag, 1h-Pull")
+    raw = downloader(syms)
+    out: dict[str, list[str]] = {}
+    for s in syms:
+        try:
+            if isinstance(raw.columns, pd.MultiIndex):
+                if s not in raw.columns.get_level_values(0):
+                    continue
+                h1 = raw[s]
+            else:
+                h1 = raw
+        except KeyError:
+            continue
+        for tag in kandidaten[s]:
+            ohlcv = _tagesbalken_aus_1h(h1, tag)
+            if ohlcv is None:
+                continue
+            dfs[s] = _row_einsetzen(dfs[s], tag, ohlcv)
+            out.setdefault(s, []).append(tag.isoformat())
+    n = sum(len(v) for v in out.values())
+    logger.info(f"  Luecken-Reparatur: {n} Tagesbalken bei {len(out)} Tickern aus 1h nachgebaut")
+    return out
 
 
 def _werktag_fehlt(prev_iso: Optional[str], last_iso: Optional[str]) -> bool:

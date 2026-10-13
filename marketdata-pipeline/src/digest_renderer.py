@@ -248,6 +248,9 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         d["gap"] = _r(snap.gap_pct, 2)
     if getattr(snap, "prev_luecke", False):
         d["prev_luecke"] = True
+    # 2026-10-13: aus 1h nachgebaute Tagesbalken (Yahoo-null am Vortag) sichtbar machen
+    if getattr(snap, "rekonstruiert", ()):
+        d["rekonstruiert"] = list(snap.rekonstruiert)
     if snap.atr_zscore_60d is not None:
         d["atr_z"] = _r(snap.atr_zscore_60d, 2)
     # 🆕 4h-Layer (2026-09-08): kompakt, nur was im Briefing gebraucht wird.

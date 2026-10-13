@@ -309,7 +309,9 @@ class TestRepoState:
         # HOLN.SW: der Grinder-Short (Entscheid 2026-10-04) bleibt weg; die Zeile wurde
         # am 2026-10-07 als Breakdown-Retest-Short neu angelegt (User-Entscheid).
         assert not (by["HOLN.SW"]["status"] == "aktiv" and by["HOLN.SW"]["klasse"] == "grinder")
-        assert by["GIVN.SW"]["klasse"] == "breakout_retest"
+        # GIVN.SW am 2026-10-12 als Trend-Pullback-Long neu gefasst (User-Entscheid,
+        # Legs EMA20/EMA50); vorher breakout_retest.
+        assert by["GIVN.SW"]["klasse"] == "trend_pullback"
         assert "BREAKOUT-RETEST-LONG" in by["TMO"]["legs"][0]["text"]
         assert len(aktiv) >= 30
 
