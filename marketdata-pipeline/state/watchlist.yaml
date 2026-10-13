@@ -856,23 +856,21 @@ entries:
     date: '2026-09-10'
     reason: 'Trade #90 per Stop-Out geschlossen ARCHIVIERT - kein Entry-Trigger (#90 Stop-Out 10.09.'
 - symbol: PANW
-  name: Palo Alto Networks (PANW, NASDAQ) — PEAD-Event-Watch
+  name: Palo Alto Networks (PANW, NASDAQ) — Cybersecurity
   direction: LONG
-  klasse: sonstige
-  anker: ''
+  klasse: trend_pullback
+  anker: EMA20-1D
   treiber: ''
-  status: archiviert
-  added: '2026-08-24'
-  expiry: '2026-09-10'
+  status: aktiv
+  added: '2026-10-13'
+  expiry: '2026-10-30'
   legs:
   - label: A
-    gate: 🔴
-    text: ARCHIVIERT 2026-09-10 - kein Entry-Trigger (PEAD-Fenster zu). Volltext im Sheet Trigger-Historie.
-  notes: '[ARCHIVIERT 2026-09-10, User-Charts 1D+4h] DIE ZEILE HAT GETAN, WOFUER SIE GEBAUT WAR, UND LIEFERT SKIP. Q4-FY26 kam am 01.09. nach US-Schluss; das PEAD-Entry-Fenster (1-5 HT) lief 02.09.-08.09. und ist zu. ERGEBNIS DER KLASSEN-PRUEFUNG: Die Reaktion lag im zweistelligen Minusbereich (1D-Chart: Abverkauf von rund 390 auf 318 mit dem groessten Volumenbalken des Jahres) und damit WEIT ausserhalb des Underreaction-Fensters -1 bis -6% (PEAD-Short 7/7 Punkt 2). Das ist exakt der INTU-Anker: kein Chase in den Gap. Die Zeile hatte diesen Fall vorab benannt (''Ausserhalb des Underreaction-Fensters: SKI'
+    gate: 🟡
+    text: 'nach 2026-10-13 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 377,00$ (Struktur-Tief, User 2026-10-13). TP1 432,00$ (ATH 432,30), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,33-1,69. 1% Sizing. Earnings 2026-11-12 (TV; Digest 11-19) -> KO-Exit bis 2026-11-05. Non-Quanto USD.'
+  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, TIW 377 vom User, uebrige Linien von Claude, User-Chart 17:30] Breakout-Retest 409,50 verworfen (Ausbruchsvolumen 0,88x < 1,0x, Kurs wieder darunter). Chart: C 401,39 (-0,6 %), EMA20/50/100/200-1D 392,91/370,99/336,50/289,48, r2 0,72, RSI-1D 55,6 < 60,1, RSI-4h 51,9 < 60,5, ATR 17,37 = 4,3 % (Hebel <=5,8). Rechnung 13.10.: an UG 387,70 SL 361,64 (ATR-Term), 1,69 R; an OG 397,25 SL 371,19, 1,33 R, L26-Puffer 0,33 ATR. 6 Stk Direktaktie bei 1 %. GEGENREDE: Q4 am 01.09. trotz Beat gefallen (Bewertung), Phillip Securities Neutral (TV), TP1 = ATH selbst. Earnings-Datum widerspruechlich (TV 11-12 / Digest 11-19). Tech-Cluster mit ANET #13 (L7). || VORGAENGER (archiviert 2026-09-10, PEAD-Watch): [ARCHIVIERT 2026-09-10, User-Charts 1D+4h] DIE ZEILE HAT GETAN, WOFUER SIE GEBAUT WAR, UND LIEFERT SKIP. Q4-FY26 kam am 01.09. nach US-Schluss; das PEAD-Entry-Fenster (1-5 HT) lief 02.09.-08.09. und ist zu. ERGEBNIS DER KLASSEN-PRUEFUNG:
+    Die Reaktion lag im zweistelligen Minusbereich (1D-Chart: Abverkauf von rund 390 auf 318 mit dem groessten Volumenbalken des Jahres) und damit WEIT ausserhalb des Underreaction-Fensters -1 bis -6% (PEAD-Short 7/7 Punkt 2). Das ist exakt der INTU-Anker: kein Chase in den Gap. Die Zeile hatte diesen Fall vorab benannt (''Ausserhalb des Underreaction-Fensters: SKI'
   journal_row: 54
-  archived:
-    date: '2026-09-10'
-    reason: PEAD-Fenster geschlossen, Ergebnis SKIP ARCHIVIERT 2026-09-10 - kein Entry-Trigger (PEAD-Fenster zu
 - symbol: ROST
   name: Ross Stores (ROST, NASDAQ) — Off-Price-Retail
   direction: LONG
@@ -2227,16 +2225,17 @@ entries:
   direction: LONG
   klasse: breakout_retest
   anker: Range-Hoch
-  treiber: ''
+  treiber: 'Q3-Smartphone-Zahlen: 22 % Weltmarktanteil, China -4,3 % (TV Key Facts, NICHT verifiziert)'
   status: aktiv
   added: '2026-09-30'
-  expiry: '2026-10-20'
+  expiry: '2026-10-26'
   legs:
   - label: A
     gate: 🟡
-    text: 'nach 2026-10-09 BREAKOUT-RETEST-LONG: Niveau 345,30$ (Doppeltop Jul/Sept = ATH). Ausbruch erst per 1D-Schluss ueber 345,30$ mit Vol >=1,0x Avg-20d (unter 1,3x Daempfer) (MANUELL). Dann Retest im Band 342,04–350,19$ [breakout] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 345,30$. TP1 378,00$ Measured Move (Range 312-345), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 2,84-3,39. 1% Sizing (Pilot). Non-Quanto USD.'
-  notes: '[NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03] EMA50-Zone 2,21 ATR unter Kurs 340,42, altes TP1 345 nur 0,7 ATR ueber Kurs -> Pullback-Long unter dem Doppeltop traegt nicht mehr (EMA20-Variante 1,06 R). Umgesetzt ist der RE-EVAL-VERMERK vom 07.10.: Breakout-Retest ueber 345,30 (52W-Hoch laut Digest dist52wH -1,42 %). Band = Niveau -0,5/+0,75 ATR (ATR 6,52). L25 an 350,19: SL MIN(340,42 ; 343,34) = 340,42 -> 2,84 R; an 345,30: 3,39 R. MM = 345,30 + (345,30-312) = 378,6 -> 378,00. Klassen-Gate bleibt bis zum Ausbruch per Schluss zu (bo_level fehlt). Earnings 2026-11-02 -> KO-Exit bis 2026-10-26. || [ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17
-    R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09. (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs 329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
+    text: 'nach 2026-10-13 BREAKOUT-RETEST-LONG: Niveau 345,30$ (Doppeltop Jul/Sept = altes ATH; neues Hoch 348,15 am 13.10. intraday). Ausbruch erst per 1D-Schluss ueber 345,30$ mit Vol >=1,0x Avg-20d (unter 1,3x Daempfer) (MANUELL). Dann Retest im Band 341,94–350,35$ [breakout] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 345,30$ (aktiv erst ab Ausbruch per Schluss, vorher keine TIW). TP1 365,00$ (Fib-Extension 1,618 der Range 312-345,30), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,97 (Entry-Grenze = Band-OG 350,35). 1% Sizing (Pilot). Earnings 2026-11-02 -> KO-Exit bis 2026-10-26. Non-Quanto USD.'
+  notes: '[NEU GEFASST 2026-10-13 17:39, User-Entscheid, Linien von Claude, User-Chart 1D+4h 17:24] Das Gate-Rot am 13.10. war ein Fehlalarm: tiw_status hat die TIW 345,30 vor dem Ausbruch per Schluss scharf geschaltet (Schluss 12.10. 340,97, nie ueber 345,30 geschlossen). Chart 17:24: H 348,15 (neues Hoch), C 346,11, EMA20/50/100/200-1D 335,17/327,20/315,74/297,49, RSI-1D 64,4, ATR 6,73, Ext 1,63 ATR, Vol 15,5 Mio nach ~2 h (Avg-20d ~39,4 Mio). TP1 von 378 (MM, 4,1 ATR in ~9 HT) auf 365 gesenkt, User: ''wenn die Earnings als Zeitstop druecken, wird der TP gesenkt''; 365 = Fib 1,618 als Chart-Anker im Blue Sky (L13). Verfall 10-20 -> 10-26 (KO-Exit vor Earnings). || [NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03] EMA50-Zone 2,21 ATR unter Kurs 340,42, altes TP1 345 nur 0,7 ATR ueber Kurs -> Pullback-Long unter dem Doppeltop traegt nicht mehr (EMA20-Variante 1,06 R). Umgesetzt ist der RE-EVAL-VERMERK vom 07.10.: Breakout-Retest
+    ueber 345,30 (52W-Hoch laut Digest dist52wH -1,42 %). Band = Niveau -0,5/+0,75 ATR (ATR 6,52). L25 an 350,19: SL MIN(340,42 ; 343,34) = 340,42 -> 2,84 R; an 345,30: 3,39 R. MM = 345,30 + (345,30-312) = 378,6 -> 378,00. Klassen-Gate bleibt bis zum Ausbruch per Schluss zu (bo_level fehlt). Earnings 2026-11-02 -> KO-Exit bis 2026-10-26. || [ZONE VERENGT 2026-10-07, User-OK] Exit-Test v49: L25 setzt den SL fest auf TIW 312 - 0,3x6,64 = 310,0; TP1 Doppeltop 345 ergibt an der alten Zonen-OG 326,28 nur 1,15 R. Grenze Entry <= (345 + 1,3x310)/2,3 = 325,2 -> Zone EMA50 -0,30/+0,10 ATR (heute 322,30-324,95), R:R TP1 1,34-1,85. EMA20-Variante (SL ~323,4) gibt nur 1,17 R. Stand 07.10.: Kurs 333,63 haelt EMA20 331,68, vorboerslich 337,13. RE-EVAL-VERMERK (nicht maschinell, Zeile ist aktiv): 1D-Schluss >345 (Doppeltop/ATH) + Vol = Treiber-Fall, dann als Breakout-Retest neu rechnen. Earnings 2026-11-03 (TV; Digest 11-02). || [ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 29.09.
+    (-2,66%): Bericht, neuer CEO John Ternus erwaegt Umbau (schlanker, weniger mittleres Management, evtl. anderer Launch-Zyklus); BofA Buy bestaetigt, Risiko Meta-KI-Assistent Muse (invezz 29.09.). Pro: iPhone 18 Pro China-Start 33% Marktanteil, Pro-Verkaeufe +12% ggue. 17 Pro (TV). CHART: Doppeltop ~345 (Ende Juli / 22.-25.09.), Kurs 329,40 an der EMA20-1D 330,95; RSI-1D 50,9 < Signal 62,4, RSI-4h 43 fallend. Am Kurs nur 0,80 R -> Zone an die EMA50. TIW 312 = Tief 10.09. TP2 360 = Orientierung (Blue Sky ueber ATH). ATR 2,'
   journal_row: 123
 - symbol: PSX
   name: Phillips 66 (PSX, NYSE) - Raffinerien
@@ -2843,21 +2842,18 @@ entries:
 - symbol: DDOG
   name: Datadog Inc. (DDOG, NASDAQ) — Cloud-Monitoring
   direction: LONG
-  klasse: breakout_retest
-  anker: 52W-Hoch
-  treiber: ''
-  status: archiviert
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: RBC hebt Q3-Umsatzwachstumsprognose auf 34-35 % (TV Key Facts, NICHT verifiziert)
+  status: aktiv
   added: '2026-10-13'
-  expiry: '2026-10-13'
+  expiry: '2026-10-29'
   legs:
   - label: A
-    gate: 🔴
-    text: 'BEOBACHTUNG (Pitch 2026-10-13) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >300,68$ + Vol >Avg-20d. Am Ausbruchsniveau 285,68 ist das 52W-Hoch 300,68 erstes Hindernis (0,59 R); Reife 30d +29,9 %. Earnings 2026-11-05.'
-  notes: '[NEU 2026-10-13, User: auf die Watchlist] Nur Re-Eval, Exit-Test am Niveau gescheitert.'
+    gate: 🟡
+    text: 'nach 2026-10-13 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 299,50$ (unter 52W-Hoch/Doppelhoch 300,68), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,31-2,00. 1% Sizing (Reife 30d +23 %). Earnings 2026-11-05 -> KO-Exit bis 2026-10-29. Non-Quanto USD.'
+  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, Linien von Claude, User-Chart 17:30] Chart: C 282,79 (-1,6 %), Abweisung am 52W-Hoch 300,68 am 10.10., EMA20/50/100/200-1D 267,22/252,87/235,87/208,10, r2 0,86, Trend20 +25 %, RSI-1D 64,0 < 67,7, RSI-4h 60,4 < 66,3, ATR 11,86 = 4,2 % (Hebel <=6 oder Direktaktie). Rechnung 13.10.: SL im ganzen Band = TIW-Term 245,75 (EMA50 252,87 - 0,30 ATR - 0,30 ATR); 2,00 R an UG 263,66, 1,50 R an EMA20, Entry-Grenze 269,12 (1,3 R). 7 Stk Direktaktie bei 1 %. GEGENREDE: Doppelhoch Aug/Okt ~300, Reife. Tech-Cluster mit ANET #13 (Platz 1), CSCO/PANW/ZS konkurrieren um Platz 2/3 (L7). [NEU 2026-10-13, User: auf die Watchlist] Nur Re-Eval, Exit-Test am Niveau gescheitert. || VORGAENGER-LEG: BEOBACHTUNG (Pitch 2026-10-13) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >300,68$ + Vol >Avg-20d. Am Ausbruchsniveau 285,68 ist das 52W-Hoch 300,68 erstes Hindernis (0,59 R); Reife 30d +29,9 %. Earnings 2026-11-05.'
   trade_nr: null
-  archived:
-    date: '2026-10-13'
-    reason: Exit-Test am Niveau gescheitert, Re-Eval ueber 52W-Hoch
 - symbol: CSCO
   name: Cisco Systems Inc. (CSCO, NASDAQ) — Netzwerktechnik
   direction: LONG
@@ -2873,4 +2869,40 @@ entries:
     text: 'nach 2026-10-13 BREAKOUT-RETEST-LONG: Niveau 113,19$ (Ausbruch vor 4 HT, Vol 1,13x = Daempfer). Touch 111,75-114,63$ [pullback] (= Niveau -0,50/+0,50 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 113,19$. TP1 124,00$ (Aug-Hoch, User-Chart), 1/3 raus; Zwischenhuerde 118,27$ (Hoch nach Ausbruch 12.10.); Rest Chandelier 2,0 ATR, Runner-Ziel 130,37$ (52W-Hoch). R:R TP1 2,17-2,78 ueber die Zone. 1% Sizing (Vol-Daempfer). ATR 2,5 % frei. Earnings 2026-11-12. Non-Quanto USD.'
   notes: '[TP1 2026-10-13 14:51, User] TP1 124 = Aug-Hoch (User-Ablesung), Gate ⏳ -> 🟡. d = 4,32 in der ganzen Zone (ATR-Stop weiter als TIW-0,3 ATR). || [NEU 2026-10-13, Pitch-Top Morning Check, User: auf die Watchlist] Gate ⏳ bis TP1 chartdefiniert ist.'
   trade_nr: null
-updated: '2026-10-13T17:11:05+02:00'
+- symbol: ZS
+  name: Zscaler Inc. (ZS, NASDAQ) — Cloud-Security
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruch 218,82 / Okt-Hoch 238
+  treiber: ''
+  status: archiviert
+  added: '2026-10-13'
+  expiry: '2026-10-13'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'BEOBACHTUNG (Pitch 2026-10-13) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >238,00$ + Vol >=1,0x Avg-20d. Breakout-Retest @ 218,82 scheitert am Exit-Test: erstes Hindernis Okt-Hoch ~238 (4h-Chart, geschaetzt) = max. 1,26 R am Niveau (R 15,22). Reife 30d +20 %, ATR 4,4 %. Earnings 2026-11-24.'
+  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, User-Chart 17:28] C 231,63 (+2,6 %), H 235,36; EMA20/50/100/200-1D 207,72/190,47/178,41/182,08 (EMA100 < EMA200), RSI-1D 68,4. Treiber Q4 FY26 Umsatz 898 Mio $ +24,9 % (wealthawesome, werblich); TV: Wachstum soll auf 17 % abflachen. Mittags-Vorschlag (BRT-Zeile) damit erledigt.'
+  trade_nr: null
+  archived:
+    date: '2026-10-13'
+    reason: Exit-Test am Okt-Hoch gescheitert, Re-Eval ueber 238
+- symbol: VOD.L
+  name: Vodafone Group plc (VOD, LSE) — Telekom
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: archiviert
+  added: '2026-10-13'
+  expiry: '2026-10-13'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'BEOBACHTUNG (Pitch 2026-10-13) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >1,1861 (GBP, EMA100-1D am 13.10., relativ nachfuehren) mit 4h-Bestaetigung. Trend-Pullback @ EMA100 scheitert am Exit-Test: erstes Hindernis EMA20/50-Cluster 1,221-1,234 = 0,72-0,98 R, Aug-Hochs 1,245 = 1,22 R. Ex-Tag-Marker (D) im Chart pruefen. Earnings 2026-11-10.'
+  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, User-Chart 17:29] C 117,30 p, L 116,90 (unter relativer TIW EMA100 -0,5 ATR 117,03); EMA20/50/100/200-1D 123,38/122,08/118,61/112,30, RSI-1D 37,4, RSI-4h 32,7 < 36,8, ATR 3,165 p. Ausloeser des -3 %-Tags 09.10. nicht gefunden. Alternative EMA200-MeanRev (Zone 111,35-113,25 p, TP1 122 = 1,84 R) braucht weitere -4 %. Mittags-Vorschlag damit erledigt.'
+  trade_nr: null
+  archived:
+    date: '2026-10-13'
+    reason: Exit-Test am EMA-Cluster gescheitert, Re-Eval ueber EMA100
+updated: '2026-10-13T17:42:16+02:00'
