@@ -567,9 +567,9 @@ rows:
   wirkung: 'Produkt-/Narrativ-Katalysator ohne Zahlen: kann MRVL ohne Ruecksetzer Richtung Widerstand 300 tragen (EMA20-Zeile verfaellt) oder nach dem Event ''sell the news'' den Ruecksetzer an die EMA20 liefern.'
   quelle: Benzinga via TradingView 'Why Is Marvell Technology Stock Gaining Friday?' (2026-10-09), Abruf 2026-10-09. confidence mittel (Sekundaerquelle).
   id: Z89
-  status: offen
+  status: erledigt
   added: '2026-10-09'
-  note: '2026-10-12 geprueft und primaer belegt: OCP Global Summit laeuft 2026-10-12 bis 2026-10-15 im San Jose McEnery Convention Center, Veranstaltung ausverkauft (opencompute.org/events/ocp-summit/2026-ocp-global-summit, Abruf 2026-10-12) — Startdatum ist heute. MRVL traegt eine aktive Watchlist-Zeile (LONG trend_pullback, Anker EMA20-1D, Verfall 2026-10-30), Feld treiber dort leer, obwohl der Radar den datierten Treiber kennt. Read-across ANET und NVDA ebenfalls mit aktiver Zeile. Wirkungsrichtung bleibt offen (Narrativ-Schub gegen sell-the-news) — der Termin ist keine These.'
+  note: OCP Global Summit laeuft seit 2026-10-12 (bis 10-15); Read-across MRVL/ANET/NVDA im Kurs ablesbar — Morning Check 2026-10-13
 - date: '2026-11-12'
   kat: 1
   ereignis: 'Messtermin Falsifikat These STAHL: HRC-Spotpreis Nordeuropa gegen Referenz 745 EUR/t (Stand 2026-09-28) - faellt zusammen mit Salzgitter Q3-Zahlen am 2026-11-12 (Digest-Feld earn_next)'
@@ -615,4 +615,4 @@ rows:
   id: Z94
   status: offen
   added: '2026-10-12'
-updated: '2026-10-12T20:20:25+02:00'
+updated: '2026-10-13T12:04:31+00:00'
