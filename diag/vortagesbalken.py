@@ -85,6 +85,38 @@ def main() -> int:
     except Exception:
         out["batch_err"] = traceback.format_exc()[-1500:]
 
+    # Lauf 2: Rekonstruktionswege fuer den Null-Balken
+    for sym in ("SAP.DE", "ABBN.SW", "SMIN.L", "EURUSD=X"):
+        rec = out["ticker"][sym]
+        try:
+            h = yf.Ticker(sym).history(period="5d", interval="1h", auto_adjust=False)
+            rec["h1_5d"] = _rows(h, n=40)
+        except Exception:
+            rec["h1_5d_err"] = traceback.format_exc()[-800:]
+        try:
+            h = yf.Ticker(sym).history(period="5d", interval="90m", auto_adjust=False)
+            rec["m90_5d"] = _rows(h, n=20)
+        except Exception:
+            rec["m90_5d_err"] = traceback.format_exc()[-800:]
+        try:
+            rec["d1_keepna"] = _rows(yf.Ticker(sym).history(period="1mo", interval="1d", auto_adjust=False, keepna=True))
+        except Exception:
+            rec["d1_keepna_err"] = traceback.format_exc()[-800:]
+        try:
+            rec["d1_repair"] = _rows(yf.Ticker(sym).history(period="1mo", interval="1d", auto_adjust=False, repair=True))
+        except Exception:
+            rec["d1_repair_err"] = traceback.format_exc()[-800:]
+        try:
+            from yfinance.data import YfData
+            r = YfData().get(url=f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}",
+                             params={"range": "5d", "interval": "1d"}, timeout=20).json()
+            res = r["chart"]["result"][0]
+            q = res["indicators"]["quote"][0]
+            rec["raw_q1_5d"] = [{"utc": datetime.fromtimestamp(t, tz=timezone.utc).isoformat(), "close": c}
+                                for t, c in zip(res.get("timestamp", []), q["close"])]
+        except Exception:
+            rec["raw_q1_5d_err"] = traceback.format_exc()[-800:]
+
     os.makedirs("diag/out", exist_ok=True)
     path = f"diag/out/{stamp}.json"
     with open(path, "w") as f:
