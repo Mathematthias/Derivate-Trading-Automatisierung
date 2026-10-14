@@ -429,9 +429,9 @@ rows:
   ereignis: 'Ahold Delhaize ausserordentliche Hauptversammlung, 13.10.2026 10:00 CET, Van der Valk Hotel Schiphol. Tagesordnung seit Einberufung oeffentlich: Bestellung von Thierry Garnier (CEO-Nominee, Management Board), Claire Peters und Margaret Versteden-Van Duijn sowie Edmond Mesrobian (Supervisory Board). Die frueher vermerkte VERMUTUNG ist damit belegt.'
   werte: AD.AS
   wirkung: Gering. Personalie ohne Zahlenbezug. Nur relevant, falls die Agenda etwas anderes enthaelt — vor dem Termin nachlesen.
-  status: offen
+  status: erledigt
   quelle: newsroom.aholddelhaize.com 'Ahold Delhaize publishes convocation of the EGM' + aholddelhaize.com/investors/egm-2026 (Datum und Uhrzeit woertlich), Abruf 2026-10-05. confidence hoch fuer Datum und Tagesordnung.
-  note: '2026-10-12 geprueft, unveraendert: ausserordentliche HV morgen, 2026-10-13. Einberufung und Tagesordnung weiter oeffentlich (media.aholddelhaize.com, ''Agenda and explanatory notes EGM 2026''; Abruf 2026-10-12); der IR-Finanzkalender listet die EGM nicht mehr, was kein Gegenbeleg ist, sondern dem Kalenderaufbau entspricht (nur Finanz-/Dividendentermine). Inhalt bleibt eine Personalie ohne Zahlenbezug, Wirkung gering. Kein Traeger: AD.AS ohne aktive Zeile (s. Z71).'
+  note: Ahold Delhaize aoHV 2026-10-13 stattgefunden (Termin vorbei); Morning Check 2026-10-14
 - id: Z73
   date: '2026-12-29'
   kat: 2
@@ -615,4 +615,4 @@ rows:
   id: Z94
   status: offen
   added: '2026-10-12'
-updated: '2026-10-13T17:42:16+02:00'
+updated: '2026-10-14T11:59:50+00:00'
