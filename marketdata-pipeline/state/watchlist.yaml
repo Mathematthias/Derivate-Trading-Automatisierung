@@ -1257,7 +1257,7 @@ entries:
   treiber: ''
   status: aktiv
   added: '2026-09-16'
-  expiry: '2026-10-14'
+  expiry: '2026-10-23'
   legs:
   - label: A
     gate: 🟡
@@ -2333,24 +2333,6 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-09 GRINDER-CONTINUATION-SHORT: Touch EMA20-1D -0,20/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (2,567 -> +3,85), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss ueber EMA50-1D +0,30 ATR. TP1 123,50$ (52W-/20d-Tief), 1/3 raus, R:R 1,32-1,62. Rest Trail EMA20+1,25xATR. 1% Pilot. Short nur KO. Earnings 2027-02-02. Non-Quanto USD.'
   notes: '[NEU 2026-10-09 17:25, User-Auftrag, Linien von Claude, Digest 16:33] KATALYSATOR (Short-Grinder-Regel 2026-10-04): Q3 am 2026-10-08 - Core-cc-EPS-Guidance 2026 auf +1 bis +2 % gesenkt (vorher unteres Ende von +4 bis +6 %), Core-EPS +2,5 bis +3,5 % (vorher unteres Ende +5 bis +7 %); Umsatz-Guidance dagegen angehoben (netto ~+6 %), organisch ~+3 %. CEO: weitere strukturelle Kostensenkungen ''in den kommenden Monaten''; PBNA-Volumen organisch -3 %. Quelle: 8-K Exhibit 99.1 (SEC). Chart: 09.10. -2,15 % auf 125,58 bei 2,3x Volumen, 1,37 ATR unter EMA20 129,11 -> heute kein Entry, nur nach Erholung in die Zone (128,60-129,75). Tempo 1,47, R2 0,84, ATR 1,97 %. Rechnung: TP1 123,50 = (129,75-123,50)/3,85 = 1,62 R an der OG, 1,32 R an der UG. 52W-Tief 123,5 ist Unterstuetzung; darunter neue Tiefs. GEGENREDE: Umsatz-Guidance angehoben, Defensivwert, Kostensenkungsprogramm kann den Kurs stuetzen.'
-- symbol: LHA.DE
-  name: Deutsche Lufthansa AG (LHA, XETR) — Airline
-  direction: SHORT
-  klasse: breakout_retest
-  anker: Range-Tief 7,208
-  treiber: Kerosin-Mehrkosten 2026 ueber Plan 1,5 Mrd EUR (2026-10-06); Konsens 4x Verkaufen
-  status: archiviert
-  added: '2026-10-12'
-  expiry: '2026-10-26'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '🔴 ARCHIVIERT 2026-10-12 - kein Entry-Trigger (TIW 7,208 per Schluss 2026-10-12 gebrochen, 7,248). RE-EVAL: 1D-Schluss <7,208€. Dann Breakdown-Retest frisch fassen.'
-  notes: '[ARCHIVIERT 2026-10-12, Tagesschluss-Task, User-Freigabe] Schluss 7,248 ueber TIW 7,208 (Digest 18:03); Re-Eval auf die TIW. Alter Trigger: nach 2026-10-12 BREAKDOWN-RETEST-SHORT: Niveau 7,208€ (20-Tage-Tief, Bruch 2026-10-09, Vol 1,12x -> Daempfer 1 %). Touch 7,10–7,25€ [pullback] (= Niveau -0,60/+0,25 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 7,208€. TP1 6,75€ (ueber 52W-Tief 6,72), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,86, unter 7,10 kein Entry. 1% Sizing. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27. || [NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 7,54/7,84/8,07/8,11 bearish, RSI 31,8 (>=30); 4h RSI 25,8, Range 7,10-7,30 seit 08.10. Gegenrede: nahe 52W-Tief, KGV 7,8, Kerosin 2026 groesstenteils gesichert, Oelpreis-Rueckgang = Squeeze-Risiko.
-    L7: Short Airline + Oel-Long-Korb (ENI.MI) = derselbe Oelpreis-Block. Kein Ex-Tag bis HV 2027.'
-  archived:
-    date: '2026-10-12'
-    reason: TIW gebrochen
 - symbol: MO
   name: Altria Group (MO, NYSE) — Tabak
   direction: LONG
@@ -2929,4 +2911,19 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-14 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,70 -> -1,05). TIW = 1D-Schluss unter EMA50-1D. TP1 26,05€ = 52W-Hoch (Okt-Docht), 1/3 raus. TP2 Runner, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,35-1,94. 1% Sizing.'
   notes: '[NEU 2026-10-14, Pitch long_trend_pullback RRprox 1,78, User-Auftrag Watchlist (Morning Check Punkt 5), Linien von Claude, User-Charts 1D+4h 13:40] 1D: EMA20/50/100/200 24,19/23,21/21,54/20,22 bullish, Kurs 24,55 (+2,5 %) = +0,5 ATR ueber EMA20, RSI-1D 55,6 < 61,1, ATR 0,704 (2,9 % 🟡: KO Hebel <= 8,6, sonst Direktaktie). 4h: Umkehr bullish + RSI-Cross (54,0 > 43,8), Kurs ueber 4h-EMA20/50 24,32/24,28; 4h-Docht 52W-Hoch ~26,05 (06.10.). Rechnung: UG 24,01 -> SL 22,96 (ATR), d 1,05, TP1 1,94 R, 144 Stk; OG 24,30 -> SL 23,00 (TIW), d 1,30, TP1 1,35 R, 115 Stk. Entry-Grenze fuer TP1 >= 1,3 R ~24,33. COUNTER-THESE S0: Deutsche Bank Abstufung Buy -> Hold (~2026-10-09, TV-News), Earnings 2026-12-10, keine Recherche Stufe 1. Zuordnung: Zone um EMA20 = Momentum-Continuation, Anker EMA20.'
-updated: '2026-10-14T11:59:50+00:00'
+- symbol: LHA.DE
+  name: Deutsche Lufthansa AG (LHA, XETRA) - Airline
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 7,208
+  treiber: ''
+  status: aktiv
+  added: '2026-10-14'
+  expiry: '2026-10-28'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-14 BREAKDOWN-RETEST-SHORT: Niveau 7,208€ (20-Tage-Tief, Bruch 2026-10-09 mit Vol 1,12x -> Daempfer 1 %; Schluss 2026-10-13 7,196 wieder darunter). Touch 7,20–7,29€ [pullback] (= Niveau -0,05/+0,47 ATR, nur der obere Teil des Bands) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27), Entry nicht unter 7,20 (darunter TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,177 -> +0,265). TIW = 1D-Schluss ueber 7,208€. TP1 6,85€ Measured Move (Sept/Okt-Range 7,21-7,56), 1/3 raus. TP2 6,72€ = 52W-Tief, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,32-1,66 / TP2 1,81-2,15. 1% Sizing (Pilot + Vol-Daempfer). Earnings 2026-11-03 -> KO-Exit bis 2026-10-28.'
+  notes: '[NEU GEFASST 2026-10-14, User-Entscheid Morning Check Punkt 4 (a), Linien von Claude, User-Charts 1D+4h 13:39] Re-Eval <7,208 ausgeloest (Schluss 13.10. 7,196). Kurs 7,094 (-1,4 %) = 0,65 ATR unter dem Niveau. 1D: EMA20/50/100/200 7,473/7,783/8,037/8,090 baerisch, Kurs unter 4/4, RSI-1D 30,4 < 39,4, ATR 0,1766 (2,5 %). 4h: RSI-4h 26,9 < 28,4 (ueberverkauft) -> Retest-Bounce bis 7,20+ plausibel, ohne Retest kein Entry. Rechnung: E 7,20 -> SL 7,465 (ATR), d 0,265, TP1 1,32 R / TP2 1,81 R, 566 Stk (~4.075 EUR Basis); E 7,29 -> SL 7,555, TP1 1,66 / TP2 2,15. Stueckzahl am echten SL-Abstand neu rechnen. TIW-Puffer 1,46 ATR. L7-FLAG: vierter DE-Short neben DUE #101 (offen), GLJ.DE, FRA.DE (Kandidaten) - zwei davon gleichzeitig max. Kontext: TAP-Bieterverfahren (LHA bietet fuer ~45 % TAP, TV-Key-Facts). Earnings 2026-11-03 (TV 20 d). || [ARCHIVIERT 2026-10-12, Tagesschluss-Task, User-Freigabe] Schluss 7,248 ueber TIW 7,208 (Digest 18:03); Re-Eval auf die TIW. Alter Trigger: nach 2026-10-12
+    BREAKDOWN-RETEST-SHORT: Niveau 7,208€ (20-Tage-Tief, Bruch 2026-10-09, Vol 1,12x -> Daempfer 1 %). Touch 7,10–7,25€ [pullback] (= Niveau -0,60/+0,25 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 7,208€. TP1 6,75€ (ueber 52W-Tief 6,72), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,86, unter 7,10 kein Entry. 1% Sizing. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27. || [NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 7,54/7,84/8,07/8,11 bearish, RSI 31,8 (>=30); 4h RSI 25,8, Range 7,10-7,30 seit 08.10. Gegenrede: nahe 52W-Tief, KGV 7,8, Kerosin 2026 groesstenteils gesichert, Oelpreis-Rueckgang = Squeeze-Risiko. L7: Short Airline + Oel-Long-Korb (ENI.MI) = derselbe Oelpreis-Block. Kein Ex-Tag bis HV 2027.'
+updated: '2026-10-14T12:03:37+00:00'
