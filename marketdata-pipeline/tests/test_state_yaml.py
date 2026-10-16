@@ -302,17 +302,17 @@ class TestRepoState:
         # Gestrichene Klassen duerfen nur noch im Archiv stehen
         assert all(e["status"] == "archiviert" for e in st["watchlist"]["entries"]
                    if e["klasse"] in sy.KLASSEN_GESTRICHEN)
-        # Review-Entscheide 2026-10-04 sind drin
-        by = {e["symbol"]: e for e in st["watchlist"]["entries"]}
-        for sym in ("HLMA.L", "LIN", "HLN.L", "ALC.SW", "ZTS"):
-            assert by[sym]["status"] == "archiviert", sym
-        # HOLN.SW: der Grinder-Short (Entscheid 2026-10-04) bleibt weg; die Zeile wurde
-        # am 2026-10-07 als Breakdown-Retest-Short neu angelegt (User-Entscheid).
-        assert not (by["HOLN.SW"]["status"] == "aktiv" and by["HOLN.SW"]["klasse"] == "grinder")
-        # GIVN.SW am 2026-10-12 als Trend-Pullback-Long neu gefasst (User-Entscheid,
-        # Legs EMA20/EMA50); vorher breakout_retest.
-        assert by["GIVN.SW"]["klasse"] == "trend_pullback"
-        assert "BREAKOUT-RETEST-LONG" in by["TMO"]["legs"][0]["text"]
+        # Bewusst KEINE Pins auf Klasse/Status/Leg-Text einzelner Symbole: der Zustand
+        # aendert sich mit jedem User-Entscheid (Anlass 2026-10-16: GIVN.SW am 2026-10-13
+        # als Breakout-Retest neu gefasst, der Pin auf trend_pullback vom 12.10. kippte die
+        # Suite). Geprueft werden nur Invarianten, die fuer jeden Zustand gelten.
+        # Short-Grinder nur mit datiertem Treiber (Entscheid 2026-10-04; Anlass HOLN.SW).
+        assert all(e.get("treiber") for e in aktiv
+                   if e["klasse"] == "grinder" and str(e.get("direction")).upper() == "SHORT")
+        # Jede aktive Zeile hat mindestens ein Leg mit Text, Gates nur aus dem Vertrag.
+        assert all(e.get("legs") and all(l.get("text") for l in e["legs"]) for e in aktiv)
+        assert all(l.get("gate") in ("🟢", "🟡", "⏳", "🔴")
+                   for e in st["watchlist"]["entries"] for l in (e.get("legs") or []))
         assert len(aktiv) >= 30
 
     def test_radar_und_thesen_laden(self):
