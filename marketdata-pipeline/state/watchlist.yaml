@@ -2885,23 +2885,6 @@ entries:
   notes: '[KORREKTUR 2026-10-16, User-Auftrag Morning Check] Anker EMA50 -> EMA100-1D und Leg B vorn: Digest liest die TIW aus dem ersten Leg, das Klassen-Gate den Anker der Zeile - mit EMA50 zeigte der Check Gate ⛔ (2/4 statt 3/4), obwohl Leg B (EMA100, Mindest 2/4) ✅ ist. Leg A bleibt 🟡 (TIW 930, Schluss 15.10. 931,24 = 1,24$ darueber). 15.10.: Gap 871,58, Tief 858,00, Schluss 931,24 (99,7 % der Spanne, Vol 1,48x), Vorboerse 16.10. 922 = in Zone B. HINWEIS SL: L25 bei Entry ~931,65 = 858,68, nur 0,68$ ueber dem Tagestief 858,00 (Stop-Cluster) - beim Entry unter das Tief legen pruefen (~853 -> R 2,27). || [LEG B 2026-10-13, User-Frage EMA100] EMA100 913,64 liegt 1,63 ATR unter Kurs 989. Leg B greift erst, wenn Leg A (TIW 930) schon gebrochen ist - eigene These: tiefer Pullback im intakten Stack. || [NEU 2026-10-12, User-Chart 1D+4h 16:00, Linien von Claude] Kurs 984,6 (-4,3 %) bricht intraday unter EMA50 994; 1D EMA 1034/994/914/749 bullish, RSI 44,1 < 57,5; 4h unter EMA100-4h 994, RSI-4h
     34. Aufwaertstrend Maerz-Juni 300->1250, seit Juni Range 900-1130. Gate (3/4 EMAs) erst bei Entry ueber EMA50 erfuellt -> Stop-Buy statt Limit. Gegenrede: Ausloeser des Abverkaufs 12.10. ungeklaert (Sektor: NBIS -4,3 %, ADBE -2,5 %); Tech-Cluster mit NBIS/ANET/MRVL/NVDA beachten (L7). Fruehere Zeile MU = Trade #86 (+0,99 R, 2026-09-24).'
   trade_nr: null
-- symbol: RACE.MI
-  name: 'Ferrari NV (RACE, Borsa Italiana) [MONITOR #103]'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA100-1D
-  treiber: ''
-  status: position
-  added: '2026-09-02'
-  expiry: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🟢
-    text: POSITION-MONITOR (#103) - kein Entry-Trigger. RESTPOSITION 55 Stk nach TP1. SL 6,90EUR (U ~343,30, Breakeven inkl. Verkaufsgebuehr). TIW = 1D-Schluss unter 335,00€. TP1 7,87EUR gefuellt am 2026-10-15 (55 Stk). TP2 9,47EUR (U 369,00) = Runner L6. Recheck 2026-10-22. Trail-Kandidat Chandelier 1,5 ATR U 345,67 (Stand 16.10., Entscheid User offen). Earnings 2026-11-03 -> KO-Exit spaetestens 2026-10-27. [Sp. Trigger-Historie]
-  notes: '[MONITOR-KORREKTUR 2026-10-16, Abgleich mit Journal-Uebersicht] SL 5,47 -> 6,90 (BE nach TP1-Fill 15.10.), TP1 gefuellt, Recheck 2026-10-22. Positions-Review 16.10.: Kurs 356,15, ATR 6,99, Chandelier 1,5 ATR = 345,67 (0,73 ATR unter EMA20 350,74, Veto 0,50 nicht verletzt), letzte 4h-Kerze Shooting Star. || [POSITIONS-REVIEW 2026-10-09, User-Charts 1D+4h 13:21] Weiterlaufen, naechster Review 2026-10-16 (5 HT). Fortschritt +0,54 R (U 348,40 vs. Fill ~341,65, SL 329,00), TP1 353 0,60 ATR entfernt, TIW 335 mit 1,79 ATR intakt. 1D: Kurs zwischen EMA50 348,33 und EMA20 349,65, RSI-1D 48,07 > Sig 46,74 (frischer Cross), flacher Doppelboden 341-342 ueber EMA100 339,50, keine belastbare RSI-Divergenz. 4h: Kerze 09-13 gruen ueber EMA20-4h 346,11/EMA200-4h 345,57, RSI-4h 52,69 > Sig 43,25 = Bestaetigung; Huerde EMA50/100-4h 349,62/350,94 + EMA20-1D = Cluster 349,6-351 direkt vor TP1. Volumen 111,6K vs Avg-30d 360K = Anstieg ohne Volumen. Finanzierungs-Drag ~3 EUR (Schaetzung), Deckel 14 EUR.
-    Earnings 2026-11-03 -> KO-Exit spaetestens 2026-10-27. || [ENTRY #103 2026-10-02: 110 x 6,75, Fill-U ~341,65 geschaetzt, Details im Detail-Sheet] || [NEU GEFASST 2026-10-02, Linien von Claude (User-Auftrag), Charts 1D+4h 14:00] Alte These (EMA50, TIW 343) per Schluss 01.10. 342,01 widerlegt. Neu: Pullback an EMA100 339,02 nach Tief ~342; 4h 09-13 Bullish-Engulfing + RSI-4h-Cross frisch (40,1>38,4). Faecher 2/4 = Grenzfall -> 1%. Ziele: 353 = EMA20-1D/4h-Cluster EMA50/100, 369 = Sept-Hoch. R:R TP1 0,46-1,11 (TP1 ist reine BE-Stufe), Runner 1,60-2,39. Kurs 346,35 am oberen Zonenrand. || [NEU GEFASST 2026-09-14, User-Charts 1D+4h 12:21 UTC] DREI AENDERU'
-  journal_row: 64
-  trade_nr: '103'
 - symbol: HLMA.L
   name: Halma plc (HLMA, LSE) — Sicherheits-/Umwelttechnik
   direction: SHORT
@@ -2948,4 +2931,21 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-16 BREAKOUT-RETEST-LONG: Niveau 283,43$ (20-Tage-Hoch, Ausbruch per Schluss 2026-10-14, Vol 1,21x = Daempfer). Touch 280,12-288,39$ [pullback] (Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 289,81$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 278,13). Stopweite entry-relativ -1,5xATR-1D (6,619 -> -9,93). TIW = 1D-Schluss unter 280,12$. TP1 305,00$ GESCHAETZT (Measured Move, Basis ~262-283,4 nicht am Chart abgelesen - vor Entry pruefen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,91 an 286,00 / 1,30 an 289,81. Pilot 1 % (Vol-Daempfer). Earnings 2026-10-30 -> KO-Exit bis 2026-10-23. Non-Quanto USD'
   notes: '[NEU 2026-10-16, Pitch breakout_long RRprox 4,17, User-Auftrag Morning Check, Linien von Claude] Digest 10:32: Kurs 283,40 (-0,03 %), H 291,40 = 52W-/Allzeithoch, EMA20/50/100/200 270,51/262,48/252,28/239,53 bullish, RSI 69,5 (Grenze L22d), ATR 6,619 (2,3 %), 30d +8,0 %. 4h: RSI-4h 64,7 frisch unter Signal 68,6, keine Umkehr. EX-TAG 2026-10-15 (1,73$ = 0,26 ATR) - Teil des Ruecklaufs auf das Niveau ist Dividendenabschlag. COUNTER-THESE [S1, 2 Quellen]: Konsens-KZ 277,18 unter Kurs (MarketBeat 12.10.), Spanne 246-297; Wolfe/Wells Fargo KZ 300 (Aug); KGV GAAP 79; EVP Donoghoe Verkauf 32.710 Stk @250 am 14.08. (alt); Treiber laut Quellen Skyrizi/Rinvoq-Wachstum, kein datierter Ausloeser fuer den Okt-Ausbruch gefunden. Q3-Guidance EPS 3,84-3,88$. TP1 ist Schaetzung - Chart 1D anfordern. Earnings 2026-10-30.'
-updated: '2026-10-16T11:08:41+02:00'
+- symbol: RACE.MI
+  name: 'Ferrari NV (RACE, Borsa Italiana) [MONITOR #103]'
+  direction: LONG
+  klasse: position_monitor
+  anker: EMA100-1D
+  treiber: ''
+  status: position
+  added: '2026-09-02'
+  expiry: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#103) - kein Entry-Trigger. RESTPOSITION 55 Stk nach TP1. SL 7,14EUR (U ~345,7 geschaetzt, Chandelier 1,5 ATR, gesetzt 2026-10-16 ~11:35 User; sichert ~+13,50 EUR auf den Rest). TIW = 1D-Schluss unter 335,00€. TP1 7,87EUR gefuellt am 2026-10-15 (55 Stk). TP2 9,47EUR (U 369,00) = Runner L6. Recheck 2026-10-22, Trail nie lockern. Earnings 2026-11-03 -> KO-Exit spaetestens 2026-10-27. [Sp. Trigger-Historie]
+  notes: '[STOP 2026-10-16 ~11:35, User] Broker-Stop von 5,47 (alte OCO-Stufe, U ~329) auf 7,14 EUR gezogen = Chandelier 1,5 ATR (356,15 - 1,5 x 6,99 = U 345,67; 0,73 ATR unter EMA20 350,74). Zert-Wert grob ueber BV 0,1 aus BE 6,90 @ U 343,3, nicht nach Methode A vom Live-Geld. Rest 55 x (7,14 - 6,8227) - 4,00 = ~+13,46 EUR. || [MONITOR-KORREKTUR 2026-10-16, Abgleich mit Journal-Uebersicht] SL 5,47 -> 6,90 (BE nach TP1-Fill 15.10.), TP1 gefuellt, Recheck 2026-10-22. Positions-Review 16.10.: Kurs 356,15, ATR 6,99, Chandelier 1,5 ATR = 345,67 (0,73 ATR unter EMA20 350,74, Veto 0,50 nicht verletzt), letzte 4h-Kerze Shooting Star. || [POSITIONS-REVIEW 2026-10-09, User-Charts 1D+4h 13:21] Weiterlaufen, naechster Review 2026-10-16 (5 HT). Fortschritt +0,54 R (U 348,40 vs. Fill ~341,65, SL 329,00), TP1 353 0,60 ATR entfernt, TIW 335 mit 1,79 ATR intakt. 1D: Kurs zwischen EMA50 348,33 und EMA20 349,65, RSI-1D 48,07 > Sig 46,74 (frischer Cross), flacher Doppelboden 341-342 ueber EMA100 339,50, keine
+    belastbare RSI-Divergenz. 4h: Kerze 09-13 gruen ueber EMA20-4h 346,11/EMA200-4h 345,57, RSI-4h 52,69 > Sig 43,25 = Bestaetigung; Huerde EMA50/100-4h 349,62/350,94 + EMA20-1D = Cluster 349,6-351 direkt vor TP1. Volumen 111,6K vs Avg-30d 360K = Anstieg ohne Volumen. Finanzierungs-Drag ~3 EUR (Schaetzung), Deckel 14 EUR. Earnings 2026-11-03 -> KO-Exit spaetestens 2026-10-27. || [ENTRY #103 2026-10-02: 110 x 6,75, Fill-U ~341,65 geschaetzt, Details im Detail-Sheet] || [NEU GEFASST 2026-10-02, Linien von Claude (User-Auftrag), Charts 1D+4h 14:00] Alte These (EMA50, TIW 343) per Schluss 01.10. 342,01 widerlegt. Neu: Pullback an EMA100 339,02 nach Tief ~342; 4h 09-13 Bullish-Engulfing + RSI-4h-Cross frisch (40,1>38,4). Faecher 2/4 = Grenzfall -> 1%. Ziele: 353 = EMA20-1D/4h-Cluster EMA50/100, 369 = Sept-Hoch. R:R TP1 0,46-1,11 (TP1 ist reine BE-Stufe), Runner 1,60-2,39. Kurs 346,35 am oberen Zonenrand. || [NEU GEFASST 2026-09-14, User-Charts 1D+4h 12:21 UTC] DREI AENDERU'
+  journal_row: 64
+  trade_nr: '103'
+updated: '2026-10-16T11:38:03+02:00'
