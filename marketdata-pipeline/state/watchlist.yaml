@@ -2973,7 +2973,7 @@ entries:
   journal_row: 64
   trade_nr: '103'
 - symbol: ASML.AS
-  name: ASML Holding NV (ASML, Euronext Amsterdam) [MONITOR #15 AV] — Halbleiter-Ausruestung/Lithografie
+  name: 'ASML Holding NV (ASML, Euronext Amsterdam) [MONITOR #15 AV] — Halbleiter-Ausruestung/Lithografie'
   direction: LONG
   klasse: trend_pullback
   anker: EMA100-1D
