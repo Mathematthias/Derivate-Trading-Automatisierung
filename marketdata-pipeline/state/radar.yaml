@@ -106,8 +106,9 @@ rows:
   werte: NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE
   wirkung: + Projektierer bei Ueberzeichnung
   status: offen
-  quelle: bundesnetzagentur.de, 2026-08-04
-  note: '2026-10-12 geprueft: BNetzA fuehrt den naechsten Gebotstermin Wind an Land weiter als ''Gebotstermin 1. November 2026''; Hoechstwert 7,25 ct/kWh ist dort woertlich ''fuer die Gebotstermine im Jahr 2026'' festgelegt (bundesnetzagentur.de, Fachthemen > Ausschreibungen > Wind_Onshore, Abruf 2026-10-12). Das Ausschreibungsvolumen (Basis 2.500 MW) nennt die Seite weiterhin nicht — bleibt aus Par. 28a EEG abgeleitet, nicht primaer belegt. Hinweis: 2026-11-01 ist ein Sonntag; der gesetzliche Gebotstermin ist kalenderfest, die Ergebnisbekanntgabe folgt ohnehin erst Tage spaeter. Keine aktive Watchlist-Zeile auf NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE.'
+  quelle: 'bundesnetzagentur.de, Fachthemen > Ausschreibungen > Wind_Onshore > ''Gebotstermin 1. November 2026'' (Primaerquelle: Volumen 2.495,009 MW und Hoechstwert 7,25 ct/kWh woertlich, Fristverschiebung auf Montag 02.11.2026 24:00 woertlich), Abruf 2026-10-19; Ergebnis der Vorrunde aus Pressemitteilung bundesnetzagentur.de 2026-09-17. confidence hoch'
+  note: '2026-10-19 Pflegelauf: Ausschreibungsvolumen jetzt primaer belegt - 2.495,009 MW (die bisherige Angabe ''Basis 2.500 MW'' war aus Par. 28a EEG abgeleitet). Der 01.11.2026 ist ein Sonntag; die BNetzA-Seite nennt die Abgabefrist woertlich Montag, 02.11.2026 24:00 (Gebote an der Pforte Bonn). Datum der Zeile bleibt der kalenderfeste Gebotstermin 2026-11-01, operativ endet die Frist einen Tag spaeter. Der im Feld ereignis zitierte Mai-Rundenstand (6.409 MW auf 2.495 MW) ist ueberholt: die Runde zum 01.08.2026 brachte 5.250 MW Gebote (461 Gebote) auf 2.520 MW Volumen, 237 Zuschlaege ueber 2.523 MW, mengengewichteter Durchschnitt 4,79 ct/kWh (Vorrunde 5,06), Spanne 4,49-4,98 - Ueberzeichnung Faktor rund 2,1 und fallende Zuschlagspreise. ZWEI-TERMIN-PROBLEM wie bei Z14/Z66: der Gebotstermin bewegt nichts, erst die Ergebnisbekanntgabe tut es, und die ist auf der BNetzA-Seite NICHT datiert (Hinweis dort: Freigabe der Sicherheiten bis zu sechs Wochen nach Veroeffentlichung). Keine Teil-2-Zeile
+    angelegt, weil kein Datum belegt ist. Keine aktive Watchlist-Zeile auf NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE.'
 - id: Z19
   date: '2027-01-10'
   kat: 1
@@ -115,8 +116,8 @@ rows:
   werte: MP, LYC.AX, ILU.AX / Abnehmer IFX.DE, CON.DE, VOW3.DE
   wirkung: + Nicht-China-Foerderer bei Nichtverlaengerung / - europaeische Magnet-Abnehmer
   status: offen
-  quelle: mining-technology.com, 2026-08-04
-  note: 'KORR 2026-09-28: Datum 2026-11-10 -> 2027-01-10 (Busan-Truce am 24.09. um 2 Monate verlaengert, Bessent/CNBC). ⚠️ confidence MITTEL: itemisierte Bestaetigung, dass Notice 61 samt 0,1-%-Regel mitverlaengert wurde, fehlt (rareearthexchanges: weiter "through November 10, 2026").'
+  quelle: 'mining-technology.com, 2026-08-04 (Notice 61 und 0,1-%-Regel); Datumsgrundlage jetzt zusaetzlich: Blank Rome LLP, ''The BR International Trade Report: October 2026'' (blankrome.com), woertlich ''two-month extension of the Busan Agreement trade truce'' von 2026-11-10 auf 2027-01-10, angekuendigt von Finanzminister Bessent waehrend des Staatsbesuchs 23.-25.09.2026; techtimes.com 2026-09-29 nennt dieselbe Verlaengerung. Abruf 2026-10-19.'
+  note: 'KORR 2026-09-28: Datum 2026-11-10 -> 2027-01-10 (Busan-Truce am 24.09. um zwei Monate verlaengert). 2026-10-19 Pflegelauf: Die Verlaengerung ist jetzt von einer Kanzleiquelle bestaetigt (Blank Rome, Oktober-Trade-Report) - die US-Zollerleichterung wurde im Gegenzug fuer eine Lockerung der chinesischen Seltenerd-Exportkontrollen verlaengert, ''among other terms''. Die itemisierte Bestaetigung, dass Notice 61 samt 0,1-%-Regel mitverlaengert wurde, fehlt weiterhin -> confidence MITTEL bleibt. ZWEITES INSTRUMENT AM SELBEN DATUM: Am 2027-01-10 laeuft auch der Waffenstillstand selbst aus (ausgesetzte Erhoehung des reziproken US-Zollsatzes). Bewusst KEINE eigene Zeile angelegt, um keine Dublette auf dasselbe Datum zu erzeugen; wer Z19 liest, muss wissen, dass zwei Instrumente am selben Tag fallen. Blank Rome nennt zusaetzlich, dass die ausgesetzte Affiliates Rule (EAR) ''widely understood (though not yet formally announced)'' dieselbe Zwei-Monats-Verlaengerung bekommt - unbestaetigt.'
 - id: Z20
   date: '2026-11-10'
   kat: 1
@@ -125,7 +126,7 @@ rows:
   wirkung: + US-Solarfertiger ohne China-Equipment / - Ausbauprojekte mit chin. Anlagentechnik
   status: offen
   quelle: greatlakescustomslaw.com, 2026-08-04
-  note: 'ZUSATZ 2026-09-28: die 178 Ausnahmen (HTS 9903.88.69/.70, Ablauf 2026-11-09 23:59 EDT) sind in der Gipfel-Verlaengerung NICHT namentlich genannt -> als auslaufend planen (Importivity 21.09.). Pruefauftrag Federal Register letzte Oktoberwoche.'
+  note: '2026-10-19 Pflegelauf, Pruefauftrag aus dem 2026-09-28-Zusatz vorgezogen: KEINE Verlaengerung publiziert. Die Verlaengerung des Busan-Waffenstillstands vom 2026-09-23 (von 2026-11-10 auf 2027-01-10) hat die Ausnahmen NICHT mitgenommen - die Handelsrechtspraxis fuehrt sie unveraendert als am 2026-11-10 auslaufend (coppersmith.com ''Section 301 Exclusions 2026: What Importers Need to Know Before November'', Stand 2026-08-14 und unveraendert; letzte Verlaengerung Dezember 2025). Datum bleibt, Status bleibt offen. Pruefauftrag unveraendert: Federal Register in der letzten Oktoberwoche erneut gegenlesen; eine Verlaengerung kann bis zuletzt kommen.'
 - id: Z21
   date: '2026-11-11'
   kat: 4
@@ -165,8 +166,9 @@ rows:
   ereignis: Zweite Kapazitaetsmarkt-Auktion, weitere 4.500 MW (dritte Runde 18.05.2027 mit 2.000 MW)
   werte: ENR.DE, RWE.DE, UN01.DE
   wirkung: wie erste Runde; Preisniveau Runde 1 als Anker
-  status: offen
+  status: verworfen
   quelle: boersen-zeitung.de, 2026-08-04
+  note: '2026-10-19 Pflegelauf: Dublette zu Z73 (beide beschreiben die ZWEITE StromVKG-Kapazitaetsmarkt-Auktion ueber 4.500 MW) mit widersprechenden, jeweils nur sekundaer belegten Daten - Z25 nennt 2026-12-08 (boersen-zeitung.de, 2026-08-04), Z73 nennt die Gebotsfrist 2026-12-29 (c-ober.de, 2026-09-09). Die Primaerquelle entscheidet keines von beiden: die BNetzA-Pressemitteilung vom 2026-07-21 sagt, der zweite Gebotstermin werde erst am 2026-11-10 BEKANNT GEGEBEN. Beide Daten sind damit unbelegt. Z25 wird verworfen (aeltere, unspezifischere Quelle), Z73 bleibt als Platzhalter und wird am 2026-11-10 auf das dann publizierte Datum gesetzt. Die nur in Z25 enthaltene Zusatzangabe ''dritte Runde 18.05.2027 mit 2.000 MW'' ist in die note von Z73 uebernommen und damit nicht verloren.'
 - id: Z26
   date: '2026-12-08'
   kat: 3
@@ -258,6 +260,7 @@ rows:
   wirkung: 'Nachfrageseitig: Zulassung schafft erstmals eine erstattungsfaehige US-Absatzbasis und loest bei Akeso Meilenstein-/Lizenzzahlungen aus; ein CRL haelt den US-Absatz bei null.'
   status: offen
   quelle: Summit Therapeutics IR-PM (BLA-Acceptance, s206.q4cdn.com), Abruf 2026-08-22. confidence hoch. (Lauf 22.08., nachgetragen 2026-09-02)
+  note: '2026-10-19 Pflegelauf, Pruefung nach der Z17-Lehre (''Antrag noch anhaengig?'', nicht nur ''Datum unveraendert?''): Die BLA ist weiter in Pruefung, kein Rueckzug und keine Fristverlaengerung publiziert. Summit hat im Oktober 2026 aktualisierte Gesamtueberlebensdaten aus HARMONi vorgelegt, ausdruecklich ''ahead of FDA decision date'' (fiercepharma.com ''Summit Therapeutics updates ivonescimab survival data ahead of FDA decision date''; SMMT-8-K zu 30,8 Monaten OS, Abruf 2026-10-19). Zieldatum 2026-11-14 bleibt. Keine aktive Watchlist-Zeile auf SMMT oder 9926.HK.'
 - id: Z52
   date: '2026-11-24'
   kat: 2
@@ -298,6 +301,7 @@ rows:
   wirkung: 'Kostenbasis und Zeitachse: Stichtag knuepft ans Inverkehrbringen an — Anreiz, Auslieferungen und Abnahmen in Q4 2026 vorzuziehen, danach Luecke. Fuer Anhang-I-Teil-A-Maschinen entfaellt die Selbstzertifizierung, notifizierte Stelle wird zwingend: Zertifizierungskosten der Hersteller und Auftragsvolumen der Pruefdienstleister steigen. | QUERVERWEIS AKTUALISIERT 2026-09-07: G1A.DE ist seit dem 05.09. AKTIVE WATCHLIST-ZEILE (Z68, LONG Momentum-Continuation, Verfall 2026-09-25), nicht mehr nur Pitch. Ereignis liegt viereinhalb Monate ausserhalb jedes Setup-Fensters.'
   status: offen
   quelle: DGUV Test "Umstellung auf die EU-Maschinenverordnung" (woertlich "Ab dem 20.1.2027 gilt nur noch die Maschinenverordnung"), gestuetzt durch IHK Halle-Dessau. Abruf 2026-08-27. confidence hoch. ⚠️ G1A.DE stand am 2026-09-02 als Pitch im Briefing. (Lauf 27.08., nachgetragen 2026-09-02)
+  note: '2026-10-19 Pflegelauf: Der Querverweis im Feld quelle (''G1A.DE ist seit 05.09. AKTIVE Watchlist-Zeile Z68'') ist veraltet und doppelt irrefuehrend - G1A.DE traegt am 2026-10-19 keine aktive Zeile mehr, und ''Z68'' bezeichnet seit der Migration am 2026-10-04 eine RADAR-Zeile (BNetzA-Biomasse), nicht eine Watchlist-Zeile. Aktueller Watchlist-Stand zu dieser Zeile: SIE.DE aktiv (LONG, trend_pullback, EMA20-1D, Verfall 2026-10-19) und DUE.DE offene Position (SHORT, Trade #101, Monitor bis 2026-10-22); beide liegen weit vor dem Termin 2027-01-20, eine Treiber-Verknuepfung waere verfrueht. Termin und Rechtslage selbst unveraendert.'
 - id: Z57
   date: '2027-02-18'
   kat: 1
@@ -378,8 +382,8 @@ rows:
   werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
   wirkung: + Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher als Gegenseite. Erst mit dem Zuschlag steht die Menge je Technologie fest.
   status: offen
-  quelle: bundesnetzagentur.de / boersen-zeitung.de, 2026-08-04; Split 2026-09-07.
-  note: '2026-10-12 geprueft: Der Termin ist eine FRIST, kein fixer Bekanntgabetag. Die Gebote lagen zum Gebotstermin 2026-09-08 vor, die Zuschlaege werden ''bis spaetestens 3. November 2026'' erteilt (techzeitgeist.de ''Die Gebote sind da — Zuschlaege fuer Langzeitkapazitaeten fehlen noch'', 2026-09-12, Abruf 2026-10-12) — eine Veroeffentlichung davor ist moeglich. Fuer die Zufuhr heisst das: ab Mitte Oktober taeglich moeglich, nicht erst am 03.11. ENR.DE traegt die passende aktive Zeile (event_watch, Anker TIEF, Verfall exakt 2026-11-03), Feld treiber dort aber leer. Zugleich Messtermin fuer These N3 (Verdikt beobachten, Re-Check 2026-11-06).'
+  quelle: 'Bundesnetzagentur, Pressemitteilung ''Start der Ausschreibungen fuer Langzeitkapazitaeten nach StromVKG'' (bundesnetzagentur.de/SharedDocs/Pressemitteilungen/DE/2026/20260721_StromVKG.html, 2026-07-21), woertlich: Gebotstermin 08.09.2026 24:00, Zuschlaege werden bis zum 3. November 2026 bekannt gegeben, 4.500 MW reduzierte Leistung, Hoechstpreis 244.000 EUR/MW*a. Abruf 2026-10-19. confidence hoch (Primaerquelle, ersetzt boersen-zeitung.de 2026-08-04 und techzeitgeist.de 2026-09-12). Split von Z14 am 2026-09-07.'
+  note: '2026-10-19 Pflegelauf: Der FRIST-Charakter ist jetzt primaer belegt - die BNetzA-Pressemitteilung vom 2026-07-21 sagt woertlich, die Zuschlaege wuerden ''bis zum 3. November 2026'' bekannt gegeben; bisher stuetzte sich die Zeile dafuer auf eine Sekundaerquelle. Fuer die Zufuhr unveraendert: die Bekanntgabe ist ab sofort taeglich moeglich, nicht erst am 03.11. WIRKUNGSWIDERSPRUCH (unveraendert offen seit 2026-10-12): ENR.DE traegt die passende aktive Zeile (klasse event_watch, Anker TIEF, Verfall exakt 2026-11-03), das Feld treiber dort ist weiterhin leer - der Radar kennt den datierten Treiber, die Watchlist-Zeile nicht. Entscheidung dazu trifft Matthias im Chat. Anschlusstermin: ENR.DE Q4-FY2026-Call am 2026-11-11 (Z92), ab 2026-11-04 greift der Universal-Disqualifier ''Earnings <= 7 Tage'' - der Verfall der Zeile liegt genau einen Tag davor, die Konstruktion ist insoweit sauber.'
 - id: Z67
   date: '2026-09-21'
   kat: 4
@@ -439,7 +443,8 @@ rows:
   werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
   wirkung: + Gasturbinen-/Kraftwerksbau. Regelbare Lasten und Speicher sind ab den Runden 2027/2029 zugelassen, in Runde 1 und 2 nicht.
   status: offen
-  quelle: c-ober.de/blog/kapazitaetsmarkt-erste-auktion-2026, Abruf 2026-09-09. confidence mittel (Sekundaerquelle; gegen bundesnetzagentur.de gegenlesen).
+  quelle: 'c-ober.de/blog/kapazitaetsmarkt-erste-auktion-2026, Abruf 2026-09-09 (Gebotsfrist 2026-12-29, Sekundaerquelle); gegengelesen 2026-10-19 gegen die Primaerquelle Bundesnetzagentur, Pressemitteilung ''Start der Ausschreibungen fuer Langzeitkapazitaeten nach StromVKG'' (2026-07-21): dort steht woertlich, der zweite Gebotstermin fuer Langzeitkapazitaeten werde am 10. November 2026 bekannt gegeben - das Datum 2026-12-29 ist damit NICHT primaer belegt. confidence NIEDRIG fuer das Datum bis zur Bekanntgabe.'
+  note: '2026-10-19 Pflegelauf: Datum ist ein Platzhalter, kein belegter Termin (siehe quelle). Die verbindliche Festlegung kommt am 2026-11-10 - dafuer ist eine eigene Kat-2-Zeile angelegt; an dem Tag ist diese Zeile per radar.set_field date auf den publizierten Gebotstermin zu setzen. Z25 (Dublette, Datum 2026-12-08) ist am selben Tag verworfen worden. Uebernommen aus Z25: die dritte Runde ist mit 2.000 MW fuer den 18.05.2027 vorgesehen (boersen-zeitung.de 2026-08-04, Sekundaerquelle, ebenfalls nicht primaer belegt). Teilnahmeregel unveraendert: regelbare Lasten und Speicher sind erst ab den Runden 2027/2029 zugelassen, in Runde 1 und 2 nicht.'
 - id: Z75
   date: '2026-09-24'
   kat: 3
@@ -494,19 +499,20 @@ rows:
   kat: 1
   ereignis: USTR-Section-301-Hafengebuehren auf chinesisch betriebene/gebaute Schiffe (Annex I/II) und auf Nicht-US-Autotransporter (Annex III) werden wieder faellig; zeitgleich endet die Aussetzung der chinesischen Gegen-Hafengebuehren auf US-Schiffe — Aussetzung lief 2025-11-10 bis 2026-11-09, keine Verlaengerung publiziert
   werte: SBLK, MAERSK-B.CO, HLAG.DE, ZIM, 1919.HK, WAWI.OL, GOGL
-  wirkung: 'Kostenbasis je US-Hafenanlauf fuer Betreiber chinesisch gebauter bzw. betriebener Tonnage, bei Autotransportern nach Nettotonnage; Anreiz zur Flottenumschichtung auf Nicht-China-Tonnage fuer US-Routen. Chinesische Gegengebuehren belasten US-verbundene Schiffe in chinesischen Haefen. Gehoert zum 10.11.-Cluster (Z20/Z21) und haengt am Trump-Xi-Gipfel (Z15) — eine Verlaengerung im Gipfelpaket wuerde den Termin entwerten. Watchlist-Beruehrung Stand 2026-10-12: SBLK ist OFFENE POSITION (Trade #11, Positions-Monitor bis 2026-10-14), MAERSK-B.CO aktive Zeile (LONG trend_pullback, Verfall 2026-10-20) — beide ohne datierten treiber. HLAG.DE, ZIM, 1919.HK, WAWI.OL, GOGL ohne Zeile; Tickerliste bleibt illustrativ, Flottenanteil ungeprueft.'
+  wirkung: Kostenbasis je US-Hafenanlauf fuer Betreiber chinesisch gebauter bzw. betriebener Tonnage, bei Autotransportern nach Nettotonnage; Anreiz zur Flottenumschichtung auf Nicht-China-Tonnage fuer US-Routen. Chinesische Gegengebuehren belasten US-verbundene Schiffe in chinesischen Haefen. Gehoert zum 10.11.-Cluster (Z20, Z81, neu die BNetzA-Bekanntgabe desselben Tages). Tickerliste illustrativ, Flottenanteil je Wert ungeprueft.
   status: offen
   quelle: Watson Farley & Williams, 'Suspension and Amendments to US and China Port Fees – Current Status' (wfw.com, 21.11.2025), woertlich Aussetzung 'November 10, 2025 through November 9, 2026'; Holland & Knight, 'USTR Port Fee Suspension' (hklaw.com, 11/2025). Abruf 2026-09-21 | confidence MITTEL — Datum hart belegt, Verlaengerung im Gipfel moeglich; Tickerliste illustrativ, Flottenanteil NICHT geprueft
-  note: '2026-10-12 Pflegelauf: Querverweise im Feld wirkung berichtigt. Die alten Angaben ''SBLK Z27 (aktiv bis 07.10.)'' und ''MAERSK-B.CO Z29 (aktiv bis 23.09.)'' stammten aus der Journal-Zeilennummerierung vor der Migration — seit 2026-10-04 bezeichnet Z<n> eine RADAR-Zeile (Z27 = Nasdaq-100-Rekonstitution, Z29 = EU-LNG-Importverbot). Watchlist-Werte werden hier ab jetzt nur ueber das Symbol referenziert. Sachstand unveraendert: publiziertes Ende der Gebuehren-Aussetzung 2026-11-09 23:59 EST, keine Verlaengerung publiziert; Datum bleibt bis zur Federal-Register-Notice. Liegt am 2026-10-12 noch 29 Tage entfernt und rueckt naechste Woche ins 28-Tage-Fenster.'
+  note: '2026-10-19 Pflegelauf: (a) Sachstand bestaetigt - die Aussetzung endet am 2026-11-09 23:59 ET, Gebuehren waeren fuer Anlaeufe ab 2026-11-10 wieder faellig; die muendliche Verlaengerung des Waffenstillstands verschiebt diesen Termin NICHT, dafuer braeuchte es eine neue USTR-Federal-Register-Notice, die bis heute fehlt (techtimes.com 2026-09-29 ''USTR Section 301 Chinese Ship Fees Still Expire November 9 Despite Bessent''s Truce Extension''; amoyline.com ''Truce Extension Did Not Rewrite USTR Notice''; Abruf 2026-10-19). (b) Watchlist-Stand im Feld wirkung war veraltet und ist dort entfernt - Watchlist-Zustand gehoert nicht in ein Wirkungsfeld. Aktueller Stand 2026-10-19: SBLK ist KEINE offene Position mehr, sondern eine aktive Zeile (LONG, trend_pullback, Anker EMA200, Verfall 2026-11-04, treiber leer); MAERSK-B.CO aktive Zeile (LONG, trend_pullback, EMA20-1D, Verfall jetzt 2026-10-28, treiber leer). Beide Verfallsdaten liegen VOR dem 2026-11-10 - wird eine der Zeilen ueber den Termin
+    hinaus verlaengert, gehoert dieser Termin als treiber hinein. HLAG.DE, ZIM, 1919.HK, WAWI.OL, GOGL weiter ohne Zeile.'
 - id: Z82
   date: '2026-10-28'
   kat: 1
   ereignis: 'UK Autumn Budget 2026 (Chancellor John Healey) — Steuer- und Abgabenpaket inkl. Business Rates; bereits zugesagt: Steuersenkung fuer Pubs und Clubs, Beteiligung der Mayors an Einkommensteuer und Business Rates'
   werte: WTB.L, BARC.L, HSBA.L, LLOY.L, NWG.L, TSCO.L, SBRY.L
-  wirkung: 'Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Watchlist-Beruehrung Stand 2026-10-12: keine der sieben Werte traegt eine aktive Zeile; STAN.L ist aktiv (LONG, Verfall 2026-10-14), steht aber nicht in werte — Exposure ueber UK-Abgaben gering, Geschaeft ueberwiegend Asien/Afrika. Zugleich Messtermin fuer These N2 (UK-Ersterwerber, Verdikt beobachten).'
+  wirkung: Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Zugleich Messtermin fuer These N2 (UK-Ersterwerber, Verdikt beobachten).
   status: offen
   quelle: 'Grant Thornton UK ''Autumn Budget 2026: what we know so far'', woertlich ''The Autumn Budget will take place on 28 October 2026''; Which? 14.09.2026. Abruf 2026-09-21 | confidence HOCH fuer das Datum, NIEDRIG fuer den Inhalt'
-  note: '2026-10-12 geprueft: Termin 2026-10-28 weiter von mehreren UK-Steuerquellen als bestaetigt gefuehrt (u.a. professionalpensions.com ''Government confirms date for Autumn Budget 2026'', uktaxdrag.co.uk Budget-Tracker; Abruf 2026-10-12), keine Verschiebung. Inhalt weiter unbelegt (confidence NIEDRIG bleibt). Der im Pflegelauf 2026-10-05 beanstandete Querverweis ''Getrackt: WTB.L Z76'' ist aus dem Feld wirkung entfernt — er war doppelt falsch (WTB.L-Zeile seit 2026-09-29 archiviert; Z76 ist die EmpCo-Richtlinie, nicht der WTB.L-Trade).'
+  note: '2026-10-19 Pflegelauf: Termin 2026-10-28 unveraendert (Pruefung 2026-10-12 gegen mehrere UK-Steuerquellen, keine neue Gegenanzeige). Watchlist-Stand aus dem Feld wirkung entfernt, weil er dort veraltete: STAN.L ist seit dem Verfall 2026-10-14 keine aktive Zeile mehr; Stand 2026-10-19 traegt keiner der sieben genannten Werte und auch kein weiterer UK-Wert eine aktive Zeile. Inhalt des Pakets weiter unbelegt (confidence NIEDRIG bleibt).'
 - id: Z83
   date: '2027-03-10'
   kat: 5
@@ -575,10 +581,11 @@ rows:
   ereignis: 'Messtermin Falsifikat These STAHL: HRC-Spotpreis Nordeuropa gegen Referenz 745 EUR/t (Stand 2026-09-28) - faellt zusammen mit Salzgitter Q3-Zahlen am 2026-11-12 (Digest-Feld earn_next)'
   werte: SZG.DE, MT.AS
   wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: HRC unter 745 EUR/t = Falsifikat eingetreten, Korb STAHL auf Verdikt pruefen. Salzgitter-Print am selben Tag liefert die Margenseite.'
-  quelle: 'Thesen-Lauf 2026-10-10; HRC-Referenz Note #777 / SMM 2026-10-09; Earnings-Datum aus BRIEFING-DIGEST-2026-10-09-2233 (earn_next), IR-Kalender nicht gegengelesen, confidence mittel'
+  quelle: 'Thesen-Lauf 2026-10-10; HRC-Referenz Note #777 / SMM 2026-10-09; Earnings-Datum jetzt gegen den IR-Finanzkalender gegengelesen: salzgitter-ag.com, Investor Relations > Service > Finanzkalender, Eintrag ''November 2026 12.11.'' (Abruf 2026-10-19) - deckt sich mit dem Digest-Feld earn_next. confidence hoch fuer das Datum, mittel fuer den HRC-Referenzwert.'
   id: Z90
   status: offen
   added: '2026-10-12'
+  note: '2026-10-19 Pflegelauf: Der im Pflegestand vom 2026-10-10 offen gelassene Punkt ''IR-Kalender nicht gegengelesen'' ist erledigt - der Salzgitter-Finanzkalender fuehrt den 12.11.2026 als Finanztermin, das Datum stammt damit nicht mehr nur aus dem Digest. SZG.DE und MT.AS tragen beide aktive Thesen-Korb-Zeilen (These STAHL, Re-Check 2026-10-24), deren treiber den Falsifikat-Termin 2026-11-12 bereits nennt - Radar und Watchlist stimmen hier ueberein.'
 - date: '2026-10-29'
   kat: 5
   ereignis: 'Prysmian Q3/9M-2026-Zahlen (Mailand). Datierter Messpunkt fuer Falsifikat (b) der These A (AI-Strom): book-to-bill < 1. Die These nennt den Termin, der Radar fuehrte ihn bisher nicht.'
@@ -615,4 +622,31 @@ rows:
   id: Z94
   status: offen
   added: '2026-10-12'
-updated: '2026-10-19T05:40:55+00:00'
+- date: '2026-11-10'
+  kat: 2
+  ereignis: BNetzA gibt den zweiten Gebotstermin fuer Langzeitkapazitaeten nach StromVKG bekannt - erst damit steht der Termin der zweiten Kapazitaetsmarkt-Auktion (4.500 MW) fest; die bisherigen Radar-Daten dafuer (Z73 2026-12-29, Z25 2026-12-08, verworfen) sind reine Sekundaerangaben
+  werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
+  wirkung: 'Terminfixierung, keine Mengenwirkung am Tag selbst: bis zur Bekanntgabe ist unbestimmt, wann die zweiten 4.500 MW reduzierter Leistung ausgeschrieben werden. Mit dem publizierten Gebotstermin steht fest, ab wann Gasturbinen- und Kraftwerksbauer Auftragsmengen einem Zeitraum zuordnen koennen und bis wann Bieter Sicherheiten stellen muessen. Faellt auf denselben Tag wie das Auslaufen der US-Section-301-Ausnahmen (Z20) und der Hafengebuehren-Aussetzung (Z81) - Cluster 2026-11-10.'
+  quelle: 'Bundesnetzagentur, Pressemitteilung ''Start der Ausschreibungen fuer Langzeitkapazitaeten nach StromVKG'' (bundesnetzagentur.de/SharedDocs/Pressemitteilungen/DE/2026/20260721_StromVKG.html, 2026-07-21), woertlich: der zweite Gebotstermin fuer Langzeitkapazitaeten wird am 10. November 2026 bekannt gegeben; Zuschlaege der ersten Runde bis 3. November 2026, Volumen 4.500 MW, Hoechstpreis 244.000 EUR/MW*a (Abruf 2026-10-19). confidence hoch (Primaerquelle).'
+  id: Z95
+  status: offen
+  added: '2026-10-19'
+- date: '2026-11-30'
+  kat: 1
+  ereignis: Gesetzliche Frist fuer CMS, die ausgehandelten Hoechstpreise (Maximum Fair Prices) des dritten Medicare-Verhandlungszyklus zu veroeffentlichen - 15 Wirkstoffe plus eine Neuverhandlung, Preisgeltung ab 2028-01-01; die Verhandlungsperiode endete am 2026-11-01
+  werte: ABBV, BMY, GILD, LLY (Zuordnung Wirkstoff -> Hersteller teils nicht quellenbelegt, siehe quelle)
+  wirkung: 'Preis-/Umsatzbasis: der publizierte MFP legt den Medicare-Erstattungspreis je betroffenem Wirkstoff ab 2028 fest und macht den Abschlag gegen den heutigen Listenpreis erstmals bezifferbar. Bis zur Veroeffentlichung ist nur die Auswahl bekannt, nicht die Hoehe. Mengenwirkung erst 2028, Informationswirkung am Termin. Keine Richtungsaussage: Runde 2 brachte im Schnitt rund -44 Prozent gegen die 2024-Listenpreise (Z30), der Abschlag je Wirkstoff ist davon nicht ableitbar.'
+  quelle: 'CMS, ''Medicare Drug Price Negotiation Program: IPAY 2028 Final Guidance Fact Sheet'' (cms.gov/files/document/ipay-2028-final-guidance-fact-sheet.pdf): Verhandlungsende 2026-11-01, Veroeffentlichung der MFP bis 2026-11-30, Geltung ab 2028-01-01 (Abruf 2026-10-19, Primaerquelle fuer die Daten). Wirkstoffliste (u.a. Trulicity, Botox/Botox Cosmetic, Biktarvy, Orencia, Entyvio, Cimzia, Neuverhandlung Tradjenta) aus themoneyoverview.com 2026-09-11 (Sekundaerquelle); namentlich mit Hersteller verknuepft sind dort nur Botox/AbbVie, Orencia/Bristol-Myers Squibb und Tradjenta/Boehringer Ingelheim, zusaetzlich sind Eli Lilly und Gilead als Verhandlungsteilnehmer genannt. Die Ticker in werte sind insoweit teils meine Zuordnung, nicht die der Quelle. confidence hoch fuer Datum und Mechanik, mittel fuer die Wertezuordnung. ACHTUNG: beruehrt zwei aktive Watchlist-Zeilen (ABBV, GILD).'
+  id: Z96
+  status: offen
+  added: '2026-10-19'
+- date: '2026-12-22'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Lorundrostat (Mineralys Therapeutics) zur Behandlung erwachsener Hypertonie-Patienten in Kombination mit weiteren Antihypertensiva; Standard Review, kein Advisory Committee in der Annahme-Mitteilung angekuendigt
+  werte: MLYS
+  wirkung: 'Nachfrageseitig: eine Zulassung schafft die erste erstattungsfaehige US-Absatzbasis fuer den einzigen weit fortgeschrittenen Wirkstoff des Unternehmens, ein CRL haelt den US-Absatz bei null. Einzelwert ohne Sektorwirkung; binaerer Mengen-Schalter, keine Richtungsaussage zum Kurs.'
+  quelle: 'Mineralys Therapeutics, IR-Pressemitteilung ''Mineralys Therapeutics Announces FDA Acceptance of NDA for Lorundrostat ...'' (ir.mineralystx.com, 2026-03-09), woertlich ''The FDA has assigned a Prescription Drug User Fee Act (PDUFA) target action date of December 22, 2026'' (Abruf 2026-10-19). confidence hoch (Primaerquelle). PRUEFAUFTRAG nach der Z17-Lehre: vor dem Termin nicht nur das Datum, sondern ''ist der Antrag noch anhaengig?'' pruefen. Keine aktive Watchlist-Zeile auf MLYS.'
+  id: Z97
+  status: offen
+  added: '2026-10-19'
+updated: '2026-10-19T08:14:24+00:00'
