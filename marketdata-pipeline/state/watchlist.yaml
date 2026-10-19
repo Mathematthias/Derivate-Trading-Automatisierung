@@ -2951,7 +2951,7 @@ entries:
   legs:
   - label: A
     gate: 🟢
-    text: POSITION-MONITOR (#14 AV, 15 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-15 15 x 163,50EUR (U ~183,13). SL 152,30EUR (U ~170,59, L4 1,5 ATR). TIW = 1D-Schluss unter 178,47$ (Tagestief 2026-10-15). TP1 offen (Vorschlag EMA20-1D 202,62$ = 180,89EUR). Review 2026-10-22. Earnings 2026-11-03. Non-Quanto USD. [Sp. Trigger-Historie]
+    text: POSITION-MONITOR (#14 AV, 15 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-15 15 x 163,50EUR (U ~183,13). SL 152,30EUR (U ~170,59, L4 1,5 ATR). TIW = 1D-Schluss unter 176,77$ (Tagestief 2026-10-16 = Kapitulationstief; neu gesetzt 2026-10-19 vom User nach TIW-Bruch 178,47 per Schluss 16.10. und Rueckeroberung 19.10., Schluss 183,03; Klasse bleibt BAUCHGEFUEHL). TP1 offen (Vorschlag EMA20-1D 202,62$ = 180,89EUR). Review 2026-10-22. Earnings 2026-11-03. Non-Quanto USD. [Sp. Trigger-Historie]
   added: '2026-10-16'
 - symbol: MU
   name: Micron Technology (MU, Nasdaq) — Speicherchips/HBM
