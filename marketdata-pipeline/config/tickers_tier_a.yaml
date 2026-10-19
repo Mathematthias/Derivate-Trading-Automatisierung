@@ -101,6 +101,14 @@ thesen_koerbe:
   ArcelorMittal:      "MT.AS"      # Flachstahl EU/global, Amsterdam, EUR (bisher nur ueber Katalysator-Seeds)
   voestalpine:        "VOE.VI"     # Flachstahl + Spezialsparten, Wien, EUR; Ethik: Ruestung kein Kerngeschaeft (Recherche 2026-10-12, u)
   # NICHT aufgenommen: TKA.DE (51 % TKMS = Kampfplattformen, Ethik), SSAB (Armox-Anteil ungeprueft)
+  # These OEL — Raffinerien (Weg B, User-Entscheid 2026-10-19: "Raffinerien werden extreme Gewinne haben").
+  # Bisher war PSX der einzige Raffinerie-Wert im Universum. Diesel-Crack US-Golf >100 USD/bbl am 2026-08-17.
+  Valero:             "VLO"        # Raffinerie US, NYSE, USD
+  Marathon_Petroleum: "MPC"        # Raffinerie US, NYSE, USD
+  Neste:              "NESTE.HE"   # Raffinerie/erneuerbarer Diesel, Helsinki, EUR
+  OMV:                "OMV.VI"     # integriert mit Raffinerie Schwechat/Burghausen, Wien, EUR
+  Repsol:             "REP.MC"     # integriert mit hohem Raffinerieanteil, Madrid, EUR
+  TotalEnergies:      "TTE.PA"     # integriert inkl. Raffinerie, Paris, EUR (User-Wunsch 2026-10-19)
 
 # ============================================================
 # NEBENWERTE-COVERAGE — DE Mid/Small-Caps mit Hidden-Catalyst-Potenzial
