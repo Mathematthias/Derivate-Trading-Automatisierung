@@ -39,15 +39,15 @@ thesen:
   titel: Oel/Hormus
   verdikt: spielen
   korb_budget_pct: 2
-  crowdedness_pp: 6.39
-  re_check: '2026-10-19'
+  crowdedness_pp: 6.38
+  re_check: '2026-10-26'
   falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
   ausdruecke:
   - ENI.MI
   - XOM
   - PSX
   - FRA.DE
-  note: 'Zwischenstand Thesen-Lauf 2026-10-17, Re-Check NICHT faellig (2026-10-19) und unveraendert. Brent BZ=F 109,60 USD (Digest 2026-10-16 22:32) = 24,5 % ueber der Schwelle 88, ueber EMA20 103,88 und EMA50 99,52. Zur Waffenruhe-Haelfte des Falsifikats in diesem Lauf nicht gesucht - Annahme, kein Befund. Crowdedness gedreht: ENI.MI +9,62 / XOM +9,34 / PSX +6,63 / FRA.DE -0,04 PP, Mittel +6,39 PP (Vorwoche -6,11), Zone <10. XOM RSI 73,0, ENI.MI 71,3, PSX 70,7 - der Korb fuehrt jetzt statt zu folgen, relevant fuer Einstieg und Groesse, nicht fuer das Verdikt.'
+  note: 'RE-CHECK 2026-10-19 (Chat, User "Checken"): Verdikt spielen unveraendert. Brent BZ=F 108,48 USD (Digest 2026-10-19 13:32) = 23,3 % ueber der Schwelle 88, ueber EMA20 104,34/EMA50 99,88, Stack bullish. Waffenruhe-Haelfte: keine Deeskalation gefunden - letzte belegte Waffenruhe endete 2026-07-08 (angelone.in), KW42 laut Wochenrueckblick verstaerkte Iran-Angriffe auf Tanker (portfolio-terminal.com, Abruf 2026-10-19); Oktober-Suche ohne Befund = Annahme, kein Beleg. Crowdedness ENI.MI +10,97 / XOM +9,34 / PSX +6,63 / FRA.DE -1,44 PP, Mittel +6,38 PP (Zone <10). XOM RSI 73,0, ENI.MI 73,1, PSX 70,7 - Einstieg/Groesse, nicht Verdikt. Naechster Re-Check 2026-10-26. || Zwischenstand Thesen-Lauf 2026-10-17, Re-Check NICHT faellig (2026-10-19) und unveraendert. Brent BZ=F 109,60 USD (Digest 2026-10-16 22:32) = 24,5 % ueber der Schwelle 88, ueber EMA20 103,88 und EMA50 99,52. Zur Waffenruhe-Haelfte des Falsifikats in diesem Lauf nicht gesucht - Annahme, kein Befund. Crowdedness gedreht: ENI.MI +9,62 / XOM +9,34 / PSX +6,63 / FRA.DE -0,04 PP, Mittel +6,39 PP (Vorwoche -6,11), Zone <10. XOM RSI 73,0, ENI.MI 71,3, PSX 70,7 - der Korb fuehrt jetzt statt zu folgen, relevant fuer Einstieg und Groesse, nicht fuer das Verdikt.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -65,6 +65,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: 6.39
     source: thesen-lauf
+  - date: '2026-10-19'
+    verdikt: spielen
+    crowdedness_pp: 6.38
+    source: chat-recheck
 - id: STAHL
   titel: EU-Stahl melt-and-pour
   verdikt: spielen
@@ -173,4 +177,4 @@ thesen:
     verdikt: spielen
     crowdedness_pp: 1.66
     source: chat
-updated: '2026-10-19T10:20:00+00:00'
+updated: '2026-10-19T11:55:00+00:00'

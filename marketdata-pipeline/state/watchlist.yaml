@@ -25,15 +25,18 @@ entries:
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-09-29'
   expiry: '2026-10-19'
   legs:
   - label: A
-    gate: 🟡
+    gate: 🔴
     text: 'nach 2026-09-29 TREND-PULLBACK-LONG: Touch EMA20-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (6,14 -> -9,20). TIW = 1D-Schluss unter 268,00€. TP1 286,30€ = BE-Stufe (50% + SL->BE, L6). TP2 291,50€ = Runner L6 (Spannen-Hoch). R:R TP1 1,12-1,56 / TP2 1,66-2,12. 1% Sizing.'
   notes: '[NEU GEFASST 2026-09-29 20:11, User-Auftrag Variante A, Charts 1D+4h 19:33] Alte Zeile (EMA200-Mean-Reversion 262,00-263,40) lief ohne Fill: Kurs bis 286,30, TP1 275,75 erreicht, TP2 285 fast -> Zone tot. NEU: Ruecksetzer an den EMA-Cluster 273-274 (EMA20-1D 273,21 / EMA50-1D 273,30 / EMA50-4h 273,60 / EMA100-4h 273,70). Stack neutral (EMA20 ~ EMA50), Kurs ueber 4/4 EMAs -> Trend-Pullback. 29.09.: Hoch 286,30 mit Docht, Schluss 282,00, 4h-Rejection, RSI-4h 62 < 65. TIW 268 = unter EMA100-1D 269,13. L25: Zonen-OG 275,67 -> SL 266,16 (L25), UG 271,98 -> SL 262,78 (ATR). TP1 286,30 = Hoch 29.09.,'
   journal_row: 3
+  archived:
+    date: '2026-10-19'
+    reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - Stack neutral, Kurs 1/4 EMAs (Anker EMA20)'
 - symbol: JUN3.DE
   name: Jungheinrich AG Vz (JUN3)
   direction: SHORT
@@ -973,15 +976,18 @@ entries:
   klasse: breakout_retest
   anker: STRUKTUR
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-09-07'
   expiry: '2026-10-21'
   legs:
   - label: A
-    gate: 🟡
+    gate: 🔴
     text: 'nach 2026-10-01 SHORT-TREND-PULLBACK: Touch 18,20-18,60€ [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Stopweite entry-relativ +1,5xATR-1D (0,71 -> +1,07). TIW = 1D-Schluss ueber 19,00€. TP1 17,20€ = BE-Stufe (50% + SL->BE, L6). TP2 16,00€ = Runner L6. R:R TP1 0,93-1,31 / TP2 2,06-2,43. 1% Sizing, KO h<=6.'
   notes: '[NEU GEFASST 2026-10-01, User-Charts 1D+4h 10:40] TP1 18,00 und TP2 17,20 der Vorfassung ohne Entry erreicht (Tief 17,16). Kurs 17,32, RSI-1D 29,7, EMA20/50/100/200 18,94/20,37/21,15/21,74, ATR 0,71 (4,1 % -> gelbe Stufe, Hebel <=6). 4h: Box 18,20-18,90 (23.-29.09.) nach unten gebrochen, RSI-4h 27,9 ueberverkauft -> Bounce in die Box wahrscheinlicher als direkte Fortsetzung. Neue Wette: Ruecktest der Box von unten. L25: SL = MAX(E+1,07 ; 19,00+0,21=19,21) -> ATR-Term gewinnt (19,27-19,67). TP1 17,20 (heutiges Tief / Mai-Juni-Tiefs), TP2 16,00 (April-Konsolidierung). TP1 allein traegt nicht, de'
   journal_row: 70
+  archived:
+    date: '2026-10-19'
+    reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - Ausbruch 15,72 vor 10 HT, Kurs ausserhalb Band'
 - symbol: KNIN.SW
   name: Kuehne+Nagel International (KNIN, SIX) - Freight Forwarding
   direction: LONG
@@ -1577,30 +1583,36 @@ entries:
   klasse: trend_pullback
   anker: EMA50-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-09-30'
   expiry: '2026-10-20'
   legs:
   - label: A
-    gate: 🟡
+    gate: 🔴
     text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA50-1D -0,20/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (9,03 -> -13,55). TIW = 1D-Schluss unter 170,00$. TP1 206,00$ = BE-Stufe (L6). TP2 220,00$ = Runner L6. R:R Runner 2,73-3,18. 1% Sizing. Non-Quanto USD.'
   notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 28.09. (-5,8%) + 29.09. (-1,8%): Rally nach Snapdragon Summit/Apple-Patentverlaengerung/AWS verpufft, Samsung-2nm-Gespraeche haengen, 10J-Rendite 5,218%; CEO-Familientrust 10.000 Stk @195 am 21.09. per 10b5-1 (Plan-Trade, geringer Signalwert) (StockStory 28.09.). CHART: Hoch 206 (24.09.), Kurs 184,10 an der EMA20-1D 184,24, RSI-1D 51,8 < 63,1, RSI-4h 46 fallend. TIW 170 = Higher-Low Mitte Sept / EMA200. TP2 220 = Abbruchzone Juli. ATR 4,9% 🟡 knapp unter 🔴: Hebel 5 reisst L2 (Einsatz ~390 EUR) -> Hebel <=4 (~490 EUR) oder Direk'
   journal_row: 125
+  archived:
+    date: '2026-10-19'
+    reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - Kurs 0/4 EMAs (Anker EMA50)'
 - symbol: SNOW
   name: Snowflake Inc. (SNOW, NYSE) - Cloud-Datenplattform
   direction: LONG
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-09-30'
   expiry: '2026-10-20'
   legs:
   - label: A
-    gate: 🟡
+    gate: 🔴
     text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch 318,00-322,00$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (14,83 -> -22,25). TIW = 1D-Schluss unter 310,00$. TP1 345,00$ = BE-Stufe (L6). TP2 385,00$ = Runner L6. R:R Runner 2,83-3,01. 1% Sizing. Non-Quanto USD.'
   notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] 28.09.: Wandelanleihe 0% 3,75 Mrd USD (2029 @500,38 / 2031 @483,98 = +47-53% Praemie), Capped Calls Cap 820, 548 Mio refinanzieren 2027er, Abschluss 01.10.; Kurs nur -0,57% (Benzinga). Keine sofortige Verwaesserung, aber Hedge-Verkaeufe der Wandelkaeufer bis Closing moeglich (Flag, zugleich moeglicher Grund fuer den Ruecksetzer in die Zone). CHART: Range 318-345 seit 03.09. (Earnings-Spike 385), Kurs an der EMA20-1D; am Kurs TP1 nur 0,59 R -> Zone an die Range-Unterkante. TIW 310 = Range-Unterkante. ATR 4,49% 🟡 Hebel <=5,6, h5 an L2-Gre'
   journal_row: 126
+  archived:
+    date: '2026-10-19'
+    reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - TIW 310 per Schluss 2026-10-16 gebrochen'
 - symbol: SPGI
   name: S&P Global Inc. (SPGI, NYSE) - Ratings/Indizes/Finanzdaten
   direction: SHORT
@@ -1640,15 +1652,18 @@ entries:
   klasse: grinder
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-02'
   expiry: '2026-10-21'
   legs:
   - label: A
-    gate: 🟡
+    gate: 🔴
     text: 'nach 2026-10-02 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Stopweite entry-relativ -1,5xATR-1D (6,74 -> -10,11), keine L25-Klammer. Invalidator = Zustand (Stack, Faecher, Tempo unter 0,6). TP1 416,00€ = BE-Stufe (Sept-Hoch), R:R 1,44-1,77. Kein TP2, Trail EMA20-1,25xATR. Exit bis 2026-10-21. 1% Pilot. Non-Quanto SEK.'
   notes: '[NEU 2026-10-02 aus Grinder-Block (Tempo 1,45-1,59), Zwei-Laeufe-Regel 01./02.10. erfuellt, S0 + Chart-News, Linien von Claude (User-Auftrag), Chart 14:08] Trend seit Juni, Hoch ~416 Ende Sept, Ruecksetzer auf EMA20-1D 399,8. 4h unter EMA20/50, RSI-4h 38,5 < 51,9 -> Bestaetigung abwarten. L7: Block schwedische Banken - statt SHB-A. FLAG: Earnings ~2026-10-22 -> Exit spaetestens 2026-10-21. KO-Produkt (SEK, non-Quanto) ungeprueft. Symbol noch nicht im Digest-Universum -> relative Zone loest erst nach Watchlist-Sync auf.'
   journal_row: 129
+  archived:
+    date: '2026-10-19'
+    reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - |Kurs-EMA20| 0,76 ATR (Grinder-Band verlassen)'
 - symbol: HEXA-B.ST
   name: Hexagon AB B (HEXA-B, Nasdaq Stockholm) — Messtechnik/Software
   direction: LONG
@@ -1774,14 +1789,17 @@ entries:
   klasse: breakout_retest
   anker: Range-Tief
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-06'
   expiry: '2026-10-19'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-06 BREAKDOWN-RETEST-SHORT: Niveau 10,42€ (20-Tage-Tief, Bruch 2026-10-05 mit Vol 7,9x). Touch 10,20-10,57€ [pullback] (Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (Kandidat 2026-10-06, Tief 10,06 -> 10,05). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR = 10,51). Stopweite entry-relativ +1,5xATR-1D (0,293 -> +0,44). TIW = 1D-Schluss ueber 10,42€. TP1 9,40€ (erste Marke unter dem 1,3-R-Boden 9,45; kein Chartniveau, 10-Jahres-Tief) 1/3 raus. TP2 8,90€ = Measured Move (Range ~1,5 abgelesen), Rest Chandelier 2,0 ATR. R:R an 10,05: TP1 1,42 / TP2 2,51. Pilot 1 %. ATR 2,9% 🟡: Short-KO Hebel <=8,2 (L2). Earnings 2026-11-12.'
+    gate: 🔴
+    text: 'nach 2026-10-06 BREAKDOWN-RETEST-SHORT: Niveau 10,42€ (20-Tage-Tief, Bruch 2026-10-05 mit Vol 7,9x). Touch 10,20-10,57€ [pullback] (Niveau -0,75/+0,50 ATR) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Retest-Kerze (Kandidat 2026-10-06, Tief 10,06 -> 10,05). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR = 10,51). Stopweite entry-relativ +1,5xATR-1D (0,293 -> +0,44). TIW = 1D-Schluss ueber 10,42€. TP1 9,40€ (erste Marke unter dem 1,3-R-Boden 9,45; kein Chartniveau, 10-Jahres-Tief) 1/3 raus. TP2 8,90€ = Measured Move (Range ~1,5 abgelesen), Rest Chandelier 2,0 ATR. R:R an 10,05: TP1 1,42 / TP2 2,51. Pilot 1 %. ATR 2,9% 🟡: Short-KO Hebel <=8,2 (L2). Earnings 2026-11-12. RE-EVAL: 1D-Schluss <9,77€ (neues 20-Tage-Tief, bd_level Digest 2026-10-19 13:32) + Vol >= 1,0x - dann Breakdown-Retest neu rechnen.'
   notes: '[NEU 2026-10-06, Pitch breakdown_short RRprox 4,96, User-Auftrag Watchlist, Linien von Claude] Chart 06.10. 12:38: 1D Stack bearish EMA 10,87/11,29/11,79/12,71, r2 0,87, RSI 32,5 < 36,9, ATR 0,293 (2,88 %). Bruch 20-T-Tief 10,42 am 05.10. (Schluss 10,06, Vol 7,9x), 10-Jahres-Tief. 06.10. Retest bis 10,28 in das Band 10,20-10,57, 4h gruen ab 10,02, RSI-4h 30,8 < 35,4. COUNTER-THESE [S0+S1]: Q2 Neugeschaeft -1 %, Schadenquote 2,0-2,1 % steigend, Prognose 74-86 Mio EUR bestaetigt (traegt Trend). FLAG: Ausloeser des 7,9x-Volumens am 05.10. NICHT gefunden (3 Suchen) - Klimax-Volumen am Mehrjahrestief kann Kapitulation sein. Verdikt traegt duenn, mittleres Aber. Kein Ex-Tag in Sicht.'
+  archived:
+    date: '2026-10-19'
+    reason: 'User-Entscheid 2026-10-19: archivieren mit Re-Eval (Verfall 2026-10-19, TIW 10,42 nur 0,15 ATR entfernt, 4h ohne bearishe Umkehr)'
 - symbol: FLUT
   name: Flutter Entertainment plc (FLUT, NYSE) - Online-Sportwetten/Gaming (FanDuel, Paddy Power, Betfair)
   direction: SHORT
@@ -2982,4 +3000,4 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-19 TREND-PULLBACK-LONG: Touch EMA200-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 207,03$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,97 -> -8,96). TIW = 1D-Schluss unter 202,87$ (EMA200-1D -0,30 ATR, Stand 2026-10-16). TP1 218,68$ (Hoch 16.10.) 1/3 raus. TP2 228,00$ (Lower High 13.10.). Rest Chandelier 2,0 ATR. R:R TP1 1,42 an 206,00. 1 %, Direktaktie 18 Stk oder KO Hebel <= 8,9. Earnings 2026-11-17 -> KO-Exit bis 2026-11-10. Non-Quanto USD.'
   notes: '[NEU 2026-10-19 ~12:05, User-Auftrag, Linien von Claude, User-Chart 1D+4h 11:50] Ersetzt die Grinder-Zeile (TIW per Schluss 16.10. gebrochen). Kontext: Chip-Abverkauf KW42 (SOX -11,4 %, AI-Finanzierungszweifel, Rotation zu Mega-Caps). Chart: 1D H 218,68 L 213,32 C 214,13, Pre 216,99; EMA20/50/100/200 225,57/222,06/215,74/204,66 bullish; RSI-1D 37,5 < Sig 54,7; ATR 5,97 (2,8 %). 4h: EMA200-4h 215,84 = Cluster mit EMA100-1D, RSI-4h 26,5 < Sig 39,4, Doppelboden ~213,0-213,3 (15./16.10.), keine bullishe Divergenz (zweites Tief mit tieferem RSI). Leg A ohne RSI-Cross (v71, Signallinie haengt nach wie bei FRA.DE). Widerstaende vor TP1: ~222 (0,33 R) und ~225,5 (0,74 R). SL A 210,04 nur ~1$ ueber Sep-Tief ~209 (Stop-Cluster). Swing-Werte am Screenshot abgelesen (+/-1$). ANKER-HINWEIS: Feld anker = EMA200-1D, damit Leg B das Gate 1/4 bekommt (Pipeline liest den Anker je Zeile, nicht je Leg); fuer Leg A sichert die Marke ueber EMA100 die Rueckeroberung. L7: Halbleiter-Block mit ASML.AS, Tech-Cluster mit ANET - 3/3 belegt.'
-updated: '2026-10-19T10:10:00+00:00'
+updated: '2026-10-19T11:55:00+00:00'
