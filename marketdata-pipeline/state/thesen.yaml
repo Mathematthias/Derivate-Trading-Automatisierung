@@ -5,15 +5,15 @@ thesen:
   titel: AI-Strom/Elektrifizierung
   verdikt: spielen
   korb_budget_pct: 4
-  crowdedness_pp: 4.58
-  re_check: '2026-10-16'
+  crowdedness_pp: -3.42
+  re_check: '2026-10-30'
   falsifikat: (a) Hyperscaler-Capex-Cut (Messtermin Q3-Calls Ende Oktober, Alphabet 2026-10-28); (b) book-to-bill < 1 (PRY 2026-10-29, ENR 2026-11-11)
   ausdruecke:
   - ETN
   - ABBN.SW
   - PWR
   - PRY.MI
-  note: 'Re-Check nicht faellig (2026-10-16). Crowdedness neu gemessen 30d je Ausdruck gegen eigenen Index (Digest 2026-10-09 22:33): ETN +2,11 / PWR +11,20 / ABBN.SW +3,81 / PRY.MI +1,20 PP, Mittel +4,58 PP (Vorwoche +4,52) -> Zone <10, Budget 4 % unveraendert. Beide Falsifikate weiter nicht messbar, erster Termin Alphabet 2026-10-28.'
+  note: 'Re-Check 2026-10-16 faellig, hier nachgeholt. Crowdedness 30d je Ausdruck gegen eigenen Index (Digest 2026-10-16 22:32): ETN -4,73 / PWR +2,20 / ABBN.SW -2,95 (gegen ^STOXX50E mangels SMI) / PRY.MI -8,19 PP, Mittel -3,42 PP (Vorwoche +4,58) -> Zone <10, Budget 4 % unveraendert. Beide Falsifikate weiter nicht messbar. Korb geschlossen unter EMA20/EMA50 (PRY.MI RSI 31,7, ETN 34,8, ABBN.SW 36,7, PWR 42,3) - nach Schritt 4c Timing- und Groessenfrage, keine Thesenfrage. Earnings-Sperre: ABBN.SW 2026-10-20, PWR/PRY.MI 2026-10-29, ETN 2026-11-03. Re-Check bewusst nach Alphabet (Z88) und Prysmian (Z91).'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -31,11 +31,15 @@ thesen:
     verdikt: spielen
     crowdedness_pp: 4.58
     source: thesen-lauf
+  - date: '2026-10-19'
+    verdikt: spielen
+    crowdedness_pp: -3.42
+    source: thesen-lauf
 - id: OEL
   titel: Oel/Hormus
   verdikt: spielen
   korb_budget_pct: 2
-  crowdedness_pp: -6.11
+  crowdedness_pp: 6.39
   re_check: '2026-10-19'
   falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
   ausdruecke:
@@ -43,7 +47,7 @@ thesen:
   - XOM
   - PSX
   - FRA.DE
-  note: 'Re-Check 2026-10-12 (Morning Check, User-Auftrag): Falsifikat intakt. Brent 105,47 USD (Digest 2026-10-12 11:32) = 19,9 % ueber 88; ueber EMA20 102,25 und EMA50 98,20. Keine Meldung zu Waffenruhe/Deeskalation USA-Iran gefunden (4 Suchen, Treffer nur Juli-Meldungen - Wochenend-Lage duenn belegt). Naechster Re-Check 2026-10-19.'
+  note: 'Zwischenstand Thesen-Lauf 2026-10-17, Re-Check NICHT faellig (2026-10-19) und unveraendert. Brent BZ=F 109,60 USD (Digest 2026-10-16 22:32) = 24,5 % ueber der Schwelle 88, ueber EMA20 103,88 und EMA50 99,52. Zur Waffenruhe-Haelfte des Falsifikats in diesem Lauf nicht gesucht - Annahme, kein Befund. Crowdedness gedreht: ENI.MI +9,62 / XOM +9,34 / PSX +6,63 / FRA.DE -0,04 PP, Mittel +6,39 PP (Vorwoche -6,11), Zone <10. XOM RSI 73,0, ENI.MI 71,3, PSX 70,7 - der Korb fuehrt jetzt statt zu folgen, relevant fuer Einstieg und Groesse, nicht fuer das Verdikt.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -57,18 +61,22 @@ thesen:
     verdikt: spielen
     crowdedness_pp: null
     source: null
+  - date: '2026-10-19'
+    verdikt: spielen
+    crowdedness_pp: 6.39
+    source: thesen-lauf
 - id: STAHL
   titel: EU-Stahl melt-and-pour
   verdikt: spielen
   korb_budget_pct: 3
-  crowdedness_pp: -7.59
+  crowdedness_pp: -8.98
   re_check: '2026-10-24'
-  falsifikat: HRC Nordeuropa unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t Stand 2026-09-28)
+  falsifikat: HRC Nordeuropa EXW (SMM-Serie) unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t Stand 2026-09-28; Basis EXW, nicht DDP - praezisiert 2026-10-17)
   ausdruecke:
   - SZG.DE
   - MT.AS
   - VOE.VI
-  note: 'Ausdruecke 2026-10-12 (User-Auftrag nach Kandidaten-Recherche): SZG.DE (HRC-Hebel hoch, UBS Buy KZ 71), MT.AS (mittel-hoch), VOE.VI (UBS Buy KZ 64; Universum per PR #25). Ausgeschlossen: TKA.DE (51 % TKMS, Ethik), SSAB bis Armox-Pruefung; Edelstahl (APAM/ACX/OUT1V) passt nicht zur HRC-These. Regulierung: VO (EU) 2026/1384 seit 2026-07-01 (Quoten -47 %, 50 % Zoll), melt-and-pour-Nachweis seit 2026-10-01; HRC NW-Europa 740-750 EUR/t (SMM 2026-10-09). Korb 3 % RK = 150 EUR je Ausdruck.'
+  note: 'Zwischenstand Thesen-Lauf 2026-10-17, Re-Check NICHT faellig (2026-10-24) und unveraendert. Mechanik bestaetigt: HRC Nordwest-Europa 742 EUR/t EXW, Liefergeschaefte 750-760 EUR/t DDP (SMM/metal.com 2026-10-12, Abruf 2026-10-17), Q4-Kontingente der nordeuropaeischen Werke ausverkauft, Kaeuferlager geleert, Importquoten knapp. Aktien dagegen: SZG.DE -12,61 %, MT.AS -13,34 %, VOE.VI -5,12 % in 30d. Crowdedness SZG.DE -12,24 / MT.AS -11,46 / VOE.VI -3,24 PP, Mittel -8,98 PP (Vorwoche -7,59), Zone <10, Budget 3 % unveraendert. PRAEZISIERUNG des Falsifikats: es nannte keine Preisbasis; mit 742 EXW waere es heute knapp erfuellt, mit 750-760 DDP klar nicht. Referenz 745 stammt aus der SMM-EXW-Serie, also gilt EXW. Schwelle und Messtermin (Z90, 2026-11-12) unveraendert.'
   historie:
   - date: '2026-10-12'
     verdikt: spielen
@@ -78,6 +86,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: null
     source: null
+  - date: '2026-10-19'
+    verdikt: spielen
+    crowdedness_pp: -8.98
+    source: thesen-lauf
 - id: N2
   titel: UK-Ersterwerber (N-2)
   verdikt: beobachten
@@ -131,4 +143,18 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
-updated: '2026-10-16T05:41:00+00:00'
+- id: N6
+  titel: Seltene Erden - Ablauf der Aussetzung 2026-11-10
+  verdikt: beobachten
+  re_check: '2026-11-06'
+  crowdedness_pp: -18.93
+  korb_budget_pct: 0
+  falsifikat: China verlaengert die Aussetzung von Announcement 61 vor dem 2026-11-10, ODER MOFCOM bestaetigt itemisiert, dass die SE-Exportkontrollen in der Waffenstillstands-Verlaengerung vom 2026-09-28 bis 2027-01-10 enthalten sind -> verworfen
+  note: 'NEU, Thesen-Lauf 2026-10-17, Kandidat aus Gruppe 2 (Regulierungs-/Fristenkalender; CATALYST-CALENDAR 2026-10-17, Radar Z19). Chinas 12-monatige Aussetzung der erweiterten SE-Exportkontrollen (Announcement 61 vom 2025-10-09 inkl. extraterritorialer 0,1-%-Regel) laeuft am 2026-11-10 aus; bei Nichtverlaengerung greifen wieder Lizenzpflichten fuer Erbium, Holmium, Europium sowie Verarbeitungsanlagen und -technologie - keine Blockade, eine Genehmigungshuerde. Kausalkette: Lizenzpflicht -> Verfuegbarkeitsrisiko ausserhalb Chinas -> Preisvorteil Nicht-China-Foerderer, Kostendruck europaeische Magnet-Abnehmer. Von MP, LYC.AX, ILU.AX, IFX.DE, CON.DE, VOW3.DE ist nur MP im Universum, Crowdedness daher n=1: MP 30d -18,65 % gegen ^GSPC +0,28 % = -18,93 PP - die Stichprobe traegt die Zahl nicht. MP 40,17 USD, -56,3 % unter 52W-Hoch, Stack bearish, EMA20 45,55, EMA200 53,39, RSI 32,2 und zugleich Breakdown-Retest-Short in derselben Pipeline: Long gegen aktiven Daily-Abwaertstrend = hartes Veto
+    #1, deshalb beobachten und Budget 0. Re-Check 2026-11-06 nach MP-Q3 (2026-11-05) und vier Tage vor dem Ereignis. RADAR-KONFLIKT: Z19 datiert dasselbe Ereignis auf 2027-01-10 (Korrektur 2026-09-28, confidence MITTEL, itemisierte Bestaetigung fehlte schon damals); Oktober-Berichterstattung (FXStreet 2026-10-14 u. a., Abruf 2026-10-17) nennt geschlossen 2026-11-10 und trennt die Handelswaffenstillstands-Verlaengerung bis 2027-01-10 von den SE-Kontrollen. Datum in diesem Lauf NICHT geaendert - Pruefung gegen MOFCOM-Primaerquelle gehoert in die Termin-Radar-Pflege am Montag.'
+  historie:
+  - date: '2026-10-19'
+    verdikt: beobachten
+    crowdedness_pp: -18.93
+    source: thesen-lauf
+updated: '2026-10-19T05:40:55+00:00'
