@@ -13,7 +13,7 @@ thesen:
   - ABBN.SW
   - PWR
   - PRY.MI
-  note: 'Re-Check 2026-10-16 faellig, hier nachgeholt. Crowdedness 30d je Ausdruck gegen eigenen Index (Digest 2026-10-16 22:32): ETN -4,73 / PWR +2,20 / ABBN.SW -2,95 (gegen ^STOXX50E mangels SMI) / PRY.MI -8,19 PP, Mittel -3,42 PP (Vorwoche +4,58) -> Zone <10, Budget 4 % unveraendert. Beide Falsifikate weiter nicht messbar. Korb geschlossen unter EMA20/EMA50 (PRY.MI RSI 31,7, ETN 34,8, ABBN.SW 36,7, PWR 42,3) - nach Schritt 4c Timing- und Groessenfrage, keine Thesenfrage. Earnings-Sperre: ABBN.SW 2026-10-20, PWR/PRY.MI 2026-10-29, ETN 2026-11-03. Re-Check bewusst nach Alphabet (Z88) und Prysmian (Z91).'
+  note: 'KOPPLUNG 2026-10-19: Falsifikat (a) gilt auch fuer These TECH - tritt es ein, schliessen beide Koerbe gemeinsam (ein Faktor AI-Capex, L7). || Re-Check 2026-10-16 faellig, hier nachgeholt. Crowdedness 30d je Ausdruck gegen eigenen Index (Digest 2026-10-16 22:32): ETN -4,73 / PWR +2,20 / ABBN.SW -2,95 (gegen ^STOXX50E mangels SMI) / PRY.MI -8,19 PP, Mittel -3,42 PP (Vorwoche +4,58) -> Zone <10, Budget 4 % unveraendert. Beide Falsifikate weiter nicht messbar. Korb geschlossen unter EMA20/EMA50 (PRY.MI RSI 31,7, ETN 34,8, ABBN.SW 36,7, PWR 42,3) - nach Schritt 4c Timing- und Groessenfrage, keine Thesenfrage. Earnings-Sperre: ABBN.SW 2026-10-20, PWR/PRY.MI 2026-10-29, ETN 2026-11-03. Re-Check bewusst nach Alphabet (Z88) und Prysmian (Z91).'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -157,4 +157,20 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: -18.93
     source: thesen-lauf
-updated: '2026-10-19T08:14:24+00:00'
+- id: TECH
+  titel: AI-Ruecksetzer Qualitaet (Halbleiter/Mega-Caps)
+  verdikt: spielen
+  korb_budget_pct: 3
+  crowdedness_pp: 1.66
+  re_check: '2026-10-30'
+  falsifikat: (a) Hyperscaler-Capex-Cut in den Q3-Calls (META 2026-10-21, GOOGL/MSFT 2026-10-28, AMZN 2026-10-29) - gekoppelt mit These A, beide Koerbe schliessen gemeinsam; (b) ^IXIC-Schluss unter EMA200 (~25.118 = 26.140,03 / 1,0407, Stand 2026-10-16)
+  ausdruecke:
+  - ASML.AS
+  - NVDA
+  note: 'NEU 2026-10-19 (Chat, User-Auftrag "Korb bauen"). Kern: Abverkauf KW42 ist Positionierung/Rotation (Goldman: taktische Rotation aus kleineren AI-Werten in Mega-Caps), kein Bruch der Fundamentaldaten bei Qualitaetswerten mit eigener Bilanz; Nasdaq-Stack bullisch, 4,1 % ueber EMA200. Treiber der Woche 2026-10-12..16: AI-Finanzierungszweifel (Gartner >3,5 Bio. USD Impairment-Risiko bis 2030, CoreWeave -25 %, Neoclouds Ø -22 %), Broadcom-CEO-Kommentar, CXMT-Speicher-Meldung, SOX -11,4 % (8 Verlusttage in Folge), CPI 3,7 %, 10J 5,10 %, Fed-Hike-Wahrscheinlichkeit 89 % bis Dez, WTI > 100 USD (Quellen: portfolio-terminal.com, fool.com, 247wallst.com, Abruf 2026-10-19). Software bewusst NICHT im Korb: dort sitzt der aktuelle Verkaufsdruck (IGV -4 % vs QQQ -1,35 % am 16.10.). Ausdruecke als trend_pullback-Zeilen (Geometrie) mit Treiber-Verweis, KEINE Limit-Ausnahme der Korb-Klasse: der datierte Termin (Calls) ist zweiseitiges Risiko, nur Einstieg nach 4h-Bestaetigung. Je Ausdruck 150 EUR Risk. Crowdedness 30d: NVDA -2,38 vs ^IXIC -1,05 = -1,33 PP; ASML.AS +3,31 vs ^STOXX50E -1,33 = +4,64 PP; Mittel +1,66 PP. Dritter Platz erst nach ANET-Exit (Tech-Deckel 3/3): GOOGL/AMZN mit Aktivierung ab 2026-10-30 oder Software-Direktaktie (NET) 1 %.'
+  historie:
+  - date: '2026-10-19'
+    verdikt: spielen
+    crowdedness_pp: 1.66
+    source: chat
+updated: '2026-10-19T10:20:00+00:00'
