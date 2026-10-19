@@ -196,7 +196,7 @@ def _de_zahl(s: str) -> Optional[float]:
 # Dieselbe Grammatik wie skill/tiw_rel.py. Das Level loest der Morning Check mit
 # den Universe-Werten auf (EMA/ATR, am laufenden Balken zurueckgerechnet).
 _TIW_REL_META_RE = re.compile(
-    r"TIW[^.]{0,40}?(?P<dir>unter|ueber|über)\s*(?P<anker>EMA\s?(?:20|50|100|200))(?:-1D)?"
+    r"TIW[^.]{0,40}?(?P<dir>unter|ueber|über)\s*(?P<anker>EMA\s?(?:200|100|50|20))(?:-1D)?"
     r"(?:\s*(?P<sign>[+\-−–])\s*(?P<off>\d+(?:,\d+)?)\s*(?:x\s*)?ATR(?:-1D|-14)?)?",
     re.IGNORECASE)
 
