@@ -25,6 +25,8 @@ GAMECHANGER-EU/US und INSIDER-US bleiben separate, lazy nachziehbare Files.
 
 from __future__ import annotations
 
+from sektor_linse import sektor_linse
+
 import json
 from datetime import date, datetime
 from typing import Any, Optional
@@ -63,6 +65,7 @@ SCHEMA_FIELDS: tuple[str, ...] = (
     "grinders_meta",
     "exdiv_radar",
     "state",           # v4 (2026-10-04): Watchlist-Meta / Radar / Thesen aus state/*.yaml
+    "sektor_linse",    # 2026-10-19: Cluster-Messung (nur Messung, kein Gate) — sektor_linse.py
 )
 
 # Ex-Tag-Radar (2026-10-04): wie weit voraus ein geschätzter Ex-Tag auf einer
@@ -754,6 +757,10 @@ def build_briefing_digest(
                                     buckets_raw, today),
         # v4: Repo-Zustand (nur gesetzt, wenn WATCHLIST_SOURCE=yaml)
         "state": state or {},
+        # 2026-10-19: Sektor-Linse — reine Messung je Cluster (Halbleiter,
+        # Software, Mega-Caps, AI-Netz/HW) gegen den Nasdaq. Kein Gate, keine
+        # Pitches; Auswertung erst bei n >= 20 Signaltagen (L24).
+        "sektor_linse": sektor_linse(universe),
     }
     _assert_schema(digest)
     return json.dumps(digest, ensure_ascii=False, separators=(",", ":"))
