@@ -393,7 +393,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'ARCHIVIERT 2026-09-14 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >71,50€ + Vol >Avg-20d. [Sp. Trigger-Historie]'
+    text: 'ARCHIVIERT 2026-09-14 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >74,10€ (Sep-Hoch, abgelesen) + Vol >Avg-20d. [2026-10-19: Re-Eval 71,50 ausgeloest, neu gerechnet: Stop-Buy 71,70 / SL 69,40 / TP1 74 = 1,0 R -> keine Zeile, Schwelle angehoben (User)] [Sp. Trigger-Historie]'
   - label: B
     gate: 🔴
     text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
@@ -2063,16 +2063,19 @@ entries:
   klasse: thesen_korb
   anker: EMA20-1D / Sept-Tiefs
   treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-12)
-  status: aktiv
+  status: archiviert
   added: '2026-09-29'
   expiry: '2026-10-20'
   legs:
   - label: B
-    gate: 🟡
-    text: 'nach 2026-10-05 KORB-OEL BREAKOUT-LONG (Korb 3/4, alternativ zu A): Kurs 277,60-284,00$ [breakout] (Stop-Buy ueber ATH 277,12). Stopweite entry-relativ -1,5xATR-1D (8,75 -> -13,12). TIW = 1D-Schluss unter 268,00$. TP1 305,70$ = Measured Move Range 248,51-277,12 (1/3 raus, Exit-Test v49). Rest 2/3 Chandelier 2,0 ATR. R:R TP1 2,14. Korb-Anteil 75 EUR Risk. KO Hebel <=3. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-05 KORB-OEL BREAKOUT-LONG (Korb 3/4, alternativ zu A): Kurs 277,60-284,00$ [breakout] (Stop-Buy ueber ATH 277,12). Stopweite entry-relativ -1,5xATR-1D (8,75 -> -13,12). TIW = 1D-Schluss unter 268,00$. TP1 305,70$ = Measured Move Range 248,51-277,12 (1/3 raus, Exit-Test v49). Rest 2/3 Chandelier 2,0 ATR. R:R TP1 2,14. Korb-Anteil 75 EUR Risk. KO Hebel <=3. Non-Quanto USD. RE-EVAL: 1D-Schluss <284,00$ (Ruecklauf in die alte Ausbruchszone 277,60-284,00) - nach Earnings 2026-10-28 neu rechnen (Weg A).'
   notes: '[LEG A ENTFERNT 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren"] Pullback-Zone 250-257 lag 2,87 ATR unter Kurs 281,60. Eine EMA20-Variante (260,2-264,5) laege weiter 2,0 ATR entfernt und waere nach dem Ausbruch ueber das ATH ein Rueckfall unter Leg-B-TIW 268. Nur ein Leg wird gefuellt, Leg B (Breakout) traegt die Zeile. Hinweis Morning Check: Ext 2,25 ATR + RSI-1D 74,7 = L22(d), Korb-Anteil 75 EUR -> KO unter 400 EUR (L2), nur Direktaktie. || [KORB OEL 2026-10-05, User-Entscheid: Budget 2 % RK auf 4 Ausdruecke = 75 EUR je Wert, Linien von Claude (User: keine Charts). Swing-Marken aus Yahoo-Wochenkursen 2026-03..10, EMAs/ATR aus Digest 15:02] NEU GEFASST: alte EMA50-Zone (241) 2,7 ATR unter Kurs, TP1 262 lag unter dem Kurs. Leg A Pullback 250-257 (L25: OG SL 243,38 -> 1,39 R, UG SL 236,88 -> 1,98 R); Leg B Breakout ueber ATH 277,12 (SL 264,48, TP1 MM 305,70 = 2,14 R). Nur EIN Leg wird gefuellt. Verfall 10-20 wegen Earnings 2026-10-28. || [NEU 2026-09-29, Pitch long_trend_pullback
     RRprox 1,84, Recherche S0+S1, Linien von Claude (User-Auftrag)] Trend +60% seit Juli (170 -> ATH 276 am 18.09.), jetzt 251,96 knapp unter EMA20-1D 255,05, RSI-1D 50 fallend, RSI-4h 42,8 < 46,9. Einstieg an der EMA50 statt hier. TIW 234 = unter Swing-Tief Ende Aug (~236). L25: Zonen-OG 242,10 -> SL 229,67 (ATR), UG 237,12 -> SL 224,69. TP1 262 = Sept-Konsolidierung, TP2 276 = ATH. PRO: Diesel-Margen hoch, UBS ueber Rekordhoch, positiver Ausblick vor Q3 (~2026-10-28). Oelpreis-Rueckgang kein Gegensignal (Input-Kosten). KORB: Kandidat K-1 Raffinerie-Engp'
   journal_row: 119
+  archived:
+    date: '2026-10-19'
+    reason: 'Zone ueberlaufen (Kurs 293,17, TP1 305,70 am Kurs 0,95 R), Earnings 2026-10-28 sperren ab 2026-10-21; Weg A (User 2026-10-19): Post-Earnings-Setup ab 2026-10-29'
 - symbol: FRA.DE
   name: Fraport AG (FRA, XETRA) — Flughafenbetreiber
   direction: SHORT
@@ -3000,4 +3003,63 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-19 TREND-PULLBACK-LONG: Touch EMA200-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 207,03$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,97 -> -8,96). TIW = 1D-Schluss unter 202,87$ (EMA200-1D -0,30 ATR, Stand 2026-10-16). TP1 218,68$ (Hoch 16.10.) 1/3 raus. TP2 228,00$ (Lower High 13.10.). Rest Chandelier 2,0 ATR. R:R TP1 1,42 an 206,00. 1 %, Direktaktie 18 Stk oder KO Hebel <= 8,9. Earnings 2026-11-17 -> KO-Exit bis 2026-11-10. Non-Quanto USD.'
   notes: '[NEU 2026-10-19 ~12:05, User-Auftrag, Linien von Claude, User-Chart 1D+4h 11:50] Ersetzt die Grinder-Zeile (TIW per Schluss 16.10. gebrochen). Kontext: Chip-Abverkauf KW42 (SOX -11,4 %, AI-Finanzierungszweifel, Rotation zu Mega-Caps). Chart: 1D H 218,68 L 213,32 C 214,13, Pre 216,99; EMA20/50/100/200 225,57/222,06/215,74/204,66 bullish; RSI-1D 37,5 < Sig 54,7; ATR 5,97 (2,8 %). 4h: EMA200-4h 215,84 = Cluster mit EMA100-1D, RSI-4h 26,5 < Sig 39,4, Doppelboden ~213,0-213,3 (15./16.10.), keine bullishe Divergenz (zweites Tief mit tieferem RSI). Leg A ohne RSI-Cross (v71, Signallinie haengt nach wie bei FRA.DE). Widerstaende vor TP1: ~222 (0,33 R) und ~225,5 (0,74 R). SL A 210,04 nur ~1$ ueber Sep-Tief ~209 (Stop-Cluster). Swing-Werte am Screenshot abgelesen (+/-1$). ANKER-HINWEIS: Feld anker = EMA200-1D, damit Leg B das Gate 1/4 bekommt (Pipeline liest den Anker je Zeile, nicht je Leg); fuer Leg A sichert die Marke ueber EMA100 die Rueckeroberung. L7: Halbleiter-Block mit ASML.AS, Tech-Cluster mit ANET - 3/3 belegt.'
-updated: '2026-10-19T11:55:00+00:00'
+- symbol: VOD.L
+  name: Vodafone Group plc (VOD, LSE) — Telekommunikation
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-19'
+  expiry: '2026-11-06'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-19 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,0296 -> -0,0444). TIW = 1D-Schluss unter 1,1600 (Okt-Tief, abgelesen). TP1 1,2650 (Lower High Okt, abgelesen) 1/3 raus. TP2 1,3150 (Sep-Hoch). Rest Chandelier 2,0 ATR. R:R TP1 1,58 an 1,1950. 1 %, Direktaktie ~2.840 Stk oder KO. Earnings 2026-11-10. Preise in GBP (Digest), Chart in GBX.'
+  notes: '[NEU 2026-10-19 ~14:30, Re-Eval VOD.L (>1,1861) ausgeloest, User-Chart 1D+4h 13:55, User-Auftrag "VOD anlegen"] Digest 13:32: Kurs 1,2065, EMA20/50/100/200 1,224/1,218/1,187/1,125 bullish, Kurs ueber 2/4 = Gate EMA100 erfuellt, Zone 1,1814-1,1991, Kurs 0,23 ATR darueber. ATR 0,0296 (2,5 %). 4h: Bearish Engulfing (09-13), RSI-4h 48,5 > Sig 42,7. Chartniveaus abgelesen: Okt-Tief ~116 GBX, Lower High ~126,5, Sep-Hoch ~131,5. Earnings 2026-11-10.'
+- symbol: AMGN
+  name: Amgen Inc. (AMGN, NASDAQ) — Biotech
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 428,05 (20-Tage-Hoch)
+  treiber: ''
+  status: aktiv
+  added: '2026-10-19'
+  expiry: '2026-10-26'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-19 BREAKOUT-RETEST-LONG (Retest tief): Niveau 428,05$ (20-Tage-Hoch, Ausbruch Vol 1,51x). Touch 422,72-426,23$ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 426,23$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 419,52). Stopweite entry-relativ -1,5xATR-1D (10,66 -> -15,99). TIW = 1D-Schluss unter 422,72$. TP1 447,02$ (52W-Hoch Sep, Digest) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,38 an 425,00. Pilot 1 %. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27. Non-Quanto USD.'
+  notes: '[NEU 2026-10-19, Pitch breakout_long RRprox 4,32, User-Auftrag "umsetzen", User-Chart 13:39] Digest 13:32: Kurs 432,49 (Fr), EMA20/50/100/200 414,87/406,98/392,86/371,96 bullish, RSI 62,5, 30d +13,9 % (knapp unter Reife 15), ATR 10,66 (2,5 %). Am Kurs TP1 447,02 nur 0,88 R -> nur Retest tief. Treiber fuer den Gap 14./15.10. nicht gefunden (Recherche 2026-10-19 ohne datierten Befund). L7: Pharma-Long mit ABBV. Expiry 2026-10-26 wegen Earnings-Sperre ab 2026-10-27.'
+- symbol: BNR.DE
+  name: Brenntag SE (BNR, XETRA) — Chemiedistribution
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 64,90 (20-Tage-Hoch)
+  treiber: ''
+  status: aktiv
+  added: '2026-10-19'
+  expiry: '2026-11-06'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-19 BREAKOUT-RETEST-LONG (Retest tief): Niveau 64,90€ (20-Tage-Hoch, Ausbruch Vol 1,09x = Daempfer). Touch 64,30-64,53€ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 64,53€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 63,94). Stopweite entry-relativ -1,5xATR-1D (1,194 -> -1,79). TIW = 1D-Schluss unter 64,30€. TP1 66,86€ (52W-Hoch Aug, Digest) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,37 an 64,40. Pilot 1 % (Vol-Daempfer). Earnings 2026-11-11.'
+  notes: '[NEU 2026-10-19, Pitch breakout_long RRprox 4,09, User-Auftrag "umsetzen", User-Chart 13:38] Digest 13:32: Kurs 64,74, EMA20/50/100/200 62,09/61,05/59,82/58,09 bullish, RSI 68,8, Extension 2,22 ATR (am Entry 64,40: 1,93), r2 0,77, ATR 1,194 (1,8 %). 4h: RSI 70,4 kreuzt unter Sig 73,4 -> Ruecksetzer plausibel. Recherche ohne Befund (nur Distributionsabkommen Almatis LatAm laut TV, ~2026-10-16).'
+- symbol: HLMA.L
+  name: Halma plc (HLMA, LSE) — Sicherheits-/Umwelt-/Medizintechnik
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Breakdown-Niveau 34,22
+  treiber: ''
+  status: archiviert
+  added: '2026-10-19'
+  expiry: '2026-10-19'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-19 - kein Watchlist-Setup: Breakdown 34,22 (Vol 1,96x), aber TP1 am 52W-Tief 32,60 nur 0,88 R (Stop-Sell 33,80, SL 35,16). RE-EVAL: 1D-Schluss <32,60 (52W-Tief) + Vol >= 1,0x.'
+  notes: '[2026-10-19, Pitch breakdown_short RRprox 4,51, User-Auftrag "umsetzen" -> Re-Eval statt Zeile] Digest 13:32: Kurs 34,06 GBP, Stack bearish, ATR 0,905, 4h Hammer (gegen Short). Recherche: CEO Ronchetti verkaufte 47.000 Aktien @ 38,13 GBP am 2026-08-07 (HL); -15 % am 2026-06-12 nach Photonik-Abkuehlung (ii); Ursache des 15.10.-Breakdowns nicht gefunden.'
+  archived:
+    date: '2026-10-19'
+    reason: Pitch ohne tragfaehiges TP1 (0,88 R) - nur Re-Eval
+updated: '2026-10-19T12:35:00+00:00'

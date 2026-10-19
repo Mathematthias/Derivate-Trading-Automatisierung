@@ -649,4 +649,13 @@ rows:
   id: Z97
   status: offen
   added: '2026-10-19'
-updated: '2026-10-19T08:14:24+00:00'
+- date: '2026-10-29'
+  kat: 5
+  ereignis: 'Phillips 66 Q3-2026-Zahlen (2026-10-28) -> am Folgetag Post-Earnings-Setup PSX neu rechnen (Weg A Raffinerien, User 2026-10-19): Trend-Pullback EMA20/EMA50 mit Treiber These OEL, Sell-the-News-Risiko ausdruecklich pruefen'
+  werte: PSX; VLO, MPC (sobald im Universum, PR Weg B)
+  wirkung: 'Raffinerie-Margen (Diesel-Crack >90 USD/bbl seit Aug) vs. Erwartung: Reaktion auf Rekordzahlen entscheidet, ob der Trend Traeger behaelt oder die Story eingepreist ist'
+  quelle: Earnings-Termin PSX aus Digest (earn_next 2026-10-28); Diesel-Crack RBN Energy 2026-08-27, Abruf 2026-10-19
+  id: Z98
+  status: offen
+  added: '2026-10-19'
+updated: '2026-10-19T12:35:00+00:00'
