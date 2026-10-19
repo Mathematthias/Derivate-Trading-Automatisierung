@@ -2948,4 +2948,18 @@ entries:
     belastbare RSI-Divergenz. 4h: Kerze 09-13 gruen ueber EMA20-4h 346,11/EMA200-4h 345,57, RSI-4h 52,69 > Sig 43,25 = Bestaetigung; Huerde EMA50/100-4h 349,62/350,94 + EMA20-1D = Cluster 349,6-351 direkt vor TP1. Volumen 111,6K vs Avg-30d 360K = Anstieg ohne Volumen. Finanzierungs-Drag ~3 EUR (Schaetzung), Deckel 14 EUR. Earnings 2026-11-03 -> KO-Exit spaetestens 2026-10-27. || [ENTRY #103 2026-10-02: 110 x 6,75, Fill-U ~341,65 geschaetzt, Details im Detail-Sheet] || [NEU GEFASST 2026-10-02, Linien von Claude (User-Auftrag), Charts 1D+4h 14:00] Alte These (EMA50, TIW 343) per Schluss 01.10. 342,01 widerlegt. Neu: Pullback an EMA100 339,02 nach Tief ~342; 4h 09-13 Bullish-Engulfing + RSI-4h-Cross frisch (40,1>38,4). Faecher 2/4 = Grenzfall -> 1%. Ziele: 353 = EMA20-1D/4h-Cluster EMA50/100, 369 = Sept-Hoch. R:R TP1 0,46-1,11 (TP1 ist reine BE-Stufe), Runner 1,60-2,39. Kurs 346,35 am oberen Zonenrand. || [NEU GEFASST 2026-09-14, User-Charts 1D+4h 12:21 UTC] DREI AENDERU'
   journal_row: 64
   trade_nr: '103'
-updated: '2026-10-19T08:14:24+00:00'
+- symbol: ASML.AS
+  name: ASML Holding NV (ASML, Euronext Amsterdam) — Halbleiter-Ausruestung/Lithografie
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-19'
+  expiry: '2026-11-06'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-19 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (51,38 -> -77,07). TIW = 1D-Schluss unter EMA100-1D -0,30 ATR. TP1 1620,00€ (Lower High 09.10., abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 1668,00€ (Okt-Hoch). Rest Chandelier 2,0 ATR. R:R TP1 1,53 an 1502,00. 1 %, ATR 3,4 % gelb: Direktaktie 2 Stk oder KO Hebel <= 7. Earnings vorbei (2026-10-14).'
+  notes: '[NEU 2026-10-19 ~12:00, User-Auftrag, Linien von Claude (Variante A), User-Chart 1D+4h 11:45] Kontext: Tech-/Chip-Abverkauf KW42 (SOX -11,4 % Woche, AI-Finanzierungszweifel, Rotation zu Mega-Caps; Recherche 2026-10-19). Chart 11:45: 1D O 1485,0 H 1500,6 L 1480,0 C 1496,4 (+1,30 %), EMA20/50/100/200 1537,5/1522,7/1481,8/1360,8 bullish, RSI-1D 44,7 < Sig 56,7, ATR 51,38 (3,4 %). 4h: Kerze 09-13 laeuft gruen (Schluss oberes Fuenftel), Vor-Kerze Schluss 1473,4; RSI-4h 41,35 > Sig 34,93 (Cross erfolgt), keine Divergenz (Tief 15.10. ~1420 mit tieferem RSI). Faecher 2/4 = Gate EMA100 erfuellt. SL-Rechnung an Marke 1502: MIN(1424,9 ; 1451,0) = 1424,9, R 77,1. ACHTUNG: SL ~5 EUR ueber Okt-Tief ~1420 (Stop-Cluster); Alternative SL 1410 ergibt TP1 1,28 R < 1,3. TP1 1620 und Okt-Tief 1420 nur am Screenshot abgelesen. 7/7 = 5/7 (Event: META-Call 2026-10-21 als Sektor-Messpunkt; Korrelation ANET + These A AI-Capex). L7: Halbleiter-Block mit NVDA, Tech-Cluster mit ANET - max. drei, Summe <= 7 % RK.'
+updated: '2026-10-19T10:00:00+00:00'
