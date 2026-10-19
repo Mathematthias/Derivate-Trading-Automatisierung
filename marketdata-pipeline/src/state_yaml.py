@@ -329,6 +329,20 @@ def _find_entry(block: dict, symbol: str) -> Optional[dict]:
     return None
 
 
+def _find_active_entry(block: dict, symbol: str) -> Optional[dict]:
+    """Wie _find_entry, aber nur Zeilen mit status 'aktiv' (Archiv-Zwillinge ignorieren)."""
+    for e in block.get("entries", []) or []:
+        if str(e.get("symbol", "")).upper() == symbol.upper() and e.get("status") == "aktiv":
+            return e
+    return None
+
+
+def _de_num(x: float) -> str:
+    """Zahl im Trigger-Format der Watchlist: Komma, 2 Nachkommastellen (4 unter 10)."""
+    nd = 4 if abs(x) < 10 else 2
+    return f"{x:.{nd}f}".replace(".", ",")
+
+
 def _next_radar_id(block: dict) -> str:
     nums = []
     for r in block.get("rows", []) or []:
@@ -361,6 +375,38 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                 if status == "archiviert":
                     e["archived"] = {"date": today.isoformat(), "reason": a.get("reason", "")}
                 log.append(f"watchlist {a['symbol']}: status -> {status}")
+
+            elif op == "watchlist.archive_reeval":
+                # 2026-10-19 (Dauerregel User): TIW per Schluss gebrochen ODER Halbzeit-Drift
+                # >= 2 ATR -> sofort archivieren, mit maschinenlesbarem RE-EVAL. Idempotent:
+                # ohne aktive Zeile wird die Aktion uebersprungen, nicht verworfen (der Morning
+                # Check kann dieselbe Aktion mehrfach schreiben, bevor inbox_apply laeuft).
+                sym = str(a["symbol"])
+                e = _find_active_entry(wl, sym)
+                if e is None:
+                    log.append(f"watchlist {sym}: archive_reeval uebersprungen (keine aktive Zeile)")
+                    continue
+                re_op, re_lvl = str(a["reeval_op"]), float(a["reeval_level"])
+                if re_op not in ("<", ">"):
+                    raise InboxError(f"reeval_op {re_op!r} nicht < oder >")
+                reeval = f"RE-EVAL: 1D-Schluss {re_op}{_de_num(re_lvl)}"
+                if a.get("reeval_note"):
+                    reeval += f" ({a['reeval_note']})"
+                reeval += " - dann neu rechnen."
+                legs = e.get("legs", []) or []
+                ziel = [l for l in legs if not a.get("leg")
+                        or str(l.get("label", "")).upper() == str(a["leg"]).upper()]
+                if not ziel:
+                    raise InboxError(f"Leg {a.get('leg')} fehlt bei {sym}")
+                for l in ziel:
+                    l["gate"] = "🔴"
+                    l["text"] = (str(l.get("text") or "").rstrip() + " " + reeval).strip()
+                if all(str(l.get("gate")) == "🔴" for l in legs):
+                    e["status"] = "archiviert"
+                    e["archived"] = {"date": today.isoformat(), "reason": a.get("reason", "")}
+                    log.append(f"watchlist {sym}: archiviert ({a.get('reason', '')}), {reeval}")
+                else:
+                    log.append(f"watchlist {sym} Leg {a.get('leg')}: gate -> 🔴, {reeval}")
 
             elif op == "watchlist.set_gate":
                 e = _find_entry(wl, a["symbol"])
