@@ -1148,6 +1148,26 @@ def _rr_proxy(
         else:
             ziel = snap.low_20d - range_hoehe
             reward = snap.price - ziel
+        # 🆕 2026-10-19 — 52W-KAPPE NUR FUER AELTERE HOCHS (User-Entscheid, verfeinerte
+        # Fassung). Anlass: TRV/BNZL.L/BDX/EBAY/KDP zeigten RRprox 3,97-4,82, gegen das
+        # 52W-Hoch 2,6-3,6 % ueber dem Kurs waren es 0,12-1,23 R. Gekappt wird NUR, wenn
+        # das 52W-Extrem AELTER als der Ausbruch ist (high_52w > high_20d bzw. low_52w <
+        # low_20d): dann sitzt dort echtes Angebot. Ein frisches 52W-Hoch IST der Ausbruch
+        # (high_52w == high_20d) — Blue Sky bleibt ungekappt (User-Einwand 2026-10-19).
+        # ENG (Filter) rechnet weiter am ungekappten Wert; die Kappe wirkt auf Zahl und
+        # Rangfolge, nicht als neues Ausschluss-Gate (Anti-Ratsche).
+        reward_ungekappt = reward
+        if cfg.get("cap_52w_aelter", True):
+            if direction == "long":
+                h52 = getattr(snap, "high_52w", None)
+                if h52 is not None and h52 > snap.high_20d and snap.price < h52 < ziel:
+                    reward = h52 - snap.price
+            else:
+                l52 = getattr(snap, "low_52w", None)
+                if l52 is not None and l52 < snap.low_20d and ziel < l52 < snap.price:
+                    reward = snap.price - l52
+        if reward != reward_ungekappt:
+            return reward / risk, (reward_ungekappt / risk) < cfg.get("min_rr", 1.4)
     elif direction == "long":
         if snap.high_20d is None:
             return None, False
@@ -1210,6 +1230,24 @@ def _rr_proxy(
     eng = rr < cfg.get("min_rr", 1.4)
     return rr, eng
 
+
+
+def _cap_52w_aktiv(snap: Any, direction: str, bucket: Optional[str], config: dict) -> bool:
+    """True, wenn _rr_proxy das Measured-Move-Ziel am aelteren 52W-Extrem gekappt hat."""
+    cfg = config.get("rr_proxy", {})
+    if not cfg.get("cap_52w_aelter", True):
+        return False
+    if not bucket or bucket not in tuple(cfg.get("measured_move_buckets", _RR_MEASURED_MOVE_DEFAULT)):
+        return False
+    h20, l20, p = getattr(snap, "high_20d", None), getattr(snap, "low_20d", None), getattr(snap, "price", None)
+    if h20 is None or l20 is None or p is None or h20 - l20 <= 0:
+        return False
+    rng = h20 - l20
+    if direction == "long":
+        h52 = getattr(snap, "high_52w", None)
+        return h52 is not None and h52 > h20 and p < h52 < h20 + rng
+    l52 = getattr(snap, "low_52w", None)
+    return l52 is not None and l52 < l20 and l20 - rng < l52 < p
 
 def _rr_exempt(bucket: Optional[str], config: dict) -> bool:
     """True, wenn dieser Bucket bewusst ohne ENG-Vorfilter laeuft."""
@@ -1861,6 +1899,8 @@ def build_pitches_payload(
             "rsi": round(snap.rsi14, 1) if snap.rsi14 is not None else None,
             "move30d": round(move30, 1) if move30 is not None else None,
             "rrprox": round(rr, 2),
+            # 2026-10-19: rrprox am aelteren 52W-Extrem gekappt (s. _rr_proxy)
+            "cap_52w": _cap_52w_aktiv(snap, direction, m.bucket, config),
             # Sub-Lane, damit das Briefing die beiden Trend-Bloecke trennen
             # kann, ohne die Bucket-Namen selbst zu kennen.
             "trend_sub": _trend_sub(m.bucket) if lane == "trend" else None,
