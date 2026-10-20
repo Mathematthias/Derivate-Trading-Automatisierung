@@ -658,4 +658,13 @@ rows:
   id: Z98
   status: offen
   added: '2026-10-19'
-updated: '2026-10-20T12:46:53+02:00'
+- date: '2026-10-31'
+  kat: 5
+  ereignis: EXC nach Q3-Zahlen (2026-10-30) Short-Trend-Pullback EMA20 neu rechnen (Re-Eval von Hand, Morning Check 2026-10-20)
+  werte: EXC
+  wirkung: Setup-Neubewertung
+  quelle: Morning Check 2026-10-20
+  id: Z99
+  status: offen
+  added: '2026-10-20'
+updated: '2026-10-20T12:53:08+02:00'

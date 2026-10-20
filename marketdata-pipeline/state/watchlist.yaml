@@ -511,28 +511,6 @@ entries:
   archived:
     date: '2026-09-21'
     reason: 'kein Entry-Trigger. RE-EVAL: Touch EMA20-1D +0,00/+1,00 ATR [breakout'
-- symbol: UNH
-  name: UnitedHealth Group (UNH) (ehem. Monitor)
-  direction: LONG
-  klasse: reversal
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-08-05'
-  expiry: '2026-09-09'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-09-09 - Position #88 ausgestoppt. RE-EVAL: 1D-Schluss >406,00$ + Vol >Avg-20d. Dann Breakout-Retest @ 406 fassen (Re-Eval 395 am 2026-10-14 ausgeloest und verbraucht).'
-  - label: B
-    gate: 🔴
-    text: 'ARCHIVIERT - Breakout-Leg gegenstandslos, Position #88 laeuft (Aufstocken waere kein neuer Entry). Volltext im Sheet Trigger-Historie.'
-  notes: '[RE-EVAL AUSGELOEST 2026-10-14, BEWERTET 2026-10-15, User 13:44, User-Chart 1D+4h 13:35] Schluss 395,62 > 395 nach Q3-Zahlen 2026-10-14 (EPS 4,69 $, Umsatz 112,7 Mrd $ ueber Erwartung). Keine Klasse: Stack gemischt (EMA20 379,30 < EMA100 384,36 < EMA50 385,77, EMA200 374,69), Post-Earnings-Drift = PEAD gestrichen, kein Ausbruch ueber Struktur (Spike-Hoch Ende Sept ~406, abgelesen). Neuer Re-Eval 406. Pre-Market 397,99. ATR 11,18 (2,8 %). || [RE-EVAL KORRIGIERT 2026-09-09, noch im selben Lauf] Die erste Fassung hing an "Touch EMA100-1D -0,20/+0,60 ATR" und war im Moment des Anlegens BEREITS ERFUELLT (Kurs 387,17, Zone 387,12-395,43) - eine Wiedervorlage, die sofort meldet, ist keine, sondern Laerm. Neu: 1D-Schluss ueber 395,00 $, also oberhalb des Docht-Bereichs UND der EMA100-1D 389,20. Das verlangt eine echte Stabilisierung statt des Ist-Zustands. Gefunden hat das der reeval_check selbst, eine Stunde nach seinem ersten Live-Einsatz. [ARCHIVIERT 2026-09-09] Stop-Out durch 2,74-ATR-Docht
-    auf die TPG/WellMed-Meldung. TIW 390,00 bei'
-  journal_row: 35
-  archived:
-    date: '2026-09-09'
-    reason: 'Position #88 ausgestoppt. RE-EVAL: 1D-Schluss >395,00$ + Vol >Avg-20d. Volltext Sheet Trigger-Historie.'
 - symbol: ISRG
   name: Intuitive Surgical (ISRG)
   direction: SHORT
@@ -949,24 +927,6 @@ entries:
   archived:
     date: '2026-09-21'
     reason: kein Entry-Trigger (Insider-Verkauf CEO+President 14.09.
-- symbol: FANG
-  name: Diamondback Energy (FANG, NASDAQ) — Oil & Gas Production
-  direction: LONG
-  klasse: sonstige
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-09-03'
-  expiry: '2026-09-17'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-09-17 - kein Entry-Trigger (#95). RE-EVAL: 1D-Schluss >199,50$ + Vol >Avg-20d. [Sp. Trigger-Historie]'
-  notes: '[ARCHIVIERT 2026-09-17: Trade #95 am SL geschlossen, -1,05 R. Platzierungsschock 16.09. (Oel-Erbin, 1,9 Mrd USD). Wiedereinstieg nur als neues Setup mit TIW unter Platzierungs-Tief 191,49; RE-EVAL = Rueckeroberung EMA50-1D.] || NEU GEFASST 2026-09-14 (User-Charts 1D+4h). Zone unveraendert (-0,33/+0,26 ATR an der EMA20-1D, relativ, wandert mit). GEAENDERT: TIW von 196,00 auf 198,50 (unter EMA50-1D 199,02) und Ziele von 211/217,50 auf 212,50 (Aug-Hoch) / 225,00. Das hebt R:R am Runner von 2,01 auf 2,89 an der Zonen-UG. An der Zonen-OG bleibt TP1 mit 1,03 unter dem Minimum — die Zone wird NICHT g'
-  journal_row: 67
-  archived:
-    date: '2026-09-17'
-    reason: kein Entry-Trigger (#95
 - symbol: AG1.DE
   name: AUTO1 Group SE (AG1, XETR) — Online-Gebrauchtwagen
   direction: SHORT
@@ -2364,23 +2324,6 @@ entries:
   archived:
     date: '2026-10-19'
     reason: 'Auto-Archiv: Halbzeit-Check +2.34 ATR zur Zone 70.7-71, Verfall 2026-10-21 (Dauerregel 2026-10-19)'
-- symbol: EXC
-  name: Exelon Corp (EXC, Nasdaq) — US-Versorger
-  direction: SHORT
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: Kurszielsenkungen MS 53->50 (2026-09-18), Argus 52->49 (2026-09-22)
-  status: archiviert
-  added: '2026-10-12'
-  expiry: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,20/+0,50 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D. TIW = 1D-Schluss ueber EMA20-1D +1,00 ATR. TP1 39,80$ (ueber Okt-/52W-Tief 39,73), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,67-2,13. 1% Sizing. Earnings 2026-10-30 -> KO-Exit bis 2026-10-23; Ex-Tag ca. 2026-11-10 (u) liegt danach. Non-Quanto USD. RE-EVAL: 1D-Schluss <42,86 (TIW-Rueckeroberung) - dann neu rechnen.'
-  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA 41,64/42,97/44,15/44,81 bearish, Abwaertstrend seit Juli 48 -> 39,7, Bounce an EMA20; 4h unter EMA50 41,88, RSI 58,5 steigend (Bounce laeuft noch). Gegenrede: Konsens-KZ ~48,5, defensiver Versorger mit Rechenzentren-Capex, nahe 52W-Tief; Vol 0,51x. Relative TIW zulaessig (Trend-Pullback, jenseits der Zone).'
-  archived:
-    date: '2026-10-19'
-    reason: 'TIW per 1D-Schluss gebrochen (43,50 > 42,86, 2026-10-16); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
 - symbol: DRW3.DE
   name: Draegerwerk AG & Co. KGaA Vz (DRW3, XETR) — Medizin-/Sicherheitstechnik
   direction: LONG
@@ -2622,24 +2565,6 @@ entries:
   archived:
     date: '2026-10-19'
     reason: TIW 25,62 per 1D-Schluss 2026-10-16 gebrochen (25,89); Rueckkehr heute heilt die These nicht (L23) - User 2026-10-19
-- symbol: DDOG
-  name: Datadog Inc. (DDOG, NASDAQ) — Cloud-Monitoring
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: RBC hebt Q3-Umsatzwachstumsprognose auf 34-35 % (TV Key Facts, NICHT verifiziert)
-  status: archiviert
-  added: '2026-10-13'
-  expiry: '2026-10-29'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-13 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 299,50$ (unter 52W-Hoch/Doppelhoch 300,68), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,31-2,00. 1% Sizing (Reife 30d +23 %). Earnings 2026-11-05 -> KO-Exit bis 2026-10-29. Non-Quanto USD. RE-EVAL: 1D-Schluss >250,04 (TIW-Rueckeroberung) - dann neu rechnen.'
-  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, Linien von Claude, User-Chart 17:30] Chart: C 282,79 (-1,6 %), Abweisung am 52W-Hoch 300,68 am 10.10., EMA20/50/100/200-1D 267,22/252,87/235,87/208,10, r2 0,86, Trend20 +25 %, RSI-1D 64,0 < 67,7, RSI-4h 60,4 < 66,3, ATR 11,86 = 4,2 % (Hebel <=6 oder Direktaktie). Rechnung 13.10.: SL im ganzen Band = TIW-Term 245,75 (EMA50 252,87 - 0,30 ATR - 0,30 ATR); 2,00 R an UG 263,66, 1,50 R an EMA20, Entry-Grenze 269,12 (1,3 R). 7 Stk Direktaktie bei 1 %. GEGENREDE: Doppelhoch Aug/Okt ~300, Reife. Tech-Cluster mit ANET #13 (Platz 1), CSCO/PANW/ZS konkurrieren um Platz 2/3 (L7). [NEU 2026-10-13, User: auf die Watchlist] Nur Re-Eval, Exit-Test am Niveau gescheitert. || VORGAENGER-LEG: BEOBACHTUNG (Pitch 2026-10-13) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >300,68$ + Vol >Avg-20d. Am Ausbruchsniveau 285,68 ist das 52W-Hoch 300,68 erstes Hindernis (0,59 R); Reife 30d +29,9 %. Earnings 2026-11-05.'
-  trade_nr: null
-  archived:
-    date: '2026-10-19'
-    reason: 'TIW per 1D-Schluss gebrochen (247,11 < 250,04, 2026-10-16); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
 - symbol: CSCO
   name: Cisco Systems Inc. (CSCO, NASDAQ) — Netzwerktechnik
   direction: LONG
@@ -3211,4 +3136,66 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-20 - Pitch breakdown_short, kein Setup: 52W-Tief ~10,13 liegt nur 1,09 R unter dem Entry, TP1 < 1,3 R. RE-EVAL: 1D-Schluss <10,13 (52W-Tief, mit Vol >=1,0x) - dann Breakdown-Retest neu rechnen.'
   added: '2026-10-20'
-updated: '2026-10-20T12:46:53+02:00'
+- symbol: UNH
+  name: UnitedHealth Group (UNH, NYSE) - Managed Health Care
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 406,00 (Re-Eval-Marke)
+  treiber: Q3 2026 beat + EPS-Guidance 2026 angehoben (TradingView Key facts, 2026-10-20)
+  status: aktiv
+  expiry: '2026-10-30'
+  notes: '[NEU 2026-10-20, Re-Eval 406 ausgeloest (Schluss 2026-10-19 406,88), User: anlegen, Chart 1D+4h 12:50] Ausbruch 20-Tage-Hoch 399,88 vor 2 HT mit Vol 1,79x; Stack 1D neutral (EMA 385,97/387,95/385,56/375,58), RSI 65,8, ATR 11,87 (2,9 %). 4h: Earnings-Spike 14.10. bis ~413, seitdem Range 400-413. TP1 428 unter der Aug-Konsolidierung ~430 (abgelesen), TP2 445 Aug-Hoch (abgelesen). Rechnung: an 404,00 SL 386,20, R 17,80, TP1 1,35 R / TP2 2,30 R; an 400,07 = 1,57/2,52 R. Ueber 404,86 kein Entry (TP1 < 1,3 R) - Kurs 406,88 steht darueber, also bei Touch. 1 % = 9 Stk, E@h5 ~650 EUR. GEGENREDE: Stack neutral, TP1/TP2 nur abgelesen, Retest der 406 steht aus. Ersetzt die Archivzeile Trade #88 (Historie im Journal-Blatt Watchlist-Archiv).'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-20 BREAKOUT-RETEST-LONG: Niveau 406,00$ (Re-Eval-Marke, Ausbruch 20-Tage-Hoch 399,88 vor 2 HT, Vol 1,79x). Touch 400,07-404,86$ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 404,86$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 396,51). Stopweite entry-relativ -1,5xATR-1D (11,87 -> -17,80). TIW = 1D-Schluss unter 400,07$. TP1 428,00$ (unter Aug-Konsolidierung ~430, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 445,00$ (Aug-Hoch, abgelesen). Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,57. Pilot 1 %. ATR 2,9 % gelb: KO Hebel <= 8,6 oder Direktaktie 9 Stk. Earnings 2027-01-12. Non-Quanto USD.'
+  added: '2026-10-20'
+- symbol: DDOG
+  name: Datadog Inc. (DDOG, NASDAQ) - Observability-Software
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  expiry: '2026-10-27'
+  notes: '[NEU 2026-10-20, Re-Eval 250,04 ausgeloest (Schluss 2026-10-19 260,36, +5,4 %), User: anlegen, Chart 1D+4h 12:50] Stack bullish 264,94/254,02/237,79/210,16, Kurs unter EMA20 ueber 50/100/200 (3/4). r2 0,07 = seitwaerts. Widerstand: Okt-Konsolidierung 281-289 (4h), darueber Doppelhoch ~300 (Aug/Okt). TP1 288,50 unter der Konsolidierungs-Oberkante, TP2 299,50 unter dem Doppelhoch. Zone unter die EMA20 gelegt (-0,50/-0,10 ATR), weil TP1 erst unter ~262 auf 1,3 R kommt. Rechnung: an 260,00 SL 239,54 (ATR-Term), R 20,46, TP1 1,39 R / TP2 1,93 R; an 258,12 = 1,48/2,02 R. ATR 5,2 % rot: 1 % hart, Direktaktie 8 Stk (~1.850 EUR); KO waere unter 400 EUR Einsatz. GEGENREDE: kein Trend (r2 0,07), 4h unter EMA20/50, Earnings 2026-11-04 -> Entry bis 2026-10-27.'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-20 TREND-PULLBACK-LONG: Touch EMA20-1D -0,50/-0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 262,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (13,64 -> -20,46). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 288,50$ (unter Okt-Konsolidierung 281-289, abgelesen) 1/3 raus. TP2 299,50$ (unter Doppelhoch ~300). Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,48. 1 % hart (ATR 5,2 %), Direktaktie 8 Stk. Earnings 2026-11-04 -> Entry bis 2026-10-27, Direktaktie: Entscheid vor den Zahlen. Non-Quanto USD.'
+  added: '2026-10-20'
+- symbol: FANG
+  name: Diamondback Energy (FANG, NASDAQ) - Oel/Gas E&P
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruch 200,65
+  treiber: ''
+  status: archiviert
+  expiry: '2026-10-20'
+  archived:
+    date: '2026-10-20'
+    reason: 'Morning Check 2026-10-20, User: Re-Eval neu setzen'
+  notes: 'Vorher #95 (Thesen-Korb, -1,05 R). Earnings 2026-11-02.'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-20 - Re-Eval 199,50 ausgeloest und verbraucht (Schluss 2026-10-19 203,12), aber kein Setup: Ausbruchsvolumen 0,96x unter dem Boden 1,0x, Stack neutral, OEL-Korb mit 4 Ausdruecken voll. RE-EVAL: 1D-Schluss >205,63 (Hoch 2026-10-19, mit Vol >=1,0x) - dann Breakout-Retest neu rechnen.'
+  added: '2026-10-20'
+- symbol: EXC
+  name: Exelon Corp. (EXC, NASDAQ) - Versorger
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: archiviert
+  expiry: '2026-10-20'
+  archived:
+    date: '2026-10-20'
+    reason: 'Morning Check 2026-10-20, User: Re-Eval neu setzen'
+  notes: 'Alte Zeile: Short-Trend-Pullback EMA20, TIW EMA20 +1,00 ATR, TP1 39,80 ueber 52W-Tief 39,73.'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-20 - Re-Eval 42,86 ausgeloest und verbraucht (Schluss 2026-10-19 42,41). Geometrie traegt wieder (Zone 41,92-42,47, SL 43,48, TP1 39,80 = 2,12 R), aber Earnings 2026-10-30: KO-Exit bis 2026-10-23, TP1 waeren 3,2 ATR in 3 HT. Re-Eval nach den Zahlen von Hand (Termin-Radar 2026-10-31), kein maschineller Re-Eval.'
+  added: '2026-10-20'
+updated: '2026-10-20T12:53:08+02:00'
