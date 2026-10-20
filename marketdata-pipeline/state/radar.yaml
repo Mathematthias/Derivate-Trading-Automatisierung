@@ -667,4 +667,13 @@ rows:
   id: Z99
   status: offen
   added: '2026-10-20'
-updated: '2026-10-20T13:21:34+02:00'
+- date: '2026-10-21'
+  kat: 5
+  ereignis: 'ISRG nach Q3-Zahlen (2026-10-20 nach US-Schluss) Post-Earnings-Setup neu rechnen: Gap ueber ~445 und Halten -> Breakout-Retest @ ~445 mit frischem Vol (Entry erst am Retest); Ruecksetzer in 415-429 (EMA20/EMA200) -> Trend-Pullback, sobald EMA50 > EMA100; Gap unter ~406 (EMA100) -> kein Long-Setup'
+  werte: ISRG
+  wirkung: 'Setup-Neubewertung; Vorlauf: V-Erholung ~345 -> 436,50 (Schluss-nah 2026-10-20 21:03), EMA200 zurueckerobert, Stack neutral, Ausbruch 427,53 ohne Vol (0,75x), RSI 1D 69'
+  quelle: Chart-Analyse User-Screenshots 2026-10-20 21:03, Digest 2026-10-20 16:03 (earn_days 0)
+  id: Z100
+  status: offen
+  added: '2026-10-20'
+updated: '2026-10-20T21:10:00+02:00'
