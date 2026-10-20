@@ -313,7 +313,9 @@ class TestRepoState:
         assert all(e.get("legs") and all(l.get("text") for l in e["legs"]) for e in aktiv)
         assert all(l.get("gate") in ("🟢", "🟡", "⏳", "🔴")
                    for e in st["watchlist"]["entries"] for l in (e.get("legs") or []))
-        assert len(aktiv) >= 30
+        # Nur Schutz gegen versehentliches Leeren: die Zahl aktiver Zeilen folgt den
+        # User-Entscheiden (2026-10-20: 12 Verfallzeilen archiviert -> 29 aktiv).
+        assert len(aktiv) >= 10
 
     def test_radar_und_thesen_laden(self):
         st = sy.load_state(self.REPO_STATE)
