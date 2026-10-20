@@ -290,6 +290,10 @@ def watchlist_meta(block: dict) -> list[dict]:
             "trade_nr": e.get("trade_nr"),
             "tiw": tiw,
             "reeval": reeval,
+            # 2026-10-20: Archivdatum, damit der Re-Eval-Check nur Schluesse ab dem
+            # Archivtag zaehlt (Anlass EPI-A.ST: Vortagesschluss vor der Archivierung
+            # meldete ein Phantom-„ausgeloest").
+            "archived": str((e.get("archived") or {}).get("date") or "") or None,
             # v63: nur fuer Positionen — Abgleich gegen die Journal-Uebersicht
             "monitor": (_leg_monitor(legs[0].get("text")) if legs and e.get("status") == "position" else None),
         })
