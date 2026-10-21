@@ -703,4 +703,13 @@ rows:
   id: Z103
   status: offen
   added: '2026-10-21'
-updated: '2026-10-21T13:45:49+02:00'
+- date: '2026-10-28'
+  kat: 5
+  werte: QIA.DE
+  ereignis: 'QIA Uebernahme-Status pruefen (Bericht: EQT in fortgeschrittenen Gespraechen, bindendes Angebot ueber 50 $ ~44,51 EUR, KKR ebenfalls genannt; ungeprueft). Kein Setup solange das Ereignis offen ist; Earnings 2026-11-04'
+  wirkung: Gespraeche abgesagt + Trend intakt -> Pullback-Long EMA20/EMA50 neu rechnen; offizielles Angebot -> kein Trade (Spread-Arbitrage, keine Klasse)
+  quelle: 'Morning Check 2026-10-21, User-Chart QGEN 14:05, User: wie vorgeschlagen'
+  id: Z104
+  status: offen
+  added: '2026-10-21'
+updated: '2026-10-21T14:14:50+02:00'
