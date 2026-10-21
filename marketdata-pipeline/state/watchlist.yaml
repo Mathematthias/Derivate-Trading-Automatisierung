@@ -3294,4 +3294,21 @@ entries:
     gate: 🟡
     text: POSITION-MONITOR (#106, 100 Stk, BAUCHGEFUEHL-TRADE auf News) - kein Entry-Trigger. Entry 2026-10-21 ~21:25 100 x 16,50EUR (UBS KO Short DE000UP7PJS2, KO 877,95$, BV 0,1, U ~695 geschaetzt). SL 6,26EUR (U ~810$, +15 %) / TP1 21,93EUR (U ~634$) / TP2 25,00EUR (U ~600$), gesetzt 2026-10-21 21:41 (User, bewusst schlechtes R:R 0,53/0,83 als Lernversuch). Entry ~35 min vor Q3-Zahlen (Veto 2 verletzt). Review 2026-10-22. Non-Quanto USD.
   notes: '[ENTRY 2026-10-21 21:25, User] Anlass Urteil New Mexico 25 Mrd $ (CNBC/Axios). Gap-Risiko ueber die Q3-Zahlen = Einsatz 1.650 EUR.'
-updated: '2026-10-21T21:41:58+02:00'
+- symbol: NFLX
+  name: Netflix Inc. (NFLX, NASDAQ) - Streaming/Entertainment
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Unterkante 2024er Basis 60,50
+  treiber: ''
+  status: archiviert
+  added: '2026-10-22'
+  expiry: '2026-10-22'
+  archived:
+    date: '2026-10-22'
+    reason: 'Post-Earnings-Gap 2026-10-21 auf Oberkante der 2024er Basis (~64-65): Retest-Short an 66 haette TP1 ~64 = 0,51 R - kein Setup; Wiedervorlage bei Bruch der Basis (User 01:04)'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss <60,50$ + Vol >Avg-20d. Dann Breakdown-Retest-Short @ 60,50 neu rechnen (TIW Schluss > Niveau + 0,30 ATR, TP1 ~55,30 ueber den 2024er Tiefs ~55, abgelesen; Stand ATR 2,10: R:R ~1,52, bei hoeherer ATR neu rechnen).'
+  notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:04, User, User-Charts 1D bis 2024] Q3-Gap 2026-10-21: O 64,15 H 67,12 L 64,10 C 65,04 (-5,3 %), Vol 101 Mio; Juli-Tief ~66,0 und Okt-Tief ~67,3 gebrochen, Zwei-Jahres-Tief. EMA20/50/100/200-1D 70,36/72,92/76,38/82,61 bearish, RSI-1D 32,6, RSI-4h 28,1, ATR 2,10. 2024er Basis ~60,5-65 (Aug/Sep 2024, Start der Rally >90) direkt unter dem Kurs, darunter 2024er Tiefs ~55 (alles abgelesen, ungefaehr). Nur KO (ATR 3,2 % gelb). Earnings raus, naechste ~Jan 2027.'
+updated: '2026-10-22T01:05:11+02:00'
