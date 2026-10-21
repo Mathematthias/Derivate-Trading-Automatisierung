@@ -3279,4 +3279,19 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-21 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >176,50$ + Vol >Avg-20d. Dann Breakout-Retest @ 176,50 neu rechnen (TP1 Juli-Zone ~192-200 am Chart, erst ab 1,3 R).'
   notes: '[ANGELEGT ALS RE-EVAL 2026-10-21 17:54, User, User-Chart 1D+4h 17:51] Q3: Umsatz 14,58 Mrd $ (+161 %), ber. EPS 0,35 $, Nettogewinn 4,4 Mrd $; Segmente AI ~7,6 / Konnektivitaet ~5,2 / Launch ~1,8 Mrd $; Ausblick FY2027 33-37 Mrd $, Q4-Capex ueber Konsens. Tag: O 160,56 H 166,18 L 158,20, ~163,36, Vol 121 Mio (Schnitt 94 Mio). EMA20/50-1D 154,24/150,87, EMA100/200 noch nicht berechenbar (IPO 2026-06-12). ATR 7,68 = 4,7 % (gelb, KO-Hebel <= 5). GEGENREDE: Lockup-Tranchen ~7 % im 15-Tage-Rhythmus (naechste ~2026-10-25, catalyst_seeds), Komplett-Unlock Radar Z26 2026-12-08. Ethik: Militaer-/Regierungsanteil nach Segmentzahlen deutlich < 30 %, keine Angriffswaffen (Schaetzung). Universum: kommt ueber die Watchlist-Zeile in den Pull (archivierte Zeilen zaehlen, build_pull_universe).'
-updated: '2026-10-21T19:48:32+02:00'
+- symbol: META
+  name: 'Meta Platforms Inc. (META, NASDAQ) [MONITOR #106] - Social Media/Werbung, AI-Capex'
+  direction: SHORT
+  klasse: position_monitor
+  anker: ''
+  treiber: ''
+  status: position
+  added: '2026-10-21'
+  expiry: '2026-10-22'
+  trade_nr: '106'
+  legs:
+  - label: A
+    gate: 🟡
+    text: POSITION-MONITOR (#106, 100 Stk, BAUCHGEFUEHL-TRADE auf News) - kein Entry-Trigger. Entry 2026-10-21 ~21:25 100 x 16,50EUR (UBS KO Short DE000UP7PJS2, KO 877,95$, BV 0,1, U ~695 geschaetzt). SL offen (Vorschlag U ~731,3$ = Zert ~13,27EUR). Entry ~35 min vor Q3-Zahlen (Veto 2 verletzt). Review 2026-10-22. Non-Quanto USD.
+  notes: '[ENTRY 2026-10-21 21:25, User] Anlass Urteil New Mexico 25 Mrd $ (CNBC/Axios). Gap-Risiko ueber die Q3-Zahlen = Einsatz 1.650 EUR.'
+updated: '2026-10-21T21:31:59+02:00'
