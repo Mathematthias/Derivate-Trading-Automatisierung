@@ -674,8 +674,9 @@ rows:
   wirkung: 'Setup-Neubewertung; Vorlauf: V-Erholung ~345 -> 436,50 (Schluss-nah 2026-10-20 21:03), EMA200 zurueckerobert, Stack neutral, Ausbruch 427,53 ohne Vol (0,75x), RSI 1D 69'
   quelle: Chart-Analyse User-Screenshots 2026-10-20 21:03, Digest 2026-10-20 16:03 (earn_days 0)
   id: Z100
-  status: offen
+  status: erledigt
   added: '2026-10-20'
+  note: '2026-10-21: Szenario 3 per Gap (Eroeffnung 402,50 < 406, Tief 398,99), intraday auf ~422,7 zurueckgekauft; kein Setup (Stack neutral, R:R 0,61 bis 440). Wiedervorlage als archivierte ISRG-Zeile mit RE-EVAL 1D-Schluss >440,40 + Vol (User 15:57).'
 - date: '2026-10-29'
   kat: 5
   werte: TMUS
@@ -721,4 +722,4 @@ rows:
   id: Z105
   status: offen
   added: '2026-10-21'
-updated: '2026-10-21T14:23:08+02:00'
+updated: '2026-10-21T15:59:25+02:00'
