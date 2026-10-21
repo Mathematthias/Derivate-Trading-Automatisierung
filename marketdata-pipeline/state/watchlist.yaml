@@ -3292,6 +3292,6 @@ entries:
   legs:
   - label: A
     gate: 🟡
-    text: POSITION-MONITOR (#106, 100 Stk, BAUCHGEFUEHL-TRADE auf News) - kein Entry-Trigger. Entry 2026-10-21 ~21:25 100 x 16,50EUR (UBS KO Short DE000UP7PJS2, KO 877,95$, BV 0,1, U ~695 geschaetzt). SL offen (Vorschlag U ~731,3$ = Zert ~13,27EUR). Entry ~35 min vor Q3-Zahlen (Veto 2 verletzt). Review 2026-10-22. Non-Quanto USD.
+    text: POSITION-MONITOR (#106, 100 Stk, BAUCHGEFUEHL-TRADE auf News) - kein Entry-Trigger. Entry 2026-10-21 ~21:25 100 x 16,50EUR (UBS KO Short DE000UP7PJS2, KO 877,95$, BV 0,1, U ~695 geschaetzt). SL 6,26EUR (U ~810$, +15 %) / TP1 21,93EUR (U ~634$) / TP2 25,00EUR (U ~600$), gesetzt 2026-10-21 21:41 (User, bewusst schlechtes R:R 0,53/0,83 als Lernversuch). Entry ~35 min vor Q3-Zahlen (Veto 2 verletzt). Review 2026-10-22. Non-Quanto USD.
   notes: '[ENTRY 2026-10-21 21:25, User] Anlass Urteil New Mexico 25 Mrd $ (CNBC/Axios). Gap-Risiko ueber die Q3-Zahlen = Einsatz 1.650 EUR.'
-updated: '2026-10-21T21:31:59+02:00'
+updated: '2026-10-21T21:41:58+02:00'
