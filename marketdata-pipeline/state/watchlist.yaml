@@ -3311,4 +3311,21 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss <60,50$ + Vol >Avg-20d. Dann Breakdown-Retest-Short @ 60,50 neu rechnen (TIW Schluss > Niveau + 0,30 ATR, TP1 ~55,30 ueber den 2024er Tiefs ~55, abgelesen; Stand ATR 2,10: R:R ~1,52, bei hoeherer ATR neu rechnen).'
   notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:04, User, User-Charts 1D bis 2024] Q3-Gap 2026-10-21: O 64,15 H 67,12 L 64,10 C 65,04 (-5,3 %), Vol 101 Mio; Juli-Tief ~66,0 und Okt-Tief ~67,3 gebrochen, Zwei-Jahres-Tief. EMA20/50/100/200-1D 70,36/72,92/76,38/82,61 bearish, RSI-1D 32,6, RSI-4h 28,1, ATR 2,10. 2024er Basis ~60,5-65 (Aug/Sep 2024, Start der Rally >90) direkt unter dem Kurs, darunter 2024er Tiefs ~55 (alles abgelesen, ungefaehr). Nur KO (ATR 3,2 % gelb). Earnings raus, naechste ~Jan 2027.'
-updated: '2026-10-22T01:05:11+02:00'
+- symbol: ZS
+  name: Zscaler Inc. (ZS, NASDAQ) - Cloud-Security/Zero Trust
+  direction: LONG
+  klasse: breakout_retest
+  anker: Unterkante Dez-2025-Luecke ~255
+  treiber: ''
+  status: archiviert
+  added: '2026-10-22'
+  expiry: '2026-10-22'
+  archived:
+    date: '2026-10-22'
+    reason: 2026-10-21 +7,8 % auf 231,33 unter Okt-Hoch ~236,5; Breakout ueber 236,5 liefe in Jan-Cluster/Dez-Bodenbildung ~244-255 (TP1 ~0,7 R) - Wiedervorlage erst ueber der Luecken-Unterkante (User 01:55)
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >255,00$ + Vol >Avg-20d. Dann Breakout-Retest-Long @ ~255 neu rechnen (TIW Schluss < Niveau - 0,30 ATR, TP1 ~288 knapp unter Luecken-Oberkante ~290, abgelesen; Stand ATR 11,08: Stop-Buy ~257, SL ~240,4, R:R ~1,87).'
+  notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:55, User: mit Claudes Wert, Luecken-Unterkante 252-255 abgelesen - Fadenkreuz pruefen] Tag 2026-10-21: O 214,50 H 232,06 L 214,50 C 231,33 (+7,8 %), Vol 2,77 Mio (Schnitt 3,08). EMA20/50/100/200-1D 212,32/196,25/182,83/184,14 (EMA100 < EMA200 = Stack noch nicht bullish), RSI-1D 63,7, ATR 11,08 = 4,8 % (knapp unter Stufe rot: KO Hebel <= 5, besser Direktaktie). Struktur oberhalb (abgelesen): Jan-2026-Cluster ~236-244, Dez-Bodenbildung ~245-255, Luecke ~255-290 (Abverkauf Dez 2025 von ~295/300). News 2026-10-21: Zscaler und Tenable steigen (Grund ungeprueft).'
+updated: '2026-10-22T01:55:41+02:00'
