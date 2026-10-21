@@ -2109,16 +2109,19 @@ entries:
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-09-17'
   expiry: '2026-10-23'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-09 SHORT-TREND-PULLBACK: Touch EMA20-1D +0,05/+0,50 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 246,50$. TP1 230,50$ (Tief 08.10. 230,20), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,36-1,79. 1% Sizing. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-09 SHORT-TREND-PULLBACK: Touch EMA20-1D +0,05/+0,50 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 246,50$. TP1 230,50$ (Tief 08.10. 230,20), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,36-1,79. 1% Sizing. Non-Quanto USD. RE-EVAL: 1D-Schluss <246,50 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU GEFASST 2026-10-09, User-Auftrag "gegenstandslose Zonen reparieren", Linien von Claude aus Digest 12:03, keine Charts] Alte Zone 246,50-249,50 (4h-EMA20 vom 24.09.) 2,15 ATR ueber Kurs 236,90; altes TP1 234 ohne Entry unterschritten. Neu: Anker EMA20-1D 240,26, ATR 4,47, Stack baerisch, r2 0,81. TIW 246,50 = alte Zonen-UG, VORLAEUFIG: keine Swing-Struktur aus dem Digest ablesbar -> am Chart gegen das Erholungshoch pruefen. L25: UG 240,48 -> SL MAX(247,18 ; 247,84) = 247,84, 1,36 R; OG 242,49 -> SL 249,19, 1,79 R. Gestern +2,6 % Umkehrkerze vom 52W-Tief (L 230,20), RSI-4h 48,9 > Sig 29,1 -> Bounce laeuft, Zone abwarten. Earnings 2026-11-04. || [NEU GEFASST 2026-09-24, User-Entscheid, User-Chart 1D+4h 09:15 UTC] Binaeres Ereignis durch: Investor Day 23.09. (>NEXT: operative Marge low-mid 50% bis 2030, 8,5 Mrd USD Franchisee-Support bis 2036) -> Tag -4,81%, H 250,32 / L 234,03 / C 238,32, Vol 16,61 Mio. Alte Zone 252-256 gegenstandslos (2,7-3,4 ATR), altes TP2 237 ohne Entry
     erreicht. EMA20/50/100/200-1D 254,08/262,44/272,06/283,54, Kurs unter 4/4. RSI-1D 25,9 ueberverkauft, Extension -3,1 ATR -> kein Entry am Markt, Bounce abwarten. SL an der Zone ATR-bestimmt 254,15-257,15 (L25 frei, Puffer 0,42 ATR). EARNINGS: TV zeigt 28 Tage (~22'
   journal_row: 92
+  archived:
+    date: '2026-10-21'
+    reason: 'Auto-Archiv: TIW per Schluss gebrochen (246.52 > 246.5) (Dauerregel 2026-10-19)'
 - symbol: LLY
   name: 'Eli Lilly (LLY, NYSE) - Pharma/GLP-1 [MONITOR #10 AV]'
   direction: LONG
@@ -2285,28 +2288,34 @@ entries:
   klasse: grinder
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-09'
   expiry: '2026-10-30'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-09 GRINDER-CONTINUATION-LONG (KURSE IN CHF - Euro-Zeichen nur fuer den Parser): Touch EMA20-1D -0,25/-0,05 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (12,50 -> -18,74), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 591,80€ (20d-Hoch), 1/3 raus, R:R 1,33-1,46. Rest Trail EMA20-1,25xATR. 1% Pilot. Earnings 2027-01-27. Non-Quanto CHF.'
+    gate: 🔴
+    text: 'nach 2026-10-09 GRINDER-CONTINUATION-LONG (KURSE IN CHF - Euro-Zeichen nur fuer den Parser): Touch EMA20-1D -0,25/-0,05 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (12,50 -> -18,74), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 591,80€ (20d-Hoch), 1/3 raus, R:R 1,33-1,46. Rest Trail EMA20-1,25xATR. 1% Pilot. Earnings 2027-01-27. Non-Quanto CHF. RE-EVAL: 1D-Schluss <586,40 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[NEU 2026-10-09 17:25, User-Auftrag, Linien von Claude, Digest 16:33] Grinder-Block: Tempo 1,18 (vorlaeufig), R2 0,61, ATR 12,495 = 2,17 %, Weekly HH/HL. Heute +2,2 % auf 575,6 = +0,65 ATR zur EMA20 567,54 (Gate heute verfehlt), Vortag rueckgerechnet -0,26 ATR -> wohl im Block. ZONE BEWUSST UNTER DER EMA20: das 20d-Hoch 591,8 liegt vor dem 52W-Hoch 597,8; an der Band-OG (+0,25 ATR, 570,66) waeren es nur 1,13 R. Zone heute 564,42-566,92: (591,80-566,92)/18,74 = 1,33 R, (591,80-564,42)/18,74 = 1,46 R. Greift erst nach einem Ruecksetzer.'
+  archived:
+    date: '2026-10-21'
+    reason: 'Auto-Archiv: Halbzeit-Check +2.53 ATR zur Zone 583.739-586.4, Verfall 2026-10-30 (Dauerregel 2026-10-19)'
 - symbol: PEP
   name: PepsiCo Inc. (PEP, NASDAQ) — Getraenke/Snacks
   direction: SHORT
   klasse: grinder
   anker: EMA20-1D
   treiber: 'Guidance-Senkung Core-EPS 2026 (Q3-Zahlen 2026-10-08): Core-cc-EPS +1 bis +2 % statt unteres Ende +4 bis +6 %'
-  status: aktiv
+  status: archiviert
   added: '2026-10-09'
   expiry: '2026-10-30'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-09 GRINDER-CONTINUATION-SHORT: Touch EMA20-1D -0,20/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (2,567 -> +3,85), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss ueber EMA50-1D +0,30 ATR. TP1 123,50$ (52W-/20d-Tief), 1/3 raus, R:R 1,32-1,62. Rest Trail EMA20+1,25xATR. 1% Pilot. Short nur KO. Earnings 2027-02-02. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-09 GRINDER-CONTINUATION-SHORT: Touch EMA20-1D -0,20/+0,25 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). Stopweite entry-relativ +1,5xATR-1D (2,567 -> +3,85), keine L25-Klammer. Invalidator = Zustand; maschinenlesbar TIW = 1D-Schluss ueber EMA50-1D +0,30 ATR. TP1 123,50$ (52W-/20d-Tief), 1/3 raus, R:R 1,32-1,62. Rest Trail EMA20+1,25xATR. 1% Pilot. Short nur KO. Earnings 2027-02-02. Non-Quanto USD. RE-EVAL: 1D-Schluss <133,77 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU 2026-10-09 17:25, User-Auftrag, Linien von Claude, Digest 16:33] KATALYSATOR (Short-Grinder-Regel 2026-10-04): Q3 am 2026-10-08 - Core-cc-EPS-Guidance 2026 auf +1 bis +2 % gesenkt (vorher unteres Ende von +4 bis +6 %), Core-EPS +2,5 bis +3,5 % (vorher unteres Ende +5 bis +7 %); Umsatz-Guidance dagegen angehoben (netto ~+6 %), organisch ~+3 %. CEO: weitere strukturelle Kostensenkungen ''in den kommenden Monaten''; PBNA-Volumen organisch -3 %. Quelle: 8-K Exhibit 99.1 (SEC). Chart: 09.10. -2,15 % auf 125,58 bei 2,3x Volumen, 1,37 ATR unter EMA20 129,11 -> heute kein Entry, nur nach Erholung in die Zone (128,60-129,75). Tempo 1,47, R2 0,84, ATR 1,97 %. Rechnung: TP1 123,50 = (129,75-123,50)/3,85 = 1,62 R an der OG, 1,32 R an der UG. 52W-Tief 123,5 ist Unterstuetzung; darunter neue Tiefs. GEGENREDE: Umsatz-Guidance angehoben, Defensivwert, Kostensenkungsprogramm kann den Kurs stuetzen.'
+  archived:
+    date: '2026-10-21'
+    reason: 'Auto-Archiv: TIW per Schluss gebrochen (134.02 > 133.766 = EMA50-1D +0,30 ATR) (Dauerregel 2026-10-19)'
 - symbol: MO
   name: Altria Group (MO, NYSE) — Tabak
   direction: LONG
@@ -2505,15 +2514,18 @@ entries:
   klasse: breakout_retest
   anker: 52W-Hoch
   treiber: Gap +8,1 % am 2026-10-13 ueber 52W-Hoch 3583
-  status: aktiv
+  status: archiviert
   added: '2026-10-13'
   expiry: '2026-10-30'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-13 BREAKOUT-RETEST-LONG: Niveau 3583,00€ (52W-Hoch 2025-10-20). Bedingung: Daily-Close >3583,00€ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 3540,78-3646,34€ [pullback] (= Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze, ueber 3630,32€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 3583,00€. TP1 3795,00€ (Hoch Gap-Tag 13.10., Stand 14:33), 1/3 raus; Rest Chandelier 2,0 ATR, Runner-Ziel 4016,00€ (Measured Move Range 3150-3583€). R:R TP1 1,38 bei Entry 3620. 1% Sizing (Pilot, Reife 30d +19,6 %). ATR 2,2 % frei. Earnings 2027-01-27.'
+    gate: 🔴
+    text: 'nach 2026-10-13 BREAKOUT-RETEST-LONG: Niveau 3583,00€ (52W-Hoch 2025-10-20). Bedingung: Daily-Close >3583,00€ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 3540,78-3646,34€ [pullback] (= Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze, ueber 3630,32€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; Retest-Tief-0,30xATR). TIW = 1D-Schluss unter 3583,00€. TP1 3795,00€ (Hoch Gap-Tag 13.10., Stand 14:33), 1/3 raus; Rest Chandelier 2,0 ATR, Runner-Ziel 4016,00€ (Measured Move Range 3150-3583€). R:R TP1 1,38 bei Entry 3620. 1% Sizing (Pilot, Reife 30d +19,6 %). ATR 2,2 % frei. Earnings 2027-01-27. RE-EVAL: 1D-Schluss <3646,34 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[NEU 2026-10-13 14:40, User: nach Gap nur noch Pullback] Ersetzt die Trend-Pullback-Legs EMA20/EMA50 vom 12.10.: ein Pullback bis EMA20 (~3420) schliesst die Gap ganz = Ausbruch gescheitert. Retest des alten 52W-Hochs ist der Pullback mit intakter These. Chart 14:33: O 3662 H 3795 L 3662 C 3771, ATR 84,45, RSI 77,9.'
   trade_nr: null
+  archived:
+    date: '2026-10-21'
+    reason: 'Auto-Archiv: Halbzeit-Check +3.90 ATR zur Zone 3540.78-3646.34, Verfall 2026-10-30 (Dauerregel 2026-10-19)'
 - symbol: MSFT
   name: Microsoft Corp. (MSFT, NASDAQ)
   direction: LONG
@@ -3034,14 +3046,17 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau 64,90 (20-Tage-Hoch)
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-19'
   expiry: '2026-11-06'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-19 BREAKOUT-RETEST-LONG (Retest tief): Niveau 64,90€ (20-Tage-Hoch, Ausbruch Vol 1,09x = Daempfer). Touch 64,30-64,53€ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 64,53€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 63,94). Stopweite entry-relativ -1,5xATR-1D (1,194 -> -1,79). TIW = 1D-Schluss unter 64,30€. TP1 66,86€ (52W-Hoch Aug, Digest) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,37 an 64,40. Pilot 1 % (Vol-Daempfer). Earnings 2026-11-11.'
+    gate: 🔴
+    text: 'nach 2026-10-19 BREAKOUT-RETEST-LONG (Retest tief): Niveau 64,90€ (20-Tage-Hoch, Ausbruch Vol 1,09x = Daempfer). Touch 64,30-64,53€ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 64,53€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 63,94). Stopweite entry-relativ -1,5xATR-1D (1,194 -> -1,79). TIW = 1D-Schluss unter 64,30€. TP1 66,86€ (52W-Hoch Aug, Digest) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,37 an 64,40. Pilot 1 % (Vol-Daempfer). Earnings 2026-11-11. RE-EVAL: 1D-Schluss >64,30 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU 2026-10-19, Pitch breakout_long RRprox 4,09, User-Auftrag "umsetzen", User-Chart 13:38] Digest 13:32: Kurs 64,74, EMA20/50/100/200 62,09/61,05/59,82/58,09 bullish, RSI 68,8, Extension 2,22 ATR (am Entry 64,40: 1,93), r2 0,77, ATR 1,194 (1,8 %). 4h: RSI 70,4 kreuzt unter Sig 73,4 -> Ruecksetzer plausibel. Recherche ohne Befund (nur Distributionsabkommen Almatis LatAm laut TV, ~2026-10-16).'
+  archived:
+    date: '2026-10-21'
+    reason: 'Auto-Archiv: TIW per Schluss 2026-10-20 gebrochen (62.26 < 64.3) (Dauerregel 2026-10-19)'
 - symbol: HLMA.L
   name: Halma plc (HLMA, LSE) — Sicherheits-/Umwelt-/Medizintechnik
   direction: SHORT
@@ -3189,12 +3204,15 @@ entries:
   klasse: thesen_korb
   anker: Breakdown 7,112 (20-Tage-Tief, Vol 1,62x)
   treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-26; Falsifikat Brent-Schluss < 88 USD oder Waffenruhe USA-Iran) - Kerosin als direkter Kostenblock
-  status: aktiv
+  status: archiviert
   expiry: '2026-10-27'
   notes: '[NEU GEFASST 2026-10-20, Morning Check, User: LHA statt FRA.DE als OEL-Gegenrichtung, Variante B, Chart 1D+4h 13:11] Ersetzt die Breakdown-Retest-Zeile vom 2026-10-14 (Niveau 7,208, Touch 7,20-7,29, Vol 1,12x). Neuer Bruch unter 7,112 vor 4 HT mit Vol 1,62x. Stack bearish 7,355/7,685/7,967/8,052, r2 0,87, RSI 32,5, Extension -1,93 ATR, ATR 0,168 (2,4 %). Rechnung: an 7,10 SL 7,35 (ATR-Term), R 0,252, TP1 6,74 = 1,43 R; an 7,07 = 1,31 R; an 7,196 = 1,81 R. Korb-Anteil 75 EUR Risk (2 % RK / 4 Ausdruecke) = ~298 Stk, KO Short h<=10, bei h5 ~420 EUR. GEGENREDE: Ziel nur 4,5 % entfernt, Tages-RSI schon tief, 4h-RSI gerade ueber der Signallinie. L7: FRA.DE nicht zusaetzlich (selber Block).'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-20 KORB-OEL BREAKDOWN-RETEST-SHORT (Gegenrichtung): Niveau 7,112€ (20-Tage-Tief, Bruch vor 4 HT mit Vol 1,62x). Touch 7,07–7,20€ [pullback] (Niveau -0,25/+0,50 ATR, UG = Entry-Grenze 1,3 R) + 4h-Bearish-Reverse-Close (MANUELL). Limit erlaubt (Thesen-Korb, L27 nur 1 %), sonst Stop-Sell unter Tief der Bestaetigungskerze. SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,168 -> +0,252). TIW = 1D-Schluss ueber 7,196€. TP1 6,74€ (knapp ueber 52W-Tief ~6,72, aus Digest-Abstand), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,31-1,81. Korb-Anteil 75 EUR Risk. Short nur KO, Hebel <=10 (ATR 2,4 %). Earnings 2026-11-03 -> Entry bis 2026-10-27, KO-Exit spaetestens 2026-10-27. L7: ein Block mit FRA.DE. Non-Quanto EUR.'
+    gate: 🔴
+    text: 'nach 2026-10-20 KORB-OEL BREAKDOWN-RETEST-SHORT (Gegenrichtung): Niveau 7,112€ (20-Tage-Tief, Bruch vor 4 HT mit Vol 1,62x). Touch 7,07–7,20€ [pullback] (Niveau -0,25/+0,50 ATR, UG = Entry-Grenze 1,3 R) + 4h-Bearish-Reverse-Close (MANUELL). Limit erlaubt (Thesen-Korb, L27 nur 1 %), sonst Stop-Sell unter Tief der Bestaetigungskerze. SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,168 -> +0,252). TIW = 1D-Schluss ueber 7,196€. TP1 6,74€ (knapp ueber 52W-Tief ~6,72, aus Digest-Abstand), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,31-1,81. Korb-Anteil 75 EUR Risk. Short nur KO, Hebel <=10 (ATR 2,4 %). Earnings 2026-11-03 -> Entry bis 2026-10-27, KO-Exit spaetestens 2026-10-27. L7: ein Block mit FRA.DE. Non-Quanto EUR. RE-EVAL: 1D-Schluss <7,1960 (TIW-Rueckeroberung) - dann neu rechnen.'
   added: '2026-10-20'
-updated: '2026-10-20T13:21:34+02:00'
+  archived:
+    date: '2026-10-21'
+    reason: 'Auto-Archiv: TIW per Schluss 2026-10-20 gebrochen (7.282 > 7.196) (Dauerregel 2026-10-19)'
+updated: '2026-10-21T11:18:31+00:00'
