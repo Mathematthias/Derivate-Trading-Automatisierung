@@ -676,4 +676,31 @@ rows:
   id: Z100
   status: offen
   added: '2026-10-20'
-updated: '2026-10-21T11:18:31+00:00'
+- date: '2026-10-29'
+  kat: 5
+  werte: TMUS
+  ereignis: 'TMUS nach Q3-Zahlen (2026-10-28) Breakdown-Short-Setup neu rechnen: Re-Eval >156,89 am 2026-10-20 ausgeloest (Schluss 157,75), vor den Zahlen gesperrt (Earnings <= 7 d)'
+  wirkung: Setup-Neubewertung Post-Earnings; Niveau 160,81, Stack bearish
+  quelle: 'Morning Check 2026-10-21, User: Re-Evals wie vorgeschlagen'
+  id: Z101
+  status: offen
+  added: '2026-10-21'
+- date: '2026-10-30'
+  kat: 5
+  werte: LLY
+  ereignis: 'LLY nach Q3-Zahlen (2026-10-29) Breakout-Retest neu rechnen: Re-Eval >1275 am 2026-10-20 ausgeloest (Schluss 1283,66), vor den Zahlen gesperrt (Earnings <= 7 d)'
+  wirkung: Setup-Neubewertung Post-Earnings; Ausbruch 1216,71, 52W-Hoch ~1292,7
+  quelle: 'Morning Check 2026-10-21, User: Re-Evals wie vorgeschlagen'
+  id: Z102
+  status: offen
+  added: '2026-10-21'
+- date: '2026-10-27'
+  kat: 5
+  werte: GIS
+  ereignis: GIS Short-Retest Bruchzone 33,30-33,90 neu rechnen (Re-Eval am 2026-10-20 ausgeloest, Schluss 33,43); erst nach Ex-Tag (~2026-10-26, 0,61$) - Short-Disqualifier Ex-Tag <= 14 d
+  wirkung: Setup-Neubewertung Short; Stack bearish, Kurs unter EMA50/100/200
+  quelle: 'Morning Check 2026-10-21 (Korrektur: Re-Eval war Short-Retest, nicht Long)'
+  id: Z103
+  status: offen
+  added: '2026-10-21'
+updated: '2026-10-21T13:45:49+02:00'
