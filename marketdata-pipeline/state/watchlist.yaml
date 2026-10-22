@@ -2556,15 +2556,18 @@ entries:
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-13'
   expiry: '2026-11-02'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-13 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 284,66$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 302,17$ (52W-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,65 bei Entry 280. 1% Sizing. ATR 3,0 % 🟡: KO Hebel <=8,3. Earnings 2026-11-25. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-13 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 284,66$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 302,17$ (52W-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,65 bei Entry 280. 1% Sizing. ATR 3,0 % 🟡: KO Hebel <=8,3. Earnings 2026-11-25. Non-Quanto USD. RE-EVAL: 1D-Schluss <298,78 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[NEU GEFASST 2026-10-13, User] Alte Zeile: TP1 287/TP2 295 lagen unter dem Kurs 295,85, TIW 258 haette mit L25 den SL auf 255 gezogen (TP1 < 1 R). Breakout-Retest an 291,40 scheitert am Exit-Test (52W-Hoch 302,17 zu nah). Chart 12.10.: H 300,63, Docht am Sept-Hoch.'
   trade_nr: null
+  archived:
+    date: '2026-10-22'
+    reason: 'Auto-Archiv: Halbzeit-Check +2.20 ATR zur Zone 293.336-298.782, Verfall 2026-11-02 (Dauerregel 2026-10-19)'
 - symbol: DTE.DE
   name: Deutsche Telekom AG (DTE, XETRA) — Telekommunikation
   direction: SHORT
@@ -3334,4 +3337,4 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >255,00$ + Vol >Avg-20d. Dann Breakout-Retest-Long @ ~255 neu rechnen (TIW Schluss < Niveau - 0,30 ATR, TP1 ~288 knapp unter Luecken-Oberkante ~290, abgelesen; Stand ATR 11,08: Stop-Buy ~257, SL ~240,4, R:R ~1,87).'
   notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:55, User: mit Claudes Wert, Luecken-Unterkante 252-255 abgelesen - Fadenkreuz pruefen] Tag 2026-10-21: O 214,50 H 232,06 L 214,50 C 231,33 (+7,8 %), Vol 2,77 Mio (Schnitt 3,08). EMA20/50/100/200-1D 212,32/196,25/182,83/184,14 (EMA100 < EMA200 = Stack noch nicht bullish), RSI-1D 63,7, ATR 11,08 = 4,8 % (knapp unter Stufe rot: KO Hebel <= 5, besser Direktaktie). Struktur oberhalb (abgelesen): Jan-2026-Cluster ~236-244, Dez-Bodenbildung ~245-255, Luecke ~255-290 (Abverkauf Dez 2025 von ~295/300). News 2026-10-21: Zscaler und Tenable steigen (Grund ungeprueft).'
-updated: '2026-10-22T01:55:41+02:00'
+updated: '2026-10-22T09:09:19+00:00'
