@@ -139,8 +139,22 @@ def resample_1h_to_4h(df: pd.DataFrame, closed_only: bool = True,
         # letzten 1h-Balkens + 1h (Teilblock, konservativ). Offen = now < Ende.
         start = out.index[-1]
         n = int(out["_bars"].iloc[-1])
-        ende = (start + pd.Timedelta(hours=bars_per_block)) if n >= bars_per_block \
-            else (df.index[-1] + pd.Timedelta(hours=1))
+        ende = start + pd.Timedelta(hours=bars_per_block)
+        if n < bars_per_block:
+            # 🆕 2026-10-22 (Befund Morning Check 14:03, VOD.L): Ein Teilblock des
+            # LAUFENDEN Tages galt als geschlossen, sobald seine letzte 1h-Kerze
+            # vorbei war — um 14:03 stand der 13:00-Block mit EINER 1h-Kerze als
+            # "letzter geschlossener 4h-Balken" im Digest (98 von 107 EU-Werten),
+            # Reverse und RSI-Cross liefen auf diesem Stummel. Jetzt: ein Teilblock
+            # endet frühestens am Sessionende. Das Sessionende kommt aus den Daten
+            # selbst: Uhrzeit der letzten 1h-Kerze des Vortages + 1h (konservativ —
+            # NYSE 15:30-Kerze dauert nur 30 min). Ohne Vortag: Start + 4h.
+            heute = df.index[-1].date()
+            frueher = df[pd.Series(df.index.date, index=df.index) < heute]
+            if not frueher.empty:
+                letzte = frueher.index[-1]
+                schluss = df.index[-1].normalize() + (letzte - letzte.normalize()) + pd.Timedelta(hours=1)
+                ende = min(ende, schluss)
         jetzt = now if now.tzinfo is not None else now.tz_localize("UTC")
         if ende.tzinfo is not None:
             jetzt = jetzt.tz_convert(ende.tzinfo)
@@ -206,6 +220,10 @@ def detect_reverse(df4h: pd.DataFrame) -> tuple[Optional[bool], Optional[bool], 
     Bärisch:  Shooting Star (obere Wick >= 50 % UND Close im unteren Drittel)
               ODER Bearish Engulfing (EIGENE Kerze rot, prev gruen, Koerper
               umschliesst Vorkoerper: Open >= prev Close, Close <= prev Open).
+    Seit 2026-10-22 (User-Entscheid B) zusätzlich je Seite die 2-Kerzen-Umkehr:
+              grüne Kerze schließt über dem Hoch der jüngsten roten unter den
+              drei Vorkerzen, nachdem die letzten vier Kerzen das Acht-Kerzen-
+              Tief gebildet haben (bärisch spiegelbildlich).
 
     Fix 2026-09-25 (Anlass BIIB): Bis dahin prueften die Engulfing-Zweige weder
     die Farbe der eigenen Kerze noch, ob ihr Koerper den Vorkoerper umschliesst
@@ -243,7 +261,28 @@ def detect_reverse(df4h: pd.DataFrame) -> tuple[Optional[bool], Optional[bool], 
     star = upper_wick >= 0.5 and close_pos <= 0.34
     bear_eng = c < o and pc > po and c <= po and o >= pc - tol
 
+    # 🆕 2026-10-22 (User-Entscheid B, Anlass VOD.L): Umkehr über zwei bis drei
+    # Kerzen. Bullisch: eigene Kerze grün, schließt über dem HOCH der jüngsten
+    # roten Kerze unter den drei Vorkerzen, und das Tief der letzten vier Kerzen
+    # ist das Tief der letzten acht (es gab einen Abwärtsschub, der jetzt dreht).
+    # Bärisch spiegelbildlich. Schwellen gesetzt, nicht gemessen (L24).
+    two_bull = two_bear = False
+    two_why = None
+    if len(df4h) >= 3 and {"High", "Low"}.issubset(df4h.columns):
+        O, H, L, C = (df4h[k].astype(float).values for k in ("Open", "High", "Low", "Close"))
+        vor = range(len(C) - 2, max(len(C) - 5, -1), -1)          # die drei Vorkerzen, jüngste zuerst
+        rot = next((i for i in vor if C[i] < O[i]), None)
+        gruen = next((i for i in range(len(C) - 2, max(len(C) - 5, -1), -1) if C[i] > O[i]), None)
+        tief4, tief8 = L[-4:].min(), L[-8:].min()
+        hoch4, hoch8 = H[-4:].max(), H[-8:].max()
+        if c > o and rot is not None and c > H[rot] and tief4 <= tief8:
+            two_bull, two_why = True, f"2-Kerzen-Umkehr (Close {c:.4g} > Hoch der roten Kerze {H[rot]:.4g})"
+        if c < o and gruen is not None and c < L[gruen] and hoch4 >= hoch8:
+            two_bear, two_why = True, f"2-Kerzen-Umkehr (Close {c:.4g} < Tief der grünen Kerze {L[gruen]:.4g})"
+
     reasons = []
+    if two_why:
+        reasons.append(two_why)
     if hammer:
         reasons.append(f"Hammer (Wick {lower_wick:.0%}, Close-Pos {close_pos:.0%})")
     if bull_eng:
@@ -252,7 +291,7 @@ def detect_reverse(df4h: pd.DataFrame) -> tuple[Optional[bool], Optional[bool], 
         reasons.append(f"Shooting-Star (Wick {upper_wick:.0%}, Close-Pos {close_pos:.0%})")
     if bear_eng:
         reasons.append("Bearish-Engulfing")
-    bull, bear = (hammer or bull_eng), (star or bear_eng)
+    bull, bear = (hammer or bull_eng or two_bull), (star or bear_eng or two_bear)
     if bull and bear:
         return False, False, "Widerspruch (" + "; ".join(reasons) + ") — kein Signal"
     return bull, bear, ("; ".join(reasons) or None)
