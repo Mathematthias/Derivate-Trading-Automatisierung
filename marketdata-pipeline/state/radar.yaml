@@ -740,4 +740,13 @@ rows:
   id: Z107
   status: offen
   added: '2026-10-22'
-updated: '2026-10-22T12:48:44+02:00'
+- date: '2026-11-04'
+  kat: 5
+  werte: AMGN
+  ereignis: 'AMGN nach Q3-Zahlen (2026-11-03) Breakout-Retest @ 428,05 neu rechnen (TIW = Niveau, v76): Retest-Zone ueber dem Niveau, TP1 52W-Hoch ~447 pruefen'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Morning Check 2026-10-22 13:2x, Korrektur der Migration
+  id: Z108
+  status: offen
+  added: '2026-10-22'
+updated: '2026-10-22T13:23:36+02:00'
