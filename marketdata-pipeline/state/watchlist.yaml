@@ -2208,7 +2208,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'nach 2026-10-09 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 301,30$ (Investor-Day-Hoch 06.10.), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,75-2,08. ATR-Stufe 🔴: 1% Deckel, Hebel <=4,7. Earnings ~2026-11-26/12-01 (ungeklaert). Non-Quanto USD. RE-EVAL: 1D-Schluss >246,39 (TIW-Rueckeroberung) - dann neu rechnen.'
+    text: 'nach 2026-10-09 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 301,30$ (Investor-Day-Hoch 06.10.), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,75-2,08. ATR-Stufe 🔴: 1% Deckel, Hebel <=4,7. Earnings ~2026-11-26/12-01 (ungeklaert). Non-Quanto USD. RE-EVAL: 1D-Schluss >227,00 (Rueckeroberung EMA100-1D 226,87, Stand 2026-10-22; vorher >246,39; ATR 7,5 % rot, nah am Disqualifier 8 %) - dann neu rechnen.'
   notes: '[NEU 2026-10-09 15:35, User-Entscheid nach Pitch mit Recherche, Linien von Claude, Daten Digest 14:04 = Schluss 08.10., Chart 15:25] Pipeline-Pitch breakout_long (bo_level 280, 2 Bars, Vol 2,97x, late_entry) VERWORFEN: Schluss 08.10. 274,66 = 0,37 ATR unter 280 (TIW gebrochen); Rueckeroberung a la ANET faellt durch den Exit-Test: Stop-Buy ~283, SL 261,28, R 21,72, erstes Hindernis 301,30 = 0,84 R. Chart: EMA20/50/100/200-1D 259,76/242,53/222,65/187,43 bullish, Ext 1,03 ATR, R2 0,83, Trend-20 +26,6 %, RSI-1D 61,2 < Signal 63,3, RSI-4h 51,4 < Signal 64,1. ATR 14,48 = 5,27 % (TV zeigt 13,45 inkl. laufendem Nullbalken). Zone heute 256,14-263,38, Konfluenz 4h-EMA50 ~254-255 und Ende-Sept-Konsolidierung. TIW heute 252,52. SL = ATR-Term in der ganzen Zone (241,66 OG / 234,42 UG), R 21,72 -> 7 Stk Direktaktie bei FX 1,1197. RECHERCHE: Investor Day 06.10. (FY28-Umsatz ~20 Mrd $ vs. Konsens 18,2; Custom FY29 >12 Mrd; FY31 70-90 Mrd), Kurs +6-10 %, H 301,30. 08.10. -3,5 % sektorweit (AVGO
     -4,4 %, NVDA -2,9 %). Analysten 07.10.: UBS 350, JPM 360, Jefferies 450, Konsens 348,72 (Benzinga). KATALYSATOR: OCP Global Summit 2026-10-12 bis 10-15 (Radar) - Risiko, dass der Kurs ohne Ruecksetzer Richtung 300 laeuft (Zeile verfaellt); ''sell the news'' danach = gesuchter Ruecksetzer. GEGENREDE: YTD ~+223 %, KGV 90,9, 46 % ueber EMA200; Google-Optionsschein bis ~59 Mio Aktien; Insider-Verkaeufe COO ~2 Mio $ (09/2026), CEO 1,77 Mio $ (Datum ungeprueft); Weekly HH/HL nicht erfuellt. L7: Tech/AI-Cluster mit ANET/NVDA/NBIS - max. drei Tech-Cluster, Rang 1 <= 3 %, Rang 2/3 je <= 2 %, Summe <= 7 % RK (User-Entscheid 2026-10-09, vorher zwei / 5 %); Hoch-ATR-Plaetze beachten.'
   archived:
@@ -3523,4 +3523,18 @@ entries:
   archived:
     date: '2026-10-22'
     reason: Beobachtungszeile ohne Setup, nur Re-Eval
+- symbol: META
+  name: Meta Platforms (META, NASDAQ) - Social Media/Online-Werbung
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA200-1D
+  treiber: These TECH AI-Ruecksetzer Qualitaet (spielen, Korb 3 % RK, Re-Check 2026-10-30; Falsifikat Capex-Cut in den Q3-Calls ab META 2026-10-21 ODER Nasdaq-Schluss < EMA200 ~25.118)
+  expiry: '2026-11-06'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA200-1D -0,20/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 648,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (26,56 -> -39,84). TIW = 1D-Schluss unter EMA200-1D -0,50 ATR. TP1 700,00$ (4h-Konsolidierung 19.-21.10. unter EMA20/50-4h ~704, abgelesen) 1/3 raus. TP2 740,00$ (Lower High Okt, abgelesen). Rest Chandelier 2,0 ATR. R:R TP1 1,38 an 645,00. 1 %, ATR 4,1 % gelb: Direktaktie 4 Stk oder KO Hebel <=6,1. Earnings 2027-01-27. Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~20:15, User-Entscheid Tech-Abdeckung Weg A, Linien von Claude, User-Chart 1D+4h 20:12, US-Tageskerze laeuft] 1D O 676,35 H 681,07 L 644,20 C 645,67 (-7,43 %, Vol 29,2M vs Avg 21,5M) - Bruch durch EMA20/50/100 an einem Tag nach dem Q3-Call 21.10. plus Meldung zu einem Zivilurteil New Mexico (TV-Key-Facts, ungeprueft). EMA20/50/100/200 707,62/679,89/654,40/643,98 bullisch, Kurs nur ueber EMA200 = Gate 1/4 (Anker EMA200) erfuellt. RSI-1D 36,3/55,2, ATR 26,56 (4,1 %). 4h: RSI 28,9 < Sig 42,6, keine Umkehr, EMA20/50-4h 704,1/704,5. Rechnung: TIW ~630,70 (EMA200 -0,50 ATR am 22.10.); an 645 SL 605,16, R 39,84, TP1 1,38 R, TP2 2,38 R; Grenze 648,2. Sizing 150 EUR ~168 USD / 39,84 = 4 Stk. GEGENREDE: News-getriebener Bruch mit Volumen, 4h ueberverkauft ohne Umkehr; EMA100 654 direkt ueber der Zone (0,2 R); vor einem Einstieg pruefen, ob der META-Call einen Capex-Cut brachte (Falsifikat a der These TECH). L7: Mega-Cap/Tech mit NVDA-Zeile und ANET-Rest.'
 updated: '2026-10-22T17:34:40+00:00'
