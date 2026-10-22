@@ -514,3 +514,73 @@ def test_teilblock_nach_handelsschluss_bleibt_mit_now():
     assert list(out.index.strftime("%H:%M")) == ["09:30", "13:30"]
     out2 = resample_1h_to_4h(df, closed_only=True, now=pd.Timestamp("2026-10-08 15:45", tz="America/New_York"))
     assert list(out2.index.strftime("%H:%M")) == ["09:30"]
+
+
+# --- 2026-10-22: Teilblock am laufenden Tag (Befund VOD.L 14:03) und 2-Kerzen-Umkehr (User-Entscheid B) ----
+def test_teilblock_am_laufenden_tag_bleibt_offen_bis_sessionende():
+    import pandas as pd
+    from src.intraday_4h import resample_1h_to_4h
+    gestern = pd.date_range("2026-10-21 09:00", periods=9, freq="1h", tz="Europe/Berlin")   # 09..17 Uhr
+    heute = pd.date_range("2026-10-22 09:00", periods=5, freq="1h", tz="Europe/Berlin")     # 09..13 Uhr
+    df = pd.DataFrame({"Open": 1.0, "High": 2.0, "Low": 0.5, "Close": 1.5}, index=gestern.append(heute))
+    out = resample_1h_to_4h(df, closed_only=True, now=pd.Timestamp("2026-10-22 14:03", tz="Europe/Berlin"))
+    assert out.index[-1].strftime("%d %H:%M") == "22 09:00"        # 13:00-Block mit einer 1h-Kerze ist offen
+    spaet = pd.date_range("2026-10-22 09:00", periods=9, freq="1h", tz="Europe/Berlin")
+    df2 = pd.DataFrame({"Open": 1.0, "High": 2.0, "Low": 0.5, "Close": 1.5}, index=gestern.append(spaet))
+    out2 = resample_1h_to_4h(df2, closed_only=True, now=pd.Timestamp("2026-10-22 18:05", tz="Europe/Berlin"))
+    assert out2.index[-1].strftime("%d %H:%M") == "22 17:00"       # Schluss-Stummel nach Sessionende geschlossen
+    out3 = resample_1h_to_4h(df2, closed_only=True, now=pd.Timestamp("2026-10-22 17:40", tz="Europe/Berlin"))
+    assert out3.index[-1].strftime("%d %H:%M") == "22 13:00"       # konservativ: bis Vortags-Schlusskerze + 1h
+
+
+def _k(rows):
+    import pandas as pd
+    from datetime import timedelta
+    return pd.DataFrame(rows, index=pd.DatetimeIndex(
+        [pd.Timestamp("2026-10-20 09:00") + timedelta(hours=4 * i) for i in range(len(rows))]))
+
+
+def test_zwei_kerzen_umkehr_bullisch():
+    from src.intraday_4h import detect_reverse
+    df = _k([
+        {"Open": 121.0, "High": 121.2, "Low": 120.0, "Close": 120.2},
+        {"Open": 120.2, "High": 120.4, "Low": 119.2, "Close": 119.4},
+        {"Open": 119.4, "High": 119.5, "Low": 118.2, "Close": 118.4},   # rot, Hoch 119,5
+        {"Open": 118.4, "High": 118.9, "Low": 118.3, "Close": 118.8},   # klein grün
+        {"Open": 118.8, "High": 119.7, "Low": 118.6, "Close": 119.6},   # grün, Close > 119,5
+    ])
+    bull, bear, why = detect_reverse(df)
+    assert bull is True and bear is False and "2-Kerzen-Umkehr" in why
+
+
+def test_zwei_kerzen_umkehr_verlangt_close_ueber_rotem_hoch():
+    from src.intraday_4h import detect_reverse
+    df = _k([
+        {"Open": 121.0, "High": 121.2, "Low": 120.0, "Close": 120.2},
+        {"Open": 119.4, "High": 119.9, "Low": 118.2, "Close": 118.4},   # rot, Hoch 119,9
+        {"Open": 118.4, "High": 118.9, "Low": 118.3, "Close": 118.8},
+        {"Open": 118.8, "High": 119.7, "Low": 118.6, "Close": 119.6},   # 119,6 < 119,9
+    ])
+    bull, _, _ = detect_reverse(df)
+    assert bull is False
+
+
+def test_zwei_kerzen_umkehr_nicht_im_aufwaertsschub():
+    from src.intraday_4h import detect_reverse
+    df = _k([{"Open": 100 + i, "High": 101.5 + i, "Low": 99.5 + i, "Close": 101 + i} for i in range(6)]
+            + [{"Open": 106.5, "High": 106.8, "Low": 105.8, "Close": 106.0},   # kleine rote Pause
+               {"Open": 106.2, "High": 107.5, "Low": 105.9, "Close": 107.2}])   # kein Engulfing (Open > Vor-Close + Toleranz)
+    bull, _, _ = detect_reverse(df)
+    assert bull is False                                                  # kein Acht-Kerzen-Tief → keine Umkehr
+
+
+def test_zwei_kerzen_umkehr_baerisch():
+    from src.intraday_4h import detect_reverse
+    df = _k([
+        {"Open": 100.0, "High": 101.0, "Low": 99.8, "Close": 100.8},
+        {"Open": 100.8, "High": 102.0, "Low": 100.6, "Close": 101.8},   # grün, Tief 100,6
+        {"Open": 101.8, "High": 102.2, "Low": 101.2, "Close": 101.4},
+        {"Open": 101.4, "High": 101.5, "Low": 100.2, "Close": 100.4},   # rot, Close < 100,6
+    ])
+    bull, bear, why = detect_reverse(df)
+    assert bear is True and bull is False and "2-Kerzen-Umkehr" in why
