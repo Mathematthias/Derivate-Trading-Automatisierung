@@ -111,6 +111,31 @@ thesen_koerbe:
   TotalEnergies:      "TTE.PA"     # integriert inkl. Raffinerie, Paris, EUR (User-Wunsch 2026-10-19)
 
 # ============================================================
+# TECH-LINSE — Tech-Werte der Sektor-Linse ohne Tier-A-Abdeckung (seit 2026-10-22)
+#
+# Anlass: Watchlist duenn, der Tech-Abverkauf KW42/43 soll bei EMA-Rueckeroberungen
+# Setups liefern. Die Sektor-Linse sah nur 29 von 45 Cluster-Namen, weil sie nur
+# Tier-A-Snapshots liest; Tier B/C scannen diese Werte fuer Pitches, aber ohne 4h und
+# ohne Linse. TSM und DELL waren in keinem Tier. User-Entscheid Weg B 2026-10-22.
+# NICHT aufgenommen: PLTR (Ethik-Frage Verteidigungsanteil offen, User fragen).
+# Laufzeit Tier A ~6 Min fuer 238 Symbole; +13 Symbole ~ +20 s.
+# ============================================================
+tech_linse:
+  AMD:                "AMD"        # Halbleiter (CPU/GPU), Nasdaq, USD (auch Tier C)
+  TSMC:               "TSM"        # Foundry, NYSE-ADR, USD (bisher in keinem Tier)
+  Applied_Materials:  "AMAT"       # Halbleiter-Ausruestung, Nasdaq, USD (auch Tier C)
+  Lam_Research:       "LRCX"       # Halbleiter-Ausruestung, Nasdaq, USD (auch Tier C)
+  KLA:                "KLAC"       # Halbleiter-Prozesskontrolle, Nasdaq, USD (auch Tier C)
+  Infineon:           "IFX.DE"     # Leistungshalbleiter, Xetra, EUR (auch Tier B)
+  Oracle:             "ORCL"       # Datenbanken/Cloud, NYSE, USD (auch Tier C)
+  CrowdStrike:        "CRWD"       # Cybersecurity, Nasdaq, USD (auch Tier C)
+  ServiceNow:         "NOW"        # Workflow-Software, NYSE, USD (auch Tier C)
+  Adobe:              "ADBE"       # Kreativ-/Dokumentsoftware, Nasdaq, USD (auch Tier C)
+  SAP:                "SAP.DE"     # Unternehmenssoftware, Xetra, EUR (auch Tier B)
+  Dell:               "DELL"       # Server/AI-Hardware, NYSE, USD (bisher in keinem Tier)
+  Tesla:              "TSLA"       # E-Autos, Nasdaq, USD (Mega-Cap-Cluster, auch Tier C)
+
+# ============================================================
 # NEBENWERTE-COVERAGE — DE Mid/Small-Caps mit Hidden-Catalyst-Potenzial
 # Stand: 2026-04-27, V0.3 — Coverage-Erweiterung nach CANCOM-Lücke
 #

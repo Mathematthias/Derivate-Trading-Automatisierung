@@ -63,3 +63,30 @@ def test_tiw_relativ_ema200_wird_nicht_als_ema20_gelesen():
     assert t["anker"] == "EMA20" and t["off"] == -0.3
     t = _leg_tiw("TIW = 1D-Schluss unter EMA100-1D -0,30 ATR.")
     assert t["anker"] == "EMA100"
+
+
+# --- Weg C 2026-10-22: Rueckeroberung als Messung -------------------------------
+def _rsnap(kurs, prev, e20, e50, e100, e200, atr=1.0, stack="bullish"):
+    return {"kurs": kurs, "prev_close": prev, "ema20": e20, "ema50": e50, "ema100": e100,
+            "ema200": e200, "atr": atr, "stack": stack, "dist52wH": -20.0, "move30d": -10.0, "chg": 1.0}
+
+
+def test_rueckeroberung_ema20_und_ema50():
+    from sektor_linse import sektor_linse
+    u = {
+        "^IXIC": {"kurs": 100, "ema200": 90, "stack": "bullish", "dist52wH": -5},
+        "NVDA": _rsnap(101, 99, 100, 95, 90, 80),            # ueber EMA20 zurueck
+        "AMD": _rsnap(101, 99, 98, 100, 90, 80),             # ueber EMA50 (hoehere Huerde) zurueck
+        "AVGO": _rsnap(97, 96, 100, 99, 98, 95),             # unter allem, keine Rueckeroberung
+        "MU": _rsnap(101, 102, 100, 95, 90, 80),             # war schon drueber
+    }
+    c = sektor_linse(u)["cluster"]["halbleiter"]
+    assert c["n_rueck"] == 2
+    assert c["rueckeroberungen"] == ["AMD>EMA50", "NVDA>EMA20"]
+
+
+def test_rueckeroberung_ohne_prev_close():
+    from sektor_linse import sektor_linse
+    s = _rsnap(101, None, 100, 95, 90, 80)
+    c = sektor_linse({"NVDA": s})["cluster"]["halbleiter"]
+    assert c["n_rueck"] == 0 and c["rueckeroberungen"] == []

@@ -40,6 +40,10 @@ TIEF_ATR = 2.0          # „tief": Kurs mehr als 2 ATR unter der EMA20
 ANKER_ATR = 0.5         # Kurs ≤ 0,5 ATR an EMA100/EMA200 = tiefer Anker
 SIGNAL_ANTEIL = 0.4     # Anteil „tief" im Cluster, ab dem `signal` gesetzt wird
 MIN_N = 4               # darunter kein Signal (Stichprobe trägt es nicht)
+# Rückeroberung (Weg C, User 2026-10-22, reine Messung): Vortagesschluss auf oder
+# unter der EMA, aktueller Kurs darüber. Näherung: die EMA ist der heutige Wert,
+# nicht der des Vortags. Bei laufender Kerze ist es ein Zwischenstand.
+RUECK_EMAS = ("ema50", "ema20")   # höhere Hürde zuerst gemeldet
 
 
 def _num(x: Any) -> Optional[float]:
@@ -77,8 +81,16 @@ def _mitglied(sym: str, v: dict[str, Any]) -> Optional[dict[str, Any]]:
             if abs(kurs - e[k]) / atr <= ANKER_ATR:
                 anker = k.upper()
                 break
+    prev = _num(v.get("prev_close"))
+    rueck = None
+    if prev is not None:
+        for k in RUECK_EMAS:
+            if prev <= e[k] < kurs:
+                rueck = k.upper()
+                break
     return {
         "symbol": sym,
+        "rueck": rueck,
         "d_ema20_atr": round(d20, 2),
         "ueber_emas": sum(kurs > e[k] for k in e),
         "tief": d20 < -TIEF_ATR,
@@ -108,13 +120,16 @@ def sektor_linse(universe: dict[str, Any]) -> dict[str, Any]:
             "median_move30d": _median([x["move30d"] for x in m]),
             "median_chg": _median([x["chg"] for x in m]),
             "tiefe_anker": sorted(f'{x["symbol"]}@{x["anker"]}' for x in m if x["anker"]),
+            "n_rueck": sum(1 for x in m if x["rueck"]),
+            "rueckeroberungen": sorted(f'{x["symbol"]}>{x["rueck"]}' for x in m if x["rueck"]),
             "signal": bool(n >= MIN_N and anteil is not None
                            and anteil >= SIGNAL_ANTEIL and index_intakt),
         }
     return {
         "modus": "messung",
         "def": {"tief_atr": TIEF_ATR, "anker_atr": ANKER_ATR,
-                "signal_anteil": SIGNAL_ANTEIL, "min_n": MIN_N},
+                "signal_anteil": SIGNAL_ANTEIL, "min_n": MIN_N,
+                "rueck_emas": list(RUECK_EMAS)},
         "benchmark": bench,
         "index_intakt": index_intakt,
         "cluster": cluster_out,
