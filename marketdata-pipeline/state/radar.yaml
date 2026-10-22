@@ -722,4 +722,22 @@ rows:
   id: Z105
   status: offen
   added: '2026-10-21'
-updated: '2026-10-22T11:35:41+02:00'
+- date: '2026-11-05'
+  kat: 5
+  werte: MCD
+  ereignis: 'MCD nach Q3-Zahlen (2026-11-04) Short-Trend-Pullback neu rechnen: Re-Eval <246,50 war am 2026-10-21 ausgeloest (Schluss 246,25); EMA20/EMA50-Lage und TP1 >= 1,3 R pruefen'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: 'Morning Check 2026-10-22, User: wie vorgeschlagen'
+  id: Z106
+  status: offen
+  added: '2026-10-22'
+- date: '2026-11-06'
+  kat: 5
+  werte: DTE.DE
+  ereignis: 'DTE nach Q3-Zahlen (2026-11-05) Breakdown-Retest neu rechnen: Re-Eval <25,52 am 2026-10-21 ausgeloest (Schluss 25,50, Folgetag 25,77 zurueck im Band 25,16-25,93)'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: 'Morning Check 2026-10-22, User: wie vorgeschlagen'
+  id: Z107
+  status: offen
+  added: '2026-10-22'
+updated: '2026-10-22T12:48:44+02:00'
