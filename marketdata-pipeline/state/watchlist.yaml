@@ -3054,14 +3054,17 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau 428,05 (20-Tage-Hoch)
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-19'
   expiry: '2026-10-26'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-19 BREAKOUT-RETEST-LONG (Retest tief): Niveau 428,05$ (20-Tage-Hoch, Ausbruch Vol 1,51x). Touch 422,72-426,23$ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 426,23$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 419,52). Stopweite entry-relativ -1,5xATR-1D (10,66 -> -15,99). TIW = 1D-Schluss unter 422,72$. TP1 447,02$ (52W-Hoch Sep, Digest) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,38 an 425,00. Pilot 1 %. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-19 BREAKOUT-RETEST-LONG (Retest tief): Niveau 428,05$ (20-Tage-Hoch, Ausbruch Vol 1,51x). Touch 422,72-426,23$ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 426,23$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 419,52). Stopweite entry-relativ -1,5xATR-1D (10,66 -> -15,99). TIW = 1D-Schluss unter 422,72$. TP1 447,02$ (52W-Hoch Sep, Digest) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,38 an 425,00. Pilot 1 %. Earnings 2026-11-03 -> KO-Exit bis 2026-10-27. Non-Quanto USD. RE-EVAL: 1D-Schluss >428,05 (Schluss zurueck ueber das Ausbruchsniveau) - dann neu rechnen.'
   notes: '[NEU 2026-10-19, Pitch breakout_long RRprox 4,32, User-Auftrag "umsetzen", User-Chart 13:39] Digest 13:32: Kurs 432,49 (Fr), EMA20/50/100/200 414,87/406,98/392,86/371,96 bullish, RSI 62,5, 30d +13,9 % (knapp unter Reife 15), ATR 10,66 (2,5 %). Am Kurs TP1 447,02 nur 0,88 R -> nur Retest tief. Treiber fuer den Gap 14./15.10. nicht gefunden (Recherche 2026-10-19 ohne datierten Befund). L7: Pharma-Long mit ABBV. Expiry 2026-10-26 wegen Earnings-Sperre ab 2026-10-27.'
+  archived:
+    date: '2026-10-22'
+    reason: 'v76 Hebel C (User 2026-10-22): Zone 422,72-426,23 unter dem Niveau 428,05 = nach Klassendefinition Fehlausbruch, TIW = Niveau waere gebrochen'
 - symbol: BNR.DE
   name: Brenntag SE (BNR, XETRA) — Chemiedistribution
   direction: LONG
@@ -3102,14 +3105,17 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau 22,16 (Breakdown)
   treiber: ''
-  status: aktiv
+  status: archiviert
   expiry: '2026-10-22'
   notes: '[NEU 2026-10-20, Pitch-Top Morning Check, User: auf WL, Linien von Claude, Digest 11:36] Breakdown unter 22,16 per Schluss vor 8 HT mit Vol 5,26x. Stack bearish EMA 22,55/23,65/24,63/26,39, 30d -13 %, RSI 37,6, ATR 0,68 (3,1 %). Kurs 21,70 knapp unter der Zone. Rechnung: an 22,10 SL 23,12 (ATR-Term), R 1,02, TP1 20,62 = 1,45 R; an 21,94 = 1,30 R, an 22,50 = 1,84 R. 1 % = ~147 Stk Underlying, KO h<=8. GEGENREDE: Klassenfenster nur bis 2026-10-22, TP1 aus Digest-Abstand (52W-Tief), Earnings-Termin Q3 nicht im Digest. Ersetzt die archivierte Zeile vom 2026-10-01 (Halbzeit-Archiv 2026-10-19, Historie im Journal-Blatt Watchlist-Archiv).'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-20 BREAKDOWN-RETEST-SHORT: Niveau 22,16€ (Breakdown per Schluss vor 8 HT, Vol 5,26x). Touch 21,94-22,50€ [pullback] (UG = Entry-Grenze 1,3 R) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,68 -> +1,02). TIW = 1D-Schluss ueber 22,50€. TP1 20,62€ (52W-Tief, aus Digest-Abstand, am Chart pruefen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,84. 1% Sizing (Pilot). Short nur KO, Hebel <=8 (ATR 3,1 % 🟡). Klassenfenster Breakdown <=10 HT -> Entry bis 2026-10-22. Earnings Q3 Termin offen (Handcheck IR). Non-Quanto EUR.'
+    gate: 🔴
+    text: 'nach 2026-10-20 BREAKDOWN-RETEST-SHORT: Niveau 22,16€ (Breakdown per Schluss vor 8 HT, Vol 5,26x). Touch 21,94-22,50€ [pullback] (UG = Entry-Grenze 1,3 R) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,68 -> +1,02). TIW = 1D-Schluss ueber 22,50€. TP1 20,62€ (52W-Tief, aus Digest-Abstand, am Chart pruefen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,84. 1% Sizing (Pilot). Short nur KO, Hebel <=8 (ATR 3,1 % 🟡). Klassenfenster Breakdown <=10 HT -> Entry bis 2026-10-22. Earnings Q3 Termin offen (Handcheck IR). Non-Quanto EUR. RE-EVAL: 1D-Schluss >21,64 (Rueckkehr ins Band; Klassenfenster dann abgelaufen -> nur als Trend-Pullback-Short neu fassen) - dann neu rechnen.'
   added: '2026-10-20'
+  archived:
+    date: '2026-10-22'
+    reason: Verfall 2026-10-22, Kurs 21,48 unter dem Band 21,64-22,51 (Gate ⛔); Klassenfenster Breakdown <= 10 HT endet heute
 - symbol: BNZL.L
   name: Bunzl plc (BNZL, LSE) - Distribution Services, Verbrauchsmaterial-Grosshandel
   direction: LONG
@@ -3164,14 +3170,17 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau 406,00 (Re-Eval-Marke)
   treiber: Q3 2026 beat + EPS-Guidance 2026 angehoben (TradingView Key facts, 2026-10-20)
-  status: aktiv
+  status: archiviert
   expiry: '2026-10-30'
   notes: '[NEU 2026-10-20, Re-Eval 406 ausgeloest (Schluss 2026-10-19 406,88), User: anlegen, Chart 1D+4h 12:50] Ausbruch 20-Tage-Hoch 399,88 vor 2 HT mit Vol 1,79x; Stack 1D neutral (EMA 385,97/387,95/385,56/375,58), RSI 65,8, ATR 11,87 (2,9 %). 4h: Earnings-Spike 14.10. bis ~413, seitdem Range 400-413. TP1 428 unter der Aug-Konsolidierung ~430 (abgelesen), TP2 445 Aug-Hoch (abgelesen). Rechnung: an 404,00 SL 386,20, R 17,80, TP1 1,35 R / TP2 2,30 R; an 400,07 = 1,57/2,52 R. Ueber 404,86 kein Entry (TP1 < 1,3 R) - Kurs 406,88 steht darueber, also bei Touch. 1 % = 9 Stk, E@h5 ~650 EUR. GEGENREDE: Stack neutral, TP1/TP2 nur abgelesen, Retest der 406 steht aus. Ersetzt die Archivzeile Trade #88 (Historie im Journal-Blatt Watchlist-Archiv).'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-20 BREAKOUT-RETEST-LONG: Niveau 406,00$ (Re-Eval-Marke, Ausbruch 20-Tage-Hoch 399,88 vor 2 HT, Vol 1,79x). Touch 400,07-404,86$ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 404,86$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 396,51). Stopweite entry-relativ -1,5xATR-1D (11,87 -> -17,80). TIW = 1D-Schluss unter 400,07$. TP1 428,00$ (unter Aug-Konsolidierung ~430, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 445,00$ (Aug-Hoch, abgelesen). Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,57. Pilot 1 %. ATR 2,9 % gelb: KO Hebel <= 8,6 oder Direktaktie 9 Stk. Earnings 2027-01-12. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-20 BREAKOUT-RETEST-LONG: Niveau 406,00$ (Re-Eval-Marke, Ausbruch 20-Tage-Hoch 399,88 vor 2 HT, Vol 1,79x). Touch 400,07-404,86$ [pullback] (Niveau -0,50 ATR bis Entry-Grenze) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 404,86$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 396,51). Stopweite entry-relativ -1,5xATR-1D (11,87 -> -17,80). TIW = 1D-Schluss unter 400,07$. TP1 428,00$ (unter Aug-Konsolidierung ~430, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 445,00$ (Aug-Hoch, abgelesen). Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,57. Pilot 1 %. ATR 2,9 % gelb: KO Hebel <= 8,6 oder Direktaktie 9 Stk. Earnings 2027-01-12. Non-Quanto USD. RE-EVAL: 1D-Schluss >430,00 (ueber die Aug-Konsolidierung ~430, abgelesen) - dann neu rechnen.'
   added: '2026-10-20'
+  archived:
+    date: '2026-10-22'
+    reason: 'v76 Migration (User 2026-10-22): neuer Ausbruch ueber 414,12 (Digest 2026-10-21), alte Zone 400-405 >1 ATR unter Kurs 417,0; BRT @ 414,12 scheitert am Exit-Test (TP1 428 = 0,79 R an der Band-UG)'
 - symbol: DDOG
   name: Datadog Inc. (DDOG, NASDAQ) - Observability-Software
   direction: LONG
@@ -3340,4 +3349,4 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >255,00$ + Vol >Avg-20d. Dann Breakout-Retest-Long @ ~255 neu rechnen (TIW Schluss < Niveau - 0,30 ATR, TP1 ~288 knapp unter Luecken-Oberkante ~290, abgelesen; Stand ATR 11,08: Stop-Buy ~257, SL ~240,4, R:R ~1,87).'
   notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:55, User: mit Claudes Wert, Luecken-Unterkante 252-255 abgelesen - Fadenkreuz pruefen] Tag 2026-10-21: O 214,50 H 232,06 L 214,50 C 231,33 (+7,8 %), Vol 2,77 Mio (Schnitt 3,08). EMA20/50/100/200-1D 212,32/196,25/182,83/184,14 (EMA100 < EMA200 = Stack noch nicht bullish), RSI-1D 63,7, ATR 11,08 = 4,8 % (knapp unter Stufe rot: KO Hebel <= 5, besser Direktaktie). Struktur oberhalb (abgelesen): Jan-2026-Cluster ~236-244, Dez-Bodenbildung ~245-255, Luecke ~255-290 (Abverkauf Dez 2025 von ~295/300). News 2026-10-21: Zscaler und Tenable steigen (Grund ungeprueft).'
-updated: '2026-10-22T12:20:36+02:00'
+updated: '2026-10-22T12:29:16+02:00'
