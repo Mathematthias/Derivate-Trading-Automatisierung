@@ -3536,5 +3536,75 @@ entries:
   - label: A
     gate: 🟡
     text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA200-1D -0,20/+0,15 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 648,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (26,56 -> -39,84). TIW = 1D-Schluss unter EMA200-1D -0,50 ATR. TP1 700,00$ (4h-Konsolidierung 19.-21.10. unter EMA20/50-4h ~704, abgelesen) 1/3 raus. TP2 740,00$ (Lower High Okt, abgelesen). Rest Chandelier 2,0 ATR. R:R TP1 1,38 an 645,00. 1 %, ATR 4,1 % gelb: Direktaktie 4 Stk oder KO Hebel <=6,1. Earnings 2027-01-27. Non-Quanto USD.'
-  notes: '[NEU 2026-10-22 ~20:15, User-Entscheid Tech-Abdeckung Weg A, Linien von Claude, User-Chart 1D+4h 20:12, US-Tageskerze laeuft] 1D O 676,35 H 681,07 L 644,20 C 645,67 (-7,43 %, Vol 29,2M vs Avg 21,5M) - Bruch durch EMA20/50/100 an einem Tag nach dem Q3-Call 21.10. plus Meldung zu einem Zivilurteil New Mexico (TV-Key-Facts, ungeprueft). EMA20/50/100/200 707,62/679,89/654,40/643,98 bullisch, Kurs nur ueber EMA200 = Gate 1/4 (Anker EMA200) erfuellt. RSI-1D 36,3/55,2, ATR 26,56 (4,1 %). 4h: RSI 28,9 < Sig 42,6, keine Umkehr, EMA20/50-4h 704,1/704,5. Rechnung: TIW ~630,70 (EMA200 -0,50 ATR am 22.10.); an 645 SL 605,16, R 39,84, TP1 1,38 R, TP2 2,38 R; Grenze 648,2. Sizing 150 EUR ~168 USD / 39,84 = 4 Stk. GEGENREDE: News-getriebener Bruch mit Volumen, 4h ueberverkauft ohne Umkehr; EMA100 654 direkt ueber der Zone (0,2 R); vor einem Einstieg pruefen, ob der META-Call einen Capex-Cut brachte (Falsifikat a der These TECH). L7: Mega-Cap/Tech mit NVDA-Zeile und ANET-Rest.'
+  notes: '[RECHERCHE 2026-10-22 ~21:00] Q3 2026 (21.10.): Umsatz 64,6 Mrd. (+26 %), Capex 2026 auf 135-145 Mrd. eingeengt, kein Cut (tradingkey) -> Falsifikat (a) der These TECH durch META NICHT ausgeloest. Abverkauf 22.10. laut Berichten wegen Rechtskosten 9,89 Mrd. (halbiert den ausgewiesenen Gewinn), Margendruck und negativem Free Cash Flow (techi.com, investing.com). || [NEU 2026-10-22 ~20:15, User-Entscheid Tech-Abdeckung Weg A, Linien von Claude, User-Chart 1D+4h 20:12, US-Tageskerze laeuft] 1D O 676,35 H 681,07 L 644,20 C 645,67 (-7,43 %, Vol 29,2M vs Avg 21,5M) - Bruch durch EMA20/50/100 an einem Tag nach dem Q3-Call 21.10. plus Meldung zu einem Zivilurteil New Mexico (TV-Key-Facts, ungeprueft). EMA20/50/100/200 707,62/679,89/654,40/643,98 bullisch, Kurs nur ueber EMA200 = Gate 1/4 (Anker EMA200) erfuellt. RSI-1D 36,3/55,2, ATR 26,56 (4,1 %). 4h: RSI 28,9 < Sig 42,6, keine Umkehr, EMA20/50-4h 704,1/704,5. Rechnung: TIW ~630,70 (EMA200 -0,50 ATR am 22.10.); an 645 SL 605,16, R 39,84, TP1 1,38 R, TP2 2,38 R; Grenze 648,2. Sizing 150 EUR ~168 USD / 39,84 = 4 Stk. GEGENREDE: News-getriebener Bruch mit Volumen, 4h ueberverkauft ohne Umkehr; EMA100 654 direkt ueber der Zone (0,2 R); vor einem Einstieg pruefen, ob der META-Call einen Capex-Cut brachte (Falsifikat a der These TECH). L7: Mega-Cap/Tech mit NVDA-Zeile und ANET-Rest.'
+- symbol: VLO
+  name: Valero Energy (VLO, NYSE) - Raffinerie US
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: 'These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-26; Falsifikat Brent-Schluss < 88 USD ODER Waffenruhe USA-Iran)'
+  expiry: '2026-11-06'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,20 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 428,25$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (17,05 -> -25,58). TIW = 1D-Schluss unter 416,00$ (Tief Earnings-Tag 22.10.). TP1 461,50$ (Okt-Hoch) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,43 an 425,00. 1 %: Direktaktie 6 Stk oder KO Hebel <=6. Earnings vorbei (2026-10-22). Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche, User-Chart 1D+4h 20:45, Linien von Claude] Q3 2026 am 22.10.: EPS 23,90 vs. Konsens 20,90, Umsatz 46,1 Mrd. (investing.com); Aktie trotzdem -2,6 % (Tagestief 416,41, Schluss ~425,3) - Markt liest Spitzenmargen, Management sieht das Umfeld als tragfaehig, Q4-Durchsatz saisonal tiefer. EMA20/50/100/200-1D 424,57/392,07/350,21/297,65 bullisch, RSI-1D 54,4/67,8, ATR 17,05 (4,0 % gelb). 4h: Abpraller an der EMA50-4h 419,11, RSI-4h 45,6 < Sig 56,9. Huerde: Okt-Konsolidierung 440-450 bei 0,6-1,0 R. L7: Raffinerie-Block mit MPC (max. 2 parallel); Treiber These OEL.'
+- symbol: MPC
+  name: Marathon Petroleum (MPC, NYSE) - Raffinerie US
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: 'These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-26; Falsifikat Brent-Schluss < 88 USD ODER Waffenruhe USA-Iran)'
+  expiry: '2026-10-26'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA20-1D -0,10/+0,60 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 459,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (16,83 -> -25,25). TIW = 1D-Schluss unter 448,00$ (EMA20-Test 22.10., Tagestief 448,38). TP1 492,00$ (unter Okt-Hoch ~494) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,47 an 455,00. 1 % (30d +18 % = reif, late_entry): Direktaktie 6 Stk. Earnings 2026-11-03 -> Entry bis 2026-10-26, Earnings-Entscheid bis 2026-11-02. Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche, User-Chart 1D+4h 20:46, Linien von Claude] 1D O 473,00 L 448,38 C ~459,3 (-1,85 %): Tagestief exakt an der EMA20-1D 449,22, unterer Docht. EMA20/50/100/200 449,22/409,37/362,34/307,16 bullisch, RSI-1D 61,0/73,2, ATR 16,83 (3,7 %). 4h: EMA20/50-4h 464,0/441,8, RSI-4h 50,3 < Sig 65,8. Okt-Konsolidierung 470-485 als Zwischenhuerde (0,6-1,2 R). TD Cowen haelt Buy (TV-News). Kurs 459,3 steht an der Entry-Grenze - Entry braucht Ruecksetzer. L7: Raffinerie-Block mit VLO; Treiber These OEL.'
+- symbol: ADI
+  name: Analog Devices (ADI, NASDAQ) - Analog-/Mixed-Signal-Halbleiter
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  expiry: '2026-11-06'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 394,50$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (13,10 -> -19,65). TIW = 1D-Schluss unter EMA100-1D -0,50 ATR. TP1 420,00$ (Okt-Hoch) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,73 an 386,00. 1 %: Direktaktie 8 Stk oder KO Hebel <=7. Earnings 2026-11-24. Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche (Tech-Abdeckung), User-Chart 1D+4h 20:46, Linien von Claude] 1D C 388,49 (-4,3 %), EMA20/50/100/200 398,33/390,78/383,50/361,25 bullisch, Kurs ueber EMA100+200 = Gate 2/4 (Anker EMA100). RSI-1D 45,2/58,5, ATR 13,10 (3,4 %). 4h: unter EMA100-4h 390,6, ueber EMA200-4h 383,4, RSI-4h 40,1 < Sig 47,4. Huerden EMA20 398 (0,6 R) und Okt-Lower-High ~410 (1,2 R). News: ADI raet Aktionaeren, ein Mini-Tender-Angebot (525 $) abzulehnen (TV) - ohne Kursrelevanz. L7: Tech-Cluster mit NVDA, META und ANET-Rest - max. drei Positionen.'
+- symbol: CMCSA
+  name: Comcast (CMCSA, NASDAQ) - Kabel/Breitband/Medien
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: ''
+  expiry: '2026-11-06'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 TREND-PULLBACK-SHORT: Touch EMA50-1D -0,20/+0,30 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (>= Schluss - 0,25 ATR, v76) oder Stop-Sell unter deren Tief, unter 22,85$ kein Entry (TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,687 -> +1,03). TIW = 1D-Schluss ueber 23,30$ (Hoch Earnings-Tag 22.10.). TP1 21,50$ (Okt-Konsolidierung 21,4-21,6) 1/3 raus. TP2 20,48$ (52W-Tief). Rest Chandelier 2,0 ATR. R:R TP1 1,41 / TP2 2,40 an 22,95. 1 %, Short nur KO, Hebel <=7. Earnings vorbei (2026-10-22), Ex-Tag naechster ~2027-01-14. Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche, User-Chart 1D+4h 20:46, Linien von Claude] Q3 am 22.10. laut TV-Key-Facts: Umsatz 29,30 Mrd. (-6,1 %), bereinigtes EPS 1,07; Aktie +3,0 %. Tageskerze O 22,44 H 23,29 C 22,75: Docht ueber die EMA50-1D 23,03 und abgewiesen. EMA20/50/100/200 22,05/23,03/24,05/25,58 baerisch, RSI-1D 55,5/35,8, ATR 0,687 (3,0 %). 4h: Spike an EMA100-4h 23,03 abgewiesen, RSI-4h 63,8 > Sig 55,9. GEGENREDE (L10): Konsensvergleich der Zahlen nicht recherchiert (Suche lieferte nur 2025er Artikel); Reaktion positiv; EMA20 22,05 als erste Unterstuetzung bei 0,87 R.'
+- symbol: LULU
+  name: Lululemon Athletica (LULU, NASDAQ) - Sportbekleidung
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: ''
+  expiry: '2026-11-06'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 TREND-PULLBACK-SHORT: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (>= Schluss - 0,25 ATR, v76) oder Stop-Sell unter deren Tief, unter 100,50$ kein Entry (TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (3,78 -> +5,67). TIW = 1D-Schluss ueber 105,50$ (Sep-Range-Hoch, abgelesen). TP1 92,00$ (Okt-Tief) 1/3 raus. TP2 90,38$ (52W-Tief). Rest Chandelier 2,0 ATR. R:R TP1 1,94 an 103,00. 1 %, Short nur KO, Hebel <=6,6. Earnings 2026-12-10. Keine Dividende. Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche, User-Chart 1D+4h 20:47, Linien von Claude] Heute +4,8 % (O 95,39 C 101,15) trotz Wolfe-Erstbewertung Underperform, Ziel 75 $ (marketbeat 2026-10-22); Einzelhandel insgesamt fester (DKS ebenfalls im Plus, Schlagzeile financialcontent). EMA20/50/100/200 97,89/103,38/113,40/135,26 baerisch, RSI-1D 54,0/41,3, ATR 3,78 (3,7 %). 4h: Kurs 101,15 knapp unter EMA100-4h 103,35, RSI-4h 61,9 > Sig 55,2. GEGENREDE (L10): -81 % vom Hoch, neue CEO, Insiderkaeufe, laufende Rueckkaeufe, 1,4 Mrd. Cash ohne Schulden (marketbeat) -> Squeeze-Risiko in Rallys; Analystenkonsens dagegen baerisch (Ziele 75-100 $).'
 updated: '2026-10-22T17:34:40+00:00'
