@@ -292,7 +292,11 @@ grinders:
   enabled: true
   top_n: 5            # 3 -> 5 (User-Wunsch 2026-09-07)
   max_atr_pct: 2.5        # der Stop muss billig sein
-  max_dist_atr: 0.5       # Kurs klebt an der EMA20
+  # 🆕 2026-10-22 (User-Entscheid B): 0,5 -> 2,0. Ein gleichmaessiger Grinder laeuft ~1,4 x Tempo ATR
+  # vor seiner EMA20 (EMA-Lag ~9,5 HT, Steigung 3 x Tempo ATR / 20 HT) — mit 0,5 kam er nur an
+  # Ruecksetzer-Tagen in den Block, die Zwei-Laeufe-Regel war praktisch unerfuellbar. 2,0 = Gate 1 (L18,
+  # Extension). Der Einstieg (Band) steht jetzt in der Grinder-Zeile, nicht im Filter.
+  max_dist_atr: 2.0
   min_move_atr: 1.0       # Trendstaerke in ATR-Einheiten, NICHT in Prozent
   # 🆕 2026-09-24 (User-Entscheid Variante B): Tempo-Basis = Regressionssteigung
   # der letzten 20 Schlusskurse (log), hochgerechnet auf 20 HT
