@@ -641,8 +641,12 @@ def main():
             import grinder_streak as gs
             hist = read_latest_json_file(drive_service, briefing_folder_id, gs.PREFIX)
             neu = gs.aktualisieren(hist, today, merged_grinders)
+            # Fix 2026-10-22: write_json_file erwartet einen String. Bis hier wurde das dict
+            # uebergeben -> AttributeError im try, Historie nie geschrieben, jeder Grinder
+            # stand dauerhaft auf Tag 1 (kein GRINDER-STREAK-File im Drive, keine streak_tage).
             write_json_file(drive_service, briefing_folder_id,
-                            f"{gs.PREFIX}{timestamp.strftime('%Y-%m-%d-%H%M')}.json", neu)
+                            f"{gs.PREFIX}{timestamp.strftime('%Y-%m-%d-%H%M')}.json",
+                            gs.als_json(neu))
             cleanup_old_files(drive_service, briefing_folder_id, gs.PREFIX, keep_count=3)
             g_meta["streak_tage"] = sorted(neu.get("tage", {}))
         except Exception as exc:

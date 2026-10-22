@@ -27,3 +27,20 @@ def test_luecke_bricht_folge():
     g = [{"symbol": "X", "dir": "long"}]
     gs.aktualisieren(h, date(2026, 10, 9), g)
     assert g[0]["streak"] == 1
+
+
+def test_als_json_ist_string_und_rund():
+    """Fix 2026-10-22: der Sync uebergab das dict an write_json_file (erwartet str)."""
+    import json
+    h = gs.aktualisieren(None, date(2026, 10, 21), [{"symbol": "BNZL.L", "dir": "long"}])
+    txt = gs.als_json(h)
+    assert isinstance(txt, str) and json.loads(txt) == h
+    g = [{"symbol": "BNZL.L", "dir": "long"}]
+    gs.aktualisieren(json.loads(txt), date(2026, 10, 22), g)
+    assert g[0]["streak"] == 2
+
+
+def test_sync_ruft_als_json():
+    import pathlib
+    src = pathlib.Path(__file__).resolve().parents[1].joinpath("src", "marketdata_sync.py").read_text(encoding="utf-8")
+    assert "gs.als_json(neu)" in src

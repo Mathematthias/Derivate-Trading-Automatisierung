@@ -15,6 +15,8 @@ NICHT — gezählt werden aufeinanderfolgende EINTRÄGE. Richtungswechsel bricht
 """
 from __future__ import annotations
 
+import json
+
 from datetime import date
 from typing import Any, Optional
 
@@ -46,3 +48,8 @@ def aktualisieren(historie: Optional[dict], heute: date, grinders: list[dict]) -
         g["streak_seit"] = seit
     behalten = sorted(tage)[-MAX_TAGE:]
     return {"schema": 1, "tage": {d: tage[d] for d in behalten}}
+
+
+def als_json(historie: dict) -> str:
+    """Serialisiert die Historie fuer drive_writer.write_json_file (erwartet str)."""
+    return json.dumps(historie, ensure_ascii=False, separators=(",", ":"))
