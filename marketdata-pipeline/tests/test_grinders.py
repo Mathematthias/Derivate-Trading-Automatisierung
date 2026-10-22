@@ -83,8 +83,14 @@ class TestAufnahme:
         assert run(config, atr14=6.0) == []
 
     def test_zu_weit_von_der_ema20_faellt_raus(self, config):
-        """Ein Wert 2 ATR über der EMA20 klebt nicht, er ist extended."""
-        assert run(config, price=103.5) == []
+        """Seit 2026-10-22 (User-Entscheid B): erst ueber 2 ATR (Gate-1-Grenze) faellt er raus."""
+        assert run(config, price=104.0) == []
+
+    def test_ein_atr_ueber_ema20_bleibt_grinder(self, config):
+        """2026-10-22: ein gleichmaessiger Grinder laeuft ~1,4 x Tempo ATR vor der EMA20 —
+        1 ATR Abstand ist kein Ausschlussgrund mehr (vorher 0,5)."""
+        res = run(config, price=101.5)
+        assert res and res[0]["dist_atr"] == 1.0
 
     def test_konsolidierung_im_bullstack_faellt_raus(self, config):
         """MRK.DE-Fall 2026-09-04: bullischer Stack, aber −4,3 % in 30 Tagen.

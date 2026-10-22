@@ -1586,7 +1586,8 @@ def build_grinders_report(
     AUFNAHME (alle vier müssen gelten):
       - sauberer EMA-Stack (bullisch für Long, bearisch für Short)
       - ATR% ≤ max_atr_pct — der Stop ist billig
-      - |Kurs − EMA20| ≤ max_dist_atr × ATR — er klebt an der Linie
+      - |Kurs − EMA20| ≤ max_dist_atr × ATR — seit 2026-10-22 2,0 (Gate-1-Grenze), vorher 0,5
+        („klebt an der Linie“); der Einstieg steht in der Grinder-Zeile
       - Trend-Move ≥ min_move_atr, gemessen in ATR-EINHEITEN (move% ÷ ATR%),
         seit 2026-09-24 auf der Tempo-Basis (trend20, Rueckfall move30d)
         und trendkonform zum Stack — es passiert überhaupt etwas
@@ -1616,7 +1617,7 @@ def build_grinders_report(
                 "tempo_basis": gcfg.get("tempo_basis", "trend20")}
     top_n = gcfg.get("top_n", 3)
     max_atr_pct = gcfg.get("max_atr_pct", 2.5)
-    max_dist_atr = gcfg.get("max_dist_atr", 0.5)
+    max_dist_atr = gcfg.get("max_dist_atr", 2.0)
     # 🆕 In ATR-Einheiten, nicht in Prozent (Kalibrierung 2026-09-04): 3 % sind
     # bei ^GDAXI (ATR 0,96 %) gut drei ATR und bei RACE.MI (2,25 %) nur 1,3 —
     # eine Prozentschwelle vergleicht Unvergleichbares. Der Screen gegen das
