@@ -91,7 +91,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: ARCHIVIERT 2026-09-03 - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
+    text: 'ARCHIVIERT 2026-09-03 - kein Entry-Trigger. Volltext im Sheet Trigger-Historie. RE-EVAL: 1D-Schluss >242,60 (Rueckeroberung EMA100/200-Cluster 242,5; Earnings 2026-10-27 - erst danach, Stand 2026-10-22, Tech-Abdeckung Weg A) - dann neu rechnen.'
   - label: B
     gate: 🔴
     text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
@@ -207,7 +207,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
+    text: 'ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie. RE-EVAL: 1D-Schluss >347,00 (Rueckeroberung EMA20-1D 347,03, Stack noch baerisch - Klassen-Gate pruefen, Stand 2026-10-22, Tech-Abdeckung Weg A) - dann neu rechnen.'
   - label: B
     gate: 🔴
     text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
@@ -712,7 +712,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'ARCHIVIERT 2026-09-16 - Position #80 geschlossen. Kein Entry-Trigger.'
+    text: 'ARCHIVIERT 2026-09-16 - Position #80 geschlossen. Kein Entry-Trigger. RE-EVAL: 1D-Schluss >252,50 (Rueckeroberung EMA100-1D 252,43; Earnings 2026-10-29 - erst danach, Stand 2026-10-22, Tech-Abdeckung Weg A) - dann neu rechnen.'
   notes: '[AUF POSITIONS-MONITOR UMGESTELLT 2026-08-19, User-Auftrag] Der Entry-Trigger ist mit dem Fill vom 18.08.2026 erledigt; die Zeile lief danach weiter als aktives Setup und erschien im Digest-Bucket NAHE — aktives Setup und offene Position auf demselben Wert nebeneinander (gleicher Befund wie ADBE Z23 am 13.08.). Jetzt Monitor-Konvention analog Z3 (SIE #74) / Z29 (JNJ #75) / Z35 (DR0 #7 AV) / Z44 (NEX #8 AV): Namensfeld traegt [MONITOR #NN], Richtung POSITION-MONITOR, Gate 📍. Die Pipeline erkennt Monitore am Namens-Tag, nicht am Trigger-Text (Note #321). | NEU 2026-08-17 (Abend, User-Charts 1D+4'
   journal_row: 48
   archived:
@@ -1579,7 +1579,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA50-1D -0,20/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (9,03 -> -13,55). TIW = 1D-Schluss unter 170,00$. TP1 206,00$ = BE-Stufe (L6). TP2 220,00$ = Runner L6. R:R Runner 2,73-3,18. 1% Sizing. Non-Quanto USD.'
+    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA50-1D -0,20/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (9,03 -> -13,55). TIW = 1D-Schluss unter 170,00$. TP1 206,00$ = BE-Stufe (L6). TP2 220,00$ = Runner L6. R:R Runner 2,73-3,18. 1% Sizing. Non-Quanto USD. RE-EVAL: 1D-Schluss >177,90 (Schluss ueber EMA20/50/100-Cluster 177,0-177,8; Earnings 2026-11-04, Stand 2026-10-22, Tech-Abdeckung Weg A) - dann neu rechnen.'
   notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] AUSLOESER 28.09. (-5,8%) + 29.09. (-1,8%): Rally nach Snapdragon Summit/Apple-Patentverlaengerung/AWS verpufft, Samsung-2nm-Gespraeche haengen, 10J-Rendite 5,218%; CEO-Familientrust 10.000 Stk @195 am 21.09. per 10b5-1 (Plan-Trade, geringer Signalwert) (StockStory 28.09.). CHART: Hoch 206 (24.09.), Kurs 184,10 an der EMA20-1D 184,24, RSI-1D 51,8 < 63,1, RSI-4h 46 fallend. TIW 170 = Higher-Low Mitte Sept / EMA200. TP2 220 = Abbruchzone Juli. ATR 4,9% 🟡 knapp unter 🔴: Hebel 5 reisst L2 (Einsatz ~390 EUR) -> Hebel <=4 (~490 EUR) oder Direk'
   journal_row: 125
   archived:
@@ -1597,7 +1597,7 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch 318,00-322,00$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (14,83 -> -22,25). TIW = 1D-Schluss unter 310,00$. TP1 345,00$ = BE-Stufe (L6). TP2 385,00$ = Runner L6. R:R Runner 2,83-3,01. 1% Sizing. Non-Quanto USD.'
+    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch 318,00-322,00$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (14,83 -> -22,25). TIW = 1D-Schluss unter 310,00$. TP1 345,00$ = BE-Stufe (L6). TP2 385,00$ = Runner L6. R:R Runner 2,83-3,01. 1% Sizing. Non-Quanto USD. RE-EVAL: 1D-Schluss >324,00 (Rueckeroberung EMA50-1D 323,87, Stack bullisch, Stand 2026-10-22, Tech-Abdeckung Weg A) - dann neu rechnen.'
   notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] 28.09.: Wandelanleihe 0% 3,75 Mrd USD (2029 @500,38 / 2031 @483,98 = +47-53% Praemie), Capped Calls Cap 820, 548 Mio refinanzieren 2027er, Abschluss 01.10.; Kurs nur -0,57% (Benzinga). Keine sofortige Verwaesserung, aber Hedge-Verkaeufe der Wandelkaeufer bis Closing moeglich (Flag, zugleich moeglicher Grund fuer den Ruecksetzer in die Zone). CHART: Range 318-345 seit 03.09. (Earnings-Spike 385), Kurs an der EMA20-1D; am Kurs TP1 nur 0,59 R -> Zone an die Range-Unterkante. TIW 310 = Range-Unterkante. ATR 4,49% 🟡 Hebel <=5,6, h5 an L2-Gre'
   journal_row: 126
   archived:
@@ -3506,4 +3506,21 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-22 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,28 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 199,08$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,60 -> -8,40). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 210,00$ (Spike-Hoch 15.10., abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,55 an 197,00. 1 %: Direktaktie 20 Stk oder KO. Earnings 2027-02-04. Non-Quanto USD.'
   notes: '[NEU 2026-10-22 ~19:50, Pitch long_trend_pullback RRprox 1,53, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] Q3 am 2026-10-21 (TV-Key-Facts: Umsatz +5,5 %, organisch +7,1 %); Earnings-Tag mit Docht ~184 an EMA100, Ruecklauf an EMA20. 1D C 201,35 (+1,97 %), EMA20/50/100/200 197,49/193,35/188,67/181,49 bullisch (4/4), RSI-1D 56,9/59,4, ATR 5,60. 4h: EMA20/50-4h 199,71/196,57 = Zone, RSI-4h 55,4 < Sig 57,7. TIW ~194,69 am 22.10. Rechnung: an 197,00 SL 188,60, TP1 1,55 R; an 199,08 1,30 R. Sizing 1 % = 150 EUR ~168 USD / 8,40 = 20 Stk. GROSSES ABER: TP1 ist ein Docht, keine Zone; Huerden 202-204 (4h-Range-Deckel, gescheiterter Ausbruch ueber 203) bei 0,4-0,6 R und 206 bei 0,8 R; Bewegung nach Earnings schon gelaufen.'
+- symbol: VRT
+  name: Vertiv Holdings (VRT, NYSE) - Rechenzentrums-Strom/Kuehlung
+  direction: LONG
+  klasse: trend_pullback
+  anker: ''
+  treiber: ''
+  status: archiviert
+  added: '2026-10-22'
+  expiry: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'BEOBACHTUNG 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >227,50 (Rueckeroberung EMA20-1D 227,49, Stack baerisch - Klassen-Gate pruefen; Earnings 2026-10-28 - erst danach) - dann neu rechnen.'
+  notes: '[NEU 2026-10-22 ~20:00, User-Entscheid Tech-Abdeckung Weg A] Kurs 196,39 (-48 % vom 52W-Hoch), EMA20/50/100/200 227,49/246,37/259,92/252,44 baerisch, RSI-1D 28,2, ATR 12,19 (6,2 % -> ATR-Stufe rot). Auch Ausdruck der These A (thesen_koerbe).'
+  archived:
+    date: '2026-10-22'
+    reason: Beobachtungszeile ohne Setup, nur Re-Eval
 updated: '2026-10-22T17:34:40+00:00'

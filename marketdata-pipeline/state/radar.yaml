@@ -767,4 +767,22 @@ rows:
   id: Z110
   status: offen
   added: '2026-10-22'
+- date: '2026-10-29'
+  kat: 5
+  werte: MSFT
+  ereignis: 'MSFT nach Q1-FY27-Zahlen (2026-10-28) Trend-Pullback @ EMA20 neu rechnen (Kurs 525,05 am 22.10. genau an der EMA20 525,19, Stack bullisch; Earnings-Sperre bis dahin)'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Abend-Check 2026-10-22, Tech-Abdeckung Weg A
+  id: Z111
+  status: offen
+  added: '2026-10-22'
+- date: '2026-10-30'
+  kat: 5
+  werte: AMZN
+  ereignis: 'AMZN nach Q3 (2026-10-29) Trend-Pullback @ EMA100 neu rechnen (22.10.: Kurs 251,68, EMA100 252,43, Stack bullisch, tiefer Anker der Sektor-Linse); Charts 1D+4h'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Abend-Check 2026-10-22, Tech-Abdeckung Weg A
+  id: Z112
+  status: offen
+  added: '2026-10-22'
 updated: '2026-10-22T17:34:40+00:00'
