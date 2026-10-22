@@ -2981,9 +2981,12 @@ entries:
   klasse: position_monitor
   anker: EMA100-1D
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-09-02'
   expiry: '2026-10-22'
+  archived:
+    date: '2026-10-22'
+    reason: 'Komplett-Exit #103: Rest 55 Stk am Stop 7,14 EUR (Chandelier 1,5 ATR) = +13,45 EUR; Trade gesamt +67,05 EUR = +0,48 R. Re-Eval/Nachfolgezeile: Frage an User offen (v62)'
   legs:
   - label: A
     gate: 🟢
@@ -3285,9 +3288,12 @@ entries:
   klasse: position_monitor
   anker: ''
   treiber: ''
-  status: position
+  status: archiviert
   added: '2026-10-21'
   expiry: '2026-10-22'
+  archived:
+    date: '2026-10-22'
+    reason: 'Komplett-Exit #106 (Bauchgefuehl-Trade): 100 Stk x 16,02 EUR nach META-Q3, diskretionaer = -48,00 EUR (-0,05 R am SL-Risiko 1.024). Re-Eval/Nachfolgezeile: Frage an User offen (v62)'
   trade_nr: '106'
   legs:
   - label: A
