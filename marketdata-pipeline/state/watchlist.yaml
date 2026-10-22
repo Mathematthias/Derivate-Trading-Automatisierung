@@ -3478,4 +3478,32 @@ entries:
   archived:
     date: '2026-10-22'
     reason: 'Auto-Archiv: TIW per Schluss gebrochen (10.82 < 10.88) (Dauerregel 2026-10-19)'
+- symbol: IOS.DE
+  name: IONOS SE (IOS, XETRA) - Webhosting/Cloud fuer KMU, IT-Dienstleister
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 35,70
+  treiber: ''
+  expiry: '2026-11-04'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 BREAKOUT-RETEST-LONG: Niveau 35,70€ (Range-Hoch Sep/Okt, Ausbruch per Schluss 2026-10-21, Vol 1,04x). Touch 35,70-36,27€ [pullback] (Niveau bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 36,27€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 35,37). Stopweite entry-relativ -1,5xATR-1D (1,092 -> -1,64). TIW = 1D-Schluss unter 35,70€ (Niveau, v76). TP1 38,40€ (Measured Move Range 33,0-35,7, aus User-Chart abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,59 an 35,80. Pilot 1 % (Vol-Daempfer). ATR 3,0 % gelb: Direktaktie 91 Stk oder KO Hebel <=8,3. Earnings 2026-11-12 -> Entry bis 2026-11-04.'
+  notes: '[NEU 2026-10-22 ~19:50, Pitch breakout_long RRprox 3,8, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] 1D O 36,26 H 36,56 (52W-Hoch) L 35,80 C 36,10, nachboerslich 35,96; EMA20/50/100/200 34,32/33,55/32,18/30,83 bullisch, RSI-1D 63,2/53,1, ATR 1,092 (3,0 %), Extension 1,63 ATR (frei). Range Aug-Okt ~33,0-35,7 (Okt-Docht ~31,3 nicht gezaehlt) -> Measured Move 38,40, darueber kein alter Widerstand. 4h: letzte Kerze rot am Tief 36,14, EMA20-4h 35,22, RSI-4h 64,7/64,2. Fenster 0,52 ATR eng -> Live-Entry Default. Rechnung: an 35,80 R 1,638 TP1 1,59 R; 36,00 1,47 R; 36,27 1,30 R. Gegenrede: Ausbruchsvolumen schwach (1,04x); Schluss unter 35,70 beendet die Zeile.'
+- symbol: PM
+  name: Philip Morris International (PM, NYSE) - Tabak/rauchfreie Produkte
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  expiry: '2026-11-06'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-22 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,28 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 199,08$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,60 -> -8,40). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 210,00$ (Spike-Hoch 15.10., abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,55 an 197,00. 1 %: Direktaktie 20 Stk oder KO. Earnings 2027-02-04. Non-Quanto USD.'
+  notes: '[NEU 2026-10-22 ~19:50, Pitch long_trend_pullback RRprox 1,53, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] Q3 am 2026-10-21 (TV-Key-Facts: Umsatz +5,5 %, organisch +7,1 %); Earnings-Tag mit Docht ~184 an EMA100, Ruecklauf an EMA20. 1D C 201,35 (+1,97 %), EMA20/50/100/200 197,49/193,35/188,67/181,49 bullisch (4/4), RSI-1D 56,9/59,4, ATR 5,60. 4h: EMA20/50-4h 199,71/196,57 = Zone, RSI-4h 55,4 < Sig 57,7. TIW ~194,69 am 22.10. Rechnung: an 197,00 SL 188,60, TP1 1,55 R; an 199,08 1,30 R. Sizing 1 % = 150 EUR ~168 USD / 8,40 = 20 Stk. GROSSES ABER: TP1 ist ein Docht, keine Zone; Huerden 202-204 (4h-Range-Deckel, gescheiterter Ausbruch ueber 203) bei 0,4-0,6 R und 206 bei 0,8 R; Bewegung nach Earnings schon gelaufen.'
 updated: '2026-10-22T17:34:40+00:00'

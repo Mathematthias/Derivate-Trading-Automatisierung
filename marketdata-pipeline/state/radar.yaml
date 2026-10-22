@@ -749,4 +749,22 @@ rows:
   id: Z108
   status: offen
   added: '2026-10-22'
+- date: '2026-10-26'
+  kat: 5
+  werte: HOLN.SW
+  ereignis: 'HOLN Short nach Q3-Update (2026-10-23) neu bewerten: Re-Eval <64,10 per Schluss 22.10. ausgeloest (63,60), aber Earnings-Sperre; Breakdown 63,68 lag 10 HT zurueck (Klassenfenster zu) - neues Niveau/Retest am Chart bestimmen'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Abend-Check 2026-10-22, User-Chart 19:44 (Digest kennt das Q3-Update nicht, earn_next 2027-02-25)
+  id: Z109
+  status: offen
+  added: '2026-10-22'
+- date: '2026-11-04'
+  kat: 5
+  werte: LHA.DE
+  ereignis: 'LHA Short (Korb OEL Gegenrichtung) nach Q3 (2026-11-03) neu bewerten: Re-Eval <7,196 am 22.10. ausgeloest (7,122), aber nur 2 HT Entry-Fenster vor der Earnings-Sperre; an 7,12 SL 7,398, TP1 6,74 = 1,37 R bei 2,05 ATR Weg in <=3 HT - nicht angelegt'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Abend-Check 2026-10-22, User-Chart 19:45
+  id: Z110
+  status: offen
+  added: '2026-10-22'
 updated: '2026-10-22T17:34:40+00:00'
