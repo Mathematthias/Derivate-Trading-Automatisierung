@@ -3447,4 +3447,18 @@ entries:
   archived:
     date: '2026-10-22'
     reason: 'Pitch-Top 2026-10-22: Rueckfall unter das Ausbruchsniveau (0,05 ATR)'
-updated: '2026-10-22T12:48:44+02:00'
+- symbol: MLP.DE
+  name: MLP SE (MLP, XETRA) - Finanzberatung/Vermoegensverwaltung
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 10,88
+  treiber: Prognoseerhoehung FY2026 EBIT 110-120 Mio EUR, Ziel 2028 140-155 Mio (TV-News 2026-10-21, ungeprueft)
+  expiry: '2026-11-03'
+  status: aktiv
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-20 BREAKOUT-RETEST-LONG: Niveau 10,88€ (Okt-Hoch, Ausbruch per Schluss 2026-10-20, Vol 2,18x). Touch 10,73-10,88€ [pullback] (Niveau -0,50 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 10,88€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 10,79). Stopweite entry-relativ -1,5xATR-1D (0,2954 -> -0,44). TIW = 1D-Schluss unter 10,88€ (Niveau, v76). TP1 11,46€ (Measured Move Okt-Konsolidierung 10,30-10,88, aus User-Chart 4h abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. Frisches 52W-Hoch 11,20 (21.10.) im Weg = 0,73 R an 10,88. R:R TP1 1,31 an 10,88 / 1,38 an 10,85. Pilot 1 %: ~338 Stk Direktaktie oder KO (ATR 2,7 % gelb: Hebel <= 9,3). Earnings 2026-11-12 -> KO-Exit bis 2026-11-05. Klassenfenster Ausbruch <= 10 HT -> Entry bis 2026-11-03. EUR.'
+  notes: '[NEU 2026-10-22 13:0x, Pitch-Top Morning Check (RRprox 4,06), User-Chart 1D+4h 12:55] Kurs 10,92 (-1,8 %), H 11,06; Ausbruch 20.10. ueber 10,88, Spike 21.10. bis 11,20. EMA20/50/100/200-1D 10,40/9,70/9,03/8,40 bullisch, RSI-1D 67,4 unter Signal 70,5 (Momentum kuehlt), ATR 0,2954. 4h: EMA20 10,73, RSI-4h 62,1/60,6, heute rote 4h-Kerze 11,06->10,92. TP1-Wahl: Klassen-Measured-Move ueber 20 Vorbalken (Range ~9,25-10,88) gaebe 12,51 = 5,3 ATR ueber dem Entry -> L13-Plausibilitaet verfehlt; deshalb die Okt-Konsolidierung (11,46). Entry nur am Niveau oder darunter (Kurs 10,92 = 0,14 ATR ueber der Grenze). GEGENREDE: frisches Hoch 11,20 direkt darueber, RSI-1D-Cross nach unten, TP1 abgelesen.'
+updated: '2026-10-22T12:57:10+02:00'
