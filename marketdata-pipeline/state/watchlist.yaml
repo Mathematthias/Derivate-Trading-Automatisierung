@@ -3059,7 +3059,7 @@ entries:
   notes: '[NEU 2026-10-19 ~12:05, User-Auftrag, Linien von Claude, User-Chart 1D+4h 11:50] Ersetzt die Grinder-Zeile (TIW per Schluss 16.10. gebrochen). Kontext: Chip-Abverkauf KW42 (SOX -11,4 %, AI-Finanzierungszweifel, Rotation zu Mega-Caps). Chart: 1D H 218,68 L 213,32 C 214,13, Pre 216,99; EMA20/50/100/200 225,57/222,06/215,74/204,66 bullish; RSI-1D 37,5 < Sig 54,7; ATR 5,97 (2,8 %). 4h: EMA200-4h 215,84 = Cluster mit EMA100-1D, RSI-4h 26,5 < Sig 39,4, Doppelboden ~213,0-213,3 (15./16.10.), keine bullishe Divergenz (zweites Tief mit tieferem RSI). Leg A ohne RSI-Cross (v71, Signallinie haengt nach wie bei FRA.DE). Widerstaende vor TP1: ~222 (0,33 R) und ~225,5 (0,74 R). SL A 210,04 nur ~1$ ueber Sep-Tief ~209 (Stop-Cluster). Swing-Werte am Screenshot abgelesen (+/-1$). ANKER-HINWEIS: Feld anker = EMA200-1D, damit Leg B das Gate 1/4 bekommt (Pipeline liest den Anker je Zeile, nicht je Leg); fuer Leg A sichert die Marke ueber EMA100 die Rueckeroberung. L7: Halbleiter-Block mit ASML.AS,
     Tech-Cluster mit ANET - 3/3 belegt.'
 - symbol: VOD.L
-  name: Vodafone Group plc (VOD, LSE) — Telekommunikation [MONITOR #16 AV]
+  name: 'Vodafone Group plc (VOD, LSE) — Telekommunikation [MONITOR #16 AV]'
   direction: LONG
   klasse: trend_pullback
   anker: EMA100-1D
