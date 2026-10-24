@@ -1,8 +1,24 @@
 {
+ "1-H0AizhAGTPkUhorqmesYVKBuuFce5Zc": {
+  "actions": 1,
+  "at": "2026-10-24T05:41:02+00:00",
+  "name": "INBOX-morning-check-20261023-1940.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "16uazDujrMT02HZVEGqpWNDVADVoDaIB-": {
   "actions": 6,
   "at": "2026-10-21T11:18:31+00:00",
   "name": "INBOX-morning-check-20261021-1320.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "17uFX41y6Zb_D8dAsjoZvhBIJtC8Wqpzd": {
+  "actions": 1,
+  "at": "2026-10-24T05:41:02+00:00",
+  "name": "INBOX-morning-check-20261023-1605.json",
   "source": "morning-check",
   "status": "ok",
   "verworfen": 0
@@ -55,6 +71,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1NUtmZeru3GNdukf0JYp5iD-Dwo4I2M11": {
+  "actions": 1,
+  "at": "2026-10-24T05:41:02+00:00",
+  "name": "INBOX-morning-check-20261023-1210.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1O-kZLsMk5q9gMRlflLd-PtNPTxOwHlJ2": {
   "actions": 4,
   "at": "2026-10-05T14:09:07+00:00",
@@ -91,6 +115,14 @@
   "actions": 3,
   "at": "2026-10-05T16:45:49+00:00",
   "name": "INBOX-morning-check-20261005-1855.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1Uv4CwT3deOuK7zr1og71pJoZ-p72_Hsw": {
+  "actions": 6,
+  "at": "2026-10-24T05:41:02+00:00",
+  "name": "INBOX-morning-check-20261023-1640.json",
   "source": "morning-check",
   "status": "ok",
   "verworfen": 0
