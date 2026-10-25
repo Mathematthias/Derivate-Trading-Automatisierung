@@ -794,4 +794,13 @@ rows:
   id: Z113
   status: offen
   added: '2026-10-22'
-updated: '2026-10-24T05:41:02+00:00'
+- date: '2026-11-06'
+  kat: 5
+  werte: NET
+  ereignis: 'NET nach Q3 (2026-11-05) neu rechnen: Re-Eval >315 am 23.10. ausgeloest, Exit-Test fiel an der Bruchzone ~334-342 (0,6 R bei ATR 5,7 %); nach den Zahlen Trend-Pullback/Breakout neu fassen, Charts 1D+4h'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: 'Abend-Chat 2026-10-25 (User: A-C)'
+  id: Z114
+  status: offen
+  added: '2026-10-25'
+updated: '2026-10-25T20:05:00+01:00'

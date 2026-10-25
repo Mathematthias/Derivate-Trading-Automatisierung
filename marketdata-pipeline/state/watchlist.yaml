@@ -909,12 +909,12 @@ entries:
   legs:
   - label: A
     gate: 🔴
-    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (17,25 -> -25,88). TIW = 1D-Schluss unter 315,00$. TP1 369,00$ = BE-Stufe (L6). TP2 400,00$ = Runner L6. R:R Runner 2,49-2,89. 1% Sizing. [Sp. Trigger-Historie] RE-EVAL: 1D-Schluss >315,00 (TIW-Rueckeroberung) - dann neu rechnen.'
+    text: '[2026-10-23] Re-Eval >315 ausgeloest (Schluss 325,73, +7,3 %, Vol 1,33x); neu gerechnet 2026-10-25 (User-Chart 1D+4h): Exit-Test faellt - ATR 18,44 (5,7 %), R = 27,7; Bruchzone 13./14.10. ~334-342 (abgelesen) liegt an EMA20 323 bei 0,61 R, Breakout-Retest ueber 342 bis ATH 369 = 0,98 R. Pullback @ EMA100 als eigene Zeile bis 2026-10-29; nach Q3 (2026-11-05) Radar. || nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (17,25 -> -25,88). TIW = 1D-Schluss unter 315,00$. TP1 369,00$ = BE-Stufe (L6). TP2 400,00$ = Runner L6. R:R Runner 2,49-2,89. 1% Sizing. [Sp. Trigger-Historie] RE-EVAL: 1D-Schluss >369,00 (ATH) - dann Breakout-Retest @ ATH neu rechnen.'
   notes: '[NEU GEFASST 2026-09-30, Morning Check, User-Charts 1D+4h 12:25] ANLASS: TP1 325 lag UNTER der mitgewanderten Zone (325,2-335,6), TIW 283 3,9 ATR weg. CHART: Kurs 352,26 (29.09.), ATH ~369 (24.09.), 4h-Ruecksetzer bis ~341 (26.09.), 4h-EMA20 344,55. 1D-EMA 330,42/305,56/279,15/248,71 bullisch, RSI-1D 62,7 ~ Signal 62,1, RSI-4h 59,5 < 64,9. ATR-1D 17,25 = 4,90% (🟡 knapp unter 🔴, Hebel <=5,1). LINIEN: TIW 315 = Higher-Low 18.09. (~316, 4h abgelesen). TP1 369 = ATH. TP2 400 = Orientierung (Blue Sky; Measured Move 425 waere 5,5 ATR, L13 zu weit). R:R TP1 1,29-1,69 / TP2 2,49-2,89; L25: ATR-Term ge'
   journal_row: 62
   archived:
-    date: '2026-10-19'
-    reason: 'TIW per 1D-Schluss gebrochen (296,30 < 315,00, 2026-10-16); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
+    date: '2026-10-23'
+    reason: Re-Eval >315 ausgeloest, Exit-Test faellt (Bruchzone 340 bei 0,6 R)
 - symbol: ROST
   name: Ross Stores (ROST, NASDAQ) — Off-Price-Retail
   direction: LONG
@@ -3776,4 +3776,18 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-23 bei Anlage - Exit-Test nicht bestanden: Ausbruch ueber das Okt-Hoch ~49,70 laeuft direkt ins Jul-Hoch ~50,20-50,30 (Docht 31.07., abgelesen; Tageshoch 23.10. 50,16 = Abweisung). An 49,90 mit SL 48,47 (1,5 ATR) liegt das Hindernis bei 0,3 R. RE-EVAL: 1D-Schluss >50,30€ (GBP). Dann Breakout-Retest @ 50,30, TP1 Measured Move Okt-Range 45,60-49,70 = ~53,80 (unter 52W-Hoch ~55,4), SL MIN(Entry-1,5xATR ; 50,30-0,30xATR).'
   notes: '[NEU 2026-10-23 ~16:30, Morning Check, User: "Zeilen anlegen", User-Chart 1D+4h 16:13-16:16, Linien von Claude] Pitch breakout_long RRprox 3,84 faellt durch die Rechnung (erstes Hindernis Jul-Hoch). Statt Zeile: Re-Eval-Marke. Extension am Kurs 2,1 ATR.'
-updated: '2026-10-24T05:41:02+00:00'
+- symbol: NET
+  name: Cloudflare Inc. (NET, NYSE) - Netzwerk/Security-Software
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-25'
+  expiry: '2026-10-29'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-25 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 304,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (18,38 -> -27,57). TIW = 1D-Schluss unter EMA100-1D -0,50 ATR. TP1 340,00$ (Bruchzone 13./14.10. ~334-342, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 365,00$ (Okt-Hoch, unter ATH 369). Rest Chandelier 2,0 ATR. R:R TP1 1,55 an 297 / 1,31 an 304. 1 % (ATR 5,7 % = Stufe rot, hart): Direktaktie 6 Stk. Earnings 2026-11-05 -> Entry bis 2026-10-29. Non-Quanto USD.'
+  notes: '[NEU 2026-10-25 ~20:05, User: "A-C umsetzen", User-Chart 1D+4h 19:52, Linien von Claude] Einziger Weg, der den Exit-Test besteht: Kurs 325,73 steht 1,7 ATR ueber der EMA100 294,40 (Stack 323,6/316,9/294,4/262,2 bullisch, Gate EMA100 >= 2/4). Ein Ruecksetzer dorthin bis 2026-10-29 ist unwahrscheinlich (Schaetzung). Parallel PT-2 im Journal-Blatt Papertrades (RSI-Signal-Wende 1D+4h, Montag-Open). Sektor-Linse 23.10.: Software Rueckeroberung NET>EMA50. GEGENREDE: Freitag +7,3 % mit Volumen = Momentum nach oben, ein Pullback um 30 $ waere eher Bruch als Test; These TECH fuehrt Software bewusst nicht im Korb.'
+updated: '2026-10-25T20:05:00+01:00'
