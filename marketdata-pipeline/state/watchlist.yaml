@@ -1585,24 +1585,6 @@ entries:
   archived:
     date: '2026-10-19'
     reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - Kurs 0/4 EMAs (Anker EMA50)'
-- symbol: SNOW
-  name: Snowflake Inc. (SNOW, NYSE) - Cloud-Datenplattform
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-09-30'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch 318,00-322,00$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (14,83 -> -22,25). TIW = 1D-Schluss unter 310,00$. TP1 345,00$ = BE-Stufe (L6). TP2 385,00$ = Runner L6. R:R Runner 2,83-3,01. 1% Sizing. Non-Quanto USD. RE-EVAL: 1D-Schluss >324,00 (Rueckeroberung EMA50-1D 323,87, Stack bullisch, Stand 2026-10-22, Tech-Abdeckung Weg A) - dann neu rechnen.'
-  notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] 28.09.: Wandelanleihe 0% 3,75 Mrd USD (2029 @500,38 / 2031 @483,98 = +47-53% Praemie), Capped Calls Cap 820, 548 Mio refinanzieren 2027er, Abschluss 01.10.; Kurs nur -0,57% (Benzinga). Keine sofortige Verwaesserung, aber Hedge-Verkaeufe der Wandelkaeufer bis Closing moeglich (Flag, zugleich moeglicher Grund fuer den Ruecksetzer in die Zone). CHART: Range 318-345 seit 03.09. (Earnings-Spike 385), Kurs an der EMA20-1D; am Kurs TP1 nur 0,59 R -> Zone an die Range-Unterkante. TIW 310 = Range-Unterkante. ATR 4,49% 🟡 Hebel <=5,6, h5 an L2-Gre'
-  journal_row: 126
-  archived:
-    date: '2026-10-19'
-    reason: 'Verfall-Sammelentscheid 2026-10-19 (User): Gate ⛔ - TIW 310 per Schluss 2026-10-16 gebrochen'
 - symbol: SPGI
   name: S&P Global Inc. (SPGI, NYSE) - Ratings/Indizes/Finanzdaten
   direction: SHORT
@@ -2498,22 +2480,6 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,50/+0,50 ATR [pullback] (Stand 9,34, Konfluenz 4h-EMA50 9,29) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 9,45€. TP1 8,70€ (ueber 52W-Tief 8,67), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,91 bei Entry 9,30, unter 9,11 kein Entry (Exit-Test). 1% Sizing (kein Treiber). GBP (€ nur Parser-Konvention), Broker/TV in GBX (x100). Earnings 2027-03-17.'
   notes: '[REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts 1D+4h 16:47] Breakdown-Retest @ 9,054 bleibt verworfen (0,89 R bis 52W-Tief); stattdessen Trend-Pullback-Short an EMA20-1D 9,34 / 4h-EMA50 9,29. Chart 16:47: 902 GBX am Bruchniveau und 4h-EMA20 905,5, RSI-1D 33,2 ueber Signal 30,5, RSI-4h 42,5 steigend = Erholung Richtung Zone. ATR-1D 0,2089, EMA20 faellt ~0,03/Tag -> bei Touch ATR-Drift-Nachzug. Gegenrede: kein Treiber, Rueckkauf 1,2 Mrd USD. Abweisung an 905 waere kein Entry. || [NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Breakdown-Retest @ 9,054 verfehlt den Exit-Test: TP1 = 52W-Tief 8,67-8,70 liegt nur 0,8-1,1 R unter jedem Entry unterhalb der TIW. Gegenrede zusaetzlich: laufender Rueckkauf 1,2 Mrd USD. Kein Ex-Tag in 30 d.'
-- symbol: FNTN.DE
-  name: freenet AG (FNTN)
-  direction: SHORT
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: aktiv
-  added: '2026-08-26'
-  expiry: '2026-10-28'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,20/+0,30 ATR [pullback] (Stand 23,11 und fallend, Konfluenz 4h-EMA50 23,08) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 23,45€. TP1 21,75€ (ueber 52W-Tief 21,68), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,60 bei Entry 22,95, unter 22,73 kein Entry (Exit-Test). 1% Sizing (Vol-Daempfer). Earnings 2026-11-11 -> KO-Exit bis 2026-11-04.'
-  notes: '[REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts 1D+4h 16:47] Ersetzt RE-EVAL >23,10 von 2026-10-12 (haette erst mitten in der Zone ausgeloest). Breakdown-Retest @ 22,16 verworfen (0,40 R bis 52W-Tief). Chart 16:47: 21,76, 52W-Tief 21,68, RSI-1D 29,6, RSI-4h 23,0 ueberverkauft -> Erholung an EMA20 abwarten. ATR-1D 0,5005; EMA20 faellt bis ~0,13/Tag, Treffpunkt eher ~22,9 (Schaetzung) -> R:R ~1,47. || [ARCHIVIERT 2026-10-12, User-Entscheid Morning Check] Kurs 21,80 = 52W-Tief, RSI 29,9; Short ohne Pullback kein Setup. || [REAKTIVIERT 2026-09-24, User-Entscheid, User-Charts 1D+4h 09:14 UTC, Websuche S1] RE-EVAL erfuellt: Stack wieder baerisch sortiert (EMA20/50/100/200-1D 24,35/24,41/24,90/25,92), Kurs 23,58 unter 4/4 = trendkonform, Deckel entfaellt. TIW NEU GERECHNET: 24,60 (ueber EMA20/50-Cluster und 4h-EMA200 24,58), die alte 25,60 ist verworfen. Zone = Retest des gebrochenen Aug/Sep-Range-Bodens 24,0-24,25 (4h-EMA20 24,25). SL an der Zone ATR-bestimmt 24,74-24,92,
-    Puffer 0,33-0,73 ATR. JETZT KEIN ENTRY: RSI-4h 26,7 ueberverkauft, Extension -1,77 ATR, R:R am Markt 0,50. AUSLOESER 18.09. (-2,9%) SEKTORWEIT: '
-  journal_row: 59
 - symbol: INTC
   name: Intel Corporation (INTC, NASDAQ)
   direction: LONG
@@ -2622,24 +2588,6 @@ entries:
   archived:
     date: '2026-10-19'
     reason: 'TIW per 1D-Schluss gebrochen (107,39 < 113,19, 2026-10-16); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
-- symbol: ZS
-  name: Zscaler Inc. (ZS, NASDAQ) — Cloud-Security
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruch 218,82 / Okt-Hoch 238
-  treiber: ''
-  status: archiviert
-  added: '2026-10-13'
-  expiry: '2026-10-13'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'BEOBACHTUNG (Pitch 2026-10-13) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >238,00$ + Vol >=1,0x Avg-20d. Breakout-Retest @ 218,82 scheitert am Exit-Test: erstes Hindernis Okt-Hoch ~238 (4h-Chart, geschaetzt) = max. 1,26 R am Niveau (R 15,22). Reife 30d +20 %, ATR 4,4 %. Earnings 2026-11-24.'
-  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, User-Chart 17:28] C 231,63 (+2,6 %), H 235,36; EMA20/50/100/200-1D 207,72/190,47/178,41/182,08 (EMA100 < EMA200), RSI-1D 68,4. Treiber Q4 FY26 Umsatz 898 Mio $ +24,9 % (wealthawesome, werblich); TV: Wachstum soll auf 17 % abflachen. Mittags-Vorschlag (BRT-Zeile) damit erledigt.'
-  trade_nr: null
-  archived:
-    date: '2026-10-13'
-    reason: Exit-Test am Okt-Hoch gescheitert, Re-Eval ueber 238
 - symbol: VOD.L
   name: Vodafone Group plc (VOD, LSE) — Telekom
   direction: LONG
@@ -2714,24 +2662,6 @@ entries:
   archived:
     date: '2026-10-14'
     reason: TIW gebrochen
-- symbol: HOLN.SW
-  name: Holcim Ltd (HOLN, SIX) — Zement/Baustoffe
-  direction: SHORT
-  klasse: breakout_retest
-  anker: Range-Tief
-  treiber: ''
-  status: archiviert
-  added: '2026-10-07'
-  expiry: '2026-10-16'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '[2026-10-23] Re-Eval <64,10 am 22.10. ausgeloest (63,60); Q3-Update 23.10., Kurs 66,80 ueber EMA20 65,36 - Short-These neu pruefen, Zaehlung ab 23.10. || 🔴 ARCHIVIERT 2026-10-14 - kein Entry-Trigger (TIW 64,10 CHF per Schluss 2026-10-13 gebrochen, 64,12). RE-EVAL: 1D-Schluss <64,10€ (CHF, € nur Parser-Konvention); Q3-Update 2026-10-23 beachten. TIW bei Reaktivierung neu rechnen.'
-  notes: '[ARCHIVIERT 2026-10-14, User-Entscheid Morning Check] kein Entry-Trigger (TIW 64,10 CHF per Schluss 2026-10-13 gebrochen, 64,12); Re-Eval <64,10. Alter Trigger: A: nach 2026-10-07 BREAKDOWN-RETEST-SHORT (CHF): Niveau 64,10 CHF (Okt-Tief). Breakdown per Schluss 07.10. bestaetigt (63,68 = Tagestief, -3,3 %; Vol-Bedingung >=1,0x Avg-20d (Digest bd_vol_mult, unter 1,3x Daempfer) - ohne sie halbe Groesse). Entry nach Retest: Pullback in 62,86–64,93 CHF [pullback] + 4h-Bearish-Reverse-Close (MANUELL), Stop-Sell unter Retest-Tief (L27). SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 64,10 CHF. TP1 60,10 CHF = 52W-Tief (1/3 raus, Exit-Test v49), TP2 Chandelier 2,0 ATR. R:R TP1 1,37 bei Stop-Sell 63,66 (ATR 1,73); 1,3 R nur bei Entry >=63,47 - tiefer kein Entry. Earnings 2027-02-25. 1% Sizing. || [NEU 2026-10-07, Pitch Stufe 2 + User-Charts 1D/4h 10:31, User-OK] Kurs 65,22, EMA20/50/100/200-1D 67,31/69,53/70,90/70,48 (EMA100 > EMA200, Stack nicht voll geordnet),
-    RSI-1D 36,9, ATR-1D 1,64. Niveau 64,10 = Okt-Tief AUS SCREENSHOT GESCHAETZT -> vor Scharfstellen am Live-Chart pruefen; Band = Niveau -0,75/+0,50 ATR. Rechnung: Stop-Sell 63,80, SL MAX(66,26 ; Retest-Hoch+0,3 ATR), R 2,46; TP1 60,10 (52W-Tief) = 1,50 R. Trend-Pullback an EMA20 verworfen: TP1 am Okt-Tief nur 0,99 R. Treiber: keiner gefunden (Recherche 2026-10-07). Q3-Update 2026-10-23 (Digest fuehrt 2027-02-25 = falsch) -> KO-Exit bis 2026-10-16. Non-Quanto CHF. || Vorgaenger-Zeile (Grinder-Short, archiviert 2026-10-04): [ANGELEGT 2026-09-30, Morning Check, Zwei-Laeufe-Regel: Grinder-Block EU 29.09. (Tempo 1,31) + 30.09. (1,27), User-OK] CHART 12:30: 4h O68,90 H70,00 L67,78 C67,80 = Abweisung an der 4h-EMA100 69,96 (Eroeffnungsspike +2,5% auf 69,94, Grund nicht gefunden, finanzen.ch nur Kursmeldung). 1D-EMA 68,86/70,56/71,54/70,77 - Kurs unter 4/4, aber EMA100 > EMA200 (Stack nicht voll geordnet). RSI-1D 41,8 > Si'
-  archived:
-    date: '2026-10-23'
-    reason: Re-Eval <64,10 am 22.10. ausgeloest (63,60); Q3-Update 23.10., Kurs 66,80 ueber EMA20 65,36 - Short-These neu pruefen, Z
 - symbol: YSN.DE
   name: secunet Security Networks AG (YSN, XETR) — IT-Sicherheit/Behoerden
   direction: LONG
@@ -2903,8 +2833,8 @@ entries:
   expiry: '2026-11-04'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-15 EMA200-MEAN-REVERSION-LONG: Touch EMA200-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 25,90$ (EMA200-1D -0,50 ATR, Stand 2026-10-15). TP1 28,50$ (unter EMA100-1D 28,55 / Breakdown-Niveau 28,94), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,25-1,78, Entry-Grenze 26,73$. 1% Sizing. Earnings 2026-11-18. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-15 EMA200-MEAN-REVERSION-LONG: Touch EMA200-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 25,90$ (EMA200-1D -0,50 ATR, Stand 2026-10-15). TP1 28,50$ (unter EMA100-1D 28,55 / Breakdown-Niveau 28,94), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,25-1,78, Entry-Grenze 26,73$. 1% Sizing. Earnings 2026-11-18. Non-Quanto USD. RE-EVAL: 1D-Schluss <26,90 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   - label: B
     gate: 🟡
     text: 'nach 2026-10-21 TREND-PULLBACK-LONG nach Rueckeroberung: Niveau 29,60$ (EMA20/50-Cluster). Bedingung: 1D-Schluss ueber 29,60$ und EMA20 > EMA50 (Stack bullish = Klassen-Gate; bis dahin nicht handeln, TIW erst danach aktiv), danach Touch EMA20-1D -0,30/+0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 29,29$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 28,04). Stopweite entry-relativ -1,5xATR-1D (0,874 -> -1,31). TIW = 1D-Schluss unter 28,30$ (Breakdown-Niveau / EMA100-1D). TP1 31,00$ (Okt-Hoch, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 32,85$ (Sep-/52W-Hoch). Rest Chandelier 2,0 ATR. R:R TP1 1,30 an 29,29 / TP2 2,66. 1 %, Direktaktie ~128 Stk (ATR 3,0 % gelb). L7: ein Block mit MAERSK-B.CO-Long. Earnings 2026-11-18. Non-Quanto USD. Zahlen Stand 2026-10-21 - bei Erfuellung der Voraussetzung neu rechnen.'
@@ -3156,23 +3086,6 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-20 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,53 -> -0,80). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR (Zustand: Stack, Faecher, Tempo unter 0,6). TP1 28,55 GBP (unter Okt-Hoch ~28,65, abgelesen - Fadenkreuz pruefen) 1/3 raus. Kein TP2, Trail EMA20-1,25xATR. R:R TP1 1,56-1,79. 1% Pilot, KO oder Direktaktie ~158 Stk. Q3-Trading-Update Termin ungeprueft (Handcheck IR). Preise in GBP (Digest), Chart in GBX. Non-Quanto GBP.'
   added: '2026-10-20'
-- symbol: BDX
-  name: Becton, Dickinson and Company (BDX, NYSE) - Medtech
-  direction: LONG
-  klasse: breakout_retest
-  anker: 52W-Hoch 196,00
-  treiber: ''
-  status: archiviert
-  expiry: '2026-10-20'
-  archived:
-    date: '2026-10-20'
-    reason: 'Pitch-Top Morning Check 2026-10-20, User: Re-Eval'
-  notes: Ausbruch ueber 189,99 vor 2 HT (Vol 1,09x), Kurs 190,74, ATR 4,14. Earnings 2026-11-05.
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-10-20 - Pitch breakout_long, kein Setup: 52W-Hoch ~196,00 liegt 0,97 R ueber dem Entry, TP1 < 1,3 R. RE-EVAL: 1D-Schluss >196,00 (52W-Hoch, mit Vol >=1,0x) - dann Breakout-Retest neu rechnen.'
-  added: '2026-10-20'
 - symbol: TEG.DE
   name: TAG Immobilien AG (TEG, Xetra) - Wohnimmobilien
   direction: SHORT
@@ -3220,23 +3133,6 @@ entries:
   - label: A
     gate: 🟡
     text: 'nach 2026-10-20 TREND-PULLBACK-LONG: Touch EMA20-1D -0,50/-0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 262,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (13,64 -> -20,46). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 288,50$ (unter Okt-Konsolidierung 281-289, abgelesen) 1/3 raus. TP2 299,50$ (unter Doppelhoch ~300). Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,48. 1 % hart (ATR 5,2 %), Direktaktie 8 Stk. Earnings 2026-11-04 -> Entry bis 2026-10-27, Direktaktie: Entscheid vor den Zahlen. Non-Quanto USD.'
-  added: '2026-10-20'
-- symbol: FANG
-  name: Diamondback Energy (FANG, NASDAQ) - Oel/Gas E&P
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruch 200,65
-  treiber: ''
-  status: archiviert
-  expiry: '2026-10-20'
-  archived:
-    date: '2026-10-20'
-    reason: 'Morning Check 2026-10-20, User: Re-Eval neu setzen'
-  notes: 'Vorher #95 (Thesen-Korb, -1,05 R). Earnings 2026-11-02.'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-10-20 - Re-Eval 199,50 ausgeloest und verbraucht (Schluss 2026-10-19 203,12), aber kein Setup: Ausbruchsvolumen 0,96x unter dem Boden 1,0x, Stack neutral, OEL-Korb mit 4 Ausdruecken voll. RE-EVAL: 1D-Schluss >205,63 (Hoch 2026-10-19, mit Vol >=1,0x) - dann Breakout-Retest neu rechnen.'
   added: '2026-10-20'
 - symbol: EXC
   name: Exelon Corp. (EXC, NASDAQ) - Versorger
@@ -3359,23 +3255,6 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss <60,50$ + Vol >Avg-20d. Dann Breakdown-Retest-Short @ 60,50 neu rechnen (TIW Schluss > Niveau + 0,30 ATR, TP1 ~55,30 ueber den 2024er Tiefs ~55, abgelesen; Stand ATR 2,10: R:R ~1,52, bei hoeherer ATR neu rechnen).'
   notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:04, User, User-Charts 1D bis 2024] Q3-Gap 2026-10-21: O 64,15 H 67,12 L 64,10 C 65,04 (-5,3 %), Vol 101 Mio; Juli-Tief ~66,0 und Okt-Tief ~67,3 gebrochen, Zwei-Jahres-Tief. EMA20/50/100/200-1D 70,36/72,92/76,38/82,61 bearish, RSI-1D 32,6, RSI-4h 28,1, ATR 2,10. 2024er Basis ~60,5-65 (Aug/Sep 2024, Start der Rally >90) direkt unter dem Kurs, darunter 2024er Tiefs ~55 (alles abgelesen, ungefaehr). Nur KO (ATR 3,2 % gelb). Earnings raus, naechste ~Jan 2027.'
-- symbol: ZS
-  name: Zscaler Inc. (ZS, NASDAQ) - Cloud-Security/Zero Trust
-  direction: LONG
-  klasse: breakout_retest
-  anker: Unterkante Dez-2025-Luecke ~255
-  treiber: ''
-  status: archiviert
-  added: '2026-10-22'
-  expiry: '2026-10-22'
-  archived:
-    date: '2026-10-22'
-    reason: 2026-10-21 +7,8 % auf 231,33 unter Okt-Hoch ~236,5; Breakout ueber 236,5 liefe in Jan-Cluster/Dez-Bodenbildung ~244-255 (TP1 ~0,7 R) - Wiedervorlage erst ueber der Luecken-Unterkante (User 01:55)
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >255,00$ + Vol >Avg-20d. Dann Breakout-Retest-Long @ ~255 neu rechnen (TIW Schluss < Niveau - 0,30 ATR, TP1 ~288 knapp unter Luecken-Oberkante ~290, abgelesen; Stand ATR 11,08: Stop-Buy ~257, SL ~240,4, R:R ~1,87).'
-  notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:55, User: mit Claudes Wert, Luecken-Unterkante 252-255 abgelesen - Fadenkreuz pruefen] Tag 2026-10-21: O 214,50 H 232,06 L 214,50 C 231,33 (+7,8 %), Vol 2,77 Mio (Schnitt 3,08). EMA20/50/100/200-1D 212,32/196,25/182,83/184,14 (EMA100 < EMA200 = Stack noch nicht bullish), RSI-1D 63,7, ATR 11,08 = 4,8 % (knapp unter Stufe rot: KO Hebel <= 5, besser Direktaktie). Struktur oberhalb (abgelesen): Jan-2026-Cluster ~236-244, Dez-Bodenbildung ~245-255, Luecke ~255-290 (Abverkauf Dez 2025 von ~295/300). News 2026-10-21: Zscaler und Tenable steigen (Grund ungeprueft).'
 - symbol: GFT.DE
   name: GFT Technologies SE (GFT, XETRA) - IT-Dienstleister, Digitalisierung/AI fuer Banken
   direction: LONG
@@ -3483,20 +3362,6 @@ entries:
   archived:
     date: '2026-10-22'
     reason: 'Auto-Archiv: TIW per Schluss gebrochen (10.82 < 10.88) (Dauerregel 2026-10-19)'
-- symbol: IOS.DE
-  name: IONOS SE (IOS, XETRA) - Webhosting/Cloud fuer KMU, IT-Dienstleister
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 35,70
-  treiber: ''
-  expiry: '2026-11-04'
-  status: aktiv
-  added: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🟡
-    text: 'nach 2026-10-22 BREAKOUT-RETEST-LONG: Niveau 35,70€ (Range-Hoch Sep/Okt, Ausbruch per Schluss 2026-10-21, Vol 1,04x). Touch 35,70-36,27€ [pullback] (Niveau bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 36,27€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 35,37). Stopweite entry-relativ -1,5xATR-1D (1,092 -> -1,64). TIW = 1D-Schluss unter 35,70€ (Niveau, v76). TP1 38,40€ (Measured Move Range 33,0-35,7, aus User-Chart abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,59 an 35,80. Pilot 1 % (Vol-Daempfer). ATR 3,0 % gelb: Direktaktie 91 Stk oder KO Hebel <=8,3. Earnings 2026-11-12 -> Entry bis 2026-11-04.'
-  notes: '[NEU 2026-10-22 ~19:50, Pitch breakout_long RRprox 3,8, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] 1D O 36,26 H 36,56 (52W-Hoch) L 35,80 C 36,10, nachboerslich 35,96; EMA20/50/100/200 34,32/33,55/32,18/30,83 bullisch, RSI-1D 63,2/53,1, ATR 1,092 (3,0 %), Extension 1,63 ATR (frei). Range Aug-Okt ~33,0-35,7 (Okt-Docht ~31,3 nicht gezaehlt) -> Measured Move 38,40, darueber kein alter Widerstand. 4h: letzte Kerze rot am Tief 36,14, EMA20-4h 35,22, RSI-4h 64,7/64,2. Fenster 0,52 ATR eng -> Live-Entry Default. Rechnung: an 35,80 R 1,638 TP1 1,59 R; 36,00 1,47 R; 36,27 1,30 R. Gegenrede: Ausbruchsvolumen schwach (1,04x); Schluss unter 35,70 beendet die Zeile.'
 - symbol: PM
   name: Philip Morris International (PM, NYSE) - Tabak/rauchfreie Produkte
   direction: LONG
@@ -3564,13 +3429,16 @@ entries:
   anker: EMA20-1D
   treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-26; Falsifikat Brent-Schluss < 88 USD ODER Waffenruhe USA-Iran)
   expiry: '2026-10-26'
-  status: aktiv
+  status: archiviert
   added: '2026-10-22'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA20-1D -0,10/+0,60 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 459,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (16,83 -> -25,25). TIW = 1D-Schluss unter 448,00$ (EMA20-Test 22.10., Tagestief 448,38). TP1 492,00$ (unter Okt-Hoch ~494) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,47 an 455,00. 1 % (30d +18 % = reif, late_entry): Direktaktie 6 Stk. Earnings 2026-11-03 -> Entry bis 2026-10-26, Earnings-Entscheid bis 2026-11-02. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-22 TREND-PULLBACK-LONG: Touch EMA20-1D -0,10/+0,60 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 459,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (16,83 -> -25,25). TIW = 1D-Schluss unter 448,00$ (EMA20-Test 22.10., Tagestief 448,38). TP1 492,00$ (unter Okt-Hoch ~494) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,47 an 455,00. 1 % (30d +18 % = reif, late_entry): Direktaktie 6 Stk. Earnings 2026-11-03 -> Entry bis 2026-10-26, Earnings-Entscheid bis 2026-11-02. Non-Quanto USD. RE-EVAL: 1D-Schluss >494,00 (Okt-Hoch; regulaer Post-Earnings-Termin 2026-11-04) - dann neu rechnen.'
   notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche, User-Chart 1D+4h 20:46, Linien von Claude] 1D O 473,00 L 448,38 C ~459,3 (-1,85 %): Tagestief exakt an der EMA20-1D 449,22, unterer Docht. EMA20/50/100/200 449,22/409,37/362,34/307,16 bullisch, RSI-1D 61,0/73,2, ATR 16,83 (3,7 %). 4h: EMA20/50-4h 464,0/441,8, RSI-4h 50,3 < Sig 65,8. Okt-Konsolidierung 470-485 als Zwischenhuerde (0,6-1,2 R). TD Cowen haelt Buy (TV-News). Kurs 459,3 steht an der Entry-Grenze - Entry braucht Ruecksetzer. L7: Raffinerie-Block mit VLO; Treiber These OEL.'
+  archived:
+    date: '2026-10-26'
+    reason: 'Verfall 2026-10-26 ohne 4h-Bestaetigung; ab 2026-10-27 Earnings-Sperre (Q3 2026-11-03). User 2026-10-26: archivieren mit Re-Eval'
 - symbol: ADI
   name: Analog Devices (ADI, NASDAQ) - Analog-/Mixed-Signal-Halbleiter
   direction: LONG
@@ -3633,14 +3501,17 @@ entries:
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: EBIT-Guidance FY2026 auf 110-120 Mio. EUR angehoben (TV-News 2026-10-21, ungeprueft)
-  status: aktiv
+  status: archiviert
   added: '2026-10-23'
   expiry: '2026-11-04'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-23 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 10,56€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,30 -> -0,45). TIW = 1D-Schluss unter EMA20-1D -0,75 ATR. TP1 11,15€ (unter 52W-Hoch 11,20 vom 21.10.) 1/3 raus. Kein TP2, Rest Chandelier 2,0 ATR. R:R TP1 1,35 an Zone-OG / 1,55 an EMA20. 1 %: Direktaktie ~333 Stk. Earnings 2026-11-12 -> Entry bis 2026-11-04.'
+    gate: 🔴
+    text: 'nach 2026-10-23 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 10,56€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,30 -> -0,45). TIW = 1D-Schluss unter EMA20-1D -0,75 ATR. TP1 11,15€ (unter 52W-Hoch 11,20 vom 21.10.) 1/3 raus. Kein TP2, Rest Chandelier 2,0 ATR. R:R TP1 1,35 an Zone-OG / 1,55 an EMA20. 1 %: Direktaktie ~333 Stk. Earnings 2026-11-12 -> Entry bis 2026-11-04. RE-EVAL: 1D-Schluss <10,62 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[NEU 2026-10-23 ~21:40, Abend-Check, User: "Re-Evals rechnen und anlegen", User-Chart 1D+4h 21:22-21:24, Linien von Claude] Re-Eval >10,88 ausgeloest (Schluss 23.10. 11,04). Als Breakout-Retest @ 10,88 faellt der Exit-Test: 52W-Hoch 11,20 liegt 0,73 R ueber dem Niveau, Measured Move 11,46 an 10,88 = 1,29 R. Deshalb Trend-Pullback an die EMA20 (10,45, steigt) mit TP1 knapp unter dem 52W-Hoch; TIW an der EMA20 (-0,75 ATR) statt EMA50 (9,75), sonst kein TP1 >= 1,3 R. Stack 10,45/9,75/9,07/8,42 bullisch, 30d +14,9 % (knapp unter Reife-Flag). GEGENREDE: 4h-Ballung 10,95-11,10 direkt unter dem Ziel; Pullback von 11,04 bis ~10,5 sind 1,8 ATR.'
+  archived:
+    date: '2026-10-26'
+    reason: 'Auto-Archiv: Halbzeit-Check +2.24 ATR zur Zone 10.4569-10.6233, Verfall 2026-11-04 (Dauerregel 2026-10-19)'
 - symbol: MCK
   name: McKesson Corporation (MCK, NYSE) - Pharmagrosshandel
   direction: LONG
@@ -3740,14 +3611,17 @@ entries:
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-23'
   expiry: '2026-10-30'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-23 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 273,90 EUR kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,57 -> -6,86). TIW = 1D-Schluss unter EMA20-1D -0,75 ATR. TP1 282,80 EUR (unter Rekordhoch 283,20 vom 23.10.) 1/3 raus. Kein TP2, Rest Chandelier 2,0 ATR. R:R TP1 1,85 an 270,10. 1 %: Direktaktie. Earnings 2026-11-09 -> Entry bis 2026-10-30.'
+    gate: 🔴
+    text: 'nach 2026-10-23 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 273,90 EUR kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,57 -> -6,86). TIW = 1D-Schluss unter EMA20-1D -0,75 ATR. TP1 282,80 EUR (unter Rekordhoch 283,20 vom 23.10.) 1/3 raus. Kein TP2, Rest Chandelier 2,0 ATR. R:R TP1 1,85 an 270,10. 1 %: Direktaktie. Earnings 2026-11-09 -> Entry bis 2026-10-30. RE-EVAL: 1D-Schluss <271,31 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[NEU 2026-10-23 ~16:30, Morning Check, User: "Zeilen anlegen", User-Chart 1D+4h 16:13-16:16, Linien von Claude] Pitch kam als breakout_long (Niveau 277,60, RRprox 5,95). Als Breakout-Retest faellt er durch: das Rekordhoch 283,20 liegt 0,6 ATR ueber dem Kurs, 1,3 R braeuchten TP1 >= 289,5 ohne Chartmarke (blauer Himmel, alle Measured Moves der Basen Sep/Okt schon erreicht). Am Kurs zudem RSI-1D 74 und 2,6 ATR ueber EMA20 = gemessen extended (L18/L22). Deshalb Trend-Pullback an die EMA20 mit TP1 am Rekordhoch. Stack 268,7/261,1/256,4/254,3 bullisch. TIW an der EMA20 (-0,75 ATR, jenseits der Zone) statt EMA50: mit EMA50-TIW laege der L25-Stop bei ~258 und TP1 am Rekordhoch bei 1,1 R. GEGENREDE: der Pullback von 281 bis ~270 sind 2,4 ATR - vor Verfall 2026-10-30 offen, ob er kommt.'
+  archived:
+    date: '2026-10-26'
+    reason: 'Auto-Archiv: Halbzeit-Check +2.37 ATR zur Zone 268.774-271.305, Verfall 2026-10-30 (Dauerregel 2026-10-19)'
 - symbol: BT-A.L
   name: BT Group plc (BT.A, LSE) - Telekom UK
   direction: LONG
@@ -3790,4 +3664,136 @@ entries:
     gate: 🟡
     text: 'nach 2026-10-25 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 304,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (18,38 -> -27,57). TIW = 1D-Schluss unter EMA100-1D -0,50 ATR. TP1 340,00$ (Bruchzone 13./14.10. ~334-342, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 365,00$ (Okt-Hoch, unter ATH 369). Rest Chandelier 2,0 ATR. R:R TP1 1,55 an 297 / 1,31 an 304. 1 % (ATR 5,7 % = Stufe rot, hart): Direktaktie 6 Stk. Earnings 2026-11-05 -> Entry bis 2026-10-29. Non-Quanto USD.'
   notes: '[NEU 2026-10-25 ~20:05, User: "A-C umsetzen", User-Chart 1D+4h 19:52, Linien von Claude] Einziger Weg, der den Exit-Test besteht: Kurs 325,73 steht 1,7 ATR ueber der EMA100 294,40 (Stack 323,6/316,9/294,4/262,2 bullisch, Gate EMA100 >= 2/4). Ein Ruecksetzer dorthin bis 2026-10-29 ist unwahrscheinlich (Schaetzung). Parallel PT-2 im Journal-Blatt Papertrades (RSI-Signal-Wende 1D+4h, Montag-Open). Sektor-Linse 23.10.: Software Rueckeroberung NET>EMA50. GEGENREDE: Freitag +7,3 % mit Volumen = Momentum nach oben, ein Pullback um 30 $ waere eher Bruch als Test; These TECH fuehrt Software bewusst nicht im Korb.'
-updated: '2026-10-26T06:41:12+00:00'
+- symbol: FNTN.DE
+  name: 'freenet AG (FNTN, XETRA) - Telekom/Mobilfunk-Provider [MONITOR #108]'
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: position
+  added: '2026-08-26'
+  expiry: '2026-11-02'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#108, 190 Stk) - kein Entry-Trigger. Entry 2026-10-26 ~16:10 190 x 8,71EUR (UniCredit KO Short DE000UN528W4, Basis ~31,52, KO 31,10, BV 1,0, Fill-U ~22,85 geschaetzt). SL 7,96EUR (U 23,58, L25 TIW-Term) fuer 190 Stk im Broker setzen. TIW = 1D-Schluss ueber 23,45€. TP1 9,79EUR (U 21,75) fuer 63 Stk (1/3). Rest Chandelier 2,0 ATR (Exit-Test v49). Review 2026-11-02. Earnings 2026-11-11 -> KO-Exit bis 2026-11-04. [Sp. Trigger-Historie]
+  notes: '[ENTRY #108 2026-10-26 ~16:10, User] 190 x 8,71 EUR Live-Order, Gebuehr 0,00. Ordermarken Methode A aus Quote 11:58 (Brief 8,72 / Geld 8,70 @ U 22,84): Limit max 8,75, SL 7,96, TP1 9,79. R 0,75, Max-Verlust 142,50 EUR, R:R TP1 1,44. 4h: User sah Umkehr im TV-Chart; Pipeline-4h-Block 09-13 (Schluss 22,86) ohne Reverse-Flag, RSI-4h unter Signal (Cross 1 Balken). || ENTRY-TEXT VORHER: nach 2026-10-12 SHORT-TREND-PULLBACK: Touch EMA20-1D -0,20/+0,30 ATR [pullback] (Stand 23,11 und fallend, Konfluenz 4h-EMA50 23,08) + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Stop-Sell unter Tief der Retest-Kerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). TIW = 1D-Schluss ueber 23,45€. TP1 21,75€ (ueber 52W-Tief 21,68), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,60 bei Entry 22,95, unter 22,73 kein Entry (Exit-Test). 1% Sizing (Vol-Daempfer). Earnings 2026-11-11 -> KO-Exit bis 2026-11-04. || [REAKTIVIERT 2026-10-12 17:20, User-Entscheid Variante B, User-Charts
+    1D+4h 16:47] Ersetzt RE-EVAL >23,10 von 2026-10-12 (haette erst mitten in der Zone ausgeloest). Breakdown-Retest @ 22,16 verworfen (0,40 R bis 52W-Tief). Chart 16:47: 21,76, 52W-Tief 21,68, RSI-1D 29,6, RSI-4h 23,0 ueberverkauft -> Erholung an EMA20 abwarten. ATR-1D 0,5005; EMA20 faellt bis ~0,13/Tag, Treffpunkt eher ~22,9 (Schaetzung) -> R:R ~1,47. || [ARCHIVIERT 2026-10-12, User-Entscheid Morning Check] Kurs 21,80 = 52W-Tief, RSI 29,9; Short ohne Pullback kein Setup. || [REAKTIVIERT 2026-09-24, User-Entscheid, User-Charts 1D+4h 09:14 UTC, Websuche S1] RE-EVAL erfuellt: Stack wieder baerisch sortiert (EMA20/50/100/200-1D 24,35/24,41/24,90/25,92), Kurs 23,58 unter 4/4 = trendkonform, Deckel entfaellt. TIW NEU GERECHNET: 24,60 (ueber EMA20/50-Cluster und 4h-EMA200 24,58), die alte 25,60 ist verworfen. Zone = Retest des gebrochenen Aug/Sep-Range-Bodens 24,0-24,25 (4h-EMA20 24,25). SL an der Zone ATR-bestimmt 24,74-24,92, Puffer 0,33-0,73 ATR. JETZT KEIN ENTRY: RSI-4h 26,7 ueberverkauft,
+    Extension -1,77 ATR, R:R am Markt 0,50. AUSLOESER 18.09. (-2,9%) SEKTORWEIT: '
+  journal_row: 59
+  trade_nr: '108'
+- symbol: IOS.DE
+  name: 'IONOS Group SE (IOS, XETRA) - Webhosting/Cloud [MONITOR #17 AV]'
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 35,70
+  treiber: ''
+  expiry: '2026-11-02'
+  status: position
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#17 AV, 90 Stk) - kein Entry-Trigger. Entry 2026-10-26 ~16:5x 90 x 36,20EUR Direktaktie (ISIN DE000A3E00M1). SL 34,54EUR (L25 ATR-Term) fuer 90 Stk im Broker setzen. TIW = 1D-Schluss unter 35,70€ (Ausbruchsniveau). TP1 38,40EUR fuer 30 Stk (1/3). Rest Chandelier 2,0 ATR (Exit-Test v49). Review 2026-11-02. Earnings 2026-11-12. [Sp. Trigger-Historie]
+  notes: '[ENTRY #17 AV 2026-10-26 ~16:5x, User] 90 x 36,20 EUR Live nach 4h-Bestaetigung (Plan-Limit 36,25 bis 17:00), Gebuehr 0,00. R 1,66, Max-Verlust 149,40 EUR, R:R TP1 1,33, L26-Puffer 1,05 ATR. || ENTRY-TEXT VORHER: nach 2026-10-22 BREAKOUT-RETEST-LONG: Niveau 35,70€ (Range-Hoch Sep/Okt, Ausbruch per Schluss 2026-10-21, Vol 1,04x). Touch 35,70-36,27€ [pullback] (Niveau bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 36,27€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 35,37). Stopweite entry-relativ -1,5xATR-1D (1,092 -> -1,64). TIW = 1D-Schluss unter 35,70€ (Niveau, v76). TP1 38,40€ (Measured Move Range 33,0-35,7, aus User-Chart abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,59 an 35,80. Pilot 1 % (Vol-Daempfer). ATR 3,0 % gelb: Direktaktie 91 Stk oder KO Hebel <=8,3. Earnings 2026-11-12 -> Entry bis 2026-11-04. || [NEU
+    2026-10-22 ~19:50, Pitch breakout_long RRprox 3,8, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] 1D O 36,26 H 36,56 (52W-Hoch) L 35,80 C 36,10, nachboerslich 35,96; EMA20/50/100/200 34,32/33,55/32,18/30,83 bullisch, RSI-1D 63,2/53,1, ATR 1,092 (3,0 %), Extension 1,63 ATR (frei). Range Aug-Okt ~33,0-35,7 (Okt-Docht ~31,3 nicht gezaehlt) -> Measured Move 38,40, darueber kein alter Widerstand. 4h: letzte Kerze rot am Tief 36,14, EMA20-4h 35,22, RSI-4h 64,7/64,2. Fenster 0,52 ATR eng -> Live-Entry Default. Rechnung: an 35,80 R 1,638 TP1 1,59 R; 36,00 1,47 R; 36,27 1,30 R. Gegenrede: Ausbruchsvolumen schwach (1,04x); Schluss unter 35,70 beendet die Zeile.'
+  trade_nr: '17'
+- symbol: TSCO.L
+  name: Tesco PLC (TSCO, LSE) - Lebensmittelhandel UK
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-10-26'
+  expiry: '2026-11-13'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-26 TREND-PULLBACK-LONG: Touch EMA20-1D -0,10/+0,50 ATR [pullback] (Kurse GBP, Waehrungszeichen nur fuer den Parser; Stand EMA20 5,160) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg fruehestens nach Tagesschluss 2026-10-28 (UK Autumn Budget). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 5,211 GBP kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,1378 -> -0,2067). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 5,48€ (unter Okt-Hoch ~5,50, User-Chart 2026-10-26) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,46 an 5,179. 1 % Sizing: Direktaktie LSE. Broker/TV in GBX (x100). Earnings 2027-04-15.'
+  notes: '[NEU 2026-10-26 12:0x, Morning Check, Pitch breakout_long, User-Chart 1D+4h 11:54, Linien von Claude] Breakout-Retest @ 5,278 (Vol 1,5x, 7 HT) verworfen: erstes Hindernis Okt-Hoch ~5,50 (1D-Hochs 2026-10-19/-22 ~548-550 GBX) = max. ~1,0 R am Niveau (d = 1,5 ATR = 0,207). Stattdessen Trend-Pullback an die EMA20-1D (Stack bullisch, Kurs ueber 4/4, r2 0,89). Chart 11:54: C 535,4 GBX, EMA20/50/100/200-1D 515,9/494,8/482,4/468,9, RSI-1D 70,2/72,9, 4h-RSI 57,6 unter Signal 72,3. Digest-ATR 0,1378 > TV-RMA 0,1009 (Gap 2026-10-09 im SMA-Fenster) - faellt die Gap-Kerze raus, wird d kleiner und das Fenster breiter. Rueckkaeufe laufen (Programm bis 950 Mio GBP, Ende April 2027). UK-Budget 2026-10-28 (Radar).'
+- symbol: ZS
+  name: Zscaler Inc. (ZS, NASDAQ) - Cloud-Security
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 255,00
+  treiber: ''
+  status: aktiv
+  added: '2026-10-26'
+  expiry: '2026-11-13'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-26 BREAKOUT-RETEST-LONG: Niveau 255,00$ (Unterkante Dez-2025-Luecke, Ausbruch per Schluss 2026-10-23 255,15, Vol 1,32x). Touch 249,14-263,80$ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 11,73) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 72,0). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 263,80$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (11,73 -> -17,59). TIW = 1D-Schluss unter 255,00$ (Niveau, v76). TP1 288,00$ (knapp unter Luecken-Oberkante ~290, abgelesen 2026-10-22) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,76 an 257,00. 1 % (late_entry 30d +19 %, Pilot BRT; Ext 3,1 ATR = Gate 1 halbe Groesse ist mit 1 % abgedeckt). ATR 4,6 % gelb: Direktaktie oder KO Hebel <= 5,4. Earnings 2026-11-24 -> Entry bis 2026-11-16. Non-Quanto USD.'
+  notes: '[NEU 2026-10-26, Re-Eval >255 ausgeloest (Schluss 2026-10-23 255,15), Morning Check, Linien aus Re-Eval-Plan 2026-10-22 (User: mit Claudes Wert)] Fr O 238,81 H 255,55 L 234,19 C 255,15 (+6,8 %), Vol 1,32x. EMA20/50/100/200-1D 218,59/200,12/185,32/185,38. RSI-1D 72,0 -> erst Retest abwarten. Ersetzt die beiden Archivzeilen ZS (2026-10-13, 2026-10-22); Historie im Journal-Blatt Watchlist-Archiv. Luecken-Oberkante ~290 bitte im Fadenkreuz pruefen.'
+- symbol: SNOW
+  name: Snowflake Inc. (SNOW, NYSE) - Cloud-Datenplattform
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: archiviert
+  added: '2026-09-30'
+  expiry: '2026-10-20'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'nach 2026-09-30 TREND-PULLBACK-LONG: Touch 318,00-322,00$ [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (14,83 -> -22,25). TIW = 1D-Schluss unter 310,00$. TP1 345,00$ = BE-Stufe (L6). TP2 385,00$ = Runner L6. R:R Runner 2,83-3,01. 1% Sizing. Non-Quanto USD. RE-EVAL: 1D-Schluss >349,00 (Rueckeroberung Ausbruchsniveau Okt; Re-Eval >324 am 2026-10-26 verbraucht: Widerstand ~349 liegt ~0,8 R ueber der EMA20-Zone, TP1 >= 1,3 R braeuchte >= 362, r2 0,17) - dann neu rechnen.'
+  notes: '[ANGELEGT 2026-09-30 aus Bucket 4, Recherche S1, User-OK] 28.09.: Wandelanleihe 0% 3,75 Mrd USD (2029 @500,38 / 2031 @483,98 = +47-53% Praemie), Capped Calls Cap 820, 548 Mio refinanzieren 2027er, Abschluss 01.10.; Kurs nur -0,57% (Benzinga). Keine sofortige Verwaesserung, aber Hedge-Verkaeufe der Wandelkaeufer bis Closing moeglich (Flag, zugleich moeglicher Grund fuer den Ruecksetzer in die Zone). CHART: Range 318-345 seit 03.09. (Earnings-Spike 385), Kurs an der EMA20-1D; am Kurs TP1 nur 0,59 R -> Zone an die Range-Unterkante. TIW 310 = Range-Unterkante. ATR 4,49% 🟡 Hebel <=5,6, h5 an L2-Gre'
+  journal_row: 126
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >324 ausgeloest 2026-10-23 (325,43), neu gerechnet 2026-10-26: kein Setup (Exit-Test am Widerstand 349)'
+- symbol: BDX
+  name: Becton, Dickinson and Company (BDX, NYSE) - Medtech
+  direction: LONG
+  klasse: breakout_retest
+  anker: 52W-Hoch 196,00
+  treiber: ''
+  status: archiviert
+  expiry: '2026-10-20'
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >196 ausgeloest 2026-10-23 (198,91), neu gerechnet 2026-10-26: kein Setup (Vol 0,90x, Earnings 2026-11-05)'
+  notes: Ausbruch ueber 189,99 vor 2 HT (Vol 1,09x), Kurs 190,74, ATR 4,14. Earnings 2026-11-05.
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-20 - Pitch breakout_long, kein Setup: 52W-Hoch ~196,00 liegt 0,97 R ueber dem Entry, TP1 < 1,3 R. RE-EVAL: 1D-Schluss >200,50 (neues 52W-Hoch mit Vol >=1,0x, fruehestens nach Earnings 2026-11-05; Re-Eval >196 am 2026-10-26 verbraucht: Ausbruchsvolumen 0,90x < 1,0x) - dann neu rechnen.'
+  added: '2026-10-20'
+- symbol: FANG
+  name: Diamondback Energy (FANG, NASDAQ) - Oel/Gas E&P
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruch 200,65
+  treiber: ''
+  status: archiviert
+  expiry: '2026-10-20'
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >205,63 ausgeloest 2026-10-23 (205,75), neu gerechnet 2026-10-26: Earnings 2026-11-02 sperren'
+  notes: 'Vorher #95 (Thesen-Korb, -1,05 R). Earnings 2026-11-02.'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-20 - Re-Eval 199,50 ausgeloest und verbraucht (Schluss 2026-10-19 203,12), aber kein Setup: Ausbruchsvolumen 0,96x unter dem Boden 1,0x, Stack neutral, OEL-Korb mit 4 Ausdruecken voll. RE-EVAL: 1D-Schluss >207,20 (Hoch 2026-10-23, fruehestens nach Earnings 2026-11-02; Re-Eval >205,63 am 2026-10-26 verbraucht: Earnings-Sperre <= 7 Tage) - dann neu rechnen.'
+  added: '2026-10-20'
+- symbol: HOLN.SW
+  name: Holcim Ltd (HOLN, SIX) — Zement/Baustoffe
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Range-Tief
+  treiber: ''
+  status: archiviert
+  added: '2026-10-07'
+  expiry: '2026-10-16'
+  legs:
+  - label: A
+    gate: 🔴
+    text: '[2026-10-23] Re-Eval <64,10 am 22.10. ausgeloest (63,60); Q3-Update 23.10., Kurs 66,80 ueber EMA20 65,36 - Short-These neu pruefen, Zaehlung ab 23.10. || 🔴 ARCHIVIERT 2026-10-14 - kein Entry-Trigger (TIW 64,10 CHF per Schluss 2026-10-13 gebrochen, 64,12). RE-EVAL: 1D-Schluss <63,60 (Q3-Luecke vom 2026-10-23 geschlossen (Schluss 22.10.), dann Breakdown-Retest neu; Short bis dahin Veto 2 (EBIT-Upgrade Q3)) - dann neu rechnen.'
+  notes: '[ARCHIVIERT 2026-10-14, User-Entscheid Morning Check] kein Entry-Trigger (TIW 64,10 CHF per Schluss 2026-10-13 gebrochen, 64,12); Re-Eval <64,10. Alter Trigger: A: nach 2026-10-07 BREAKDOWN-RETEST-SHORT (CHF): Niveau 64,10 CHF (Okt-Tief). Breakdown per Schluss 07.10. bestaetigt (63,68 = Tagestief, -3,3 %; Vol-Bedingung >=1,0x Avg-20d (Digest bd_vol_mult, unter 1,3x Daempfer) - ohne sie halbe Groesse). Entry nach Retest: Pullback in 62,86–64,93 CHF [pullback] + 4h-Bearish-Reverse-Close (MANUELL), Stop-Sell unter Retest-Tief (L27). SL = MAX(Entry+1,5xATR ; Retest-Hoch+0,30xATR). TIW = 1D-Schluss ueber 64,10 CHF. TP1 60,10 CHF = 52W-Tief (1/3 raus, Exit-Test v49), TP2 Chandelier 2,0 ATR. R:R TP1 1,37 bei Stop-Sell 63,66 (ATR 1,73); 1,3 R nur bei Entry >=63,47 - tiefer kein Entry. Earnings 2027-02-25. 1% Sizing. || [NEU 2026-10-07, Pitch Stufe 2 + User-Charts 1D/4h 10:31, User-OK] Kurs 65,22, EMA20/50/100/200-1D 67,31/69,53/70,90/70,48 (EMA100 > EMA200, Stack nicht voll geordnet),
+    RSI-1D 36,9, ATR-1D 1,64. Niveau 64,10 = Okt-Tief AUS SCREENSHOT GESCHAETZT -> vor Scharfstellen am Live-Chart pruefen; Band = Niveau -0,75/+0,50 ATR. Rechnung: Stop-Sell 63,80, SL MAX(66,26 ; Retest-Hoch+0,3 ATR), R 2,46; TP1 60,10 (52W-Tief) = 1,50 R. Trend-Pullback an EMA20 verworfen: TP1 am Okt-Tief nur 0,99 R. Treiber: keiner gefunden (Recherche 2026-10-07). Q3-Update 2026-10-23 (Digest fuehrt 2027-02-25 = falsch) -> KO-Exit bis 2026-10-16. Non-Quanto CHF. || Vorgaenger-Zeile (Grinder-Short, archiviert 2026-10-04): [ANGELEGT 2026-09-30, Morning Check, Zwei-Laeufe-Regel: Grinder-Block EU 29.09. (Tempo 1,31) + 30.09. (1,27), User-OK] CHART 12:30: 4h O68,90 H70,00 L67,78 C67,80 = Abweisung an der 4h-EMA100 69,96 (Eroeffnungsspike +2,5% auf 69,94, Grund nicht gefunden, finanzen.ch nur Kursmeldung). 1D-EMA 68,86/70,56/71,54/70,77 - Kurs unter 4/4, aber EMA100 > EMA200 (Stack nicht voll geordnet). RSI-1D 41,8 > Si'
+  archived:
+    date: '2026-10-26'
+    reason: 'Radar Z109 2026-10-26: Short-These nach Q3 (EBIT-Upgrade, Gap ueber Breakdown 63,68 und EMA20) nicht tragfaehig'
+updated: '2026-10-26T16:40:40+00:00'

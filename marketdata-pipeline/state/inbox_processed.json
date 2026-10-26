@@ -7,6 +7,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "14VT870YLe-wTt36IA3gmfvF-fLmRYekU": {
+  "actions": 2,
+  "at": "2026-10-26T16:40:40+00:00",
+  "name": "INBOX-morning-check-20261026-1655.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "16uazDujrMT02HZVEGqpWNDVADVoDaIB-": {
   "actions": 6,
   "at": "2026-10-21T11:18:31+00:00",
@@ -135,6 +143,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1VkZfoNdmpBY2INmseKp-zEy0MBx73UAw": {
+  "actions": 2,
+  "at": "2026-10-26T16:40:40+00:00",
+  "name": "INBOX-morning-check-20261026-1615.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1WI6cphibRHYPR0QtiSMcRxDPB0Svxg74": {
   "actions": 3,
   "at": "2026-10-22T17:34:40+00:00",
@@ -147,6 +163,39 @@
   "actions": 3,
   "at": "2026-10-14T12:03:37+00:00",
   "name": "INBOX-morning-check-20261014-1405.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1ZRkTzT23NOcwiMqBOqup7xPnnJecM_gY": {
+  "actions": 2,
+  "at": "2026-10-26T16:40:40+00:00",
+  "name": "INBOX-morning-check-20261026-1620.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1aR5KogpEax5FZrwYYTdOn8ZOnTlvNv8D": {
+  "actions": 14,
+  "at": "2026-10-26T16:40:40+00:00",
+  "name": "INBOX-morning-check-20261026-1745.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1ceLVzMgWbo-uT2kRjrsAThSYfYOT4OvM": {
+  "actions": 0,
+  "at": "2026-10-26T16:50:00+00:00",
+  "name": "INBOX-morning-check-20261026-1215.json",
+  "note": "Nicht anwenden: watchlist.add NET haette die aktive Pullback-Zeile aus PR #40 geloescht. Ersetzt durch INBOX-morning-check-20261026-1745.json (ohne NET).",
+  "source": "morning-check",
+  "status": "ersetzt",
+  "verworfen": 0
+ },
+ "1ekfri--58livo8HCdM5InuG_r6bS0Rm1": {
+  "actions": 1,
+  "at": "2026-10-26T16:40:40+00:00",
+  "name": "INBOX-morning-check-20261026-1145.json",
   "source": "morning-check",
   "status": "ok",
   "verworfen": 0
@@ -246,14 +295,5 @@
   "source": "thesen-lauf",
   "status": "ok",
   "verworfen": 0
- },
- "1ceLVzMgWbo-uT2kRjrsAThSYfYOT4OvM": {
-  "actions": 0,
-  "at": "2026-10-26T16:50:00+00:00",
-  "name": "INBOX-morning-check-20261026-1215.json",
-  "source": "morning-check",
-  "status": "ersetzt",
-  "verworfen": 0,
-  "note": "Nicht anwenden: watchlist.add NET haette die aktive Pullback-Zeile aus PR #40 geloescht. Ersetzt durch INBOX-morning-check-20261026-1745.json (ohne NET)."
  }
 }

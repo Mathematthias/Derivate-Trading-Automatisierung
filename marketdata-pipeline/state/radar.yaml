@@ -761,8 +761,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Abend-Check 2026-10-22, User-Chart 19:44 (Digest kennt das Q3-Update nicht, earn_next 2027-02-25)
   id: Z109
-  status: offen
+  status: erledigt
   added: '2026-10-22'
+  note: '2026-10-26 User-Chart 11:55: Q3 mit EBIT-Upgrade, Gap von ~63,6 auf ~66,3, Kurs 67,20 ueber EMA20 65,53 und am EMA50 67,54. Short = frischer Gegen-Katalysator (L23 Veto 2). Kein Setup; Archivzeile Re-Eval <63,60 (Gap-Close).'
 - date: '2026-11-04'
   kat: 5
   werte: LHA.DE
@@ -844,4 +845,31 @@ rows:
   id: Z118
   status: offen
   added: '2026-10-25'
-updated: '2026-10-26T06:41:12+00:00'
+- date: '2026-11-04'
+  kat: 5
+  werte: MPC
+  ereignis: MPC nach Q3-Zahlen (2026-11-03) Trend-Pullback EMA20/EMA50 neu rechnen (These OEL, Zeile 2026-10-26 archiviert mit Re-Eval >494)
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Morning Check 2026-10-26, User-Entscheid
+  id: Z119
+  status: offen
+  added: '2026-10-26'
+- date: '2026-11-06'
+  kat: 5
+  werte: BDX
+  ereignis: BDX nach Q4-Zahlen (2026-11-05) Breakout-Retest am 52W-Hoch ~200,5 neu rechnen (Vol >= 1,0x pruefen)
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Morning Check 2026-10-26, Re-Eval-Lauf
+  id: Z120
+  status: offen
+  added: '2026-10-26'
+- date: '2026-11-03'
+  kat: 5
+  werte: FANG
+  ereignis: FANG nach Q3-Zahlen (2026-11-02) Breakout-Retest neu rechnen (These OEL, Hoch 2026-10-23 207,17)
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Morning Check 2026-10-26, Re-Eval-Lauf
+  id: Z121
+  status: offen
+  added: '2026-10-26'
+updated: '2026-10-26T16:40:40+00:00'

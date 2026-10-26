@@ -45,7 +45,7 @@ thesen:
   verdikt: spielen
   korb_budget_pct: 2
   crowdedness_pp: 13.57
-  re_check: '2026-10-26'
+  re_check: '2026-11-02'
   falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
   ausdruecke:
   - VLO
@@ -83,6 +83,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: 13.57
     source: thesen-lauf
+  - date: '2026-10-26'
+    verdikt: spielen
+    crowdedness_pp: 13.57
+    source: morning-check
 - id: STAHL
   titel: EU-Stahl melt-and-pour
   verdikt: spielen
@@ -235,4 +239,4 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: 12.02
     source: thesen-lauf
-updated: '2026-10-26T06:41:12+00:00'
+updated: '2026-10-26T16:40:40+00:00'
