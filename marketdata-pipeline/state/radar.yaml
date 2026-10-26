@@ -177,6 +177,7 @@ rows:
   wirkung: '- groesster Einzel-Unlock, Float waechst von ~5% Richtung Mehrheit'
   status: offen
   quelle: Datum 2026-09-02 von 2026-12-09 auf 2026-12-08 korrigiert (Prospekt-Coverdatum 11.06.2026, nicht 12.06.); Restvolumen ~797,6 Mio Aktien. confidence niedrig, siehe Z12. || modernfp.com, 2026-08-04
+  note: '2026-10-26 Pflegelauf, Widerspruchspruefung gegen den Katalysator-Kalender: CATALYST-CALENDAR-2026-10-24 fuehrt das SpaceX-Lockup-Ende auf 2026-12-09, der Radar auf 2026-12-08. Die Abweichung ist GEWOLLT und belegt - das Radar-Datum wurde am 2026-09-02 bewusst von 2026-12-09 auf 2026-12-08 gezogen (Prospekt-Coverdatum 2026-06-11, nicht 2026-06-12; siehe Feld quelle). Der Kalender traegt den ueberholten Seed-Wert. NICHT zurueckkorrigieren. Unveraendert offen: das Restvolumen (~797,6 Mio. Aktien, siehe Z12) ist ungeprueft, confidence niedrig.'
 - id: Z27
   date: '2026-12-11'
   kat: 4
@@ -226,6 +227,7 @@ rows:
   wirkung: + Turbinen-/Kabel-Lieferkette bei hohem Zuschlagsvolumen
   status: offen
   quelle: 'NESO/DESNZ "Allocation Round 8: indicative timeline scenarios for all technologies" (cfdallocationround.uk), Abruf 2026-09-04. confidence hoch fuer die Szenarien-Struktur, das eintretende Szenario ist offen. (Pflegelauf 04.09.)'
+  note: '2026-10-26 Pflegelauf: Szenarien-Struktur primaer bestaetigt (Zeitplan-PDF, Abruf 2026-10-26, Werte deckungsgleich mit dem Stand 2026-09-04). Das Datum bleibt BEWUSST auf 2026-11-27 = Szenario 1: der eintretende Ast ist nicht belegt, und 2026-11-27 ist der frueheste noch lebende Termin - so faellt die Zeile rechtzeitig ins 28-Tage-Fenster und wird neu geprueft, statt verspaetet aufzuschlagen. PRUEFAUFTRAG fuer den Lauf nach dem 2026-11-18 (Z79): Beschwerdeentscheid vorhanden -> Szenario 5, Datum auf 2027-02-15 setzen. Ergebnismitteilung ab 2026-11-27 -> Szenario 1 war der Ast, Zeile erledigen. Keines von beidem -> Szenario 3/4, Datum auf 2027-01-04. Der Katalysator-Kalender (CATALYST-CALENDAR-2026-10-24) fuehrt fuer dasselbe Ereignis 2027-02-15 - das ist der Szenario-5-Ast, kein Widerspruch zum Radar.'
 - id: Z36
   date: '2026-09-21'
   kat: 5
@@ -486,6 +488,7 @@ rows:
   wirkung: Mengen-Signal ohne Preis (s. Z65).
   status: offen
   quelle: NESO/DESNZ AR8 indicative timetable (cfdallocationround.uk). Angelegt 2026-09-17 als Zeile 3/3 der Kette Z65.
+  note: '2026-10-26 Pflegelauf: Datum primaer gegengelesen. Der DESNZ/NESO-Zeitplan ''Allocation Round 8: indicative timeline scenarios for all technologies'' (assets.www.cfdallocationround.uk/documents/Indicative_CfD_AR8_Timetable.pdf, Abruf 2026-10-26) nennt woertlich ''Non-qualifying applicants notified of outcome of qualification appeals: 18 November 2026'', davor ''Tier 2 Ofgem non-qualification appeals stage: 22 October - 18 November 2026''. Datum bestaetigt, confidence hoch. Diese Zeile ist zugleich der Verzweigungspunkt fuer Z32: faellt hier ein Beschwerdeentscheid, greift Szenario 5 (Sealed Bid 2026-12-03 bis 2026-12-09, Ergebnismitteilung 2027-02-15 bis 2027-02-17).'
 - id: Z80
   date: '2026-09-23'
   kat: 5
@@ -512,7 +515,7 @@ rows:
   wirkung: Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Zugleich Messtermin fuer These N2 (UK-Ersterwerber, Verdikt beobachten).
   status: offen
   quelle: 'Grant Thornton UK ''Autumn Budget 2026: what we know so far'', woertlich ''The Autumn Budget will take place on 28 October 2026''; Which? 14.09.2026. Abruf 2026-09-21 | confidence HOCH fuer das Datum, NIEDRIG fuer den Inhalt'
-  note: '2026-10-19 Pflegelauf: Termin 2026-10-28 unveraendert (Pruefung 2026-10-12 gegen mehrere UK-Steuerquellen, keine neue Gegenanzeige). Watchlist-Stand aus dem Feld wirkung entfernt, weil er dort veraltete: STAN.L ist seit dem Verfall 2026-10-14 keine aktive Zeile mehr; Stand 2026-10-19 traegt keiner der sieben genannten Werte und auch kein weiterer UK-Wert eine aktive Zeile. Inhalt des Pakets weiter unbelegt (confidence NIEDRIG bleibt).'
+  note: '2026-10-19 Pflegelauf: Termin 2026-10-28 unveraendert; Watchlist-Stand aus dem Feld wirkung entfernt, weil er dort veraltete. Inhalt des Pakets unbelegt (confidence NIEDRIG). || 2026-10-26 Pflegelauf: Termin und Ressortzuordnung doppelt belegt - cambridgenetwork.co.uk zur Videobotschaft des Kanzlers, woertlich ''the Budget would be on Wednesday 28 October'', Chancellor John Healey (Abruf 2026-10-26), dazu der Grant-Thornton-Wortlaut vom 2026-09-21. Datum und Amtstraeger damit confidence HOCH, Inhalt weiter NIEDRIG. Watchlist-Stand 2026-10-26: keiner der sieben genannten UK-Werte traegt eine aktive Zeile (watchlist.yaml 2026-10-24T05:41). Nebenbefund: der Digest fuehrt WTB.L im Ex-Div-Radar mit Rolle ''watchlist'' und Ex-Tag 2026-10-30, obwohl keine aktive Zeile existiert - Rollen-Fehlgriff des Digests, ohne Folge fuer den Radar.'
 - id: Z83
   date: '2027-03-10'
   kat: 5
@@ -652,12 +655,13 @@ rows:
 - date: '2026-10-29'
   kat: 5
   ereignis: 'Phillips 66 Q3-2026-Zahlen (2026-10-28) -> am Folgetag Post-Earnings-Setup PSX neu rechnen (Weg A Raffinerien, User 2026-10-19): Trend-Pullback EMA20/EMA50 mit Treiber These OEL, Sell-the-News-Risiko ausdruecklich pruefen'
-  werte: PSX; VLO, MPC (sobald im Universum, PR Weg B)
+  werte: PSX, VLO, MPC
   wirkung: 'Raffinerie-Margen (Diesel-Crack >90 USD/bbl seit Aug) vs. Erwartung: Reaktion auf Rekordzahlen entscheidet, ob der Trend Traeger behaelt oder die Story eingepreist ist'
   quelle: Earnings-Termin PSX aus Digest (earn_next 2026-10-28); Diesel-Crack RBN Energy 2026-08-27, Abruf 2026-10-19
   id: Z98
   status: offen
   added: '2026-10-19'
+  note: '2026-10-26 Pflegelauf: Feld werte korrigiert. Der Vorbehalt ''(sobald im Universum, PR Weg B)'' ist erledigt - VLO und MPC stehen im Digest-Universum (earn_next VLO 2027-01-28, MPC 2026-11-03; Digest 2026-10-23T22:33) und tragen beide aktive Watchlist-Zeilen mit Treiber These OEL (VLO Verfall 2026-11-06, MPC Verfall 2026-10-26). Der PSX-Termin 2026-10-28 ist gegen das Digest-Feld earn_next unveraendert.'
 - date: '2026-10-31'
   kat: 5
   ereignis: EXC nach Q3-Zahlen (2026-10-30) Short-Trend-Pullback EMA20 neu rechnen (Re-Eval von Hand, Morning Check 2026-10-20)
@@ -704,6 +708,7 @@ rows:
   id: Z103
   status: offen
   added: '2026-10-21'
+  note: '2026-10-26 Pflegelauf, Faktenpruefung: Der Ex-Tag lag auf 2026-10-13, NICHT auf dem im Ereignistext geschaetzten ''~2026-10-26'' - 13 Tage Abweichung. Dividende 0,61 USD, erklaert 2026-09-29, zahlbar 2026-11-02 (dividendmax.com, Abruf 2026-10-26; Sekundaerquelle, GIS-IR nicht gegengelesen). Folge fuer das Zeilendatum: der Short-Disqualifier ''Ex-Tag <= 14 Tage'' laeuft damit am 2026-10-27 aus - genau das Datum dieser Zeile. Das Datum bleibt also richtig, aber aus einem anderen Grund als dem notierten; mit dem geschaetzten Ex-Tag haette es auf ~2026-11-09 stehen muessen. Lehre: geschaetzte Ex-Tage im Ereignistext sind als Schaetzung zu markieren und vor dem Zeilendatum zu pruefen.'
 - date: '2026-10-28'
   kat: 5
   werte: QIA.DE
@@ -794,13 +799,49 @@ rows:
   id: Z113
   status: offen
   added: '2026-10-22'
+- date: '2026-11-30'
+  kat: 1
+  ereignis: 'GLOBE-Modell (Global Benchmark for Efficient Drug Pricing): US-Referenzpreismodell fuer Arzneimittel - Stichtag laut Federal-Register-Eintrag 2026-20281. VORBEHALT: Primaerquelle nicht gegengelesen, der Treffer stammt aus dem Katalysator-Kalender-Collector, der ueberwiegend Suchartefakte liefert; vor jeder Verwendung Federal Register direkt pruefen. Zusammen mit Z96 (CMS-Frist Hoechstpreise Runde 3, selber Tag) und Z30 (Medicare-Verhandlungspreise Runde 2 wirksam 2027-01-01) der Messkalender zu These N7.'
+  werte: UNH, ELV, PFE, AMGN, MRK.DE
+  wirkung: Payer-Seite entlastet (niedrigere Arzneimittel-Leistungsausgaben, Part D) / Hersteller-Seite mit US-Preispraemie belastet; Richtung je Wert gegenlaeufig
+  quelle: Federal Register 2026-20281 via CATALYST-CALENDAR-2026-10-24-0601.json (Abruf 2026-10-24), confidence mittel - Primaerquelle offen
+  id: Z114
+  status: offen
+  added: '2026-10-26'
+- date: '2026-11-09'
+  kat: 3
+  ereignis: 'Cerebras Systems: letzte und groesste Lockup-Stufe laeuft ab, alle restlichen gesperrten Aktien werden frei (IPO 2026-05-14, 34,5 Mio. Aktien zu 185 USD). Mechanik: 180 Tage nach dem IPO-Prospekt ODER zweiter Handelstag nach dem Q3-Bericht, je nachdem was frueher eintritt. Die Stufen davor (2026-06-23, 08-12, 08-19, 09-02, 09-16, 09-30, 10-14, 10-28) haben laut Quelle zusammen rund 171 Mio. Aktien freigegeben; das Restvolumen hat die Gesellschaft nicht veroeffentlicht. Faellt in das Cluster 2026-11-10 (Z20, Z81, Z95).'
+  werte: CBRS
+  wirkung: 'Angebotsseite: der frei handelbare Bestand steigt am Datum um die Resttranche, der Streubesitz waechst entsprechend. Mechanischer Angebotszugang, keine Aussage zur Kursrichtung. Beruehrt den AI-Komplex (These TECH) nur als Angebotsereignis, nicht als Nachfragesignal.'
+  quelle: The Motley Fool, 'Cerebras Shares Are Coming Out of Lockup in Waves. Here's the Date That Matters Most.', fool.com, 2026-09-21 (Abruf 2026-10-26). confidence MITTEL - Sekundaerquelle; 2026-11-09 ist der Aussenrand, ein frueherer Q3-Bericht kann das Datum vorziehen. Prospekt-Abschnitt 'Lock-Up Agreements' nicht gegengelesen, Restvolumen nicht belegt.
+  id: Z115
+  status: offen
+  added: '2026-10-26'
+- date: '2026-11-22'
+  kat: 5
+  ereignis: 'FDA-PDUFA-Zieldatum fuer Deramiocel (Capricor Therapeutics) bei Duchenne-Muskeldystrophie, von 2026-08-22 um drei Monate verlaengert: Capricor reichte eine BLA-Ergaenzung mit 24-Monats-Daten der Open-Label-Extension von HOPE-3 plus Robustheitsanalysen nach, die FDA stufte sie als ''major amendment'' ein. Eingereichte Indikation auf die Funktion der oberen Extremitaet zugeschnitten (primaerer HOPE-3-Endpunkt).'
+  werte: CAPR
+  wirkung: 'Nachfrageseitig: eine Zulassung schafft erstmals eine erstattungsfaehige US-Absatzbasis fuer das Praeparat, ein CRL haelt den US-Absatz bei null. Thesen-/Terminereignis, kein Trade-Trigger.'
+  quelle: Capricor Therapeutics IR-Pressemitteilung 'Capricor Therapeutics Announces Extension of PDUFA Target Action Date as FDA Continues Review of Deramiocel BLA', capricor.com, 2026-08-24 (Abruf 2026-10-26). confidence MITTEL-HOCH - Primaerquelle des Unternehmens, aber nur dieser eine Stand geprueft; eine Verschiebung nach dem 2026-08-24 wuerde dieser Lauf nicht sehen. 2026-11-22 ist ein Sonntag, die Entscheidung kann davor fallen.
+  id: Z116
+  status: offen
+  added: '2026-10-26'
+- date: '2027-02-04'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer orales Infigratinib (BridgeBio) bei Achondroplasie im Kindesalter; NDA zur Priority Review angenommen. Zweiter BBIO-Termin im Radar neben Z58 (BBP-418 bei Gliederguertel-Muskeldystrophie 2I/R9, 2026-11-27) - zwei Entscheidungen auf demselben Wert innerhalb von zehn Wochen.
+  werte: BBIO
+  wirkung: 'Nachfrageseitig: eine Zulassung schafft die US-Absatzbasis fuer eine oral verabreichte Therapie in einer bisher injektionsgebunden versorgten Indikation, ein CRL haelt den US-Absatz bei null. Thesen-/Terminereignis, kein Trade-Trigger.'
+  quelle: BridgeBio Pharma, 8-K an die SEC, eingereicht 2026-10-13 06:01 EDT (Ankuendigung datiert 2026-10-06), woertlich 'February 4, 2027' und 'Accepted for Priority Review'; gelesen via stocktitan.net/sec-filings/BBIO (Abruf 2026-10-26). confidence HOCH - Pflichtmitteilung.
+  id: Z117
+  status: offen
+  added: '2026-10-26'
 - date: '2026-11-06'
   kat: 5
   werte: NET
   ereignis: 'NET nach Q3 (2026-11-05) neu rechnen: Re-Eval >315 am 23.10. ausgeloest, Exit-Test fiel an der Bruchzone ~334-342 (0,6 R bei ATR 5,7 %); nach den Zahlen Trend-Pullback/Breakout neu fassen, Charts 1D+4h'
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: 'Abend-Chat 2026-10-25 (User: A-C)'
-  id: Z114
+  id: Z118
   status: offen
   added: '2026-10-25'
-updated: '2026-10-25T20:05:00+01:00'
+updated: '2026-10-26T06:41:12+00:00'

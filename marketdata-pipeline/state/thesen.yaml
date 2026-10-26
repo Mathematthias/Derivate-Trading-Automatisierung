@@ -3,17 +3,18 @@ source: Thesen-Lauf 2026-10-03
 thesen:
 - id: A
   titel: AI-Strom/Elektrifizierung
-  verdikt: spielen
-  korb_budget_pct: 4
-  crowdedness_pp: -3.42
+  verdikt: beobachten
+  korb_budget_pct: 0
+  crowdedness_pp: -14.52
   re_check: '2026-10-30'
-  falsifikat: (a) Hyperscaler-Capex-Cut (Messtermin Q3-Calls Ende Oktober, Alphabet 2026-10-28); (b) book-to-bill < 1 (PRY 2026-10-29, ENR 2026-11-11)
+  falsifikat: '(a) Hyperscaler-Capex-Cut in den Q3-Calls - ERSTER MESSPUNKT BESTANDEN: META hat am 2026-10-21 die FY2026-Capex-Guidance von 130-145 auf 135-145 Mrd. USD ANGEHOBEN (tradingkey.com, Abruf 2026-10-24), kein Cut; offen GOOGL/MSFT 2026-10-28, AMZN 2026-10-29. (b) book-to-bill < 1 (PRY.MI 2026-10-29, ENR.DE 2026-11-11). Kopplung mit These TECH unveraendert.'
   ausdruecke:
   - ETN
   - ABBN.SW
   - PWR
   - PRY.MI
-  note: 'KOPPLUNG 2026-10-19: Falsifikat (a) gilt auch fuer These TECH - tritt es ein, schliessen beide Koerbe gemeinsam (ein Faktor AI-Capex, L7). || Re-Check 2026-10-16 faellig, hier nachgeholt. Crowdedness 30d je Ausdruck gegen eigenen Index (Digest 2026-10-16 22:32): ETN -4,73 / PWR +2,20 / ABBN.SW -2,95 (gegen ^STOXX50E mangels SMI) / PRY.MI -8,19 PP, Mittel -3,42 PP (Vorwoche +4,58) -> Zone <10, Budget 4 % unveraendert. Beide Falsifikate weiter nicht messbar. Korb geschlossen unter EMA20/EMA50 (PRY.MI RSI 31,7, ETN 34,8, ABBN.SW 36,7, PWR 42,3) - nach Schritt 4c Timing- und Groessenfrage, keine Thesenfrage. Earnings-Sperre: ABBN.SW 2026-10-20, PWR/PRY.MI 2026-10-29, ETN 2026-11-03. Re-Check bewusst nach Alphabet (Z88) und Prysmian (Z91).'
+  note: 'THESEN-LAUF 2026-10-24, Sonderauftrag S1 (Kurs gegen These). Verdikt von spielen auf beobachten, Budget 0 bis 2026-10-30. GRUND IST DER MESSKALENDER, NICHT DER CHART (Schritt 4c): zwei der vier Falsifikat-Messpunkte liegen am 2026-10-28 (GOOGL, Z88) und 2026-10-29 (PRY.MI, Z91), und die Earnings-Sperre (Universal-Disqualifier <= 7 HT) blockiert PWR und PRY.MI genau bis dahin. Falsifikat formal NICHT eingetreten - im Gegenteil, META hat die Capex angehoben. Chartstand nur als Timing-/Groessenfrage protokolliert: alle vier Ausdruecke liegen unter ALLEN vier EMAs (Digest 2026-10-23 22:33) - ETN 366,11 (EMA20 404,72 / EMA200 398,09, RSI 30,7), ABBN.SW 67,78 (75,83 / 74,95, RSI 24,5), PWR 546,43 (630,23 / 608,11, RSI 28,3), PRY.MI 99,08 (113,82 / 117,59, RSI 27,7); Long gegen aktiven Daily-Abwaertstrend ist hartes Veto #1, das 4-%-Budget war also ohnehin nicht platzierbar (13 Ausdruecke / 2 Korb-Zeilen, Befund User 2026-10-20). Crowdedness 30d je Ausdruck gegen eigenen Index: ETN -15,75
+    / PWR -14,04 (gegen ^GSPC -1,04), ABBN.SW -12,54 / PRY.MI -15,76 (gegen ^STOXX50E -3,26), Mittel -14,52 PP (Vorwoche -3,42) - Unterperformance, nach der Zonenregel also Raum, kein Deckel. ABWEICHUNG benannt (Regel 25): Schritt 4c verbietet den Chart als Thesenargument; die Herabstufung stuetzt sich allein auf Messkalender und Earnings-Sperre. Gegenprobe: These STAHL bleibt unter denselben Chartbedingungen spielen, weil ihr Messtermin 19 Tage entfernt ist.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -35,20 +36,24 @@ thesen:
     verdikt: spielen
     crowdedness_pp: -3.42
     source: thesen-lauf
+  - date: '2026-10-26'
+    verdikt: beobachten
+    crowdedness_pp: -14.52
+    source: thesen-lauf
 - id: OEL
   titel: Oel/Hormus
   verdikt: spielen
   korb_budget_pct: 2
-  crowdedness_pp: 6.38
+  crowdedness_pp: 13.57
   re_check: '2026-10-26'
   falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
   ausdruecke:
-  - ENI.MI
+  - VLO
+  - MPC
   - XOM
   - PSX
-  - LHA.DE
-  note: 'RE-CHECK 2026-10-19 (Chat, User "Checken"): Verdikt spielen unveraendert. Brent BZ=F 108,48 USD (Digest 2026-10-19 13:32) = 23,3 % ueber der Schwelle 88, ueber EMA20 104,34/EMA50 99,88, Stack bullish. Waffenruhe-Haelfte: keine Deeskalation gefunden - letzte belegte Waffenruhe endete 2026-07-08 (angelone.in), KW42 laut Wochenrueckblick verstaerkte Iran-Angriffe auf Tanker (portfolio-terminal.com, Abruf 2026-10-19); Oktober-Suche ohne Befund = Annahme, kein Beleg. Crowdedness ENI.MI +10,97 / XOM +9,34 / PSX +6,63 / FRA.DE -1,44 PP, Mittel +6,38 PP (Zone <10). XOM RSI 73,0, ENI.MI 73,1, PSX 70,7 - Einstieg/Groesse, nicht Verdikt. Naechster Re-Check 2026-10-26. || Zwischenstand Thesen-Lauf 2026-10-17, Re-Check NICHT faellig (2026-10-19) und unveraendert. Brent BZ=F 109,60 USD (Digest 2026-10-16 22:32) = 24,5 % ueber der Schwelle 88, ueber EMA20 103,88 und EMA50 99,52. Zur Waffenruhe-Haelfte des Falsifikats in diesem Lauf nicht gesucht - Annahme, kein Befund. Crowdedness gedreht: ENI.MI
-    +9,62 / XOM +9,34 / PSX +6,63 / FRA.DE -0,04 PP, Mittel +6,39 PP (Vorwoche -6,11), Zone <10. XOM RSI 73,0, ENI.MI 71,3, PSX 70,7 - der Korb fuehrt jetzt statt zu folgen, relevant fuer Einstieg und Groesse, nicht fuer das Verdikt.'
+  note: 'ZWISCHENSTAND Thesen-Lauf 2026-10-24, Re-Check 2026-10-26 NICHT faellig und unveraendert - geaendert wird nur die Ausdrucksliste (Sonderauftrag S2). ANTWORT S2: CVX wird NICHT aufgenommen. Die Annahme des Auftrags (CVX hat eine aktive Korb-Zeile) ist seit dem 2026-10-22 ueberholt - die CVX-Zeile ist an jenem Tag archiviert worden (Verfall 2026-10-22, Kurs 1,78 ATR ueber dem Ausbruch, Ext 2,43, Earnings 2026-10-30); es gibt also keine Kontrolluecke. Heute waere CVX ohnehin gesperrt: Earnings 2026-10-30 in 6 HT (Universal-Disqualifier) und Ext 3,08 ATR ueber EMA20. DIE ECHTE LUECKE lag umgekehrt: ausdruecke fuehrte ENI.MI, XOM, PSX und LHA.DE - alle vier Zeilen sind archiviert (ENI.MI 2026-10-13, XOM und PSX 2026-10-19, LHA.DE 2026-10-23 ''Exit-Test faellt am 52W-Tief'') -, waehrend die beiden LEBENDEN Zeilen mit Treiber These OEL, VLO und MPC, nicht in der Liste standen. Neue Liste VLO, MPC, XOM, PSX (PSX mit Post-Earnings-Wiedervorlage Z98 ab 2026-10-29). Crowdedness dieser vier
+    30d gegen ^GSPC -1,04: VLO +10,55 / MPC +17,99 / XOM +14,03 / PSX +11,71 PP, Mittel +13,57 PP = Zone 10-20, Groesse eine Stufe tiefer - das bereits auf 2 % reduzierte Budget bleibt deshalb bei 2 % und geht nicht auf 3 % zurueck. Falsifikat weit entfernt: Brent BZ=F 111,51 USD = 26,7 % ueber der Schwelle 88, Stack bullisch ueber EMA20 106,52 und EMA50 101,51; zur Waffenruhe-Haelfte in diesem Lauf nicht gesucht (Annahme, kein Beleg). Ausdrucksstand: MPC 457,22 ueber allen vier EMAs, Ext 0,44, ATR 3,59 %, Earnings 2026-11-03; VLO 419,30 ueber 3/4, Ext -0,29, ATR 4,02 %, Earnings 2027-01-28; XOM 183,21 RSI 76,1, Ext 2,69, Earnings 2026-10-30 (gesperrt); PSX 283,18 Earnings 2026-10-28 (gesperrt).'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -74,18 +79,23 @@ thesen:
     verdikt: spielen
     crowdedness_pp: null
     source: null
+  - date: '2026-10-26'
+    verdikt: spielen
+    crowdedness_pp: 13.57
+    source: thesen-lauf
 - id: STAHL
   titel: EU-Stahl melt-and-pour
   verdikt: spielen
   korb_budget_pct: 3
-  crowdedness_pp: -8.98
-  re_check: '2026-10-24'
-  falsifikat: HRC Nordeuropa EXW (SMM-Serie) unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t Stand 2026-09-28; Basis EXW, nicht DDP - praezisiert 2026-10-17)
+  crowdedness_pp: -10.06
+  re_check: '2026-11-13'
+  falsifikat: HRC Nordeuropa EXW (Fastmarkets/SMM-Serie) unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t; Basis EXW, nicht DDP)
   ausdruecke:
   - SZG.DE
   - MT.AS
   - VOE.VI
-  note: 'Zwischenstand Thesen-Lauf 2026-10-17, Re-Check NICHT faellig (2026-10-24) und unveraendert. Mechanik bestaetigt: HRC Nordwest-Europa 742 EUR/t EXW, Liefergeschaefte 750-760 EUR/t DDP (SMM/metal.com 2026-10-12, Abruf 2026-10-17), Q4-Kontingente der nordeuropaeischen Werke ausverkauft, Kaeuferlager geleert, Importquoten knapp. Aktien dagegen: SZG.DE -12,61 %, MT.AS -13,34 %, VOE.VI -5,12 % in 30d. Crowdedness SZG.DE -12,24 / MT.AS -11,46 / VOE.VI -3,24 PP, Mittel -8,98 PP (Vorwoche -7,59), Zone <10, Budget 3 % unveraendert. PRAEZISIERUNG des Falsifikats: es nannte keine Preisbasis; mit 742 EXW waere es heute knapp erfuellt, mit 750-760 DDP klar nicht. Referenz 745 stammt aus der SMM-EXW-Serie, also gilt EXW. Schwelle und Messtermin (Z90, 2026-11-12) unveraendert.'
+  note: 'RE-CHECK 2026-10-24 faellig, hier erledigt. Verdikt spielen unveraendert, Budget 3 % unveraendert, neuer Re-Check 2026-11-13 (Tag nach dem Messtermin Z90). KORREKTUR der Notiz vom 2026-10-17: dort stand HRC Nordwest-Europa 742 EUR/t EXW - das war der ITALIEN-Wert (741,25 EUR/t). Nordeuropa lag in derselben Serie bei 746,88 EUR/t EXW (Woche bis 2026-10-09, metal.com/SMM, veroeff. 2026-10-12) und steht am 2026-10-19 bei 748,75 EUR/t EXW, +3,75 gegen den 2026-10-16 (745,00), +7,08 auf Wochensicht, +11,25 auf Monatssicht (Fastmarkets via eurometal.net, veroeff. 2026-10-20, Abruf 2026-10-24). Das Falsifikat ist damit NICHT erfuellt, sondern der Preis laeuft von der Schwelle weg; Werksangebote 760 EUR/t EXW, deutsche Werke zielen auf 770 EUR/t frei Verwendungsort (netto ca. 750-755 EXW), Lager weiter hoch, Nachfrage schwach. Crowdedness 30d: SZG.DE -15,24 vs ^GDAXI -0,34 = -14,90 PP, MT.AS -14,03 vs ^STOXX50E -3,26 = -10,77 PP, VOE.VI -7,78 vs ^STOXX50E = -4,52 PP, Mittel -10,06 PP (Vorwoche
+    -8,98) - Unterperformance, Zonenregel ohne Deckel. Divergenz benannt: der Thesenpreis steigt, die Aktien fallen; nach Schritt 4c ist das Timing und Groesse, keine Thesenfrage. Ausdrucksstand (Digest 2026-10-23 22:33): alle drei unter allen vier EMAs - SZG.DE 43,82 (EMA20 48,11 / EMA200 48,29, RSI 34,0, ATR 5,6 %), MT.AS 53,30 (57,11 / 54,11, RSI 29,8, 0,43 ATR UNTER der EMA200 = Anker der aktiven Korb-Zeile gebrochen), VOE.VI 41,94 (43,85 / 42,40, RSI 37,0). Heute kein Ausdruck platzierbar (Veto #1); Earnings sperren nicht (MT.AS 2026-11-05, VOE.VI 2026-11-11, SZG.DE 2026-11-12).'
   historie:
   - date: '2026-10-12'
     verdikt: spielen
@@ -98,6 +108,10 @@ thesen:
   - date: '2026-10-19'
     verdikt: spielen
     crowdedness_pp: -8.98
+    source: thesen-lauf
+  - date: '2026-10-26'
+    verdikt: spielen
+    crowdedness_pp: -10.06
     source: thesen-lauf
 - id: N2
   titel: UK-Ersterwerber (N-2)
@@ -117,15 +131,24 @@ thesen:
   titel: Deutscher Kapazitaetsmarkt - Zuschlag 2026-11-03
   verdikt: beobachten
   re_check: '2026-11-06'
-  crowdedness_pp: null
+  crowdedness_pp: -11.99
   korb_budget_pct: 0
   falsifikat: Zuschlagsvolumen am 2026-11-03 deutlich unter den ausgeschriebenen 4.500 MW ODER Gasturbinen-/Neubauanteil im Zuschlag marginal (Schwerpunkt Bestandsanlagen) -> verworfen
-  note: 'Kandidat aus Gruppe 2 (Vergabe-/Auktionstermine, Radar Z66). Erste deutsche Kapazitaetsmarkt-Auktion nach StromVKG, Gebotsschluss war 2026-09-08, Zuschlagsbekanntgabe 2026-11-03, 4.500 MW, Hoechstpreis 244.000 EUR/MW*a, Vertragslaufzeit 15 Jahre, Batteriespeicher faktisch ausgeschlossen (10-h-Kriterium). Kausalkette: Zuschlagsmenge je Technologie -> gesicherter Auftragsbestand im Gasturbinen-/Kraftwerksbau. Nur ENR.DE im Universum (145,36 EUR, 30d +3,22 %, Stack neutral, Q4-Zahlen 2026-11-11); UN01.DE und RWE.DE nicht gefuehrt, Crowdedness daher nicht belastbar messbar. Quelle: bundesnetzagentur.de / boersen-zeitung.de, Abruf 2026-08-04; Split der Zeile 2026-09-07.'
+  note: 'SONDERAUFTRAG S3 (Weg B, Hochstufung geprueft): KEINE Hochstufung auf spielen, Verdikt beobachten und Budget 0 bleiben, Re-Check 2026-11-06 unveraendert. Angelegter Masstab war ausschliesslich Schritt 4b/4c plus Falsifikat - NICHT, dass gerade wenig handelbar ist. 4b: gerichtet (long Gasturbinen-/Kraftwerksbau) erfuellt, Kausalkette Zuschlagsmenge je Technologie -> gesicherter Auftragsbestand erfuellt, Falsifikat beobachtbar erfuellt. Inhaltlich STUETZEND: die BNetzA nennt die erste Auktion (Gebotsschluss 2026-09-08) ''deutlich ueberzeichnet'', quantitative Angaben fehlen; Zuschlagsbekanntgabe bis spaetestens 2026-11-03 (techzeitgeist.de 2026-09-12 unter Berufung auf bundesnetzagentur.de, Abruf 2026-10-24; Sekundaerquelle). Crowdedness 30d: ENR.DE -16,48 / SIE.DE -6,55 vs ^GDAXI -0,34, GEV -14,66 vs ^GSPC -1,04, Mittel -11,99 PP - Unterperformance, Zonenregel ohne Deckel; RWE.DE, UN01.DE und VOW3.DE sind nicht im Digest-Universum. WORAN DIE HOCHSTUFUNG SCHEITERT: die Klasse Thesen-Korb
+    verlangt 3-4 Ausdruecke mit je Score >= 5,0, und keiner der drei ist heute ausdrueckbar - ENR.DE 118,68 unter allen vier EMAs (EMA20 135,79 / EMA200 143,62), Stack bearish, RSI 28,8, ATR 4,97 %, Earnings 2026-11-11; SIE.DE 256,80 unter allen vier EMAs (268,12 / 260,76), Stack neutral, RSI 38,6, ATR 2,70 %, Earnings 2026-11-12; GEV 815,00 unter allen vier EMAs (927,48 / 907,58), Stack neutral, RSI 29,9, ATR 5,67 % (ueber der 5-%-Stufe), Earnings 2026-10-28 = 4 HT (Earnings-Sperre). Ein Long in diese drei ist Long gegen aktiven Daily-Abwaertstrend = hartes Veto #1; eine ruhende Limit-Order der Korb-Klasse waere genau das, was Veto #1 verbietet. Der richtige Traeger ist die bestehende ENR.DE-Zeile der Klasse event_watch (Verfall 2026-11-03), nicht ein Korb-Budget. Alle Werte Digest 2026-10-23 22:33.'
   historie:
   - date: '2026-10-12'
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
+  - date: '2026-10-26'
+    verdikt: beobachten
+    crowdedness_pp: -11.99
+    source: thesen-lauf
+  ausdruecke:
+  - ENR.DE
+  - SIE.DE
+  - GEV
 - id: N4
   titel: Euro 7 Typgenehmigungs-Stichtag 2026-11-29
   verdikt: beobachten
@@ -156,31 +179,60 @@ thesen:
   titel: Seltene Erden - Ablauf der Aussetzung 2026-11-10
   verdikt: beobachten
   re_check: '2026-11-06'
-  crowdedness_pp: -18.93
+  crowdedness_pp: -21.27
   korb_budget_pct: 0
   falsifikat: China verlaengert die Aussetzung von Announcement 61 vor dem 2026-11-10, ODER MOFCOM bestaetigt itemisiert, dass die SE-Exportkontrollen in der Waffenstillstands-Verlaengerung vom 2026-09-28 bis 2027-01-10 enthalten sind -> verworfen
-  note: 'NEU, Thesen-Lauf 2026-10-17, Kandidat aus Gruppe 2 (Regulierungs-/Fristenkalender; CATALYST-CALENDAR 2026-10-17, Radar Z19). Chinas 12-monatige Aussetzung der erweiterten SE-Exportkontrollen (Announcement 61 vom 2025-10-09 inkl. extraterritorialer 0,1-%-Regel) laeuft am 2026-11-10 aus; bei Nichtverlaengerung greifen wieder Lizenzpflichten fuer Erbium, Holmium, Europium sowie Verarbeitungsanlagen und -technologie - keine Blockade, eine Genehmigungshuerde. Kausalkette: Lizenzpflicht -> Verfuegbarkeitsrisiko ausserhalb Chinas -> Preisvorteil Nicht-China-Foerderer, Kostendruck europaeische Magnet-Abnehmer. Von MP, LYC.AX, ILU.AX, IFX.DE, CON.DE, VOW3.DE ist nur MP im Universum, Crowdedness daher n=1: MP 30d -18,65 % gegen ^GSPC +0,28 % = -18,93 PP - die Stichprobe traegt die Zahl nicht. MP 40,17 USD, -56,3 % unter 52W-Hoch, Stack bearish, EMA20 45,55, EMA200 53,39, RSI 32,2 und zugleich Breakdown-Retest-Short in derselben Pipeline: Long gegen aktiven Daily-Abwaertstrend = hartes Veto
-    #1, deshalb beobachten und Budget 0. Re-Check 2026-11-06 nach MP-Q3 (2026-11-05) und vier Tage vor dem Ereignis. RADAR-KONFLIKT: Z19 datiert dasselbe Ereignis auf 2027-01-10 (Korrektur 2026-09-28, confidence MITTEL, itemisierte Bestaetigung fehlte schon damals); Oktober-Berichterstattung (FXStreet 2026-10-14 u. a., Abruf 2026-10-17) nennt geschlossen 2026-11-10 und trennt die Handelswaffenstillstands-Verlaengerung bis 2027-01-10 von den SE-Kontrollen. Datum in diesem Lauf NICHT geaendert - Pruefung gegen MOFCOM-Primaerquelle gehoert in die Termin-Radar-Pflege am Montag.'
+  note: 'SONDERAUFTRAG S3 (Weg B, Hochstufung geprueft): KEINE Hochstufung auf spielen, Verdikt beobachten und Budget 0 bleiben, Re-Check 2026-11-06 unveraendert (nach MP-Q3 am 2026-11-05, vier Tage vor dem Ereignis). Angelegter Masstab war ausschliesslich 4b/4c plus Falsifikat - NICHT die Handelbarkeitslage. 4b vollstaendig erfuellt. FALSIFIKAT NICHT EINGETRETEN und in diesem Lauf nachgeprueft: mehrere Quellen vom 2026-10-14 bis 2026-10-19 datieren den Ablauf geschlossen auf den 2026-11-10 und melden keine Verlaengerung (''no renewal in sight''; fxstreet.com 2026-10-14, technology.org 2026-10-19, startupfortune.com, Abruf 2026-10-24) - keine itemisierte MOFCOM-Bestaetigung gefunden, also Annahme mit Belegen, kein Primaerbeleg. Crowdedness MP als Proxy: -22,31 % 30d gegen ^GSPC -1,04 % = -21,27 PP, n=1 - die Stichprobe traegt die Zahl nicht, LYC.AX, ILU.AX, CON.DE und VOW3.DE sind nicht im Universum. WORAN DIE HOCHSTUFUNG SCHEITERT: kein Ausdruck erfuellt heute den Korb-Gate - MP 38,30 long,
+    Stack bearish, unter allen vier EMAs (EMA20 42,90 / EMA200 52,68), RSI 30,1, ATR 5,79 % (ueber der 5-%-Stufe), -50,1 % unter dem 52W-Hoch, Earnings 2026-11-05: Long gegen aktiven Daily-Abwaertstrend = hartes Veto #1. IFX.DE 48,67 als Short der Abnehmerseite laeuft zwar MIT dem Trend (unter allen vier EMAs, EMA20 54,93 / EMA200 55,98, RSI 31,3), ist aber mit 2,25 ATR unter der EMA20 ueberdehnt (Gate 1: 2-4 ATR nur mit enger Struktur und halber Groesse), hat ATR 5,70 % und berichtet am 2026-11-10 - am Ereignistag selbst. Zwei Ausdruecke, keiner platzierbar, also kein Korb. OFFEN fuer die Termin-Radar-Pflege am Montag: Z19 datiert dasselbe Ereignis weiter auf 2027-01-10; die Pruefung gegen die MOFCOM-Primaerquelle steht unveraendert aus. Zweiter, verwandter Termin bereits im Radar: Z22, Ablauf der Aussetzung von Announcement 72/2025 (Gallium, Germanium, Antimon, Graphit) am 2026-11-27. Alle Kurswerte Digest 2026-10-23 22:33.'
   historie:
   - date: '2026-10-19'
     verdikt: beobachten
     crowdedness_pp: -18.93
     source: thesen-lauf
+  - date: '2026-10-26'
+    verdikt: beobachten
+    crowdedness_pp: -21.27
+    source: thesen-lauf
+  ausdruecke:
+  - MP
+  - IFX.DE
 - id: TECH
   titel: AI-Ruecksetzer Qualitaet (Halbleiter/Mega-Caps)
   verdikt: spielen
   korb_budget_pct: 3
-  crowdedness_pp: 1.66
+  crowdedness_pp: -6.42
   re_check: '2026-10-30'
-  falsifikat: (a) Hyperscaler-Capex-Cut in den Q3-Calls (META 2026-10-21, GOOGL/MSFT 2026-10-28, AMZN 2026-10-29) - gekoppelt mit These A, beide Koerbe schliessen gemeinsam; (b) ^IXIC-Schluss unter EMA200 (~25.118 = 26.140,03 / 1,0407, Stand 2026-10-16)
+  falsifikat: '(a) Hyperscaler-Capex-Cut in den Q3-Calls - META 2026-10-21 BESTANDEN (Capex-Guidance FY2026 von 130-145 auf 135-145 Mrd. USD angehoben, tradingkey.com, Abruf 2026-10-24); offen GOOGL/MSFT 2026-10-28, AMZN 2026-10-29 - gekoppelt mit These A, beide Koerbe schliessen gemeinsam; (b) ^IXIC-Schluss unter EMA200 (25.175,20; Stand 2026-10-23: 25.955,34 = 3,1 % darueber)'
   ausdruecke:
   - ASML.AS
   - NVDA
-  note: 'NEU 2026-10-19 (Chat, User-Auftrag "Korb bauen"). Kern: Abverkauf KW42 ist Positionierung/Rotation (Goldman: taktische Rotation aus kleineren AI-Werten in Mega-Caps), kein Bruch der Fundamentaldaten bei Qualitaetswerten mit eigener Bilanz; Nasdaq-Stack bullisch, 4,1 % ueber EMA200. Treiber der Woche 2026-10-12..16: AI-Finanzierungszweifel (Gartner >3,5 Bio. USD Impairment-Risiko bis 2030, CoreWeave -25 %, Neoclouds Ø -22 %), Broadcom-CEO-Kommentar, CXMT-Speicher-Meldung, SOX -11,4 % (8 Verlusttage in Folge), CPI 3,7 %, 10J 5,10 %, Fed-Hike-Wahrscheinlichkeit 89 % bis Dez, WTI > 100 USD (Quellen: portfolio-terminal.com, fool.com, 247wallst.com, Abruf 2026-10-19). Software bewusst NICHT im Korb: dort sitzt der aktuelle Verkaufsdruck (IGV -4 % vs QQQ -1,35 % am 16.10.). Ausdruecke als trend_pullback-Zeilen (Geometrie) mit Treiber-Verweis, KEINE Limit-Ausnahme der Korb-Klasse: der datierte Termin (Calls) ist zweiseitiges Risiko, nur Einstieg nach 4h-Bestaetigung. Je Ausdruck 150 EUR
-    Risk. Crowdedness 30d: NVDA -2,38 vs ^IXIC -1,05 = -1,33 PP; ASML.AS +3,31 vs ^STOXX50E -1,33 = +4,64 PP; Mittel +1,66 PP. Dritter Platz erst nach ANET-Exit (Tech-Deckel 3/3): GOOGL/AMZN mit Aktivierung ab 2026-10-30 oder Software-Direktaktie (NET) 1 %.'
+  - META
+  note: 'THESEN-LAUF 2026-10-24. Verdikt spielen unveraendert, Budget 3 % unveraendert. Beide Falsifikate nicht eingetreten: (a) erster Messpunkt META am 2026-10-21 hat die Capex ANGEHOBEN, (b) ^IXIC 25.955,34 liegt 3,1 % ueber der EMA200 25.175,20 (Digest 2026-10-23 22:33). Crowdedness 30d: NVDA -6,06 vs ^IXIC -3,65 = -2,41 PP, ASML.AS -6,39 vs ^STOXX50E -3,26 = -3,13 PP, META -17,36 vs ^IXIC = -13,71 PP, Mittel -6,42 PP, Zone <10. ausdruecke um META ergaenzt - META traegt seit 2026-10-19 eine aktive Watchlist-Zeile mit Treiber These TECH, stand aber nicht in der Liste; ohne Eintrag wuerde der Thesen-Exit (Verdikt verworfen -> Korb schliessen) die Zeile uebersehen. Ausdrucksstand: NVDA 210,96 traegt das Gate (Stack bullisch, ueber EMA200 205,45 = 0,91 ATR, Anker-Faecher EMA200 >= 1/4 erfuellt, Earnings 2026-11-17), ASML.AS 1.407,20 Stack NEUTRAL = Gate nicht erfuellt, META 642,60 unter allen vier EMAs = Anker EMA200 gebrochen. UNERLEDIGTE FRAGE an den User: die Notiz vom 2026-10-19 hat
+    Software bewusst aus dem Korb gelassen (dort sass der Verkaufsdruck); die Sektor-Linse im Digest 2026-10-23 misst eine Woche spaeter das Gegenteil - Cluster software anteil_tief 0,0, median_move30d +4,64 % und fuenf Rueckeroberungen (CRWD>EMA20, DDOG>EMA20, NET>EMA50, PANW>EMA50, SNOW>EMA50), waehrend halbleiter -11,76 % und ai_netz_hw -16,20 % messen. Keine eigenmaechtige Korbaenderung.'
   historie:
   - date: '2026-10-19'
     verdikt: spielen
     crowdedness_pp: 1.66
     source: chat
-updated: '2026-10-24T05:41:02+00:00'
+  - date: '2026-10-26'
+    verdikt: spielen
+    crowdedness_pp: -6.42
+    source: thesen-lauf
+- id: N7
+  titel: US-Arzneimittelpreis-Pfad - Payer-Seite (Managed Care)
+  verdikt: beobachten
+  re_check: '2026-12-01'
+  crowdedness_pp: 12.02
+  korb_budget_pct: 0
+  falsifikat: CMS verschiebt oder entschaerft den Wirksamkeitstermin der Medicare-Verhandlungspreise Runde 2 (2027-01-01), ODER UNH bzw. ELV nennen in den Q4-Guidances eine Medical-Loss-Ratio, die den Arzneimittelkosten-Entlastungseffekt ausdruecklich nicht enthaelt -> verworfen
+  ausdruecke:
+  - UNH
+  - ELV
+  note: 'NEU, Thesen-Lauf 2026-10-24, Sonderauftrag S4 (Weg C: Ausdrueckbarkeit zuerst). Kandidat aus Gruppe 2 (Regulierungs-/Fristenkalender; Radar Z30, Z96, Z114, CATALYST-CALENDAR 2026-10-24). Treiber: Medicare-Verhandlungspreise Runde 2 werden am 2027-01-01 wirksam - 15 Wirkstoffe, im Schnitt -44 % gegenueber dem 2024-Listenpreis, Semaglutid rund -70 % (Z30, biopharmadive.com, Abruf 2026-08-04); dazu am 2026-11-30 die gesetzliche CMS-Frist fuer die Hoechstpreise der dritten Runde (Z96) und das GLOBE-Referenzpreismodell (Z114). Kausalkette: niedrigere ausgehandelte Preise senken die Part-D-Leistungsausgaben der groessten Plansponsoren unmittelbar -> Medical Loss Ratio runter -> Ergebnis rauf. GRENZE DER THESE ausdruecklich benannt: der Effekt ist erstrangig nur im Part-D-Buch, und Part D ist ein kleiner Teil des Gesamtkostenblocks von UNH und ELV, der von der Leistungsinanspruchnahme dominiert wird - Gate 2 (mechanisch-direkt) ist in der Art erfuellt, in der Groessenordnung schwach. Das
+    ist eine Einschaetzung, kein Messwert, und deshalb beobachten statt spielen. EINZIGER Kandidat dieses Laufs, dessen Ausdruecke den S4-Filter heute erfuellen: UNH 418,09 ueber allen vier EMAs, Stack bullisch, RSI 66,0, ATR 2,73 %, Ext 1,84 ATR (Gate 1 frei), Earnings 2027-01-12; ELV 439,95 ueber allen vier EMAs, Stack bullisch, RSI 66,3, ATR 2,60 %, Ext 1,60 ATR, Earnings 2027-01-28 (Digest 2026-10-23 22:33). Crowdedness 30d gegen ^GSPC -1,04: UNH +12,53 / ELV +11,51 PP, Mittel +12,02 PP = Zone 10-20, also bei einer spaeteren Hochstufung Groesse eine Stufe tiefer. Re-Check 2026-12-01 nach der CMS-Frist. Naechster Pruefschritt: Primaerquelle CMS zur Runde-2-Wirkstoffliste und zum GLOBE-Modell gegenlesen - bisher nur Sekundaerquellen aus dem Katalysator-Kalender.'
+  historie:
+  - date: '2026-10-26'
+    verdikt: beobachten
+    crowdedness_pp: 12.02
+    source: thesen-lauf
+updated: '2026-10-26T06:41:12+00:00'
