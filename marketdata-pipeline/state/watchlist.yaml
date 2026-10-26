@@ -727,25 +727,6 @@ entries:
   notes: '[v76 2026-10-22, Hebel C] SL-Term auf TIW (= Niveau 76,82) - 0,30 ATR = 76,43 umgestellt (vorher Retest-Tief - 0,30 ATR); TIW unveraendert. || [RE-EVAL AUSGELOEST 2026-10-14, NEU 2026-10-15, User 13:44, Linien von Claude, User-Chart 1D+4h 13:36] Schluss 14.10. 77,24 > 75,80 (Re-Eval), Ausbruch ueber 76,82 (Sept-Hoch) mit 1,20x Vol. Chart: C 78,28 (H 79,14), EMA20/50/100/200-1D 74,73/74,47/73,66/72,76 bullisch, RSI-1D 68,3 > 50,0, ATR 1,36; 4h EMA 75,84/74,77/74,59/74,21, RSI-4h 77,0 = ueberkauft. Kurs 0,28 ATR ueber der Band-OG, Extension 2,6 ATR -> heute kein Entry, Retest abwarten. Rechnung: an 77,35 SL 75,31 (ATR-Term), R 2,04, TP1 80,00 = 1,30 R; an 76,14 = 1,89 R. 1 % = 73 Stk (~5.600 EUR Direktaktie, E@h5 ~1.120 EUR). GEGENREDE: Aug-Hoch 80 nur 1,3 R ueber der Zone, RSI-4h ueberkauft, Volumen nur Daempfer-Niveau. || UPDATE 2026-09-01 13:35 CEST (User-Charts 1D+4h, Auftrag ''auch nochmal bewerten'') — ZONE GEKAPPT, VERFALL 2026-09-11 BLEIBT, KEIN NEUFASSEN. Es steht weiterhin
     ALLES AUSSER DEM PREIS, und das jetzt seit acht Handelstagen. MESSUNG: Kurs 76,10 EUR (+0,08%), 1D O 76,00 H 76,84 L 75,80 C 76,10. Maschinen-Gate erfuellt: EMA20-1D 76,05 > EMA50-1D 74,80 > EMA100-1D 73,10 > EMA200-1D 72,19, alle steigend. RSI-1D 51,47 ueber Signal 50,39 = Trigger-Bedingung >50 ERFUELLT. RSI-4h 52,49 ueber Signal 48,89, Kurs ueber EMA20-4h 75,92 und EMA50-4h 76,04 - der 4h-Reverse steht wie am 25.08. Earnings in 188 Ta'
   journal_row: 53
-- symbol: PANW
-  name: Palo Alto Networks (PANW, NASDAQ) — Cybersecurity
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-10-13'
-  expiry: '2026-10-30'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-13 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 377,00$ (Struktur-Tief, User 2026-10-13). TP1 432,00$ (ATH 432,30), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,33-1,69. 1% Sizing. Earnings 2026-11-12 (TV; Digest 11-19) -> KO-Exit bis 2026-11-05. Non-Quanto USD. RE-EVAL: 1D-Schluss >377,00 (TIW-Rueckeroberung) - dann neu rechnen.'
-  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, TIW 377 vom User, uebrige Linien von Claude, User-Chart 17:30] Breakout-Retest 409,50 verworfen (Ausbruchsvolumen 0,88x < 1,0x, Kurs wieder darunter). Chart: C 401,39 (-0,6 %), EMA20/50/100/200-1D 392,91/370,99/336,50/289,48, r2 0,72, RSI-1D 55,6 < 60,1, RSI-4h 51,9 < 60,5, ATR 17,37 = 4,3 % (Hebel <=5,8). Rechnung 13.10.: an UG 387,70 SL 361,64 (ATR-Term), 1,69 R; an OG 397,25 SL 371,19, 1,33 R, L26-Puffer 0,33 ATR. 6 Stk Direktaktie bei 1 %. GEGENREDE: Q4 am 01.09. trotz Beat gefallen (Bewertung), Phillip Securities Neutral (TV), TP1 = ATH selbst. Earnings-Datum widerspruechlich (TV 11-12 / Digest 11-19). Tech-Cluster mit ANET #13 (L7). || VORGAENGER (archiviert 2026-09-10, PEAD-Watch): [ARCHIVIERT 2026-09-10, User-Charts 1D+4h] DIE ZEILE HAT GETAN, WOFUER SIE GEBAUT WAR, UND LIEFERT SKIP. Q4-FY26 kam am 01.09. nach US-Schluss; das PEAD-Entry-Fenster (1-5 HT) lief 02.09.-08.09. und ist zu. ERGEBNIS DER KLASSEN-PRUEFUNG:
-    Die Reaktion lag im zweistelligen Minusbereich (1D-Chart: Abverkauf von rund 390 auf 318 mit dem groessten Volumenbalken des Jahres) und damit WEIT ausserhalb des Underreaction-Fensters -1 bis -6% (PEAD-Short 7/7 Punkt 2). Das ist exakt der INTU-Anker: kein Chase in den Gap. Die Zeile hatte diesen Fall vorab benannt (''Ausserhalb des Underreaction-Fensters: SKI'
-  journal_row: 54
-  archived:
-    date: '2026-10-19'
-    reason: 'TIW per 1D-Schluss gebrochen (342,00 < 377,00, 2026-10-16); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
 - symbol: ROST
   name: Ross Stores (ROST, NASDAQ) — Off-Price-Retail
   direction: LONG
@@ -2117,24 +2098,6 @@ entries:
   archived:
     date: '2026-10-22'
     reason: 'Auto-Archiv: TIW per Schluss gebrochen (72.6 < 74.6654 = EMA50-1D −0,30 ATR) (Dauerregel 2026-10-19)'
-- symbol: MRVL
-  name: Marvell Technology (MRVL, NASDAQ) - Halbleiter/Custom-AI-Silicon
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-10-09'
-  expiry: '2026-10-30'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-09 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 301,30$ (Investor-Day-Hoch 06.10.), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,75-2,08. ATR-Stufe 🔴: 1% Deckel, Hebel <=4,7. Earnings ~2026-11-26/12-01 (ungeklaert). Non-Quanto USD. RE-EVAL: 1D-Schluss >227,00 (Rueckeroberung EMA100-1D 226,87, Stand 2026-10-22; vorher >246,39; ATR 7,5 % rot, nah am Disqualifier 8 %) - dann neu rechnen.'
-  notes: '[NEU 2026-10-09 15:35, User-Entscheid nach Pitch mit Recherche, Linien von Claude, Daten Digest 14:04 = Schluss 08.10., Chart 15:25] Pipeline-Pitch breakout_long (bo_level 280, 2 Bars, Vol 2,97x, late_entry) VERWORFEN: Schluss 08.10. 274,66 = 0,37 ATR unter 280 (TIW gebrochen); Rueckeroberung a la ANET faellt durch den Exit-Test: Stop-Buy ~283, SL 261,28, R 21,72, erstes Hindernis 301,30 = 0,84 R. Chart: EMA20/50/100/200-1D 259,76/242,53/222,65/187,43 bullish, Ext 1,03 ATR, R2 0,83, Trend-20 +26,6 %, RSI-1D 61,2 < Signal 63,3, RSI-4h 51,4 < Signal 64,1. ATR 14,48 = 5,27 % (TV zeigt 13,45 inkl. laufendem Nullbalken). Zone heute 256,14-263,38, Konfluenz 4h-EMA50 ~254-255 und Ende-Sept-Konsolidierung. TIW heute 252,52. SL = ATR-Term in der ganzen Zone (241,66 OG / 234,42 UG), R 21,72 -> 7 Stk Direktaktie bei FX 1,1197. RECHERCHE: Investor Day 06.10. (FY28-Umsatz ~20 Mrd $ vs. Konsens 18,2; Custom FY29 >12 Mrd; FY31 70-90 Mrd), Kurs +6-10 %, H 301,30. 08.10. -3,5 % sektorweit (AVGO
-    -4,4 %, NVDA -2,9 %). Analysten 07.10.: UBS 350, JPM 360, Jefferies 450, Konsens 348,72 (Benzinga). KATALYSATOR: OCP Global Summit 2026-10-12 bis 10-15 (Radar) - Risiko, dass der Kurs ohne Ruecksetzer Richtung 300 laeuft (Zeile verfaellt); ''sell the news'' danach = gesuchter Ruecksetzer. GEGENREDE: YTD ~+223 %, KGV 90,9, 46 % ueber EMA200; Google-Optionsschein bis ~59 Mio Aktien; Insider-Verkaeufe COO ~2 Mio $ (09/2026), CEO 1,77 Mio $ (Datum ungeprueft); Weekly HH/HL nicht erfuellt. L7: Tech/AI-Cluster mit ANET/NVDA/NBIS - max. drei Tech-Cluster, Rang 1 <= 3 %, Rang 2/3 je <= 2 %, Summe <= 7 % RK (User-Entscheid 2026-10-09, vorher zwei / 5 %); Hoch-ATR-Plaetze beachten.'
-  archived:
-    date: '2026-10-19'
-    reason: 'TIW per 1D-Schluss gebrochen (227,83 < 246,39, 2026-10-16); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
 - symbol: DUE.DE
   name: 'Duerr AG (DUE, XETR) [MONITOR #101] — Maschinenbau/Lackieranlagen'
   direction: SHORT
@@ -3775,4 +3738,41 @@ entries:
   archived:
     date: '2026-10-26'
     reason: 'Re-Eval >23424 ausgeloest 2026-10-26 (Schluss 23790), neu gerechnet: r2 0,08 / 20 Tage -2,2 % = seitwaerts, Earnings-Sperre ab 2026-10-29 (Q3 2026-11-05)'
-updated: '2026-10-26T18:20:20+00:00'
+- symbol: PANW
+  name: Palo Alto Networks (PANW, NASDAQ) — Cybersecurity
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: archiviert
+  added: '2026-10-13'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'nach 2026-10-13 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 377,00$ (Struktur-Tief, User 2026-10-13). TP1 432,00$ (ATH 432,30), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,33-1,69. 1% Sizing. Earnings 2026-11-12 (TV; Digest 11-19) -> KO-Exit bis 2026-11-05. Non-Quanto USD. RE-EVAL: 1D-Schluss >432,30 (ATH, Ausbruch mit Vol >=1,0x; Earnings ~2026-11-12 laut TV beachten) - dann Breakout-Retest @ ATH neu rechnen.'
+  notes: '[NEU 2026-10-13 17:39, User-Entscheid nach Pitch mit Recherche, TIW 377 vom User, uebrige Linien von Claude, User-Chart 17:30] Breakout-Retest 409,50 verworfen (Ausbruchsvolumen 0,88x < 1,0x, Kurs wieder darunter). Chart: C 401,39 (-0,6 %), EMA20/50/100/200-1D 392,91/370,99/336,50/289,48, r2 0,72, RSI-1D 55,6 < 60,1, RSI-4h 51,9 < 60,5, ATR 17,37 = 4,3 % (Hebel <=5,8). Rechnung 13.10.: an UG 387,70 SL 361,64 (ATR-Term), 1,69 R; an OG 397,25 SL 371,19, 1,33 R, L26-Puffer 0,33 ATR. 6 Stk Direktaktie bei 1 %. GEGENREDE: Q4 am 01.09. trotz Beat gefallen (Bewertung), Phillip Securities Neutral (TV), TP1 = ATH selbst. Earnings-Datum widerspruechlich (TV 11-12 / Digest 11-19). Tech-Cluster mit ANET #13 (L7). || VORGAENGER (archiviert 2026-09-10, PEAD-Watch): [ARCHIVIERT 2026-09-10, User-Charts 1D+4h] DIE ZEILE HAT GETAN, WOFUER SIE GEBAUT WAR, UND LIEFERT SKIP. Q4-FY26 kam am 01.09. nach US-Schluss; das PEAD-Entry-Fenster (1-5 HT) lief 02.09.-08.09. und ist zu. ERGEBNIS DER KLASSEN-PRUEFUNG:
+    Die Reaktion lag im zweistelligen Minusbereich (1D-Chart: Abverkauf von rund 390 auf 318 mit dem groessten Volumenbalken des Jahres) und damit WEIT ausserhalb des Underreaction-Fensters -1 bis -6% (PEAD-Short 7/7 Punkt 2). Das ist exakt der INTU-Anker: kein Chase in den Gap. Die Zeile hatte diesen Fall vorab benannt (''Ausserhalb des Underreaction-Fensters: SKI'
+  journal_row: 54
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >377 ausgeloest (Schluss 2026-10-23 380,55), neu gerechnet 2026-10-26 (User-Chart 1D+4h 19:26, Kurs 394,10): Angebotszone 399-410 (Aug/Sep-Hochs, Konsolidierung 9.-13.10.) direkt ueber dem Kurs; d = 1,5 x 18,60 = 27,9 -> Pullback an EMA20 375 bis 399 = 0,8 R, bis 409,5 = 1,2 R; Breakout ueber 410 bis ATH 432 = 0,7 R. Kein Exit-Test-konformes Setup.'
+- symbol: MRVL
+  name: Marvell Technology (MRVL, NASDAQ) - Halbleiter/Custom-AI-Silicon
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: archiviert
+  added: '2026-10-09'
+  expiry: '2026-10-30'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'nach 2026-10-09 TREND-PULLBACK-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 301,30$ (Investor-Day-Hoch 06.10.), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,75-2,08. ATR-Stufe 🔴: 1% Deckel, Hebel <=4,7. Earnings ~2026-11-26/12-01 (ungeklaert). Non-Quanto USD. RE-EVAL: 1D-Schluss >263,00 (ueber die Abbruchzone 14.10. ~255-263; dann Breakout-Retest Richtung Okt-Hoch ~298, ATR-Stufe rot pruefen) - dann neu rechnen.'
+  notes: '[NEU 2026-10-09 15:35, User-Entscheid nach Pitch mit Recherche, Linien von Claude, Daten Digest 14:04 = Schluss 08.10., Chart 15:25] Pipeline-Pitch breakout_long (bo_level 280, 2 Bars, Vol 2,97x, late_entry) VERWORFEN: Schluss 08.10. 274,66 = 0,37 ATR unter 280 (TIW gebrochen); Rueckeroberung a la ANET faellt durch den Exit-Test: Stop-Buy ~283, SL 261,28, R 21,72, erstes Hindernis 301,30 = 0,84 R. Chart: EMA20/50/100/200-1D 259,76/242,53/222,65/187,43 bullish, Ext 1,03 ATR, R2 0,83, Trend-20 +26,6 %, RSI-1D 61,2 < Signal 63,3, RSI-4h 51,4 < Signal 64,1. ATR 14,48 = 5,27 % (TV zeigt 13,45 inkl. laufendem Nullbalken). Zone heute 256,14-263,38, Konfluenz 4h-EMA50 ~254-255 und Ende-Sept-Konsolidierung. TIW heute 252,52. SL = ATR-Term in der ganzen Zone (241,66 OG / 234,42 UG), R 21,72 -> 7 Stk Direktaktie bei FX 1,1197. RECHERCHE: Investor Day 06.10. (FY28-Umsatz ~20 Mrd $ vs. Konsens 18,2; Custom FY29 >12 Mrd; FY31 70-90 Mrd), Kurs +6-10 %, H 301,30. 08.10. -3,5 % sektorweit (AVGO
+    -4,4 %, NVDA -2,9 %). Analysten 07.10.: UBS 350, JPM 360, Jefferies 450, Konsens 348,72 (Benzinga). KATALYSATOR: OCP Global Summit 2026-10-12 bis 10-15 (Radar) - Risiko, dass der Kurs ohne Ruecksetzer Richtung 300 laeuft (Zeile verfaellt); ''sell the news'' danach = gesuchter Ruecksetzer. GEGENREDE: YTD ~+223 %, KGV 90,9, 46 % ueber EMA200; Google-Optionsschein bis ~59 Mio Aktien; Insider-Verkaeufe COO ~2 Mio $ (09/2026), CEO 1,77 Mio $ (Datum ungeprueft); Weekly HH/HL nicht erfuellt. L7: Tech/AI-Cluster mit ANET/NVDA/NBIS - max. drei Tech-Cluster, Rang 1 <= 3 %, Rang 2/3 je <= 2 %, Summe <= 7 % RK (User-Entscheid 2026-10-09, vorher zwei / 5 %); Hoch-ATR-Plaetze beachten.'
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >227 ausgeloest (Schluss 2026-10-23 228,51), neu gerechnet 2026-10-26 (User-Chart 1D+4h 19:25, Kurs 237,10, Hammer an EMA100 227,15, Tief 223,69): ATR 15,98 = 6,7 % (rot), d = 24,0; EMA20/50-Cluster 242,7-246,4 und Abbruchzone 255-263 direkt darueber -> an der EMA100 bis 255 = 1,2 R, Grenze ~223,8 = Fenster tot. Kein Setup.'
+updated: '2026-10-26T18:28:32+00:00'
