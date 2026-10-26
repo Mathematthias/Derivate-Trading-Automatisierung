@@ -246,5 +246,14 @@
   "source": "thesen-lauf",
   "status": "ok",
   "verworfen": 0
+ },
+ "1ceLVzMgWbo-uT2kRjrsAThSYfYOT4OvM": {
+  "actions": 0,
+  "at": "2026-10-26T16:50:00+00:00",
+  "name": "INBOX-morning-check-20261026-1215.json",
+  "source": "morning-check",
+  "status": "ersetzt",
+  "verworfen": 0,
+  "note": "Nicht anwenden: watchlist.add NET haette die aktive Pullback-Zeile aus PR #40 geloescht. Ersetzt durch INBOX-morning-check-20261026-1745.json (ohne NET)."
  }
 }
