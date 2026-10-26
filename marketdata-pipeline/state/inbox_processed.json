@@ -71,6 +71,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1N53r1MOHHLHw8Bzgh4ZNZGt7JZR4UmOH": {
+  "actions": 16,
+  "at": "2026-10-26T06:41:12+00:00",
+  "name": "INBOX-thesen-lauf-20261024-0940.json",
+  "source": "thesen-lauf",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1NUtmZeru3GNdukf0JYp5iD-Dwo4I2M11": {
   "actions": 1,
   "at": "2026-10-24T05:41:02+00:00",
@@ -164,6 +172,14 @@
   "at": "2026-10-05T14:09:07+00:00",
   "name": "INBOX-morning-check-20261005-1410.json",
   "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1nCHKdNmjI5NM3pV6E7VkCK04XyyILFxz": {
+  "actions": 10,
+  "at": "2026-10-26T06:41:12+00:00",
+  "name": "INBOX-termin-radar-20261026-0719.json",
+  "source": "termin-radar",
   "status": "ok",
   "verworfen": 0
  },
