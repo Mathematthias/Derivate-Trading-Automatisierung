@@ -2441,14 +2441,17 @@ entries:
   klasse: thesen_korb
   anker: 200er-Linie / Okt-Tief
   treiber: These STAHL EU-Stahl melt-and-pour (spielen, Korb 3 % RK, Re-Check 2026-10-24; Falsifikat HRC NW-Europa <745 EUR/t am 2026-11-12)
-  status: aktiv
+  status: archiviert
   added: '2026-10-12'
   expiry: '2026-10-28'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-12 KORB-STAHL TREND-PULLBACK-LONG (Korb 2/3): Touch 54,00–55,00€ [pullback] (200er-Tageslinie 53,95 bis 4h-Basis 09.10. ~55,1) + 4h-Bullish-Reverse-Close (MANUELL). Limit erlaubt (Thesen-Korb, L27 nur 1 %), sonst Stop-Buy ueber Hoch der Bestaetigungskerze. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 53,00€ (unter Okt-Tief 53,3 und 200er-Linie). TP1 59,20€ (4h-Hoch 06.10., vor EMA-Cluster 59-60,7), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,67. Korb-Anteil 150 EUR Risk. ATR 3,7 % 🟡: KO Hebel <=6,8. Earnings 2026-11-05 -> KO-Exit bis 2026-10-29.'
+    gate: 🔴
+    text: 'nach 2026-10-12 KORB-STAHL TREND-PULLBACK-LONG (Korb 2/3): Touch 54,00–55,00€ [pullback] (200er-Tageslinie 53,95 bis 4h-Basis 09.10. ~55,1) + 4h-Bullish-Reverse-Close (MANUELL). Limit erlaubt (Thesen-Korb, L27 nur 1 %), sonst Stop-Buy ueber Hoch der Bestaetigungskerze. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 53,00€ (unter Okt-Tief 53,3 und 200er-Linie). TP1 59,20€ (4h-Hoch 06.10., vor EMA-Cluster 59-60,7), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,67. Korb-Anteil 150 EUR Risk. ATR 3,7 % 🟡: KO Hebel <=6,8. Earnings 2026-11-05 -> KO-Exit bis 2026-10-29. RE-EVAL: 1D-Schluss >53,00 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[2026-10-22 14:38, User-Entscheid B] Kein Limit vor Bestaetigung: Thesen-Korb-Ausnahme verlangt datierten Treiber, der fehlt (Re-Check 10-24 / Falsifikat 11-12 sind Prueftermine). 1D-Stack fallend (EMA20<100<50, Kurs nur knapp ueber 200er), 4h baerisch, TP1 59,20 im EMA-Cluster, 2,4 ATR bis KO-Exit 10-29. Zeile laeuft zum Verfall 2026-10-28 aus; These am Re-Check 2026-10-24 neu ansehen. || [NEU 2026-10-12, These STAHL Korb, User-Auftrag, Linien von Claude an User-Charts 1D+4h 13:12, Recherche Subagent] Chart 12.10. 13:12: 1D EMA 59,35/60,66/59,04/53,95, Kurs 56,6 unter 20/50/100, ueber 200; Okt-Tief 53,3 an der 200er; RSI 38,5/36,5; 4h unter EMA20 57,03, RSI 45. HRC-Hebel mittel-hoch (viel Amerika/Indien). Gegenrede: keine frische News, Trend kurzfristig abwaerts; Korb-Gleichlauf mit SZG = ein Trade im Audit.'
+  archived:
+    date: '2026-10-26'
+    reason: 'Auto-Archiv: TIW per Schluss gebrochen (52.82 < 53) (Dauerregel 2026-10-19)'
 - symbol: MRO.L
   name: Melrose Industries PLC (MRO, LSE) — Luftfahrt-Zulieferer GKN Aerospace
   direction: SHORT
@@ -3796,4 +3799,4 @@ entries:
   archived:
     date: '2026-10-26'
     reason: 'Radar Z109 2026-10-26: Short-These nach Q3 (EBIT-Upgrade, Gap ueber Breakdown 63,68 und EMA20) nicht tragfaehig'
-updated: '2026-10-26T16:40:40+00:00'
+updated: '2026-10-26T18:09:32+00:00'
