@@ -872,4 +872,13 @@ rows:
   id: Z121
   status: offen
   added: '2026-10-26'
-updated: '2026-10-26T18:09:32+00:00'
+- date: '2026-11-06'
+  kat: 5
+  werte: MAERSK-B.CO
+  ereignis: 'MAERSK nach Q3-Zahlen (2026-11-05) neu bewerten: Re-Eval >23424 am 2026-10-26 verbraucht (seitwaerts, r2 0,08); Breakout ueber 52W-Hoch 25380 oder Trend-Pullback neu rechnen'
+  wirkung: Setup-Neubewertung nach den Zahlen
+  quelle: Abend-Check 2026-10-26, Re-Eval-Lauf
+  id: Z122
+  status: offen
+  added: '2026-10-26'
+updated: '2026-10-26T18:20:20+00:00'

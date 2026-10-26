@@ -174,27 +174,6 @@ entries:
   archived:
     date: '2026-09-28'
     reason: 'These C verworfen: Gipfel verlaengert SE-Aussetzung'
-- symbol: GFT.DE
-  name: GFT Technologies SE (GFT)
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-06-19'
-  expiry: '2026-10-27'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-09-23 MOMENTUM-CONTINUATION-LONG: Touch EMA20-1D +0,00/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (0,947 -> -1,42). TIW = 1D-Schluss unter 24,90€. TP1 27,10€ = BE-Stufe (50% + SL->BE, L6). TP2 29,70€ = Runner L6 (Measured Move 24,4-27,1). R:R TP1 0,82-1,15 / Runner 2,65-2,98. 1% Sizing. ATR 3,6% 🟡: KO Hebel <=6,9. RE-EVAL: 1D-Schluss <27,12 (Rueckfall an den EMA20 - dann Trend-Pullback neu rechnen) - dann neu rechnen.'
-  - label: B
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-09-29 - Leg B: TIW 26,35 gebrochen. Leg A bleibt aktiv.'
-  notes: '[LEG B ARCHIVIERT 2026-09-29, User-Entscheid Hygiene] Ausbruchs-Leg B (TIW 26,35 = 4h-Higher-Low 21.09.) per Schluss gebrochen; Leg A (EMA20-Pullback, TIW 24,90) intakt. || [NEU GEFASST 2026-09-23, Trigger A, User-Chart 1D+4h] Alte TIW 23,80 lag 1,8 ATR unter der Zone und erzwang per L25 einen Stop von 2,4 EUR -> R:R TP1 0,47. Neue TIW 24,90 = unter 4h-EMA100 24,75/Konsolidierungsboden Mitte Sep; Stop jetzt ATR-bestimmt. Stand: Kurs 26,00, EMA20 25,47 / EMA50 24,12 / EMA100 22,73 / EMA200 21,44, Konsolidierung 25,9-27,1 seit Mitte Sep unter dem 52W-Hoch 27,1; RSI-1D 56,0 unter Signal 58,3, RSI'
-  journal_row: 12
-  archived:
-    date: '2026-10-22'
-    reason: v76 Fenster tot (TP1 27,10 = BE-Stufe unter der Zone); ersetzt durch Breakout-Retest @ 28,20 (2026-10-22)
 - symbol: AVGO
   name: Broadcom Inc. (AVGO)
   direction: LONG
@@ -414,28 +393,6 @@ entries:
   archived:
     date: '2026-10-23'
     reason: Re-Eval >125,50 am 22.10. ausgeloest (131,04), 23.10. Rueckfall auf 123,54 (-5,7 %), Ausbruchsvolumen nur 0,94x - Zaehlu
-- symbol: MAERSK-B.CO
-  name: A.P. Møller-Maersk B (MAERSK)
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-07-23'
-  expiry: '2026-10-28'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-15 TREND-PULLBACK-LONG (Momentum-Continuation): Touch 23690-23930€ [pullback] (EMA20-1D -0,20 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 25380€ (52W-Hoch Okt), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,52. 1% Sizing. ATR 3,1 % 🟡 (Hebel <=8). L7: kein Entry solange SBLK #11 laeuft. Earnings 2026-11-05 -> Entry bis 2026-10-28. KURSE IN DKK - Euro-Zeichen nur fuer den Parser. RE-EVAL: 1D-Schluss >23424,39 (TIW-Rueckeroberung) - dann neu rechnen.'
-  - label: B
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: '[NEU GEFASST 2026-10-15, User 13:44, Linien von Claude, User-Chart 1D+4h 13:39] Alte Fassung tot: TP1 24270 (BE-Stufe) lag unter dem Kurs (Exit-Test -0,05 R). Chart: C 24000 (-1,4 %), EMA20/50/100/200-1D 23836/22241/20299/18173 bullisch, RSI-1D 55,6 < 62,0; 4h EMA 24310/23599/22251/20301, RSI-4h 47,5 < 57,7 = 4h gegen Einstieg. ATR 741. Rechnung: TIW heute 23836-0,5x741 = 23465; an 23930 SL = MIN(22818 ; 23243) = 22818, R 1112, TP1 25380 (52W-Hoch, aus Digest-Abstand) = 1,30 R; an 23690 = 1,52 R. 1 % = 1 Stk (~3.200 EUR, Risiko ~149 EUR). L7-SPERRE wie 2026-09-30: MAX 1 aus {SBLK, MAERSK}. || [L7-SPERRE 2026-09-30] SBLK #11 AV offen -> MAX 1 aus {SBLK, MAERSK}: kein Entry, solange #11 laeuft. || [NEU GEFASST 2026-09-30, Morning Check, User-Chart MAERSK_B 1D+4h 12:48] ANLASS: TP1 23740 war erreicht (neues Hoch heute 24270), R:R an der Zone 0,35/0,77. CHART B: Kurs 23890, heute O24040 H24270 L23720 (Abweisung am neuen Hoch, laufend). 1D-EMA 22795/21091/19312/17460 bullisch und steigend,
-    RSI-1D 62,9 ~ Signal 62,6; 4h-EMA 23229/22407/21017/19254, RSI-4h 61,9 > 58,0. ATR-1D 755 = 3,16% (🟡, Hebel <=7,9). LINIEN: TIW 22600 = Higher-Low Mitte Sept. knapp unter EMA20-1D (alt 21800 = 4h-EMA5'
-  journal_row: 29
-  archived:
-    date: '2026-10-22'
-    reason: 'Auto-Archiv: TIW per Schluss gebrochen (22860 < 23424.4 = EMA20-1D −0,50 ATR) (Dauerregel 2026-10-19)'
 - symbol: DR0.DE
   name: Deutsche Rohstoff AG (DR0) (ehem. Monitor)
   direction: LONG
@@ -1113,24 +1070,6 @@ entries:
   archived:
     date: '2026-09-30'
     reason: TIW 118,00 per Schluss 117,50 gebrochen, L23 Veto 1
-- symbol: CWC.DE
-  name: CEWE Stiftung & Co. KGaA (CWC, XETRA) — Fotoservice
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-09-15'
-  expiry: '2026-10-29'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-02 TREND-PULLBACK-LONG: Touch EMA20-1D -0,20/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (2,16 -> -3,23). TIW = 1D-Schluss unter 104,50€. TP1 110,80€ = BE-Stufe (Sept-Hoch, 50% + SL->BE, L6). TP2 116,50€ = Runner L6 (Measured Move). R:R am Runner 2,73-3,20. 1% Sizing. EUR. RE-EVAL: 1D-Schluss >114,60 (ueber das Doppelhoch Ende Sep / 21.10. + Vol >= 1,0x, dann Breakout-Retest; Earnings 2026-11-12 beachten) - dann neu rechnen.'
-  notes: '[NEU GEFASST 2026-10-02, Linien von Claude (User-Auftrag), Charts 1D+4h 14:49] Ausbruch Sept aus Spanne Nov25-Aug26 (89-108), Konsolidierung 105,5-111, Kurs 110,0 testet Oberkante. Alte Zeile ohne TP2 (R:R 1,14) ersetzt. TIW 104,50 = unter Sept-Konsolidierungstief ~105,5, ueber EMA50 103,7. TP2 116,50 = Measured Move der Sept-Konsolidierung (Hoehe ~5,5). Breakout-Leg >111 verworfen: R:R 1,13 bis 116,5. Pro: Aktienrueckkauf laeuft (Meldung 29.09.). R:R TP1 1,05-1,43, Runner 2,73-3,20. || [NEU KALIBRIERT 2026-09-24, User-Entscheid TIW 104] BEFUND: Die alte Zeile rechnete R:R 1,43-1,82 mit glatte'
-  journal_row: 84
-  archived:
-    date: '2026-10-22'
-    reason: 'v76 Fenster tot: TP1 110,80 lag in der Zone; neu am EMA20 110,8 mit TP1 Doppelhoch 114,0-114,6 (User-Chart 2026-10-22 12:34) nur 1,14 R an 111,00 - kein Exit-Test-konformes Setup'
 - symbol: MT.AS
   name: ArcelorMittal SA (MT, Euronext Amsterdam) — Stahl
   direction: LONG
@@ -3258,24 +3197,6 @@ entries:
     gate: 🔴
     text: 'ARCHIVIERT 2026-10-22 - kein Entry-Trigger. RE-EVAL: 1D-Schluss <60,50$ + Vol >Avg-20d. Dann Breakdown-Retest-Short @ 60,50 neu rechnen (TIW Schluss > Niveau + 0,30 ATR, TP1 ~55,30 ueber den 2024er Tiefs ~55, abgelesen; Stand ATR 2,10: R:R ~1,52, bei hoeherer ATR neu rechnen).'
   notes: '[ANGELEGT ALS RE-EVAL 2026-10-22 01:04, User, User-Charts 1D bis 2024] Q3-Gap 2026-10-21: O 64,15 H 67,12 L 64,10 C 65,04 (-5,3 %), Vol 101 Mio; Juli-Tief ~66,0 und Okt-Tief ~67,3 gebrochen, Zwei-Jahres-Tief. EMA20/50/100/200-1D 70,36/72,92/76,38/82,61 bearish, RSI-1D 32,6, RSI-4h 28,1, ATR 2,10. 2024er Basis ~60,5-65 (Aug/Sep 2024, Start der Rally >90) direkt unter dem Kurs, darunter 2024er Tiefs ~55 (alles abgelesen, ungefaehr). Nur KO (ATR 3,2 % gelb). Earnings raus, naechste ~Jan 2027.'
-- symbol: GFT.DE
-  name: GFT Technologies SE (GFT, XETRA) - IT-Dienstleister, Digitalisierung/AI fuer Banken
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 28,20
-  treiber: ''
-  expiry: '2026-11-04'
-  status: archiviert
-  added: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-21 BREAKOUT-RETEST-LONG: Niveau 28,20€ (Okt-Hoch 16.10., Ausbruch per Schluss 2026-10-21, Vol 2,54x). Touch 27,70-28,84€ [pullback] (Niveau -0,50 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 28,84€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 27,90). Stopweite entry-relativ -1,5xATR-1D (1,007 -> -1,51). TIW = 1D-Schluss unter 28,20€ (Niveau, v76). TP1 30,80€ (Measured Move Okt-Range 25,6-28,2, aus User-Chart 4h abgelesen - Fadenkreuz pruefen) 1/3 raus. Rest Chandelier 2,0 ATR. Frisches 52W-Hoch 29,30 (21.10.) im Weg = 0,40 R an 28,70. R:R TP1 1,39 an 28,70. Pilot 1 %. ATR 3,5 % gelb: KO Hebel <= 7,1 oder Direktaktie. Earnings 2026-11-12 (TV; Digest fuehrt 2027-03-30) -> KO-Exit bis 2026-11-05. Klassenfenster Ausbruch <= 10 HT -> Entry bis 2026-11-04. Non-Quanto EUR. RE-EVAL: 1D-Schluss >28,20 (TIW-Rueckeroberung)
-      - dann neu rechnen.'
-  notes: '[NEU 2026-10-22 12:4x, Morning Check, User: Zeile umbauen, User-Chart 1D+4h 12:34] Kurs 28,65 (TV) / 28,85 (Digest 12:03), H 29,15. EMA20/50/100/200-1D 27,10/25,75/24,15/22,46 bullisch, RSI-1D 63,5, ATR 1,007. 4h: Ausbruchskerze 21.10. mit Volumenspitze, heute rote Kerze 28,90->28,65, RSI-4h 59,8/57,7. Fenster v76 eng (Stop ueber 4h-Hoch ~28,77 knapp an der Grenze 28,84) -> Live-Entry. GEGENREDE: TP1 nur geschaetzt (Measured Move), frisches Hoch 29,30 direkt ueber dem Kurs, Earnings-Termin widerspruechlich.'
-  archived:
-    date: '2026-10-24'
-    reason: 'Auto-Archiv: TIW per Schluss gebrochen (28.15 < 28.2) (Dauerregel 2026-10-19)'
 - symbol: RAA.DE
   name: Rational AG (RAA, XETRA) - Grosskuechentechnik
   direction: SHORT
@@ -3799,4 +3720,59 @@ entries:
   archived:
     date: '2026-10-26'
     reason: 'Radar Z109 2026-10-26: Short-These nach Q3 (EBIT-Upgrade, Gap ueber Breakdown 63,68 und EMA20) nicht tragfaehig'
-updated: '2026-10-26T18:09:32+00:00'
+- symbol: CWC.DE
+  name: CEWE Stiftung & Co. KGaA (CWC, XETRA) - Fotodienstleistungen/Online-Druck
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 114,60
+  treiber: ''
+  status: aktiv
+  added: '2026-10-26'
+  expiry: '2026-11-04'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-10-26 BREAKOUT-RETEST-LONG: Niveau 114,60€ (Doppelhoch Okt, Ausbruch per Schluss 2026-10-26 116,00, Vol ~1,66x lt. TV 13,9K/8,4K). Touch 113,54-116,19€ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 2,114) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 73,7) und Liquiditaet Avg-20d >= 1 Mio EUR/Tag (Universal-Disqualifier; Stand Avg-30 ~0,97 Mio). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 116,19€ kein Entry. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (2,114 -> -3,17). TIW = 1D-Schluss unter 114,60€ (Niveau, v76). TP1 123,50€ (Measured Move Range ~105,5-114,6, aus User-Chart 1D abgelesen - Fadenkreuz pruefen; 52W-Hoch = 117,00 vom 2026-10-26) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 2,52 an 115,50. Pilot 1 %: Stopweite 3,17 -> Direktaktie 47 Stk ~5.430 EUR (ueber disponibel) oder KO Hebel ~5 (ATR 1,8 % frei). Earnings 2026-11-12 ->
+      Entry bis 2026-11-04, KO-Exit bis 2026-11-05. EUR.'
+  notes: '[NEU 2026-10-26 ~19:3x, Re-Eval >114,60 ausgeloest (Schluss 116,00), User: Reevals durchfuehren, User-Chart 1D+4h 19:16, Linien von Claude] 1D O 114,0 H 117,0 L 113,8 C 116,0 (+1,2 %); EMA20/50/100/200 111,6/107,8/104,3/101,8 bullisch, RSI-1D 73,7, Ext 2,07 ATR. 4h: Shooting Star an 117, RSI-4h 69,3/61,5. Aktienrueckkauf laeuft (Meldung 2026-10-26). GEGENREDE: RSI ueberkauft, 4h-Abweisung am Hoch, Liquiditaet knapp unter der 1-Mio-Grenze. Ersetzt die Archivzeile Trend-Pullback (2026-10-22).'
+- symbol: GFT.DE
+  name: GFT Technologies SE (GFT, XETRA) - IT-Dienstleister, Digitalisierung/AI fuer Banken
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 28,20
+  treiber: ''
+  expiry: '2026-11-04'
+  status: archiviert
+  added: '2026-10-22'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'nach 2026-10-21 BREAKOUT-RETEST-LONG: Niveau 28,20€ (Okt-Hoch 16.10., Ausbruch per Schluss 2026-10-21, Vol 2,54x). Touch 27,70-28,84€ [pullback] (Niveau -0,50 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 28,84€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 27,90). Stopweite entry-relativ -1,5xATR-1D (1,007 -> -1,51). TIW = 1D-Schluss unter 28,20€ (Niveau, v76). TP1 30,80€ (Measured Move Okt-Range 25,6-28,2, aus User-Chart 4h abgelesen - Fadenkreuz pruefen) 1/3 raus. Rest Chandelier 2,0 ATR. Frisches 52W-Hoch 29,30 (21.10.) im Weg = 0,40 R an 28,70. R:R TP1 1,39 an 28,70. Pilot 1 %. ATR 3,5 % gelb: KO Hebel <= 7,1 oder Direktaktie. Earnings 2026-11-12 (TV; Digest fuehrt 2027-03-30) -> KO-Exit bis 2026-11-05. Klassenfenster Ausbruch <= 10 HT -> Entry bis 2026-11-04. Non-Quanto EUR. RE-EVAL: 1D-Schluss >29,30 (52W-Hoch; Doppeltop
+      21.10. 29,30 / 26.10. Docht 29,25 - dann Breakout-Retest @ 29,30 neu rechnen, Measured Move Okt-Range 25,6-29,3 ~33,0; Earnings 2026-11-12 beachten) - dann neu rechnen.'
+  notes: '[NEU 2026-10-22 12:4x, Morning Check, User: Zeile umbauen, User-Chart 1D+4h 12:34] Kurs 28,65 (TV) / 28,85 (Digest 12:03), H 29,15. EMA20/50/100/200-1D 27,10/25,75/24,15/22,46 bullisch, RSI-1D 63,5, ATR 1,007. 4h: Ausbruchskerze 21.10. mit Volumenspitze, heute rote Kerze 28,90->28,65, RSI-4h 59,8/57,7. Fenster v76 eng (Stop ueber 4h-Hoch ~28,77 knapp an der Grenze 28,84) -> Live-Entry. GEGENREDE: TP1 nur geschaetzt (Measured Move), frisches Hoch 29,30 direkt ueber dem Kurs, Earnings-Termin widerspruechlich.'
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >28,20 ausgeloest 2026-10-26 (Schluss 28,50), neu gerechnet: 52W-Hoch 29,30 am 26.10. erneut abgewiesen (Docht 29,25) = Doppeltop bei 0,52 R, kein Exit-Test-konformes TP1 davor'
+- symbol: MAERSK-B.CO
+  name: A.P. Møller-Maersk B (MAERSK)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: archiviert
+  added: '2026-07-23'
+  expiry: '2026-10-28'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'nach 2026-10-15 TREND-PULLBACK-LONG (Momentum-Continuation): Touch 23690-23930€ [pullback] (EMA20-1D -0,20 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter EMA20-1D -0,50 ATR. TP1 25380€ (52W-Hoch Okt), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,52. 1% Sizing. ATR 3,1 % 🟡 (Hebel <=8). L7: kein Entry solange SBLK #11 laeuft. Earnings 2026-11-05 -> Entry bis 2026-10-28. KURSE IN DKK - Euro-Zeichen nur fuer den Parser. RE-EVAL: 1D-Schluss >25380 (52W-Hoch Okt, Ausbruch; fruehestens nach Earnings 2026-11-05) - dann neu rechnen.'
+  - label: B
+    gate: 🔴
+    text: 'ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie. RE-EVAL: 1D-Schluss >25380 (52W-Hoch Okt, Ausbruch; fruehestens nach Earnings 2026-11-05) - dann neu rechnen.'
+  notes: '[NEU GEFASST 2026-10-15, User 13:44, Linien von Claude, User-Chart 1D+4h 13:39] Alte Fassung tot: TP1 24270 (BE-Stufe) lag unter dem Kurs (Exit-Test -0,05 R). Chart: C 24000 (-1,4 %), EMA20/50/100/200-1D 23836/22241/20299/18173 bullisch, RSI-1D 55,6 < 62,0; 4h EMA 24310/23599/22251/20301, RSI-4h 47,5 < 57,7 = 4h gegen Einstieg. ATR 741. Rechnung: TIW heute 23836-0,5x741 = 23465; an 23930 SL = MIN(22818 ; 23243) = 22818, R 1112, TP1 25380 (52W-Hoch, aus Digest-Abstand) = 1,30 R; an 23690 = 1,52 R. 1 % = 1 Stk (~3.200 EUR, Risiko ~149 EUR). L7-SPERRE wie 2026-09-30: MAX 1 aus {SBLK, MAERSK}. || [L7-SPERRE 2026-09-30] SBLK #11 AV offen -> MAX 1 aus {SBLK, MAERSK}: kein Entry, solange #11 laeuft. || [NEU GEFASST 2026-09-30, Morning Check, User-Chart MAERSK_B 1D+4h 12:48] ANLASS: TP1 23740 war erreicht (neues Hoch heute 24270), R:R an der Zone 0,35/0,77. CHART B: Kurs 23890, heute O24040 H24270 L23720 (Abweisung am neuen Hoch, laufend). 1D-EMA 22795/21091/19312/17460 bullisch und steigend,
+    RSI-1D 62,9 ~ Signal 62,6; 4h-EMA 23229/22407/21017/19254, RSI-4h 61,9 > 58,0. ATR-1D 755 = 3,16% (🟡, Hebel <=7,9). LINIEN: TIW 22600 = Higher-Low Mitte Sept. knapp unter EMA20-1D (alt 21800 = 4h-EMA5'
+  journal_row: 29
+  archived:
+    date: '2026-10-26'
+    reason: 'Re-Eval >23424 ausgeloest 2026-10-26 (Schluss 23790), neu gerechnet: r2 0,08 / 20 Tage -2,2 % = seitwaerts, Earnings-Sperre ab 2026-10-29 (Q3 2026-11-05)'
+updated: '2026-10-26T18:20:20+00:00'
