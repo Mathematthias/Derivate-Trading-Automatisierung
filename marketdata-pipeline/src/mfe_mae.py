@@ -218,11 +218,16 @@ def write_results(xlsx_in: Path, xlsx_out: Path, results: dict[int, Excursion], 
 # Kursdaten
 # ---------------------------------------------------------------------------
 
+# 2026-10-27 (User: "A mit Reparatur"): Vorlauf von 40 auf 120 Kalendertage, damit RSI-14 und
+# EMA20 am Vortag des Einstiegs eingeschwungen sind (40 Tage = ~28 Balken war fuer Wilder zu knapp).
+VORLAUF_TAGE = 120
+
+
 def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
     import yfinance as yf
     try:
         df = yf.download(
-            symbol, start=(start - timedelta(days=40)).isoformat(),
+            symbol, start=(start - timedelta(days=VORLAUF_TAGE)).isoformat(),
             end=(end + timedelta(days=2)).isoformat(),
             interval="1d", auto_adjust=False, progress=False, threads=False,
         )
@@ -253,10 +258,12 @@ def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
 CF_LEVELS = (("CF_BE07", 0.7), ("CF_BE10", 1.0))
 CF_PARTIAL = ("CF_P10", 1.0, 1 / 3)
 CTX_COLS = ["Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
-            "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart"]
+            "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag"]
 # Einstieg_Lage_Pct ist NACHLAUFEND (Tagesspanne inkl. Kursverlauf nach dem Fill) und taugt
 # nicht als Ursache: faellt der Kurs nach dem Kauf, bleibt der Einstieg oben in der Spanne.
-# Ex-ante-Groessen sind Abstand_Vortag_ATR, Extension_EMA20_ATR und Einstiegsart.
+# Ex-ante-Groessen sind Abstand_Vortag_ATR, Extension_EMA20_ATR, Einstiegsart und (seit
+# 2026-10-27) RSI_1D_Vortag = RSI-14 (Wilder) am Schluss des Vortags. Messung fuer die Frage
+# "meldet die Pipeline zu spaet?" (User 2026-10-27, Variante A) - kein Gate, Auswertung bei n >= 20.
 CF_COLS = [c for c, _ in CF_LEVELS] + [CF_PARTIAL[0], "CF_Hinweis"]
 
 
@@ -264,6 +271,32 @@ def _atr14(df: pd.DataFrame) -> pd.Series:
     prev = df["Close"].shift(1)
     tr = pd.concat([df["High"] - df["Low"], (df["High"] - prev).abs(), (df["Low"] - prev).abs()], axis=1).max(axis=1)
     return tr.ewm(alpha=1 / 14, adjust=False).mean()
+
+
+def _rsi14(close: pd.Series) -> pd.Series:
+    """RSI-14 nach Wilder (wie TradingView)."""
+    d = close.diff()
+    up = d.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean()
+    dn = (-d.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+    rs = up / dn.replace(0, float("nan"))
+    return (100 - 100 / (1 + rs)).fillna(100.0)
+
+
+def einheit_angleichen(df: Optional[pd.DataFrame], symbol: str, entry: Optional[float]) -> tuple[Optional[pd.DataFrame], str]:
+    """LSE-Werte (.L) liefert Yahoo meist in Pence (GBp), Audit-Zeilen fuehren GBP (Watchlist-
+    Konvention). Liegt der Median-Schluss um mehr als Faktor 20 ueber dem Entry, werden OHLC
+    durch 100 geteilt. Anlass A-016 VOD.L 2026-10-22: Entry 1,1976 GBP gegen Kurse ~117 GBp
+    -> MFE 2.605 R. Rueckgabe (df, Hinweis)."""
+    if df is None or df.empty or not entry or not str(symbol).upper().endswith(".L"):
+        return df, ""
+    med = float(df["Close"].median())
+    if med / float(entry) > 20:
+        out = df.copy()
+        for c in ("Open", "High", "Low", "Close"):
+            if c in out.columns:
+                out[c] = out[c] / 100.0
+        return out, "GBp->GBP"
+    return df, ""
 
 
 def counterfactuals(df: pd.DataFrame, direction: str, entry: float, sl: float,
@@ -340,14 +373,17 @@ def entry_context(df: pd.DataFrame, direction: str, entry: float, start: date, e
     #     positiv = so weit ueber den Ausbruch hinaus gekauft.
     #   Extension_EMA20_ATR: Fill gegen EMA20 des Vortagesschlusses, in ATR, positiv = in Handelsrichtung.
     pos = df.index.get_loc(i0)
-    abst = ext = None
+    abst = ext = rsi = None
+    if pos > 0:
+        r_ = _rsi14(df["Close"]).iloc[pos - 1]
+        rsi = round(float(r_), 1) if pd.notna(r_) and pos - 1 >= 14 else None
     if pos > 0 and pd.notna(a0) and a0 > 0:
         prev = df.iloc[pos - 1]
         abst = round(((prev["Low"] - entry) if short else (entry - prev["High"])) / a0, 2)
         ema20 = df["Close"].ewm(span=20, adjust=False).mean().iloc[pos - 1]
         ext = round(((ema20 - entry) if short else (entry - ema20)) / a0, 2)
     return {"Einstieg_Lage_Pct": lage, "Gap_Einstieg_ATR": gap0, "Max_Gap_gegen_ATR": round(gmax, 2),
-            "Abstand_Vortag_ATR": abst, "Extension_EMA20_ATR": ext}
+            "Abstand_Vortag_ATR": abst, "Extension_EMA20_ATR": ext, "RSI_1D_Vortag": rsi}
 
 
 # ---------------------------------------------------------------------------
@@ -369,7 +405,7 @@ CSV_OUT_COLS = ["TradeID", "Symbol", "Richtung", "Kauf", "Verkauf", "EntryU", "S
                 "MFE_R", "MAE_R", "Bars", "MFE_Datum", "MAE_Datum", "Klasse",
                 "CF_BE07", "CF_BE10", "CF_P10", "CF_Hinweis",
                 "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
-                "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "Status"]
+                "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag", "Status"]
 
 
 def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
@@ -411,6 +447,7 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
             table.append({**out, "Status": f"uebersprungen ({row['skip']})"})
             continue
         df = fetch(row["symbol"], row["start"], row["end"])
+        df, einheit = einheit_angleichen(df, row["symbol"], row["entry"])
         ex = compute_mfe_mae(df, row["direction"], row["entry"], row["sl"], row["start"], row["end"]) if df is not None else None
         if ex is None:
             table.append({**out, "Status": "keine Kursdaten" if df is None else "Risiko <= 0 oder Fenster leer"})
@@ -427,7 +464,8 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
         table.append({**out, **extra, "MFE_R": ex.mfe_r, "MAE_R": ex.mae_r, "Bars": ex.bars,
                       "MFE_Datum": ex.mfe_date.isoformat() if ex.mfe_date else "",
                       "MAE_Datum": ex.mae_date.isoformat() if ex.mae_date else "",
-                      "Klasse": klasse, "Status": "ok (offen)" if row["offen"] else "ok"})
+                      "Klasse": klasse,
+                      "Status": ("ok (offen)" if row["offen"] else "ok") + (f" [{einheit}]" if einheit else "")})
     if results_csv:
         results_csv.parent.mkdir(parents=True, exist_ok=True)
         pd.DataFrame(table, columns=CSV_OUT_COLS).to_csv(results_csv, index=False)
@@ -443,6 +481,13 @@ def _f(x) -> Optional[float]:
         return None if v != v else v
     except (TypeError, ValueError):
         return None
+
+
+def _rsi_extrem(t: dict) -> bool:
+    r = _f(t.get("RSI_1D_Vortag"))
+    if r is None:
+        return False
+    return r <= 30 if str(t.get("Richtung", "")).upper().startswith("S") else r >= 70
 
 
 def render_counterfactuals(table: list[dict]) -> str:
@@ -477,6 +522,23 @@ def render_counterfactuals(table: list[dict]) -> str:
         arten = [str(t.get("Einstiegsart") or "unklar") for t in ts]
         cnt = " / ".join(str(arten.count(a)) for a in ("Stop-Buy", "Limit", "Markt", "unklar"))
         lines.append(f"| {k} | {len(ts)} | {(sum(ab)/len(ab)) if ab else float('nan'):+.2f} | {(sum(ex)/len(ex)) if ex else float('nan'):+.2f} | {cnt} |")
+    lines += ["", "## Ueberdehnung beim Einstieg (ex ante, User 2026-10-27, Auswertung erst bei n >= 20 je Zeile)", "",
+              "| Bucket | n | Treffer | Ø R | Ø MFE |", "|---|---|---|---|---|"]
+    closed = [t for t in table if str(t.get("Status", "")).startswith("ok") and "offen" not in str(t.get("Status"))
+              and _f(t.get("R")) is not None]
+    for label, fn in (("Extension ≥ 1,0 ATR", lambda t: (_f(t.get("Extension_EMA20_ATR")) or -99) >= 1.0),
+                      ("Extension 0–1 ATR", lambda t: 0 <= (_f(t.get("Extension_EMA20_ATR")) if _f(t.get("Extension_EMA20_ATR")) is not None else -99) < 1.0),
+                      ("Extension < 0", lambda t: (_f(t.get("Extension_EMA20_ATR")) if _f(t.get("Extension_EMA20_ATR")) is not None else 99) < 0),
+                      ("RSI-1D Vortag ≥ 70 (Long) / ≤ 30 (Short)", lambda t: _rsi_extrem(t)),
+                      ("RSI-1D Vortag sonst", lambda t: _f(t.get("RSI_1D_Vortag")) is not None and not _rsi_extrem(t))):
+        g = [t for t in closed if fn(t)]
+        if not g:
+            lines.append(f"| {label} | 0 | – | – | – |")
+            continue
+        rr = [_f(t["R"]) for t in g]
+        mf = [_f(t.get("MFE_R")) for t in g if _f(t.get("MFE_R")) is not None]
+        lines.append(f"| {label} | {len(g)} | {sum(1 for r in rr if r > 0)}/{len(g)} | {sum(rr)/len(rr):+.2f} | "
+                     f"{(sum(mf)/len(mf)) if mf else float('nan'):.2f} |")
     lines += ["", "## Einstiegslage je Verlaufsklasse (NACHLAUFEND, nicht als Ursache lesen)", "",
               "| Klasse | n | Ø Lage in Tagesspanne (%) | Ø Gap Einstieg (ATR) | Trades mit Gap gegen ≥ 0,5 ATR |", "|---|---|---|---|---|"]
     from collections import defaultdict
