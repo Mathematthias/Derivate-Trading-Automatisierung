@@ -890,4 +890,13 @@ rows:
   id: Z123
   status: offen
   added: '2026-10-27'
-updated: '2026-10-27T11:20:14+00:00'
+- date: '2026-10-30'
+  kat: 5
+  ereignis: 'INTC nach Q3-Zahlen (~2026-10-29) neu rechnen: Abpraller an EMA200-1D (87,33) mit bullischer RSI-4h-Divergenz (Tief 23.10. ~86,5 tiefer, RSI-4h ~31 hoeher als ~27 am 19./20.10.), aber Stack nicht bullisch (EMA20 98,03 < EMA100 99,41 < EMA50 101,66) und TP1 am Cluster 99,4-101,7 nur 0,76-1,02 R (SL 84,37 unter Okt-Tief 86,00). Setup erst bei 1D-Schluss ueber 99,41-101,66 (EMA100/EMA50-Rueckeroberung) oder klarem Earnings-Gap-Niveau'
+  werte: INTC
+  wirkung: 'Re-Eval nach Earnings: Schluss > 101,66 (EMA50-1D) bzw. neues Niveau aus dem Gap'
+  quelle: User-Chart 1D/4h 2026-10-27 14:35, Morning Check
+  id: Z124
+  status: offen
+  added: '2026-10-27'
+updated: '2026-10-27T14:38:15+01:00'
