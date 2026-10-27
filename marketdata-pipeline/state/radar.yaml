@@ -881,4 +881,13 @@ rows:
   id: Z122
   status: offen
   added: '2026-10-26'
-updated: '2026-10-26T18:28:32+00:00'
+- date: '2026-11-06'
+  kat: 5
+  ereignis: 'ABNB nach Q3-Zahlen (2026-11-05) Breakout-Retest neu rechnen: Pitch 2026-10-27 verworfen, weil TP1 vor den Zahlen nur am Okt-Hoch ~178 liegt (0,95 R an 171) und 182 vor der Earnings-Sperre unrealistisch ist'
+  werte: ABNB
+  wirkung: 'Re-Eval nach Earnings: Niveau 169,60 oder Schluss > 178,40 (Okt-Hoch)'
+  quelle: Morning Check 2026-10-27, Chart 1D/4h
+  id: Z123
+  status: offen
+  added: '2026-10-27'
+updated: '2026-10-27T11:20:14+00:00'
