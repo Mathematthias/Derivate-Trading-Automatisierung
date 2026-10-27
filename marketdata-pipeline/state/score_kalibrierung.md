@@ -1,4 +1,4 @@
-# Score-Kalibrierung L12/L23 — 2026-10-24
+# Score-Kalibrierung L12/L23 — 2026-10-27
 
 Geschlossene Trades mit R: **50**, davon mit Score: **9**, mit dokumentiertem Risiko: 27.
 Score-Quellen: Journal-Notiz 4, alt X/7 2, Entry (User-Bestaetigung 6/7, 2026-10-12) 1, Entry (Claude-Checkliste 15:53, nicht bestaetigt) 1, Entry (Claude-Checkliste Tradeplan 14:19, 5/7) 1.
