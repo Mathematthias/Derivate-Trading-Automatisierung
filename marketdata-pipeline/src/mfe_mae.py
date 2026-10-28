@@ -447,7 +447,7 @@ CSV_OUT_COLS = ["TradeID", "Symbol", "Richtung", "Kauf", "Verkauf", "EntryU", "S
                 "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
                 "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag",
                 "Kanal20_Pos", "Kanal20_Steig_ATR", "Kanal20_R2",
-                "TP1_Klasse", "TP1_R", "Flag1_R", "Dreh_Ort", "CF_TP1_Flag", "Status"]
+                "TP1_Klasse", "TP1_R", "Flag1_R", "Flag1_Klasse", "Dreh_Ort", "CF_TP1_Flag", "Status"]
 
 
 def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
@@ -466,7 +466,8 @@ def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
                "result_r": _num(r.get("R", "")), "einstiegsart": r.get("Einstiegsart", "").strip() or "unklar",
                # 2026-10-28 (User „A und C“): TP1 am ersten starken Widerstand, Flags davor
                "tp1": _num(r.get("TP1_U", "")), "tp1_klasse": str(r.get("TP1_Klasse", "")).strip(),
-               "flag1": _num(r.get("Flag1_U", "")), "tp1_stark": _num(r.get("TP1_stark_U", ""))}
+               "flag1": _num(r.get("Flag1_U", "")), "tp1_stark": _num(r.get("TP1_stark_U", "")),
+               "flag1_klasse": str(r.get("Flag1_Klasse", "")).strip()}
         why = []
         if not row["symbol"]:
             why.append("Symbol")
@@ -490,16 +491,21 @@ def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
 #                    zwischen Flag und TP1 / TP1 erreicht  (aus MFE_R)
 #   CF_TP1_Flag      Gegenfakt „1/3 am Flag statt am TP1“, Naeherung wie CF_P10
 # Reine Messung (L24); Urteil im 20er-Review gemeinsam mit dem Exit-Test.
-TP1_COLS = ["TP1_Klasse", "TP1_R", "Flag1_R", "Dreh_Ort", "CF_TP1_Flag"]
+TP1_COLS = ["TP1_Klasse", "TP1_R", "Flag1_R", "Flag1_Klasse", "Dreh_Ort", "CF_TP1_Flag"]
+# 2026-10-28 (User „Ja, klingt gut“, Variante A + Kriterium): mittel bleibt Flag. Wechsel zu
+# „mittel = TP1“, wenn im 20er-Review >= MITTEL_PROMOTION_QUOTE der Trades mit mittlerer
+# Erst-Marke dort drehen (Dreh_Ort = am Flag).
+MITTEL_PROMOTION_QUOTE = 0.40
 DREH_TOL_R = 0.25
 
 
 def tp1_messung(direction: str, entry: float, sl: float, mfe_r: Optional[float],
                 result_r: Optional[float], tp1: Optional[float], flag1: Optional[float],
-                tp1_klasse: str = "") -> dict:
+                tp1_klasse: str = "", flag1_klasse: str = "") -> dict:
     short = direction.strip().upper().startswith("S")
     risk = (sl - entry) if short else (entry - sl)
-    out = {"TP1_Klasse": tp1_klasse or None, "TP1_R": None, "Flag1_R": None, "Dreh_Ort": None, "CF_TP1_Flag": None}
+    out = {"TP1_Klasse": tp1_klasse or None, "TP1_R": None, "Flag1_R": None,
+           "Flag1_Klasse": (flag1_klasse or "").lower() or None, "Dreh_Ort": None, "CF_TP1_Flag": None}
     if risk is None or risk <= 0:
         return out
     r_of = (lambda p: round(((entry - p) if short else (p - entry)) / risk, 2))
@@ -553,7 +559,8 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
         if row.get("tp1") is not None or row.get("flag1") is not None:
             extra.update(tp1_messung(row["direction"], row["entry"], row["sl"], ex.mfe_r,
                                      None if row["offen"] else row["result_r"],
-                                     row.get("tp1"), row.get("flag1"), row.get("tp1_klasse", "")))
+                                     row.get("tp1"), row.get("flag1"), row.get("tp1_klasse", ""),
+                                     row.get("flag1_klasse", "")))
         table.append({**out, **extra, "MFE_R": ex.mfe_r, "MAE_R": ex.mae_r, "Bars": ex.bars,
                       "MFE_Datum": ex.mfe_date.isoformat() if ex.mfe_date else "",
                       "MAE_Datum": ex.mae_date.isoformat() if ex.mae_date else "",
@@ -669,6 +676,15 @@ def render_tp1_klasse(table: list[dict]) -> list[str]:
         cf = [_f(t.get("CF_TP1_Flag")) for t in xs if _f(t.get("CF_TP1_Flag")) is not None]
         out.append(f"| {k} | {len(xs)} | {(sum(rr)/len(rr)) if rr else float('nan'):+.2f} | "
                    f"{(sum(cf)/len(cf)) if cf else float('nan'):+.2f} |")
+    # Kriterium fuer „mittel = TP1“ (User 2026-10-28): Anteil „am Flag“ je Klasse der Erst-Marke
+    out += ["", "| Erst-Marke | n | davon am Flag | Quote | Kriterium mittel → TP1 |", "|---|---|---|---|---|"]
+    for kl in ("mittel", "schwach"):
+        xs = [t for t in ts if str(t.get("Flag1_Klasse") or "").lower() == kl]
+        am = sum(1 for t in xs if t["Dreh_Ort"] == "am Flag")
+        q = (am / len(xs)) if xs else None
+        krit = ("–" if kl != "mittel" else
+                ("n < 20" if len(xs) < 20 else ("erfuellt" if q >= MITTEL_PROMOTION_QUOTE else "nicht erfuellt")))
+        out.append(f"| {kl} | {len(xs)} | {am} | {f'{q:.0%}' if q is not None else '–'} | {krit} |")
     return out
 
 
