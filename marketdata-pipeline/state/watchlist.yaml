@@ -2933,23 +2933,6 @@ entries:
   archived:
     date: '2026-10-23'
     reason: Re-Eval ohne Volumen
-- symbol: JUN3.DE
-  name: Jungheinrich AG Vz (JUN3, Xetra) - Intralogistik, Flurfoerderzeuge
-  direction: SHORT
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 22,16 (Breakdown)
-  treiber: ''
-  status: archiviert
-  expiry: '2026-10-22'
-  notes: '[NEU 2026-10-20, Pitch-Top Morning Check, User: auf WL, Linien von Claude, Digest 11:36] Breakdown unter 22,16 per Schluss vor 8 HT mit Vol 5,26x. Stack bearish EMA 22,55/23,65/24,63/26,39, 30d -13 %, RSI 37,6, ATR 0,68 (3,1 %). Kurs 21,70 knapp unter der Zone. Rechnung: an 22,10 SL 23,12 (ATR-Term), R 1,02, TP1 20,62 = 1,45 R; an 21,94 = 1,30 R, an 22,50 = 1,84 R. 1 % = ~147 Stk Underlying, KO h<=8. GEGENREDE: Klassenfenster nur bis 2026-10-22, TP1 aus Digest-Abstand (52W-Tief), Earnings-Termin Q3 nicht im Digest. Ersetzt die archivierte Zeile vom 2026-10-01 (Halbzeit-Archiv 2026-10-19, Historie im Journal-Blatt Watchlist-Archiv).'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-20 BREAKDOWN-RETEST-SHORT: Niveau 22,16€ (Breakdown per Schluss vor 8 HT, Vol 5,26x). Touch 21,94-22,50€ [pullback] (UG = Entry-Grenze 1,3 R) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,68 -> +1,02). TIW = 1D-Schluss ueber 22,50€. TP1 20,62€ (52W-Tief, aus Digest-Abstand, am Chart pruefen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,84. 1% Sizing (Pilot). Short nur KO, Hebel <=8 (ATR 3,1 % 🟡). Klassenfenster Breakdown <=10 HT -> Entry bis 2026-10-22. Earnings Q3 Termin offen (Handcheck IR). Non-Quanto EUR. RE-EVAL: 1D-Schluss >21,64 (Rueckkehr ins Band; Klassenfenster dann abgelaufen -> nur als Trend-Pullback-Short neu fassen) - dann neu rechnen.'
-  added: '2026-10-20'
-  archived:
-    date: '2026-10-22'
-    reason: Verfall 2026-10-22, Kurs 21,48 unter dem Band 21,64-22,51 (Gate ⛔); Klassenfenster Breakdown <= 10 HT endet heute
 - symbol: BNZL.L
   name: Bunzl plc (BNZL, LSE) - Distribution Services, Verbrauchsmaterial-Grosshandel
   direction: LONG
@@ -3862,4 +3845,21 @@ entries:
     text: 'BEOBACHTUNG (Pitch 2026-10-28) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >127,30 (Doppeltop 20./22.10., abgelesen) - dann Breakout-Retest @ 127,30 neu rechnen, TIW Kanal-Unterkante pruefen, TP1 Kanal-Oberkante (User-Linie). Parallel PT-5 im Journal. Gegenrede: US-Visa/H-1B-Debatte trifft IT-Dienstleister mit Indien-Anteil. Earnings 2027-02-16.'
   notes: '[NEU 2026-10-28 11:3x, User 1-3] Kanal-Idee des Users (Trendkanal seit 2026-10-01, Linien steigen ~1 EUR/HT). Re-Eval statt Zeile, weil TP1 ueber ungebrochenes Doppeltop = R:R rueckwaerts (L13).'
   added: '2026-10-28'
-updated: '2026-10-28T12:09:20+00:00'
+- symbol: JUN3.DE
+  name: Jungheinrich AG Vz (JUN3, Xetra) - Intralogistik, Flurfoerderzeuge
+  direction: SHORT
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 22,16 (Breakdown)
+  treiber: ''
+  status: archiviert
+  expiry: '2026-10-22'
+  notes: '[NEU 2026-10-20, Pitch-Top Morning Check, User: auf WL, Linien von Claude, Digest 11:36] Breakdown unter 22,16 per Schluss vor 8 HT mit Vol 5,26x. Stack bearish EMA 22,55/23,65/24,63/26,39, 30d -13 %, RSI 37,6, ATR 0,68 (3,1 %). Kurs 21,70 knapp unter der Zone. Rechnung: an 22,10 SL 23,12 (ATR-Term), R 1,02, TP1 20,62 = 1,45 R; an 21,94 = 1,30 R, an 22,50 = 1,84 R. 1 % = ~147 Stk Underlying, KO h<=8. GEGENREDE: Klassenfenster nur bis 2026-10-22, TP1 aus Digest-Abstand (52W-Tief), Earnings-Termin Q3 nicht im Digest. Ersetzt die archivierte Zeile vom 2026-10-01 (Halbzeit-Archiv 2026-10-19, Historie im Journal-Blatt Watchlist-Archiv). [2026-10-28 User: Re-Eval entfernt, Zeile bleibt Archiv.]'
+  legs:
+  - label: A
+    gate: 🔴
+    text: 'nach 2026-10-20 BREAKDOWN-RETEST-SHORT: Niveau 22,16€ (Breakdown per Schluss vor 8 HT, Vol 5,26x). Touch 21,94-22,50€ [pullback] (UG = Entry-Grenze 1,3 R) + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Stop-Sell unter Tief der Bestaetigungskerze (L27). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,68 -> +1,02). TIW = 1D-Schluss ueber 22,50€. TP1 20,62€ (52W-Tief, aus Digest-Abstand, am Chart pruefen), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,30-1,84. 1% Sizing (Pilot). Short nur KO, Hebel <=8 (ATR 3,1 % 🟡). Klassenfenster Breakdown <=10 HT -> Entry bis 2026-10-22. Earnings Q3 Termin offen (Handcheck IR). Non-Quanto EUR. Re-Eval erledigt 2026-10-28 (User): ausgeloest mit Schluss 2026-10-27 21,66, Stack bearish, kein Neufassen.'
+  added: '2026-10-20'
+  archived:
+    date: '2026-10-22'
+    reason: Verfall 2026-10-22, Kurs 21,48 unter dem Band 21,64-22,51 (Gate ⛔); Klassenfenster Breakdown <= 10 HT endet heute
+updated: '2026-10-28T12:59:55+00:00'

@@ -908,4 +908,13 @@ rows:
   id: Z125
   status: offen
   added: '2026-10-28'
-updated: '2026-10-28T12:09:20+00:00'
+- date: '2026-11-06'
+  kat: 5
+  ereignis: 'COP und EOG nach Q3-Zahlen (2026-11-05) neu rechnen: Breakout-Long-Pitches (Niveau COP 147,55 / EOG 160,31), vor den Zahlen gesperrt (Earnings <= 7 d); TP1 nach L13 n.F. (erster starker Widerstand), Korrelation Oel-Block pruefen'
+  werte: COP, EOG
+  wirkung: Pitch-Wiedervorlage nach Zahlen (User 2026-10-28)
+  quelle: Morning Check 2026-10-28
+  id: Z126
+  status: offen
+  added: '2026-10-28'
+updated: '2026-10-28T12:59:55+00:00'
