@@ -42,6 +42,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Callable, Optional
 
+import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
 
@@ -258,12 +259,21 @@ def fetch_daily(symbol: str, start: date, end: date) -> Optional[pd.DataFrame]:
 CF_LEVELS = (("CF_BE07", 0.7), ("CF_BE10", 1.0))
 CF_PARTIAL = ("CF_P10", 1.0, 1 / 3)
 CTX_COLS = ["Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
-            "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag"]
+            "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag",
+            "Kanal20_Pos", "Kanal20_Steig_ATR", "Kanal20_R2"]
 # Einstieg_Lage_Pct ist NACHLAUFEND (Tagesspanne inkl. Kursverlauf nach dem Fill) und taugt
 # nicht als Ursache: faellt der Kurs nach dem Kauf, bleibt der Einstieg oben in der Spanne.
 # Ex-ante-Groessen sind Abstand_Vortag_ATR, Extension_EMA20_ATR, Einstiegsart und (seit
 # 2026-10-27) RSI_1D_Vortag = RSI-14 (Wilder) am Schluss des Vortags. Messung fuer die Frage
 # "meldet die Pipeline zu spaet?" (User 2026-10-27, Variante A) - kein Gate, Auswertung bei n >= 20.
+# Seit 2026-10-28 (User "B + C", Anlass CAP.PA/IOS-Trendkanal) zusaetzlich der 20-HT-Regressionskanal
+# des Vortags, auf den Einstiegstag fortgeschrieben (Mitte + Steigung, Band +/-2 sigma):
+#   Kanal20_Pos       Fill gegen die Kanalmitte in sigma, positiv = in Handelsrichtung
+#                     (-2 = guenstige Kante: Long Unterkante, Short Oberkante)
+#   Kanal20_Steig_ATR Steigung je HT in ATR-14 des Vortags, positiv = Trend in Handelsrichtung
+#   Kanal20_R2        Bestimmtheitsmass der Regression
+# Reine Messung (L24), kein Gate; Frage: laufen Einstiege an der guenstigen Kante besser?
+KANAL_FENSTER = 20
 CF_COLS = [c for c, _ in CF_LEVELS] + [CF_PARTIAL[0], "CF_Hinweis"]
 
 
@@ -271,6 +281,33 @@ def _atr14(df: pd.DataFrame) -> pd.Series:
     prev = df["Close"].shift(1)
     tr = pd.concat([df["High"] - df["Low"], (df["High"] - prev).abs(), (df["Low"] - prev).abs()], axis=1).max(axis=1)
     return tr.ewm(alpha=1 / 14, adjust=False).mean()
+
+
+def _kanal20(close: pd.Series, pos: int, entry: float, short: bool, atr_v: Optional[float],
+             fenster: int = KANAL_FENSTER) -> tuple[Optional[float], Optional[float], Optional[float]]:
+    """Regressionskanal ueber die `fenster` Schluesse bis einschliesslich Vortag (Index pos-1),
+    fortgeschrieben auf den Einstiegstag. Rueckgabe (Pos in sigma, Steigung in ATR, r2),
+    Vorzeichen in Handelsrichtung. (None, None, None) bei zu wenig Daten oder sigma ~ 0."""
+    if pos < fenster:
+        return None, None, None
+    y = close.iloc[pos - fenster:pos].to_numpy(dtype=float)
+    if len(y) < fenster or np.isnan(y).any():
+        return None, None, None
+    x = np.arange(fenster, dtype=float)
+    xm, ym = x.mean(), y.mean()
+    b = float(((x - xm) * (y - ym)).sum() / ((x - xm) ** 2).sum())
+    fit = ym + b * (x - xm)
+    resid = y - fit
+    sigma = float(np.sqrt((resid ** 2).sum() / (fenster - 2)))
+    if sigma <= 1e-12:
+        return None, None, None
+    mitte_t = float(fit[-1]) + b                      # ein Balken fortgeschrieben
+    sgn = -1.0 if short else 1.0
+    p = round(sgn * (entry - mitte_t) / sigma, 2)
+    st = round(sgn * b / atr_v, 3) if atr_v and atr_v > 0 else None
+    ss_tot = float(((y - ym) ** 2).sum())
+    r2 = round(max(0.0, min(1.0, 1.0 - float((resid ** 2).sum()) / ss_tot)), 2) if ss_tot > 1e-14 else None
+    return p, st, r2
 
 
 def _rsi14(close: pd.Series) -> pd.Series:
@@ -377,13 +414,16 @@ def entry_context(df: pd.DataFrame, direction: str, entry: float, start: date, e
     if pos > 0:
         r_ = _rsi14(df["Close"]).iloc[pos - 1]
         rsi = round(float(r_), 1) if pd.notna(r_) and pos - 1 >= 14 else None
+    k_pos, k_st, k_r2 = _kanal20(df["Close"], pos, entry, short,
+                                 float(a0) if pd.notna(a0) else None)
     if pos > 0 and pd.notna(a0) and a0 > 0:
         prev = df.iloc[pos - 1]
         abst = round(((prev["Low"] - entry) if short else (entry - prev["High"])) / a0, 2)
         ema20 = df["Close"].ewm(span=20, adjust=False).mean().iloc[pos - 1]
         ext = round(((ema20 - entry) if short else (entry - ema20)) / a0, 2)
     return {"Einstieg_Lage_Pct": lage, "Gap_Einstieg_ATR": gap0, "Max_Gap_gegen_ATR": round(gmax, 2),
-            "Abstand_Vortag_ATR": abst, "Extension_EMA20_ATR": ext, "RSI_1D_Vortag": rsi}
+            "Abstand_Vortag_ATR": abst, "Extension_EMA20_ATR": ext, "RSI_1D_Vortag": rsi,
+            "Kanal20_Pos": k_pos, "Kanal20_Steig_ATR": k_st, "Kanal20_R2": k_r2}
 
 
 # ---------------------------------------------------------------------------
@@ -405,7 +445,8 @@ CSV_OUT_COLS = ["TradeID", "Symbol", "Richtung", "Kauf", "Verkauf", "EntryU", "S
                 "MFE_R", "MAE_R", "Bars", "MFE_Datum", "MAE_Datum", "Klasse",
                 "CF_BE07", "CF_BE10", "CF_P10", "CF_Hinweis",
                 "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
-                "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag", "Status"]
+                "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag",
+                "Kanal20_Pos", "Kanal20_Steig_ATR", "Kanal20_R2", "Status"]
 
 
 def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
@@ -530,7 +571,11 @@ def render_counterfactuals(table: list[dict]) -> str:
                       ("Extension 0–1 ATR", lambda t: 0 <= (_f(t.get("Extension_EMA20_ATR")) if _f(t.get("Extension_EMA20_ATR")) is not None else -99) < 1.0),
                       ("Extension < 0", lambda t: (_f(t.get("Extension_EMA20_ATR")) if _f(t.get("Extension_EMA20_ATR")) is not None else 99) < 0),
                       ("RSI-1D Vortag ≥ 70 (Long) / ≤ 30 (Short)", lambda t: _rsi_extrem(t)),
-                      ("RSI-1D Vortag sonst", lambda t: _f(t.get("RSI_1D_Vortag")) is not None and not _rsi_extrem(t))):
+                      ("RSI-1D Vortag sonst", lambda t: _f(t.get("RSI_1D_Vortag")) is not None and not _rsi_extrem(t)),
+                      # 2026-10-28: Lage im 20-HT-Regressionskanal (sigma, in Handelsrichtung)
+                      ("Kanal20 ≤ −1σ (günstige Kante)", lambda t: (_f(t.get("Kanal20_Pos")) if _f(t.get("Kanal20_Pos")) is not None else 99) <= -1.0),
+                      ("Kanal20 −1σ … +1σ", lambda t: _f(t.get("Kanal20_Pos")) is not None and -1.0 < _f(t.get("Kanal20_Pos")) < 1.0),
+                      ("Kanal20 ≥ +1σ (gestreckt)", lambda t: (_f(t.get("Kanal20_Pos")) if _f(t.get("Kanal20_Pos")) is not None else -99) >= 1.0)):
         g = [t for t in closed if fn(t)]
         if not g:
             lines.append(f"| {label} | 0 | – | – | – |")
