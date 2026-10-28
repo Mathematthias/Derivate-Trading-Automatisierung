@@ -706,9 +706,9 @@ rows:
   wirkung: Setup-Neubewertung Short; Stack bearish, Kurs unter EMA50/100/200
   quelle: 'Morning Check 2026-10-21 (Korrektur: Re-Eval war Short-Retest, nicht Long)'
   id: Z103
-  status: offen
+  status: erledigt
   added: '2026-10-21'
-  note: '2026-10-26 Pflegelauf, Faktenpruefung: Der Ex-Tag lag auf 2026-10-13, NICHT auf dem im Ereignistext geschaetzten ''~2026-10-26'' - 13 Tage Abweichung. Dividende 0,61 USD, erklaert 2026-09-29, zahlbar 2026-11-02 (dividendmax.com, Abruf 2026-10-26; Sekundaerquelle, GIS-IR nicht gegengelesen). Folge fuer das Zeilendatum: der Short-Disqualifier ''Ex-Tag <= 14 Tage'' laeuft damit am 2026-10-27 aus - genau das Datum dieser Zeile. Das Datum bleibt also richtig, aber aus einem anderen Grund als dem notierten; mit dem geschaetzten Ex-Tag haette es auf ~2026-11-09 stehen muessen. Lehre: geschaetzte Ex-Tage im Ereignistext sind als Schaetzung zu markieren und vor dem Zeilendatum zu pruefen.'
+  note: '2026-10-28 neu gerechnet (User-Chart 1D+4h): Bruchzone 33,30-33,90 im Retest ueberschossen (Hoch 22.10. ~35,2), Ruecklauf an EMA50 abgewiesen; Ex-Tag lag laut Chart ~2026-10-10, nicht 2026-10-26. Neue Zeile TPL-Short @ EMA50 als Vorschlag.'
 - date: '2026-10-28'
   kat: 5
   werte: QIA.DE
@@ -899,4 +899,13 @@ rows:
   id: Z124
   status: offen
   added: '2026-10-27'
-updated: '2026-10-27T17:43:26+00:00'
+- date: '2026-11-06'
+  kat: 5
+  ereignis: 'NET nach Q3-Zahlen (2026-11-05) neu rechnen: Trend-Pullback @ EMA100 bzw. Breakout-Retest je nach Earnings-Gap; Charts 1D+4h'
+  werte: NET
+  wirkung: Re-Eval nach Zahlen (User 2026-10-28)
+  quelle: Morning Check 2026-10-28
+  id: Z125
+  status: offen
+  added: '2026-10-28'
+updated: '2026-10-28T11:40:29+00:00'
