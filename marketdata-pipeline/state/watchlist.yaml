@@ -3541,14 +3541,17 @@ entries:
   klasse: trend_pullback
   anker: EMA100-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-25'
   expiry: '2026-10-29'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-25 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 304,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (18,38 -> -27,57). TIW = 1D-Schluss unter EMA100-1D -0,50 ATR. TP1 340,00$ (Bruchzone 13./14.10. ~334-342, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 365,00$ (Okt-Hoch, unter ATH 369). Rest Chandelier 2,0 ATR. R:R TP1 1,55 an 297 / 1,31 an 304. 1 % (ATR 5,7 % = Stufe rot, hart): Direktaktie 6 Stk. Earnings 2026-11-05 -> Entry bis 2026-10-29. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-25 TREND-PULLBACK-LONG: Touch EMA100-1D -0,20/+0,40 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 304,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (18,38 -> -27,57). TIW = 1D-Schluss unter EMA100-1D -0,50 ATR. TP1 340,00$ (Bruchzone 13./14.10. ~334-342, abgelesen - Fadenkreuz pruefen) 1/3 raus. TP2 365,00$ (Okt-Hoch, unter ATH 369). Rest Chandelier 2,0 ATR. R:R TP1 1,55 an 297 / 1,31 an 304. 1 % (ATR 5,7 % = Stufe rot, hart): Direktaktie 6 Stk. Earnings 2026-11-05 -> Entry bis 2026-10-29. Non-Quanto USD. RE-EVAL: 1D-Schluss >342,00 (Oberkante Bruchzone 13./14.10. ~334-342; Radar 2026-11-06 rechnet nach Q3 neu) - dann neu rechnen.'
   notes: '[NEU 2026-10-25 ~20:05, User: "A-C umsetzen", User-Chart 1D+4h 19:52, Linien von Claude] Einziger Weg, der den Exit-Test besteht: Kurs 325,73 steht 1,7 ATR ueber der EMA100 294,40 (Stack 323,6/316,9/294,4/262,2 bullisch, Gate EMA100 >= 2/4). Ein Ruecksetzer dorthin bis 2026-10-29 ist unwahrscheinlich (Schaetzung). Parallel PT-2 im Journal-Blatt Papertrades (RSI-Signal-Wende 1D+4h, Montag-Open). Sektor-Linse 23.10.: Software Rueckeroberung NET>EMA50. GEGENREDE: Freitag +7,3 % mit Volumen = Momentum nach oben, ein Pullback um 30 $ waere eher Bruch als Test; These TECH fuehrt Software bewusst nicht im Korb.'
+  archived:
+    date: '2026-10-28'
+    reason: 'User 2026-10-28: Re-Eval nach Zahlen (Earnings 2026-11-05, Verfall 2026-10-29 ohne Touch). Nachtrag: set_status 11:20 traf den Archiv-Zwilling (Repo-Befund, PR #45 offen).'
 - symbol: FNTN.DE
   name: 'freenet AG (FNTN, XETRA) - Telekom/Mobilfunk-Provider [MONITOR #108]'
   direction: SHORT
@@ -3859,4 +3862,4 @@ entries:
     text: 'BEOBACHTUNG (Pitch 2026-10-28) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >127,30 (Doppeltop 20./22.10., abgelesen) - dann Breakout-Retest @ 127,30 neu rechnen, TIW Kanal-Unterkante pruefen, TP1 Kanal-Oberkante (User-Linie). Parallel PT-5 im Journal. Gegenrede: US-Visa/H-1B-Debatte trifft IT-Dienstleister mit Indien-Anteil. Earnings 2027-02-16.'
   notes: '[NEU 2026-10-28 11:3x, User 1-3] Kanal-Idee des Users (Trendkanal seit 2026-10-01, Linien steigen ~1 EUR/HT). Re-Eval statt Zeile, weil TP1 ueber ungebrochenes Doppeltop = R:R rueckwaerts (L13).'
   added: '2026-10-28'
-updated: '2026-10-28T11:40:29+00:00'
+updated: '2026-10-28T12:09:20+00:00'
