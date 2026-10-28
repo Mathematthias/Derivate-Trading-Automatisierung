@@ -3874,11 +3874,14 @@ entries:
   treiber: ''
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-28 BREAKOUT-RETEST-LONG: Niveau 35,10€ (Ausbruch per Schluss vor 3 HT, Vol 1,21x = Daempfer). Touch 34,61-35,84€ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 0,988) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 71,1). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 35,84€ kein Entry. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,988 -> -1,48). TIW = 1D-Schluss unter 35,10€ (Niveau, v76). TP1 38,62€ [stark: Mehrfach] (Pipeline-Zone 38,62-39,20, 3 Beruehrungen; liegt ausserhalb des 6M-Chartfensters - am 1J-Chart pruefen) 1/3 raus. Flags: 36,35 mittel (Okt-Hoch 27.10., Swing). Rest Chandelier 2,0 ATR. R:R TP1 2,23 an 35,32 / 1,88 an 35,84. 1 % (Pilot BRT, Vol-Daempfer): Direktaktie ~100 Stk oder KO Hebel <=8,9. Earnings 2026-12-10. Non-Quanto EUR.'
+    gate: 🔴
+    text: 'nach 2026-10-28 BREAKOUT-RETEST-LONG: Niveau 35,10€ (Ausbruch per Schluss vor 3 HT, Vol 1,21x = Daempfer). Touch 34,61-35,84€ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 0,988) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 71,1). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 35,84€ kein Entry. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,988 -> -1,48). TIW = 1D-Schluss unter 35,10€ (Niveau, v76). TP1 38,62€ [stark: Mehrfach] (Pipeline-Zone 38,62-39,20, 3 Beruehrungen; liegt ausserhalb des 6M-Chartfensters - am 1J-Chart pruefen) 1/3 raus. Flags: 36,35 mittel (Okt-Hoch 27.10., Swing). Rest Chandelier 2,0 ATR. R:R TP1 2,23 an 35,32 / 1,88 an 35,84. 1 % (Pilot BRT, Vol-Daempfer): Direktaktie ~100 Stk oder KO Hebel <=8,9. Earnings 2026-12-10. Non-Quanto EUR. RE-EVAL: 1D-Schluss >35,10 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU 2026-10-28 14:4x, User: Pitches brauchen Zeilen, User-Chart 1D+4h 14:26] Chart: Kurs 35,32, Hoch 27.10. ~36,4 (Docht), EMA20/50/100/200-1D 33,48/32,07/31,00/32,12 (EMA200 ueber EMA100), RSI-1D 71,1 > Signal 65,4, RSI-4h 64,7 < Signal 72,3 (Abkuehlung), ATR 0,988 (2,8 %). Ausbruch aus der Aug/Sep-Range ~28,9-33,0. News: neue CEO Bronwyn Brophy O''Connor (2 Tage alt). GEGENREDE: RSI-1D ueber 70, heute rote Kerze von 35,80, TP1 nur aus der Pipeline-Zone (Kalibrierung PR #48 offen), Flag 36,35 wird an der Band-OG 35,84 zur Bremse (0,34 R).'
-  status: aktiv
+  status: archiviert
   added: '2026-10-28'
+  archived:
+    date: '2026-10-28'
+    reason: 'Auto-Archiv: TIW per Schluss gebrochen (34.72 < 35.1) (Dauerregel 2026-10-19)'
 - symbol: COP
   name: ConocoPhillips (COP, NYSE) - Oel/Gas E&P
   direction: LONG
@@ -3913,4 +3916,4 @@ entries:
     text: 'BEOBACHTUNG (Pitch 2026-10-28) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >165,10$ (52W-Hoch, aus Digest-Abstand -2,43 % gerechnet, am Chart pruefen) - dann Breakout-Retest @ 52W-Hoch neu rechnen. Radar 2026-11-06 nach Q3.'
   notes: '[NEU 2026-10-28 14:4x, User: Pitches brauchen Zeilen; ohne Chart] Digest 14:04: Kurs 161,10, bo_level 160,31 vor 2 HT, Vol 1,16x (Daempfer), ATR 3,88 (2,4 %), RSI 68,5, 30d +14,6 %. R an 161,10 = 5,82 (1,5 ATR), 52W-Hoch 165,10 = 0,69 R. Korrelation Oel-Block mit COP.'
   added: '2026-10-28'
-updated: '2026-10-28T19:37:14+01:00'
+updated: '2026-10-28T18:52:51+00:00'
