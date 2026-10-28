@@ -255,6 +255,13 @@ class TickerSnapshot:
     """Bestimmtheitsmass derselben Regression (0..1): wie sauber der Wert
     'grindet'. NUR INFORMATIV — kein Gate, bis es gegen echte Trades kalibriert
     ist (L24)."""
+    reg_channel: Optional[dict] = None
+    """🆕 2026-10-28 — Regressionskanal (User-Auftrag, Anlass CAP.PA-Trendkanal):
+    {"20": {...}, "50": {...}} je Fenster in Handelstagen, lineare Regression der
+    Schlusskurse mit Band +/-2 sigma der Residuen, Werte fuer den letzten Balken:
+    ug/mitte/og (Kurs), pos (Kurs in sigma ab Mitte), steig_atr (Steigung je HT in
+    ATR-14), r2. Objektive Fassung gezeichneter Kanaele. NUR MESSUNG — kein Gate,
+    keine TIW, kein TP, bis n >= 20 ausgewertet ist (L24)."""
     high_52w: Optional[float] = None
     low_52w: Optional[float] = None
     distance_from_52w_high_pct: Optional[float] = None  # negativ = drunter
@@ -832,6 +839,14 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
         closes, TREND_WINDOW_HT
     )
 
+    # 🆕 2026-10-28: Regressionskanal 20/50 HT (Messung), siehe Feld-Docstring
+    rc = {}
+    for w in REG_CHANNEL_WINDOWS:
+        k = _compute_reg_channel(closes, w, snap.atr14)
+        if k is not None:
+            rc[str(w)] = k
+    snap.reg_channel = rc or None
+
     # 52W-Range (252 Handelstage)
     lookback = min(252, len(df))
     if lookback >= 50 and "High" in df.columns and "Low" in df.columns:
@@ -1405,6 +1420,55 @@ def _compute_trend_regression(
     # ss_tot ~ 0 (flacher Kurs, Rundungsrest) -> R^2 undefiniert
     r2 = (1.0 - float((resid ** 2).sum()) / ss_tot) if ss_tot > 1e-14 else None
     return move_pct, (max(0.0, min(1.0, r2)) if r2 is not None else None)
+
+
+REG_CHANNEL_WINDOWS = (20, 50)
+"""Fenster des Regressionskanals in Handelstagen (2026-10-28, Messung)."""
+REG_CHANNEL_SIGMA = 2.0
+
+
+def _compute_reg_channel(
+    closes: pd.Series, window: int, atr: Optional[float] = None,
+    k_sigma: float = REG_CHANNEL_SIGMA,
+) -> Optional[dict]:
+    """Linearer Regressionskanal ueber die letzten `window` Schlusskurse.
+
+    Linear im Kurs (nicht log), damit die Linien gezeichneten Trendkanaelen im
+    Chart entsprechen. Band = Mitte +/- k_sigma x Standardabweichung der Residuen.
+    Rueckgabe fuer den letzten Balken:
+      ug, mitte, og : Kanalwerte
+      pos           : (Kurs - Mitte) / sigma  (+2 = Oberkante, -2 = Unterkante)
+      steig_atr     : Steigung je HT in ATR-14 (None ohne ATR)
+      r2            : Bestimmtheitsmass
+    None bei zu wenig Daten, NaN, nicht-positiven Kursen oder sigma ~ 0.
+    """
+    if closes is None or len(closes) < window or window < 5:
+        return None
+    tail = pd.to_numeric(closes.iloc[-window:], errors="coerce")
+    if tail.isna().any() or (tail <= 0).any():
+        return None
+    y = tail.to_numpy(dtype=float)
+    x = np.arange(window, dtype=float)
+    xm, ym = x.mean(), y.mean()
+    sxx = float(((x - xm) ** 2).sum())
+    b = float(((x - xm) * (y - ym)).sum() / sxx)
+    a = ym - b * xm
+    fit = a + b * x
+    resid = y - fit
+    sigma = float(np.sqrt((resid ** 2).sum() / (window - 2)))
+    if sigma <= 1e-12:
+        return None
+    ss_tot = float(((y - ym) ** 2).sum())
+    r2 = 1.0 - float((resid ** 2).sum()) / ss_tot if ss_tot > 1e-14 else None
+    mitte = float(fit[-1])
+    return {
+        "ug": round(mitte - k_sigma * sigma, 4),
+        "mitte": round(mitte, 4),
+        "og": round(mitte + k_sigma * sigma, 4),
+        "pos": round((float(y[-1]) - mitte) / sigma, 2),
+        "steig_atr": round(b / atr, 3) if atr else None,
+        "r2": round(max(0.0, min(1.0, r2)), 2) if r2 is not None else None,
+    }
 
 
 def _compute_rsi(closes: pd.Series, period: int = 14) -> float:
