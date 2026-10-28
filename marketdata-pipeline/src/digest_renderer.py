@@ -228,6 +228,8 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "r2": _r(getattr(snap, "trend20_r2", None), 2),
         # 🆕 2026-10-28: Regressionskanal 20/50 HT — reine Messung (L24)
         "rc": getattr(snap, "reg_channel", None),
+        # 🆕 2026-10-28: Widerstands-/Unterstuetzungszonen mit Klasse (TP1-Vorschlag)
+        "sr": getattr(snap, "sr_zonen", None),
         "dist52wH": _r(snap.distance_from_52w_high_pct, 2),
         "dist52wL": _r(snap.distance_from_52w_low_pct, 2),
         "ema200_dist": _r(snap.ema200_distance_pct, 2),

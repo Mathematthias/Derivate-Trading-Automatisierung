@@ -446,7 +446,8 @@ CSV_OUT_COLS = ["TradeID", "Symbol", "Richtung", "Kauf", "Verkauf", "EntryU", "S
                 "CF_BE07", "CF_BE10", "CF_P10", "CF_Hinweis",
                 "Einstieg_Lage_Pct", "Gap_Einstieg_ATR", "Max_Gap_gegen_ATR",
                 "Abstand_Vortag_ATR", "Extension_EMA20_ATR", "Einstiegsart", "RSI_1D_Vortag",
-                "Kanal20_Pos", "Kanal20_Steig_ATR", "Kanal20_R2", "Status"]
+                "Kanal20_Pos", "Kanal20_Steig_ATR", "Kanal20_R2",
+                "TP1_Klasse", "TP1_R", "Flag1_R", "Dreh_Ort", "CF_TP1_Flag", "Status"]
 
 
 def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
@@ -462,7 +463,10 @@ def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
                "direction": r.get("Richtung", "").strip(), "start": parse_date(r.get("Kauf", "")),
                "end": end or today, "offen": end is None,
                "entry": _num(r.get("EntryU", "")), "sl": _num(r.get("SL_U", "")),
-               "result_r": _num(r.get("R", "")), "einstiegsart": r.get("Einstiegsart", "").strip() or "unklar"}
+               "result_r": _num(r.get("R", "")), "einstiegsart": r.get("Einstiegsart", "").strip() or "unklar",
+               # 2026-10-28 (User „A und C“): TP1 am ersten starken Widerstand, Flags davor
+               "tp1": _num(r.get("TP1_U", "")), "tp1_klasse": str(r.get("TP1_Klasse", "")).strip(),
+               "flag1": _num(r.get("Flag1_U", "")), "tp1_stark": _num(r.get("TP1_stark_U", ""))}
         why = []
         if not row["symbol"]:
             why.append("Symbol")
@@ -473,6 +477,50 @@ def read_csv_rows(path: Path, today: Optional[date] = None) -> list[dict]:
         row["skip"] = ", ".join(why) if why else None
         rows.append(row)
     return rows
+
+
+# ---------------------------------------------------------------------------
+# TP1-Klasse (User 2026-10-28 „A und C jetzt“, Abhilfe fuer den laufenden Exit-Test)
+# ---------------------------------------------------------------------------
+# trade_audit.csv traegt je Trade TP1_U (gesetztes TP1), TP1_Klasse (stark/mittel/schwach),
+# TP1_Typ, Flag1_U (erste Marke JEDER Klasse zwischen Entry und TP1 = alter TP1-Kandidat),
+# Flag1_Klasse und TP1_stark_U (erster starker Widerstand). Gemessen wird:
+#   Flag1_R / TP1_R  Abstand in R (Vorzeichen in Handelsrichtung)
+#   Dreh_Ort         wo die Bewegung gedreht hat: vor Flag / am Flag (+/-0,25 R) /
+#                    zwischen Flag und TP1 / TP1 erreicht  (aus MFE_R)
+#   CF_TP1_Flag      Gegenfakt „1/3 am Flag statt am TP1“, Naeherung wie CF_P10
+# Reine Messung (L24); Urteil im 20er-Review gemeinsam mit dem Exit-Test.
+TP1_COLS = ["TP1_Klasse", "TP1_R", "Flag1_R", "Dreh_Ort", "CF_TP1_Flag"]
+DREH_TOL_R = 0.25
+
+
+def tp1_messung(direction: str, entry: float, sl: float, mfe_r: Optional[float],
+                result_r: Optional[float], tp1: Optional[float], flag1: Optional[float],
+                tp1_klasse: str = "") -> dict:
+    short = direction.strip().upper().startswith("S")
+    risk = (sl - entry) if short else (entry - sl)
+    out = {"TP1_Klasse": tp1_klasse or None, "TP1_R": None, "Flag1_R": None, "Dreh_Ort": None, "CF_TP1_Flag": None}
+    if risk is None or risk <= 0:
+        return out
+    r_of = (lambda p: round(((entry - p) if short else (p - entry)) / risk, 2))
+    t_r = r_of(tp1) if tp1 is not None else None
+    f_r = r_of(flag1) if flag1 is not None else None
+    out["TP1_R"], out["Flag1_R"] = t_r, f_r
+    if mfe_r is None:
+        return out
+    if t_r is not None and mfe_r >= t_r:
+        out["Dreh_Ort"] = "TP1 erreicht"
+    elif f_r is not None and mfe_r < f_r - DREH_TOL_R:
+        out["Dreh_Ort"] = "vor Flag"
+    elif f_r is not None and abs(mfe_r - f_r) <= DREH_TOL_R:
+        out["Dreh_Ort"] = "am Flag"
+    elif f_r is not None:
+        out["Dreh_Ort"] = "zwischen Flag und TP1"
+    elif t_r is not None:
+        out["Dreh_Ort"] = "vor TP1 (kein Flag)"
+    if f_r is not None and result_r is not None:
+        out["CF_TP1_Flag"] = round(CF_PARTIAL[2] * f_r + (1 - CF_PARTIAL[2]) * result_r, 2) if mfe_r >= f_r else result_r
+    return out
 
 
 def run_csv(inputs: Path, results_csv: Optional[Path],
@@ -502,6 +550,10 @@ def run_csv(inputs: Path, results_csv: Optional[Path],
         ctx = entry_context(df, row["direction"], row["entry"], row["start"], row["end"])
         if ctx:
             extra.update(ctx)
+        if row.get("tp1") is not None or row.get("flag1") is not None:
+            extra.update(tp1_messung(row["direction"], row["entry"], row["sl"], ex.mfe_r,
+                                     None if row["offen"] else row["result_r"],
+                                     row.get("tp1"), row.get("flag1"), row.get("tp1_klasse", "")))
         table.append({**out, **extra, "MFE_R": ex.mfe_r, "MAE_R": ex.mae_r, "Bars": ex.bars,
                       "MFE_Datum": ex.mfe_date.isoformat() if ex.mfe_date else "",
                       "MAE_Datum": ex.mae_date.isoformat() if ex.mae_date else "",
@@ -596,7 +648,28 @@ def render_counterfactuals(table: list[dict]) -> str:
         ga = [_f(t.get("Gap_Einstieg_ATR")) for t in ts if _f(t.get("Gap_Einstieg_ATR")) is not None]
         gg = sum(1 for t in ts if (_f(t.get("Max_Gap_gegen_ATR")) or 0) >= 0.5)
         lines.append(f"| {k} | {len(ts)} | {sum(la)/len(la):.0f} | {sum(ga)/len(ga):+.2f} | {gg} |" if la and ga else f"| {k} | {len(ts)} | – | – | {gg} |")
+    lines += render_tp1_klasse(table)
     return "\n".join(lines)
+
+
+def render_tp1_klasse(table: list[dict]) -> list[str]:
+    """2026-10-28: TP1 am ersten starken Widerstand — wo drehen die Trades, was haette ein TP1 am Flag gebracht?"""
+    ts = [t for t in table if str(t.get("Status", "")).startswith("ok") and t.get("Dreh_Ort")]
+    out = ["", "## TP1-Klasse und Flags (User 2026-10-28, Messung, Urteil im 20er-Review)", ""]
+    if not ts:
+        return out + ["Noch keine Trades mit TP1_U/Flag1_U im Trade-Audit."]
+    out += ["| Dreh-Ort | n | Ø R | Ø CF TP1 am Flag |", "|---|---|---|---|"]
+    from collections import defaultdict
+    g = defaultdict(list)
+    for t in ts:
+        g[t["Dreh_Ort"]].append(t)
+    for k in ("vor Flag", "am Flag", "zwischen Flag und TP1", "TP1 erreicht", "vor TP1 (kein Flag)"):
+        xs = g.get(k, [])
+        rr = [_f(t.get("R")) for t in xs if _f(t.get("R")) is not None]
+        cf = [_f(t.get("CF_TP1_Flag")) for t in xs if _f(t.get("CF_TP1_Flag")) is not None]
+        out.append(f"| {k} | {len(xs)} | {(sum(rr)/len(rr)) if rr else float('nan'):+.2f} | "
+                   f"{(sum(cf)/len(cf)) if cf else float('nan'):+.2f} |")
+    return out
 
 
 def _tid(nr) -> Optional[str]:
