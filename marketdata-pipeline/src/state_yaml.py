@@ -333,6 +333,18 @@ def _find_entry(block: dict, symbol: str) -> Optional[dict]:
     return None
 
 
+def _find_live_entry(block: dict, symbol: str) -> Optional[dict]:
+    """2026-10-28 (Befund NET): set_status/set_gate/set_expiry/set_field trafen bei Symbolen mit
+    Archiv-Zwilling die ERSTE Zeile (meist die archivierte) - die aktive Zeile blieb unveraendert.
+    Reihenfolge jetzt: aktiv > position > erste Zeile."""
+    rows = [e for e in block.get("entries", []) or [] if str(e.get("symbol", "")).upper() == symbol.upper()]
+    for st in ("aktiv", "position"):
+        for e in rows:
+            if e.get("status") == st:
+                return e
+    return rows[0] if rows else None
+
+
 def _find_active_entry(block: dict, symbol: str) -> Optional[dict]:
     """Wie _find_entry, aber nur Zeilen mit status 'aktiv' (Archiv-Zwillinge ignorieren)."""
     for e in block.get("entries", []) or []:
@@ -369,7 +381,7 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
         op = str(a.get("op", ""))
         try:
             if op == "watchlist.set_status":
-                e = _find_entry(wl, a["symbol"])
+                e = _find_live_entry(wl, a["symbol"])
                 if e is None:
                     raise InboxError(f"Symbol {a['symbol']} nicht in watchlist.yaml")
                 status = a["status"]
@@ -413,7 +425,7 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                     log.append(f"watchlist {sym} Leg {a.get('leg')}: gate -> 🔴, {reeval}")
 
             elif op == "watchlist.set_gate":
-                e = _find_entry(wl, a["symbol"])
+                e = _find_live_entry(wl, a["symbol"])
                 if e is None:
                     raise InboxError(f"Symbol {a['symbol']} nicht in watchlist.yaml")
                 if a["gate"] not in GATES:
@@ -428,7 +440,7 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                 log.append(f"watchlist {a['symbol']} Leg {a['leg']}: gate -> {a['gate']}")
 
             elif op == "watchlist.set_expiry":
-                e = _find_entry(wl, a["symbol"])
+                e = _find_live_entry(wl, a["symbol"])
                 if e is None:
                     raise InboxError(f"Symbol {a['symbol']} nicht in watchlist.yaml")
                 if _iso_date(a["expiry"]) is None:
@@ -437,7 +449,7 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                 log.append(f"watchlist {a['symbol']}: expiry -> {e['expiry']}")
 
             elif op == "watchlist.set_field":
-                e = _find_entry(wl, a["symbol"])
+                e = _find_live_entry(wl, a["symbol"])
                 if e is None:
                     raise InboxError(f"Symbol {a['symbol']} nicht in watchlist.yaml")
                 field = a["field"]
