@@ -262,6 +262,10 @@ class TickerSnapshot:
     ug/mitte/og (Kurs), pos (Kurs in sigma ab Mitte), steig_atr (Steigung je HT in
     ATR-14), r2. Objektive Fassung gezeichneter Kanaele. NUR MESSUNG — kein Gate,
     keine TIW, kein TP, bis n >= 20 ausgewertet ist (L24)."""
+    sr_zonen: Optional[dict] = None
+    """🆕 2026-10-28 — horizontale Widerstands-/Unterstuetzungszonen mit Klasse
+    stark/mittel/schwach (src/widerstaende.py). Vorschlag fuer TP1 am ersten
+    starken Widerstand (User-Entscheid A + C); Gewichte gesetzt, nicht gemessen."""
     high_52w: Optional[float] = None
     low_52w: Optional[float] = None
     distance_from_52w_high_pct: Optional[float] = None  # negativ = drunter
@@ -915,6 +919,14 @@ def _compute_snapshot(symbol: str, df: pd.DataFrame) -> Optional[TickerSnapshot]
     # === Ex-Dividende-Anreicherung V1.2 (Note #67) ===
     # Liest die Dividends-Spalte (kommt via actions=True gratis mit).
     _compute_ex_dividend_fields(snap, df)
+
+    # === 🆕 2026-10-28: Widerstands-/Unterstuetzungszonen (TP1-Vorschlag, Messung) ===
+    try:
+        import widerstaende as _wd
+        snap.sr_zonen = _wd.zonen(df, price, snap.atr14, snap.ema200,
+                                  snap.high_52w, snap.low_52w)
+    except Exception as exc:  # noqa: BLE001 — darf den Snapshot nie kippen
+        logger.debug(f"{symbol}: sr_zonen nicht berechnet: {exc}")
 
     return snap
 
