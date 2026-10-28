@@ -13,15 +13,15 @@ Verfahren (Tagesbalken):
   2. Wochen-Pivots (+/- 2 Wochen) ueber die ganze Historie.
   3. Pivots per Single-Linkage zu Zonen buendeln (Abstand <= CLUSTER_ATR x ATR).
   4. Punktwert je Zone:
-       Beruehrungen >= 3: +2, == 2: +1
-       Rollentausch (Zone ueber dem Kurs enthaelt ein Pivot-Tief bzw. Zone unter dem
-         Kurs ein Pivot-Hoch): +2
-       staerkste Reaktion >= 3 ATR: +2, >= 2 ATR: +1
+       Beruehrungen = max(Pivots, Abpraller-Ereignisse) >= 2: +2
+       Rollentausch (Pivot auf der anderen Seite, danach Schluss >= 0,5 ATR jenseits): +2
+       staerkste Reaktion >= 3 ATR: +1
        Wochen-Pivot in der Zone: +1
        52W-Hoch/-Tief in der Zone: +2
        EMA200 in der Zone: +1
        runde Zahl in der Zone: +1
-     Klasse: >= 4 stark, 2-3 mittel, sonst schwach.
+     Klasse: >= 4 stark, 2-3 mittel, sonst schwach; eine Einzelmarke (n < 2) ohne 52W
+     ist hoechstens mittel. Zonen hoechstens 1 ATR breit (Kalibrierung 2026-10-28).
 """
 from __future__ import annotations
 
@@ -40,6 +40,10 @@ MAX_DIST_ATR = 8.0
 MAX_ZONEN = 8
 KLASSE_STARK = 4
 KLASSE_MITTEL = 2
+# Kalibrierung 2026-10-28 (erster Lauf: fast alles "stark", CAP-Doppeltop 127,3 nur schwach)
+MAX_BREITE_ATR = 1.0      # Zone hoechstens 1 ATR breit (keine Verkettung in Seitwaertsphasen)
+BRUCH_ATR = 0.5           # Rollentausch nur nach Schluss >= 0,5 ATR jenseits der Zone
+ABPRALL_TOL_ATR = 0.15    # Abpraller: Hoch (Tief) bis 0,15 ATR an die Zone, Schluss diesseits
 
 
 def _rundung(preis: float) -> float:
@@ -92,7 +96,7 @@ def zonen(df: pd.DataFrame, preis: float, atr: Optional[float],
             reakt = (p - float(lo[i + 1:j].min())) / atr
         else:
             reakt = (float(hi[i + 1:j].max()) - p) / atr
-        punkte.append({"preis": p, "art": art, "reakt": max(0.0, reakt)})
+        punkte.append({"preis": p, "art": art, "reakt": max(0.0, reakt), "i": i})
 
     # Wochen-Pivots
     wochen = []
@@ -107,12 +111,14 @@ def zonen(df: pd.DataFrame, preis: float, atr: Optional[float],
     punkte.sort(key=lambda x: x["preis"])
     cluster, akt = [], [punkte[0]]
     for q in punkte[1:]:
-        if q["preis"] - akt[-1]["preis"] <= CLUSTER_ATR * atr:
+        if (q["preis"] - akt[-1]["preis"] <= CLUSTER_ATR * atr
+                and q["preis"] - akt[0]["preis"] <= MAX_BREITE_ATR * atr):
             akt.append(q)
         else:
             cluster.append(akt)
             akt = [q]
     cluster.append(akt)
+    cl = d["Close"].to_numpy(dtype=float) if "Close" in d.columns else None
 
     schritt = _rundung(preis)
     ueber, unter = [], []
@@ -122,25 +128,50 @@ def zonen(df: pd.DataFrame, preis: float, atr: Optional[float],
         level = float(np.median([q["preis"] for q in c]))
         oben = level > preis
         score, gr = 0, []
-        n = len(c)
+        rand = RAND_ATR * atr
+        # Beruehrungen = max(Pivots, Abpraller-Ereignisse) — Abpraller fangen Doppeltops,
+        # deren Hochs naeher als +/- PIVOT_K Balken beieinander liegen (Anlass CAP 127,3)
+        abpr = 0
+        if cl is not None:
+            tol = ABPRALL_TOL_ATR * atr
+            letzte = -10
+            for j in range(len(hi)):
+                if oben:
+                    treffer = hi[j] >= z_lo - tol and cl[j] < z_lo
+                else:
+                    treffer = lo[j] <= z_hi + tol and cl[j] > z_hi
+                if treffer:
+                    if j - letzte > 1:
+                        abpr += 1
+                    letzte = j
+        n = max(len(c), abpr)
         if n >= 3:
             score += 2; gr.append(f"{n}x")
         elif n == 2:
-            score += 1; gr.append("2x")
-        if (oben and any(q["art"] == "T" for q in c)) or ((not oben) and any(q["art"] == "H" for q in c)):
+            score += 2; gr.append("2x")
+        # Rollentausch: Zone hielt erst auf der anderen Seite und wurde danach per Schluss
+        # deutlich (>= BRUCH_ATR) durchbrochen
+        rt = False
+        if cl is not None:
+            for q in c:
+                if oben and q["art"] == "T":
+                    nach = cl[q["i"] + 1:]
+                    rt = rt or bool(len(nach) and (nach < z_lo - BRUCH_ATR * atr).any())
+                if (not oben) and q["art"] == "H":
+                    nach = cl[q["i"] + 1:]
+                    rt = rt or bool(len(nach) and (nach > z_hi + BRUCH_ATR * atr).any())
+        if rt:
             score += 2; gr.append("Rollentausch")
         rmax = max(q["reakt"] for q in c)
         if rmax >= 3:
-            score += 2; gr.append(f"Reaktion {rmax:.1f} ATR")
-        elif rmax >= 2:
             score += 1; gr.append(f"Reaktion {rmax:.1f} ATR")
-        rand = RAND_ATR * atr
         if any(z_lo - rand <= p <= z_hi + rand for p in wochen):
             score += 1; gr.append("Woche")
+        ext = False
         if oben and hoch_52w is not None and z_lo - rand <= hoch_52w <= z_hi + rand:
-            score += 2; gr.append("52W-Hoch")
+            score += 2; gr.append("52W-Hoch"); ext = True
         if (not oben) and tief_52w is not None and z_lo - rand <= tief_52w <= z_hi + rand:
-            score += 2; gr.append("52W-Tief")
+            score += 2; gr.append("52W-Tief"); ext = True
         if ema200 is not None and z_lo - rand <= ema200 <= z_hi + rand:
             score += 1; gr.append("EMA200")
         if schritt > 0:
@@ -148,11 +179,14 @@ def zonen(df: pd.DataFrame, preis: float, atr: Optional[float],
             if z_lo - rand <= r <= z_hi + rand:
                 score += 1; gr.append(f"rund {r:g}")
         klasse = "stark" if score >= KLASSE_STARK else ("mittel" if score >= KLASSE_MITTEL else "schwach")
+        if klasse == "stark" and n < 2 and not ext:
+            klasse = "mittel"          # Einzelmarke ohne 52W nie "stark"
+        im_kurs = z_lo <= preis <= z_hi
         dist = ((z_lo - preis) if oben else (preis - z_hi)) / atr
         if dist > MAX_DIST_ATR:
             continue
         z = {"lo": round(z_lo, 4), "hi": round(z_hi, 4), "level": round(level, 4), "klasse": klasse,
-             "score": score, "gruende": gr, "dist_atr": round(dist, 2)}
+             "score": score, "gruende": gr, "dist_atr": round(dist, 2), "im_kurs": im_kurs}
         (ueber if oben else unter).append(z)
     ueber.sort(key=lambda z: z["level"])
     unter.sort(key=lambda z: -z["level"])
