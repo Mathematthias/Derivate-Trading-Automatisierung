@@ -34,3 +34,14 @@ def test_spalten_und_report():
         assert c in mm.CSV_OUT_COLS
     rep = "\n".join(mm.render_tp1_klasse([{"Status": "ok", "Dreh_Ort": "am Flag", "R": -1.0, "CF_TP1_Flag": -0.4}]))
     assert "| am Flag | 1 | -1.00 | -0.40 |" in rep
+
+
+def test_flag1_klasse_und_kriterium():
+    m = mm.tp1_messung("Long", 100, 95, 0.9, -1.0, tp1=110, flag1=104, flag1_klasse="Mittel")
+    assert m["Flag1_Klasse"] == "mittel" and "Flag1_Klasse" in mm.CSV_OUT_COLS
+    rows = [{"Status": "ok", "Dreh_Ort": "am Flag", "Flag1_Klasse": "mittel", "R": -1.0, "CF_TP1_Flag": -0.4}] * 9 + \
+           [{"Status": "ok", "Dreh_Ort": "TP1 erreicht", "Flag1_Klasse": "mittel", "R": 1.5, "CF_TP1_Flag": 1.0}] * 11
+    rep = "\n".join(mm.render_tp1_klasse(rows))
+    assert "| mittel | 20 | 9 | 45% | erfuellt |" in rep
+    rep2 = "\n".join(mm.render_tp1_klasse(rows[:5]))
+    assert "| mittel | 5 | 5 | 100% | n < 20 |" in rep2
