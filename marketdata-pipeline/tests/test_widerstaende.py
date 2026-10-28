@@ -64,3 +64,38 @@ def test_sortierung_und_abstand():
     lv = [x["level"] for x in z["ueber"]]
     assert lv == sorted(lv)
     assert all(x["dist_atr"] <= wd.MAX_DIST_ATR for x in z["ueber"])
+
+
+# --- Kalibrierung 2026-10-28 (erster Lauf: fast alles "stark") --------------------------------
+
+def test_doppeltop_zwei_tage_auseinander_ist_stark():
+    # Anstieg, Hoch 127,3 an zwei Tagen mit einem Tag dazwischen, dann Ruecksetzer (CAP-Fall)
+    up = [110 + i * 0.6 for i in range(28)]
+    top = [126.0, 127.3, 126.4, 127.25, 125.8]
+    down = [125.0, 124.2, 123.5, 123.0, 122.6, 122.2]
+    closes = up + top + down
+    df = _df(closes, spanne=0.3)
+    z = wd.zonen(df, preis=closes[-1], atr=1.8)
+    dt = [x for x in z["ueber"] if 126.5 <= x["level"] <= 128.0]
+    assert dt and dt[0]["klasse"] == "stark", z["ueber"]
+
+
+def test_einzelpivot_mit_reaktion_hoechstens_mittel():
+    closes = [100 + i * 0.05 for i in range(60)] + [101.5, 108.0, 101.0] + [100.5 - i * 0.02 for i in range(10)]
+    z = wd.zonen(_df(closes, spanne=0.2), preis=closes[-1], atr=2.0)
+    spitze = [x for x in z["ueber"] if 107.5 <= x["level"] <= 108.5]
+    assert spitze and spitze[0]["klasse"] != "stark"
+
+
+def test_zonen_hoechstens_ein_atr_breit():
+    closes = _welle(105, 5, 200) + [100 - i * 0.3 for i in range(10)]
+    z = wd.zonen(_df(closes), preis=closes[-1], atr=1.5)
+    assert all(x["hi"] - x["lo"] <= wd.MAX_BREITE_ATR * 1.5 + 1e-9 for x in z["ueber"] + z["unter"])
+
+
+def test_rollentausch_nur_nach_bruch():
+    # Tief bei ~100 mehrfach, aber KEIN Schluss deutlich darunter: kein Rollentausch
+    closes = _welle(104, 4, 100) + [100.2, 100.1, 100.0]
+    z = wd.zonen(_df(closes), preis=99.95, atr=1.5)
+    nah = [x for x in z["ueber"] if 99.5 <= x["level"] <= 101.5]
+    assert not nah or "Rollentausch" not in nah[0]["gruende"]
