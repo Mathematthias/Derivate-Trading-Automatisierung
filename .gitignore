@@ -66,3 +66,5 @@ skills/
 # Fix 2026-10-08: MFE/MAE-Ein- und Ausgaben sind Zustand (Workflow B), nicht Wegwerf-CSV
 !marketdata-pipeline/state/trade_audit.csv
 !marketdata-pipeline/state/mfe_mae.csv
+!marketdata-pipeline/state/tiw_events.csv
+!marketdata-pipeline/state/thesen_audit.csv

@@ -160,9 +160,15 @@ def apply_inbox(
 
     if report["changed"] or report["failed"]:
         notes = state.pop("_notes", [])
+        tiw_ev = state.pop("_tiw_events", [])
         if report["changed"]:
             state_yaml.save_state(state_dir, state)
             state_yaml.append_notes(state_dir, notes)
+            if tiw_ev:
+                # 2026-10-29 Auto-Archiv A: TIW-Ereignisse landen in state/tiw_events.csv
+                import tiw_events
+                neu = tiw_events.append_events(state_dir, tiw_ev)
+                report["log"].append(f"   tiw_events.csv: {neu} neu")
         state_yaml.save_processed(state_dir, processed)
     return report
 

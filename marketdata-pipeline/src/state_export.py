@@ -274,10 +274,79 @@ def export_info(wb, state: dict, counts: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Thesen-Spur (User-Entscheid 2026-10-29): Karten und Audit sichtbar im Journal
+# ---------------------------------------------------------------------------
+# Anlass: „Der Samstags-Thesenlauf laeuft, aber fuer mich sichtbar passiert wenig.“
+# Die Karten standen nur in thesen.yaml. Jetzt bekommt das Journal zwei abgeleitete
+# Blaetter: „Thesen-Karten“ (je These eine Zeile, alle Kartenfelder) und
+# „Thesen-Audit“ (R je These aus state/thesen_audit.csv).
+
+KARTEN_COLS = ["ID", "Titel", "Verdikt", "Budget R", "Starter", "Konsens", "Abweichung",
+               "Katalysator", "Thesen-Falsifikat", "Preis-Falsifikat", "Horizont", "Vehikel",
+               "Zweite Haelfte", "Ziel", "Fehlt", "Re-Check"]
+
+
+def _kat_text(kats) -> str:
+    out = []
+    for k in kats or []:
+        if isinstance(k, dict):
+            out.append(f"{k.get('date', '')} {k.get('ereignis', '')}".strip())
+        else:
+            out.append(str(k))
+    return " | ".join(out)
+
+
+def _pf_text(pf) -> str:
+    if isinstance(pf, dict):
+        base = f"{pf.get('symbol', '')} Schluss {pf.get('op', '')} {pf.get('level', '')}".strip()
+        return f"{base} ({pf['text']})" if pf.get("text") else base
+    return str(pf or "")
+
+
+def export_thesen(wb, state: dict, state_dir: Optional[Path]) -> dict:
+    """Schreibt die Blaetter nur, wenn es etwas zu zeigen gibt — ohne Thesen-Spur
+    bleibt das Journal unveraendert (kein leeres Blatt, keine neuen Zaehler)."""
+    counts: dict = {}
+    thesen = [t for t in ((state.get("thesen") or {}).get("thesen") or []) if t.get("spur") == "thesen"]
+    p = Path(state_dir) / "thesen_audit.csv" if state_dir else None
+    if not thesen and (p is None or not p.exists()):
+        return counts
+    counts = {"karten": 0, "audit": 0}
+    name = "Thesen-Karten"
+    ws = wb[name] if name in wb.sheetnames else wb.create_sheet(name)
+    _clear_rows(ws, 1)
+    for c, h in enumerate(KARTEN_COLS, start=1):
+        ws.cell(row=1, column=c, value=h)
+    for r, t in enumerate(thesen, start=2):
+        k = t.get("karte") or {}
+        vals = [t.get("id"), t.get("titel"), t.get("verdikt"), t.get("budget_r"), t.get("starter_anteil"),
+                k.get("konsens"), k.get("abweichung"), _kat_text(k.get("katalysator")),
+                k.get("thesen_falsifikat"), _pf_text(k.get("preis_falsifikat")), k.get("horizont"),
+                ", ".join(k.get("vehikel") or []), k.get("zweite_haelfte"), k.get("ziel"),
+                ", ".join(state_yaml.karte_fehlt(t)) or "—", t.get("re_check")]
+        for c, v in enumerate(vals, start=1):
+            ws.cell(row=r, column=c, value=v)
+        counts["karten"] += 1
+    if p is not None and p.exists():
+        import csv
+        with open(p, newline="", encoding="utf-8") as f:
+            rows = list(csv.reader(f))
+        name = "Thesen-Audit"
+        ws = wb[name] if name in wb.sheetnames else wb.create_sheet(name)
+        _clear_rows(ws, 1)
+        for r, row in enumerate(rows, start=1):
+            for c, v in enumerate(row, start=1):
+                ws.cell(row=r, column=c, value=v)
+        counts["audit"] = max(0, len(rows) - 1)
+    return counts
+
+
+# ---------------------------------------------------------------------------
 # Orchestrierung
 # ---------------------------------------------------------------------------
 
-def export_journal(state: dict, journal_in: Path, journal_out: Path) -> dict:
+def export_journal(state: dict, journal_in: Path, journal_out: Path,
+                   state_dir: Optional[Path] = None) -> dict:
     wb = load_workbook(journal_in)          # NICHT data_only: Formeln bleiben
     entries = state["watchlist"].get("entries", []) or []
     counts = {"watchlist": 0, "archiv_neu": 0, "radar": 0}
@@ -289,6 +358,7 @@ def export_journal(state: dict, journal_in: Path, journal_out: Path) -> dict:
         counts["archiv_neu"] = export_archive(wb["Watchlist-Archiv"], entries)
     if "Termin-Radar" in wb.sheetnames:
         counts["radar"] = export_radar(wb["Termin-Radar"], state["radar"].get("rows", []) or [])
+    counts.update(export_thesen(wb, state, state_dir))
     export_info(wb, state, counts)
     journal_out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(journal_out)
@@ -305,7 +375,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     args = ap.parse_args(argv)
 
     state = state_yaml.load_state(args.state_dir)
-    counts = export_journal(state, Path(args.journal), Path(args.out))
+    counts = export_journal(state, Path(args.journal), Path(args.out), state_dir=Path(args.state_dir))
     print(f"Watchlist {counts['watchlist']} Zeilen, Archiv +{counts['archiv_neu']}, Radar {counts['radar']} Zeilen -> {args.out}")
 
     if args.upload:
