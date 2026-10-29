@@ -3916,4 +3916,19 @@ entries:
     text: 'BEOBACHTUNG (Pitch 2026-10-28) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >165,10$ (52W-Hoch, aus Digest-Abstand -2,43 % gerechnet, am Chart pruefen) - dann Breakout-Retest @ 52W-Hoch neu rechnen. Radar 2026-11-06 nach Q3.'
   notes: '[NEU 2026-10-28 14:4x, User: Pitches brauchen Zeilen; ohne Chart] Digest 14:04: Kurs 161,10, bo_level 160,31 vor 2 HT, Vol 1,16x (Daempfer), ATR 3,88 (2,4 %), RSI 68,5, 30d +14,6 %. R an 161,10 = 5,82 (1,5 ATR), 52W-Hoch 165,10 = 0,69 R. Korrelation Oel-Block mit COP.'
   added: '2026-10-28'
-updated: '2026-10-28T18:52:51+00:00'
+- symbol: ASML.AS
+  name: 'ASML Holding NV (ASML, Euronext) - Halbleiter-Ausruester [MONITOR #18 AV]'
+  direction: LONG
+  klasse: thesen_spur
+  anker: Preis-Falsifikat Okt-Tief ~1.405
+  treiber: These TECH (Thesen-Spur, Karte state/thesen.yaml)
+  expiry: '2026-11-18'
+  status: position
+  added: '2026-10-29'
+  trade_nr: '18'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#18 AV, 1 Stk) - Thesen-Spur TECH, kein Entry-Trigger. Entry 2026-10-29 ~17:3x 1 x 1505,00EUR Direktaktie (ISIN NL0010273215), Gebuehr 0,00. SL 1389,80EUR (= Okt-Tief ~1.405 - 0,30 x ATR 50,57; Vorschlag Claude, vom User zu bestaetigen). Preis-Falsifikat 1D-Schluss unter ~1.405. TP1 1632,00EUR (Teilgewinn, erste starke Marke nach der Bremse 1.525-1.541). Ziel 52W-Hoch ~1.741. Review 2026-11-18 (nach NVDA Q3 2026-11-17, zweite Haelfte NVDA). Zeitstopp 2026-12-02. Kein Auto-Archiv (Thesen-Spur).
+  notes: '[ENTRY #18 AV 2026-10-29 17:39, User "Kauf 1x1505"] Starter der These TECH (v82, Budget 2 R, Starter 1/2). Risiko 115,20 EUR = 0,77 R. Gekauft vor den AMZN-Zahlen 2026-10-29 (Claude-Vorschlag war morgen, regelkonform beides).'
+updated: '2026-10-29T17:41:21+01:00'
