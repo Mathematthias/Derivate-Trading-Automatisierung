@@ -201,7 +201,7 @@ thesen:
   - MP
   - IFX.DE
 - id: TECH
-  titel: AI-Ruecksetzer Qualitaet (Halbleiter/Mega-Caps)
+  titel: AI-Capex-Zulieferer (Halbleiter)
   verdikt: spielen
   korb_budget_pct: 3
   crowdedness_pp: -6.42
@@ -210,9 +210,7 @@ thesen:
   ausdruecke:
   - ASML.AS
   - NVDA
-  - META
-  note: 'THESEN-LAUF 2026-10-24. Verdikt spielen unveraendert, Budget 3 % unveraendert. Beide Falsifikate nicht eingetreten: (a) erster Messpunkt META am 2026-10-21 hat die Capex ANGEHOBEN, (b) ^IXIC 25.955,34 liegt 3,1 % ueber der EMA200 25.175,20 (Digest 2026-10-23 22:33). Crowdedness 30d: NVDA -6,06 vs ^IXIC -3,65 = -2,41 PP, ASML.AS -6,39 vs ^STOXX50E -3,26 = -3,13 PP, META -17,36 vs ^IXIC = -13,71 PP, Mittel -6,42 PP, Zone <10. ausdruecke um META ergaenzt - META traegt seit 2026-10-19 eine aktive Watchlist-Zeile mit Treiber These TECH, stand aber nicht in der Liste; ohne Eintrag wuerde der Thesen-Exit (Verdikt verworfen -> Korb schliessen) die Zeile uebersehen. Ausdrucksstand: NVDA 210,96 traegt das Gate (Stack bullisch, ueber EMA200 205,45 = 0,91 ATR, Anker-Faecher EMA200 >= 1/4 erfuellt, Earnings 2026-11-17), ASML.AS 1.407,20 Stack NEUTRAL = Gate nicht erfuellt, META 642,60 unter allen vier EMAs = Anker EMA200 gebrochen. UNERLEDIGTE FRAGE an den User: die Notiz vom 2026-10-19 hat
-    Software bewusst aus dem Korb gelassen (dort sass der Verkaufsdruck); die Sektor-Linse im Digest 2026-10-23 misst eine Woche spaeter das Gegenteil - Cluster software anteil_tief 0,0, median_move30d +4,64 % und fuenf Rueckeroberungen (CRWD>EMA20, DDOG>EMA20, NET>EMA50, PANW>EMA50, SNOW>EMA50), waehrend halbleiter -11,76 % und ai_netz_hw -16,20 % messen. Keine eigenmaechtige Korbaenderung.'
+  note: 'CHAT 2026-10-29: in die Thesen-Spur ueberfuehrt (v82). Ausgeber (META) entfernt, These auf Zulieferer geschaerft: Capex wird erhoeht (META 2026-10-21, Alphabet 2026-10-28), Falsifikat (a) nicht eingetreten; ^IXIC 26.549,85 = 5,3 % ueber EMA200 25.213,37 (Digest 2026-10-29 13:33).'
   historie:
   - date: '2026-10-19'
     verdikt: spielen
@@ -222,6 +220,36 @@ thesen:
     verdikt: spielen
     crowdedness_pp: -6.42
     source: thesen-lauf
+  - date: '2026-10-29'
+    verdikt: spielen
+    crowdedness_pp: null
+    source: chat
+  spur: thesen
+  budget_r: 2
+  starter_anteil: 0.5
+  karte:
+    konsens: 'Der Markt bestraft die AI-Ausgaben: Alphabet haelt die Capex 2026 bei 195-205 Mrd. USD, kuendigt fuer 2027 einen deutlichen Anstieg an, FCF Q3 -9,1 Mrd. USD, vorboerslich ~-10 % (2026-10-29). Halbleiter-Cluster im Median -26 % zum 52W-Hoch (Digest 2026-10-29).'
+    abweichung: Die Capex wird nicht gekuerzt, sondern erhoeht (META 2026-10-21, Alphabet 2026-10-28). Fuer die Zulieferer ist das gesicherter Umsatz; der Halbleiter-Abschlag preist einen Capex-Cut ein, der nicht kommt. Fuer die Ausgeber (META, GOOGL) ist dieselbe Nachricht eine Last - deshalb nur Zulieferer im Korb.
+    katalysator:
+    - date: '2026-10-29'
+      ereignis: AMZN Q3 nach US-Schluss (Capex-Guidance)
+    - date: '2026-11-03'
+      ereignis: AMD Q3
+    - date: '2026-11-17'
+      ereignis: NVDA Q3 (Hauptmesspunkt)
+    thesen_falsifikat: Ein Big-5-Hyperscaler kuerzt die Capex-Guidance 2026/27, oder NVDA guidet am 2026-11-17 unter Konsens.
+    preis_falsifikat:
+      symbol: ^IXIC
+      op: <
+      level: 25213.37
+      text: EMA200-1D, Stand 2026-10-28; je Vehikel zusaetzlich Stop an eigener Struktur
+    horizont: '2026-12-02'
+    vehikel:
+    - ASML.AS
+    - NVDA
+    zweite_haelfte: nach NVDA 2026-11-17 ohne Falsifikat, oder frueher bei 1D-Schluss des Vehikels ueber seiner EMA50
+    ziel: Rueckkehr Richtung 52W-Hoch je Vehikel; Teilgewinn an der ersten starken Marke (sr-Zonen)
+    notiz: 'Vehikel Aktie oder KO (User 2026-10-29: Aktien/Derivate-Topf bleibt bei Aktien und Derivaten, ETFs getrennt). META raus (User 2026-10-29).'
 - id: N7
   titel: US-Arzneimittelpreis-Pfad - Payer-Seite (Managed Care)
   verdikt: beobachten
@@ -239,4 +267,4 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: 12.02
     source: thesen-lauf
-updated: '2026-10-28T18:52:51+00:00'
+updated: '2026-10-29T16:34:50+01:00'
