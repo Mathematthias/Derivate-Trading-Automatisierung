@@ -66,13 +66,15 @@ jobs:
           python src/score_kalibrierung.py --audit-csv state/trade_audit.csv --mfe-csv state/mfe_mae.csv \
             --stichtag "$(date +%Y-%m-%d)" --md state/score_kalibrierung.md
           cp state/score_kalibrierung.md "work/SCORE-KALIBRIERUNG-$STAMP.md"
+          # Auto-Archiv A (User 2026-10-29): Kurs 5/10 HT nach jedem TIW-Ereignis nachtragen
+          python src/tiw_events.py --state-dir state --fill --md "work/TIW-EVENTS-$STAMP.md"
 
       - name: Commit results
         if: hashFiles('marketdata-pipeline/state/trade_audit.csv') != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add marketdata-pipeline/state/mfe_mae.csv marketdata-pipeline/state/score_kalibrierung.md
+          git add marketdata-pipeline/state/mfe_mae.csv marketdata-pipeline/state/score_kalibrierung.md marketdata-pipeline/state/tiw_events.csv
           git commit -m "state: MFE/MAE neu gerechnet ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
           git pull --rebase origin main
           git push origin HEAD:main
@@ -89,7 +91,7 @@ jobs:
           import os, pathlib
           from drive_writer import build_drive_service, write_markdown_file
           svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
-          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")) + sorted(pathlib.Path("work").glob("SCORE-KALIBRIERUNG-*.md")):
+          for p in sorted(pathlib.Path("work").glob("MFE-MAE-*.md")) + sorted(pathlib.Path("work").glob("SCORE-KALIBRIERUNG-*.md")) + sorted(pathlib.Path("work").glob("TIW-EVENTS-*.md")):
               write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
           PY
 

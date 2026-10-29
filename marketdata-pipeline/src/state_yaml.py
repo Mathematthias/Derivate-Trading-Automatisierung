@@ -43,7 +43,8 @@ KLASSEN = (
     "trend_pullback",      # inkl. Momentum-Continuation (Anker EMA20) und EMA200-MeanRev (Anker EMA200)
     "grinder",
     "breakout_retest",
-    "thesen_korb",
+    "thesen_korb",         # bis 2026-10-29; seither nur noch Archiv (abgeloest durch thesen_spur)
+    "thesen_spur",         # 2026-10-29 (User „A, C als Vehikel“): eigene Regeln, Thesen-Karte Pflicht
     "insider",
     "news_catalyst",
     "event_watch",
@@ -52,6 +53,45 @@ KLASSEN = (
     "reversal",            # GESTRICHEN 2026-10-04 (Review) — nur noch in archivierten Zeilen zulaessig
 )
 KLASSEN_GESTRICHEN = ("reversal",)
+
+# ---------------------------------------------------------------------------
+# Thesen-Spur (User-Entscheid 2026-10-29)
+# ---------------------------------------------------------------------------
+# Eine These wird nur noch ueber eine Karte gehandelt. Die Karte haelt fest, was
+# der Markt glaubt, wo wir abweichen, was die Neubewertung ausloest und woran
+# die These scheitert — fachlich UND im Preis. Ohne vollstaendige Karte bleibt
+# das Verdikt „spielen“ folgenlos (Digest-Feld karte_fehlt).
+KARTE_FELDER = (
+    "konsens",            # was der Markt gerade glaubt
+    "abweichung",         # wo und warum wir abweichen
+    "katalysator",        # Liste {date, ereignis}
+    "thesen_falsifikat",  # Ereignis, das die These widerlegt
+    "preis_falsifikat",   # {symbol, op, level, text}: Kurs, der sie widerlegt
+    "horizont",           # ISO-Datum = Zeitstopp ohne Fortschritt
+    "vehikel",            # Liste Ausdruecke (ETF bevorzugt)
+)
+THESEN_SPUR_BUDGET_R = 2.0      # je These (1 R = 150 EUR)
+THESEN_SPUR_STARTER = 0.5       # Anteil beim Verdikt „spielen“
+THESEN_SPUR_MAX_PARALLEL = 2
+
+# TIW-Ereignisse (Auto-Archiv A + B + C, User 2026-10-29)
+TIW_TOLERANZ_ATR = 0.25         # unter dieser Schluss-Distanz: „angekratzt“, nicht archiviert
+TIW_AKTIONEN = ("angekratzt", "archiviert", "zurueck")
+
+
+def karte_fehlt(t: dict) -> list[str]:
+    """Fehlende Pflichtfelder der Thesen-Karte (leere Liste = vollstaendig)."""
+    k = t.get("karte") or {}
+    fehlt = []
+    for f in KARTE_FELDER:
+        v = k.get(f)
+        if v in (None, "", [], {}):
+            fehlt.append(f)
+    pf = k.get("preis_falsifikat")
+    if isinstance(pf, dict) and (pf.get("op") not in ("<", ">") or pf.get("level") in (None, "")):
+        if "preis_falsifikat" not in fehlt:
+            fehlt.append("preis_falsifikat")
+    return fehlt
 
 WATCHLIST_FILE = "watchlist.yaml"
 RADAR_FILE = "radar.yaml"
@@ -294,6 +334,9 @@ def watchlist_meta(block: dict) -> list[dict]:
             # Archivtag zaehlt (Anlass EPI-A.ST: Vortagesschluss vor der Archivierung
             # meldete ein Phantom-„ausgeloest").
             "archived": str((e.get("archived") or {}).get("date") or "") or None,
+            # 2026-10-29 (Auto-Archiv B): Schluss knapp jenseits der TIW (< 0,25 ATR) —
+            # Zeile bleibt, Gate rot, kein Entry; Feld wird beim Rueckweg geleert.
+            "tiw_angekratzt": e.get("tiw_angekratzt") or None,
             # v63: nur fuer Positionen — Abgleich gegen die Journal-Uebersicht
             "monitor": (_leg_monitor(legs[0].get("text")) if legs and e.get("status") == "position" else None),
         })
@@ -520,13 +563,38 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                     log.append(f"these {tid}: neu")
                 t = hit[0]
                 for k in ("verdikt", "re_check", "crowdedness_pp", "korb_budget_pct",
-                          "falsifikat", "ausdruecke", "titel", "note"):
+                          "falsifikat", "ausdruecke", "titel", "note",
+                          "spur", "budget_r", "starter_anteil"):
                     if k in a:
                         t[k] = a[k]
+                if "karte" in a:
+                    # Karte wird feldweise gemischt: ein Thesen-Lauf darf z. B. nur den
+                    # Katalysator nachziehen, ohne Konsens und Falsifikate neu zu schreiben.
+                    if not isinstance(a["karte"], dict):
+                        raise InboxError("karte muss ein Objekt sein")
+                    unbekannt = set(a["karte"]) - set(KARTE_FELDER) - {"ziel", "zweite_haelfte", "notiz"}
+                    if unbekannt:
+                        raise InboxError(f"unbekannte Kartenfelder {sorted(unbekannt)}")
+                    t.setdefault("karte", {}).update(a["karte"])
                 hist = t.setdefault("historie", [])
                 hist.append({"date": today.isoformat(), "verdikt": a.get("verdikt", t.get("verdikt")),
                              "crowdedness_pp": a.get("crowdedness_pp"), "source": a.get("source")})
                 log.append(f"these {tid}: {t.get('verdikt')} / re_check {t.get('re_check')}")
+
+            elif op == "tiw.log":
+                # 2026-10-29 (Auto-Archiv A): jedes TIW-Ereignis der Chart-Spur wird geloggt,
+                # damit bei n >= 20 messbar ist, ob knappe Brueche zurueckdrehen (Toleranz B).
+                ev = dict(a.get("event") or {})
+                for f in ("date", "symbol", "richtung", "tiw", "schluss", "atr", "aktion"):
+                    if ev.get(f) in (None, ""):
+                        raise InboxError(f"tiw.log ohne {f}")
+                if ev["aktion"] not in TIW_AKTIONEN:
+                    raise InboxError(f"tiw.log: Aktion {ev['aktion']!r} unbekannt")
+                if _iso_date(ev["date"]) is None:
+                    raise InboxError("tiw.log: date kein ISO-Datum")
+                ev.setdefault("source", a.get("source"))
+                state.setdefault("_tiw_events", []).append(ev)
+                log.append(f"tiw {ev['symbol']}: {ev['aktion']} ({ev['date']})")
 
             elif op == "note.add":
                 # Notes landen in notes.jsonl (append-only), hier nur Log.
@@ -598,6 +666,14 @@ def thesen_aktiv(block: dict, today: date) -> list[dict]:
         if str(t.get("verdikt", "")).lower() == "verworfen":
             continue
         rc = _iso_date(t.get("re_check"))
+        k = t.get("karte") or {}
+        hz = _iso_date(k.get("horizont"))
+        kats = []
+        for kk in (k.get("katalysator") or []):
+            d = _iso_date(kk.get("date")) if isinstance(kk, dict) else None
+            kats.append({"date": d.isoformat() if d else None,
+                         "ereignis": kk.get("ereignis") if isinstance(kk, dict) else str(kk),
+                         "tage": (d - today).days if d else None})
         out.append({
             "id": t.get("id"), "titel": t.get("titel"), "verdikt": t.get("verdikt"),
             "korb_budget_pct": t.get("korb_budget_pct"),
@@ -605,6 +681,17 @@ def thesen_aktiv(block: dict, today: date) -> list[dict]:
             "re_check": rc.isoformat() if rc else None,
             "re_check_faellig": (rc is not None and rc <= today),
             "ausdruecke": t.get("ausdruecke"),
+            # 2026-10-29 Thesen-Spur: Karte kompakt fuer den Morning Check
+            "spur": t.get("spur"),
+            "budget_r": t.get("budget_r"),
+            "starter_anteil": t.get("starter_anteil"),
+            "karte_fehlt": karte_fehlt(t) if t.get("spur") == "thesen" else None,
+            "preis_falsifikat": k.get("preis_falsifikat"),
+            "thesen_falsifikat": k.get("thesen_falsifikat"),
+            "katalysator": kats,
+            "horizont": hz.isoformat() if hz else None,
+            "horizont_erreicht": (hz is not None and hz <= today),
+            "vehikel": k.get("vehikel"),
         })
     out.sort(key=lambda x: x["re_check"] or "9999")
     return out
