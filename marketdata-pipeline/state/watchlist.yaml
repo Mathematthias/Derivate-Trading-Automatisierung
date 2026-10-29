@@ -3920,7 +3920,7 @@ entries:
   name: 'ASML Holding NV (ASML, Euronext) - Halbleiter-Ausruester [MONITOR #18 AV]'
   direction: LONG
   klasse: thesen_spur
-  anker: Preis-Falsifikat Okt-Tief ~1.405
+  anker: Preis-Falsifikat Okt-Tief 1.385,00
   treiber: These TECH (Thesen-Spur, Karte state/thesen.yaml)
   expiry: '2026-11-18'
   status: position
@@ -3929,6 +3929,6 @@ entries:
   legs:
   - label: A
     gate: 🟢
-    text: POSITION-MONITOR (#18 AV, 1 Stk) - Thesen-Spur TECH, kein Entry-Trigger. Entry 2026-10-29 ~17:3x 1 x 1505,00EUR Direktaktie (ISIN NL0010273215), Gebuehr 0,00. SL 1389,80EUR (= Okt-Tief ~1.405 - 0,30 x ATR 50,57; Vorschlag Claude, vom User zu bestaetigen). Preis-Falsifikat 1D-Schluss unter ~1.405. TP1 1632,00EUR (Teilgewinn, erste starke Marke nach der Bremse 1.525-1.541). Ziel 52W-Hoch ~1.741. Review 2026-11-18 (nach NVDA Q3 2026-11-17, zweite Haelfte NVDA). Zeitstopp 2026-12-02. Kein Auto-Archiv (Thesen-Spur).
-  notes: '[ENTRY #18 AV 2026-10-29 17:39, User "Kauf 1x1505"] Starter der These TECH (v82, Budget 2 R, Starter 1/2). Risiko 115,20 EUR = 0,77 R. Gekauft vor den AMZN-Zahlen 2026-10-29 (Claude-Vorschlag war morgen, regelkonform beides).'
-updated: '2026-10-29T17:41:21+01:00'
+    text: POSITION-MONITOR (#18 AV, 1 Stk) - Thesen-Spur TECH, kein Entry-Trigger. Entry 2026-10-29 ~17:3x 1 x 1505,00EUR Direktaktie gettex (ISIN NL0010273215), Gebuehr 0,00. SL 1369,83EUR (= Okt-Tief 1.385,00 - 0,30 x ATR 50,57, User 2026-10-29 17:46). Preis-Falsifikat 1D-Schluss unter 1.385,00. TP1 1632,00EUR (Teilgewinn, erste starke Marke nach der Bremse 1.525-1.541). Ziel 52W-Hoch ~1.741. Review 2026-11-18 (nach NVDA Q3 2026-11-17, zweite Haelfte NVDA). Zeitstopp 2026-12-02. Kein Auto-Archiv (Thesen-Spur).
+  notes: '[ENTRY #18 AV 2026-10-29 17:39, User "Kauf 1x1505"] Starter der These TECH (v82, Budget 2 R, Starter 1/2). Risiko 135,17 EUR = 0,90 R (SL nach User-Okt-Tief 1.385,00). Gekauft vor den AMZN-Zahlen 2026-10-29 (Claude-Vorschlag war morgen, regelkonform beides).'
+updated: '2026-10-29T17:47:23+01:00'
