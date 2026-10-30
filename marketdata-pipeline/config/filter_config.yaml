@@ -410,8 +410,10 @@ pitches:
   ethics_exclude:               # Angriffswaffen-Kerngeschaeft, nie als Pitch
     - RHM.DE                     # Rheinmetall
     - BA.L                       # BAE Systems
-  ethics_grenzfall:             # bleiben drin, im Chat bewerten
+    - TKMS.DE                    # TKMS: U-Boote/Fregatten = Kampfplattformen (wie TKA.DE-Ausschluss in tier_a, 2026-10-30)
+  ethics_grenzfall:             # bleiben drin, im Chat bewerten; Auto-Pflege legt dafuer nie Zeilen an
     - HAG.DE                     # Hensoldt (Defense-lastig, Sensorik)
+    - R3NK.DE                    # RENK (Getriebe fuer Kampffahrzeuge, Defense-Anteil hoch)
 
 output:
   # Stufe 1: Watchlist-Status — IMMER im Output, sortiert nach Trigger-Nähe

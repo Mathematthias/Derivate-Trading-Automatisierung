@@ -337,6 +337,10 @@ def watchlist_meta(block: dict) -> list[dict]:
             # 2026-10-29 (Auto-Archiv B): Schluss knapp jenseits der TIW (< 0,25 ATR) —
             # Zeile bleibt, Gate rot, kein Entry; Feld wird beim Rueckweg geleert.
             "tiw_angekratzt": e.get("tiw_angekratzt") or None,
+            # 2026-10-30 (Auto-Pflege v83): Herkunft der Zeile (auto = maschinell
+            # angelegt) und Anlagedatum — Kurz-Check und 20er-Review trennen danach.
+            "quelle": e.get("quelle") or None,
+            "added": str(e.get("added") or "") or None,
             # v63: nur fuer Positionen — Abgleich gegen die Journal-Uebersicht
             "monitor": (_leg_monitor(legs[0].get("text")) if legs and e.get("status") == "position" else None),
         })
