@@ -2724,15 +2724,18 @@ entries:
   direction: LONG
   klasse: trend_pullback
   anker: EMA200
-  status: position
+  status: archiviert
   trade_nr: 14
   expiry: '2026-10-29'
   legs:
   - label: A
-    gate: 🟢
-    text: 'POSITION-MONITOR (#14 AV, Rest 5 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. TEIL-STOP 2026-10-22 10 x 152,06EUR (-1,02 R). Entry 2026-10-15 15 x 163,50EUR. NEU 2026-10-23 (User: halten, L25): These neu = Abpraller an der EMA200-1D (Tagestief 23.10. 168,25 unter EMA200 169,53, Erholung auf 172,7). TIW = 1D-Schluss unter EMA200-1D -0,30 ATR (~166,96$ am 23.10.). SL 142,77EUR (U 159,85$ = MIN(172,72-1,5x8,58 ; TIW-0,30 ATR), FX 1,1200) als OCO mit TP1 172,40EUR fuer 5 Stk (U ~193,0$ = EMA20/50-Cluster) - vom User zu setzen. R:R TP1 1,58 ab 172,72. Earnings 2026-11-03 -> Entscheid bis 2026-11-02. Review 2026-10-29.'
+    gate: 🔴
+    text: 'ARCHIVIERT 2026-10-30 - Position #14 AV geschlossen (Rest 5 x 152,14 EUR, Bauchgefuehl-Trade). Kein Entry-Trigger. Kein Re-Eval (User 2026-10-30: kann neu gepitcht werden).'
   added: '2026-10-16'
-  notes: '[TEIL-STOP 2026-10-22 abends, User] Stop 152,30 griff nur fuer 10 Stk (Fill 152,06); 5 Stk liegen ohne Stop im Depot, TP1-Limit 172,40 (5 Stk) pruefen. Kurs ~171,0$ (Tief 170,56) unter TIW 176,77 - Bruch per Schluss 22.10. wahrscheinlich. || [POSITIONS-REVIEW 2026-10-22, User] laeuft weiter; Kurs 184,33$, TIW 176,77 0,92 ATR, Stop ~171,14$ 1,61 ATR. Naechster Review 2026-10-29, Earnings-Entscheid bis 2026-11-02. || [TP1 GESETZT 2026-10-21 19:47, User: Weg A] 5 Stk Limit 172,40 EUR (bei EURUSD 1,1222 = U ~193,50$); bei EURUSD-Bewegung > 1 % neu rechnen. || '
+  notes: '[EXIT REST 2026-10-30 abends, User] 5 x 152,14 EUR = 760,70 EUR, gettex, Gebuehr 0,00, diskretionaer ueber dem OCO-Stop 142,77 (TP-Limit 172,40 im Broker loeschen). -56,80 EUR; Trade #14 gesamt -171,20 EUR = -1,02 R. || [TEIL-STOP 2026-10-22 abends, User] Stop 152,30 griff nur fuer 10 Stk (Fill 152,06); 5 Stk liegen ohne Stop im Depot, TP1-Limit 172,40 (5 Stk) pruefen. Kurs ~171,0$ (Tief 170,56) unter TIW 176,77 - Bruch per Schluss 22.10. wahrscheinlich. || [POSITIONS-REVIEW 2026-10-22, User] laeuft weiter; Kurs 184,33$, TIW 176,77 0,92 ATR, Stop ~171,14$ 1,61 ATR. Naechster Review 2026-10-29, Earnings-Entscheid bis 2026-11-02. || [TP1 GESETZT 2026-10-21 19:47, User: Weg A] 5 Stk Limit 172,40 EUR (bei EURUSD 1,1222 = U ~193,50$); bei EURUSD-Bewegung > 1 % neu rechnen. || '
+  archived:
+    date: '2026-10-30'
+    reason: 'Positions-Monitor #14 AV, Rest 5 Stk diskretionaer verkauft 2026-10-30 (152,14 EUR, gettex); Trade gesamt -171,20 EUR = -1,02 R'
 - symbol: MU
   name: Micron Technology (MU, Nasdaq) — Speicherchips/HBM
   direction: LONG
@@ -3931,4 +3934,34 @@ entries:
     gate: 🟢
     text: POSITION-MONITOR (#18 AV, 1 Stk) - Thesen-Spur TECH, kein Entry-Trigger. Entry 2026-10-29 ~17:3x 1 x 1505,00EUR Direktaktie (ISIN NL0010273215), Gebuehr 0,00. SL 1389,80EUR (= Okt-Tief ~1.405 - 0,30 x ATR 50,57; Vorschlag Claude, vom User zu bestaetigen). Preis-Falsifikat 1D-Schluss unter ~1.405. TP1 1632,00EUR (Teilgewinn, erste starke Marke nach der Bremse 1.525-1.541). Ziel 52W-Hoch ~1.741. Review 2026-11-18 (nach NVDA Q3 2026-11-17, zweite Haelfte NVDA). Zeitstopp 2026-12-02. Kein Auto-Archiv (Thesen-Spur).
   notes: '[ENTRY #18 AV 2026-10-29 17:39, User "Kauf 1x1505"] Starter der These TECH (v82, Budget 2 R, Starter 1/2). Risiko 115,20 EUR = 0,77 R. Gekauft vor den AMZN-Zahlen 2026-10-29 (Claude-Vorschlag war morgen, regelkonform beides).'
-updated: '2026-10-29T17:41:21+01:00'
+- symbol: INTC
+  name: 'Intel Corporation (INTC, NASDAQ) [MONITOR #19 AV] - Bauchgefuehl-Trade'
+  direction: LONG
+  klasse: sonstige
+  anker: Tief Earnings-Tag 63,20
+  treiber: ''
+  expiry: '2026-11-06'
+  status: position
+  added: '2026-10-30'
+  trade_nr: '19'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#19 AV, 16 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-30 16 x 61,00EUR Direktaktie (ISIN US4581401001), gettex, Gebuehr 0,00. SL 51,63EUR (U 57,66$ = MIN(68,12-1,5x6,97 ; TIW-0,30 ATR), FX 1,1168) als OCO mit TP1 72,50EUR fuer 16 Stk (U ~80,97$, in der Earnings-Luecke 68,77-92,07, unter der starken Zone Aug-/Okt-Tiefs ~82-86$) - vom User zu setzen. TIW = 1D-Schluss unter 63,20 (Tief Earnings-Tag 30.10.). R:R 1,23. Review 2026-11-06.
+  notes: '[ENTRY #19 AV 2026-10-30, User, Bauchgefuehl] Kauf nahe Tageshoch am Earnings-Tag (Q3: -28,6 %, Vol 448 M ~3,9x, Q4-Guide 15-16 Mrd / EPS 0,25, Fab-Ausfall Israel). Kurs unter allen 1D-EMAs (94,30/99,70/98,54/87,25), RSI-1D 25,1, ATR-1D 6,97 (10,6 %). Bewusster Regelbruch: L23 Veto 2 (frischer Gegen-Katalysator), ATR > 8 %. Variante A (L25, 1,0 R) und TP 72,50 fuer alle 16 Stk vom User gewaehlt 21:39.'
+- symbol: AMZN
+  name: 'Amazon.com Inc. (AMZN, NASDAQ) [MONITOR #20 AV] - Bauchgefuehl-Trade'
+  direction: LONG
+  klasse: sonstige
+  anker: ''
+  treiber: ''
+  expiry: '2026-11-06'
+  status: position
+  added: '2026-10-30'
+  trade_nr: '20'
+  legs:
+  - label: A
+    gate: 🟢
+    text: POSITION-MONITOR (#20 AV, Rest 4 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-30 8 x 202,20EUR Direktaktie (ISIN US0231351067), gettex, Gebuehr 0,00. TP1 215,00EUR gefuellt 2026-10-30 (4 Stk, +51,20 EUR). SL 203,00EUR fuer 4 Stk scharf (User) - ueber Einstand, BE-Runner (L7). Kein Ziel fuer den Rest. Review 2026-11-06.
+  notes: '[ENTRY + TEILEXIT #20 AV 2026-10-30, User, Bauchgefuehl] Kauf und Teilverkauf am Tag nach den Q3-Zahlen (2026-10-29). Kein Plan bei Entry, kein Score.'
+updated: '2026-10-30T21:50:00+01:00'
