@@ -19,6 +19,13 @@ name: INBOX Apply (Aktionen -> state/*.yaml)
 # github-actions[bot]; Branch-Protection muss Bot-Pushes erlauben.
 
 on:
+  # 2026-10-30 (User-Entscheid Auto-Pflege, Variante A): eigener Zeitplan, damit
+  # die INBOX-Dateien der geplanten Morning Checks (08:20 / 18:10 Berlin) ohne
+  # interaktiven Chat angewendet werden. Zeiten in UTC, decken Sommer- und
+  # Winterzeit ab; der Job ist idempotent (inbox_processed.json).
+  schedule:
+    - cron: '40 6,7,16,17 * * 1-5'
+    - cron: '50 7,8,9 * * 6'
   workflow_dispatch:
     inputs:
       dry_run:
