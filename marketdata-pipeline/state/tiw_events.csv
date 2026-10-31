@@ -1,1 +1,4 @@
 Datum,Symbol,Leg,Klasse,Richtung,TIW,Schluss,ATR,Abstand_ATR,Aktion,Quelle,Kurs_5HT,Abstand_5HT_ATR,Zurueck_5HT,Kurs_10HT,Abstand_10HT_ATR,Zurueck_10HT
+2026-10-29,LULU,A,trend_pullback,SHORT,105.5,109.82,4.1703,-1.036,archiviert,morning-check,,,,,,
+2026-10-29,ZS,A,breakout_retest,LONG,255.0,247.82,12.7046,-0.565,archiviert,morning-check,,,,,,
+2026-10-30,CWC.DE,A,breakout_retest,LONG,114.6,112.0,2.295,-1.133,archiviert,morning-check,,,,,,

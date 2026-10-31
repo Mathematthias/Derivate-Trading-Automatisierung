@@ -3338,13 +3338,16 @@ entries:
   anker: EMA50-1D
   treiber: ''
   expiry: '2026-11-06'
-  status: aktiv
+  status: archiviert
   added: '2026-10-22'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-22 TREND-PULLBACK-SHORT: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (>= Schluss - 0,25 ATR, v76) oder Stop-Sell unter deren Tief, unter 100,50$ kein Entry (TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (3,78 -> +5,67). TIW = 1D-Schluss ueber 105,50$ (Sep-Range-Hoch, abgelesen). TP1 92,00$ (Okt-Tief) 1/3 raus. TP2 90,38$ (52W-Tief). Rest Chandelier 2,0 ATR. R:R TP1 1,94 an 103,00. 1 %, Short nur KO, Hebel <=6,6. Earnings 2026-12-10. Keine Dividende. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-22 TREND-PULLBACK-SHORT: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL) + RSI-4h Cross unter die Signallinie. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (>= Schluss - 0,25 ATR, v76) oder Stop-Sell unter deren Tief, unter 100,50$ kein Entry (TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (3,78 -> +5,67). TIW = 1D-Schluss ueber 105,50$ (Sep-Range-Hoch, abgelesen). TP1 92,00$ (Okt-Tief) 1/3 raus. TP2 90,38$ (52W-Tief). Rest Chandelier 2,0 ATR. R:R TP1 1,94 an 103,00. 1 %, Short nur KO, Hebel <=6,6. Earnings 2026-12-10. Keine Dividende. Non-Quanto USD. RE-EVAL: 1D-Schluss <105,50 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU 2026-10-22 ~21:00, Pitch-Suche, User-Chart 1D+4h 20:47, Linien von Claude] Heute +4,8 % (O 95,39 C 101,15) trotz Wolfe-Erstbewertung Underperform, Ziel 75 $ (marketbeat 2026-10-22); Einzelhandel insgesamt fester (DKS ebenfalls im Plus, Schlagzeile financialcontent). EMA20/50/100/200 97,89/103,38/113,40/135,26 baerisch, RSI-1D 54,0/41,3, ATR 3,78 (3,7 %). 4h: Kurs 101,15 knapp unter EMA100-4h 103,35, RSI-4h 61,9 > Sig 55,2. GEGENREDE (L10): -81 % vom Hoch, neue CEO, Insiderkaeufe, laufende Rueckkaeufe, 1,4 Mrd. Cash ohne Schulden (marketbeat) -> Squeeze-Risiko in Rallys; Analystenkonsens dagegen baerisch (Ziele 75-100 $).'
+  archived:
+    date: '2026-10-31'
+    reason: 'Auto-Archiv: TIW per Schluss 2026-10-29 gebrochen (109.82 > 105.5) (Dauerregel 2026-10-19)'
 - symbol: BEI.DE
   name: Beiersdorf AG (BEI, Xetra) - Konsumgueter/Hautpflege
   direction: LONG
@@ -3596,14 +3599,17 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau 255,00
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-26'
   expiry: '2026-11-13'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-26 BREAKOUT-RETEST-LONG: Niveau 255,00$ (Unterkante Dez-2025-Luecke, Ausbruch per Schluss 2026-10-23 255,15, Vol 1,32x). Touch 249,14-263,80$ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 11,73) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 72,0). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 263,80$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (11,73 -> -17,59). TIW = 1D-Schluss unter 255,00$ (Niveau, v76). TP1 288,00$ (knapp unter Luecken-Oberkante ~290, abgelesen 2026-10-22) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,76 an 257,00. 1 % (late_entry 30d +19 %, Pilot BRT; Ext 3,1 ATR = Gate 1 halbe Groesse ist mit 1 % abgedeckt). ATR 4,6 % gelb: Direktaktie oder KO Hebel <= 5,4. Earnings 2026-11-24 -> Entry bis 2026-11-16. Non-Quanto USD.'
+    gate: 🔴
+    text: 'nach 2026-10-26 BREAKOUT-RETEST-LONG: Niveau 255,00$ (Unterkante Dez-2025-Luecke, Ausbruch per Schluss 2026-10-23 255,15, Vol 1,32x). Touch 249,14-263,80$ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 11,73) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 72,0). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 263,80$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (11,73 -> -17,59). TIW = 1D-Schluss unter 255,00$ (Niveau, v76). TP1 288,00$ (knapp unter Luecken-Oberkante ~290, abgelesen 2026-10-22) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,76 an 257,00. 1 % (late_entry 30d +19 %, Pilot BRT; Ext 3,1 ATR = Gate 1 halbe Groesse ist mit 1 % abgedeckt). ATR 4,6 % gelb: Direktaktie oder KO Hebel <= 5,4. Earnings 2026-11-24 -> Entry bis 2026-11-16. Non-Quanto USD. RE-EVAL: 1D-Schluss >255,00 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU 2026-10-26, Re-Eval >255 ausgeloest (Schluss 2026-10-23 255,15), Morning Check, Linien aus Re-Eval-Plan 2026-10-22 (User: mit Claudes Wert)] Fr O 238,81 H 255,55 L 234,19 C 255,15 (+6,8 %), Vol 1,32x. EMA20/50/100/200-1D 218,59/200,12/185,32/185,38. RSI-1D 72,0 -> erst Retest abwarten. Ersetzt die beiden Archivzeilen ZS (2026-10-13, 2026-10-22); Historie im Journal-Blatt Watchlist-Archiv. Luecken-Oberkante ~290 bitte im Fadenkreuz pruefen.'
+  archived:
+    date: '2026-10-31'
+    reason: 'Auto-Archiv: TIW per Schluss 2026-10-29 gebrochen (247.82 < 255) (Dauerregel 2026-10-19)'
 - symbol: SNOW
   name: Snowflake Inc. (SNOW, NYSE) - Cloud-Datenplattform
   direction: LONG
@@ -3680,15 +3686,18 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau 114,60
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-26'
   expiry: '2026-11-04'
   legs:
   - label: A
-    gate: 🟡
+    gate: 🔴
     text: 'nach 2026-10-26 BREAKOUT-RETEST-LONG: Niveau 114,60€ (Doppelhoch Okt, Ausbruch per Schluss 2026-10-26 116,00, Vol ~1,66x lt. TV 13,9K/8,4K). Touch 113,54-116,19€ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 2,114) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 73,7) und Liquiditaet HANDCHECK (User 2026-10-28): Avg-30 ~0,97 Mio EUR/Tag nur XETR-Volumen lt. TV (8,4 Tsd. Stk x ~116), andere Plaetze fehlen - vor Entry Spread SB+ (< ~0,2 %) und Gesamtumsatz aller Plaetze pruefen; keine harte Sperre. Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 116,19€ kein Entry. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (2,114 -> -3,17). TIW = 1D-Schluss unter 114,60€ (Niveau, v76). TP1 123,50€ (Measured Move Range ~105,5-114,6, aus User-Chart 1D abgelesen - Fadenkreuz pruefen; 52W-Hoch = 117,00 vom 2026-10-26) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 2,52 an
-      115,50. Pilot 1 %: Stopweite 3,17 -> Direktaktie 47 Stk ~5.430 EUR (ueber disponibel) oder KO Hebel ~5 (ATR 1,8 % frei). Earnings 2026-11-12 -> Entry bis 2026-11-04, KO-Exit bis 2026-11-05. EUR.'
+      115,50. Pilot 1 %: Stopweite 3,17 -> Direktaktie 47 Stk ~5.430 EUR (ueber disponibel) oder KO Hebel ~5 (ATR 1,8 % frei). Earnings 2026-11-12 -> Entry bis 2026-11-04, KO-Exit bis 2026-11-05. EUR. RE-EVAL: 1D-Schluss >114,60 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[NEU 2026-10-26 ~19:3x, Re-Eval >114,60 ausgeloest (Schluss 116,00), User: Reevals durchfuehren, User-Chart 1D+4h 19:16, Linien von Claude] 1D O 114,0 H 117,0 L 113,8 C 116,0 (+1,2 %); EMA20/50/100/200 111,6/107,8/104,3/101,8 bullisch, RSI-1D 73,7, Ext 2,07 ATR. 4h: Shooting Star an 117, RSI-4h 69,3/61,5. Aktienrueckkauf laeuft (Meldung 2026-10-26). GEGENREDE: RSI ueberkauft, 4h-Abweisung am Hoch, Liquiditaet knapp unter der 1-Mio-Grenze. Ersetzt die Archivzeile Trend-Pullback (2026-10-22). [2026-10-28 19:3x User: Liquiditaet von hartem Disqualifier auf Handcheck umgestellt; Quelle der 0,97 Mio war nur das Xetra-Volumen.]'
+  archived:
+    date: '2026-10-31'
+    reason: 'Auto-Archiv: TIW per Schluss gebrochen (112 < 114.6) (Dauerregel 2026-10-19)'
 - symbol: GFT.DE
   name: GFT Technologies SE (GFT, XETRA) - IT-Dienstleister, Digitalisierung/AI fuer Banken
   direction: LONG
@@ -3964,4 +3973,4 @@ entries:
     gate: 🟢
     text: POSITION-MONITOR (#20 AV, Rest 4 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-30 8 x 202,20EUR Direktaktie (ISIN US0231351067), gettex, Gebuehr 0,00. TP1 215,00EUR gefuellt 2026-10-30 (4 Stk, +51,20 EUR). SL 203,00EUR fuer 4 Stk scharf (User) - ueber Einstand, BE-Runner (L7). Kein Ziel fuer den Rest. Review 2026-11-06.
   notes: '[ENTRY + TEILEXIT #20 AV 2026-10-30, User, Bauchgefuehl] Kauf und Teilverkauf am Tag nach den Q3-Zahlen (2026-10-29). Kein Plan bei Entry, kein Score.'
-updated: '2026-10-30T21:50:00+01:00'
+updated: '2026-10-31T06:41:05+00:00'
