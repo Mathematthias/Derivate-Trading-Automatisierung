@@ -917,4 +917,31 @@ rows:
   id: Z126
   status: offen
   added: '2026-10-28'
-updated: '2026-10-31T06:41:05+00:00'
+- date: '2026-11-17'
+  kat: 5
+  ereignis: 'NVDA Q3-Zahlen - HAUPTMESSPUNKT der These TECH (Thesen-Spur, Karte vollstaendig). Von der Karte benannt, im Radar bisher nicht gefuehrt. Zugleich Termin fuer die zweite Haelfte des Thesen-Budgets (Karte: ''nach NVDA 2026-11-17 ohne Falsifikat'').'
+  werte: NVDA, ASML.AS
+  wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: Guidance unter Konsens = Thesen-Falsifikat TECH eingetreten, Spur-Positionen schliessen. Guidance ueber Konsens = Bedingung fuer die zweite Haelfte erfuellt.'
+  quelle: Digest BRIEFING-DIGEST-2026-10-30-2234.json, Feld earn_next NVDA (Abruf 2026-10-31); Karte These TECH in state/thesen.yaml
+  id: Z127
+  status: offen
+  added: '2026-10-31'
+- date: '2026-11-03'
+  kat: 5
+  ereignis: AMD Q3-Zahlen - Katalysator der These TECH zwischen den beiden Hyperscaler-Wellen. Von der Karte benannt, im Radar bisher nicht gefuehrt.
+  werte: AMD
+  wirkung: 'Thesen-Messpunkt: AI-Beschleuniger-Nachfrage als Zwischenstand vor NVDA 2026-11-17. AMD stand am 2026-10-30 bei 504,80 nach -10,88 % am Tag, 30d -18,02 %, ATR 5,83 %.'
+  quelle: Digest BRIEFING-DIGEST-2026-10-30-2234.json, Feld earn_next AMD (Abruf 2026-10-31); Karte These TECH
+  id: Z128
+  status: offen
+  added: '2026-10-31'
+- date: '2026-11-03'
+  kat: 5
+  ereignis: ETN Q3-Zahlen - letzter per Earnings-Disqualifier gesperrter Ausdruck der These A; danach sind alle vier Ausdruecke wieder frei. ETN schloss am 2026-10-30 bei 369,97 nach einem Gap von -5,1 %.
+  werte: ETN; Messwert fuer These A (PWR, ABBN.SW, PRY.MI)
+  wirkung: 'Thesen-Messpunkt und Ende der Entry-Sperre: Auftragseingang Electrical Americas misst die Rechenzentrums-Nachfrageseite der These A. Capex-/Auftragssenkung = Hinweis auf Falsifikat (b) vor dem ENR.DE-Messtermin 2026-11-11 (Z92).'
+  quelle: Digest BRIEFING-DIGEST-2026-10-30-2234.json, Feld earn_next ETN (Abruf 2026-10-31)
+  id: Z129
+  status: offen
+  added: '2026-10-31'
+updated: '2026-10-31T13:55:54+00:00'
