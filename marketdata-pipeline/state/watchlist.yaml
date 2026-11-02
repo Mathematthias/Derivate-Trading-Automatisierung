@@ -3967,7 +3967,10 @@ entries:
   klasse: trend_pullback
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
+  archived:
+    date: '2026-11-02'
+    reason: Veto User (raus mit DHER, 2026-11-02 19:59)
   quelle: auto
   added: '2026-11-02'
   expiry: '2026-11-16'
