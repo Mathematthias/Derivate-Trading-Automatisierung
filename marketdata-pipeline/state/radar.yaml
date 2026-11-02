@@ -107,17 +107,17 @@ rows:
   wirkung: + Projektierer bei Ueberzeichnung
   status: offen
   quelle: 'bundesnetzagentur.de, Fachthemen > Ausschreibungen > Wind_Onshore > ''Gebotstermin 1. November 2026'' (Primaerquelle: Volumen 2.495,009 MW und Hoechstwert 7,25 ct/kWh woertlich, Fristverschiebung auf Montag 02.11.2026 24:00 woertlich), Abruf 2026-10-19; Ergebnis der Vorrunde aus Pressemitteilung bundesnetzagentur.de 2026-09-17. confidence hoch'
-  note: '2026-10-19 Pflegelauf: Ausschreibungsvolumen jetzt primaer belegt - 2.495,009 MW (die bisherige Angabe ''Basis 2.500 MW'' war aus Par. 28a EEG abgeleitet). Der 01.11.2026 ist ein Sonntag; die BNetzA-Seite nennt die Abgabefrist woertlich Montag, 02.11.2026 24:00 (Gebote an der Pforte Bonn). Datum der Zeile bleibt der kalenderfeste Gebotstermin 2026-11-01, operativ endet die Frist einen Tag spaeter. Der im Feld ereignis zitierte Mai-Rundenstand (6.409 MW auf 2.495 MW) ist ueberholt: die Runde zum 01.08.2026 brachte 5.250 MW Gebote (461 Gebote) auf 2.520 MW Volumen, 237 Zuschlaege ueber 2.523 MW, mengengewichteter Durchschnitt 4,79 ct/kWh (Vorrunde 5,06), Spanne 4,49-4,98 - Ueberzeichnung Faktor rund 2,1 und fallende Zuschlagspreise. ZWEI-TERMIN-PROBLEM wie bei Z14/Z66: der Gebotstermin bewegt nichts, erst die Ergebnisbekanntgabe tut es, und die ist auf der BNetzA-Seite NICHT datiert (Hinweis dort: Freigabe der Sicherheiten bis zu sechs Wochen nach Veroeffentlichung). Keine Teil-2-Zeile
-    angelegt, weil kein Datum belegt ist. Keine aktive Watchlist-Zeile auf NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE.'
+  note: '2026-11-02 Pflegelauf: Zum Stichtag NICHT erledigt. Der Gebotstermin 2026-11-01 war ein Sonntag; die BNetzA nennt die Abgabefrist woertlich Montag 2026-11-02 24:00 (Gebote an der Pforte Bonn, belegt im Pflegestand 2026-10-19). Die Frist laeuft also am Stichtag dieses Laufs (08:05 Berlin) noch, das Ereignis ist noch nicht durch - Status bleibt offen, Verdikt faellt im naechsten Lauf. Das ZWEI-TERMIN-PROBLEM bleibt unveraendert: der Gebotstermin bewegt nichts, erst die Ergebnisbekanntgabe tut es, und die ist auf der BNetzA-Seite weiter nicht datiert (Freigabe der Sicherheiten bis zu sechs Wochen nach Veroeffentlichung). Keine Teil-2-Zeile, weil kein Datum belegt ist. Weiterhin keine aktive Watchlist-Zeile auf NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE (watchlist.yaml 2026-10-31T13:55). || VORSTAND DER ZEILE: siehe quelle, Primaerbelege unveraendert'
 - id: Z19
-  date: '2027-01-10'
+  date: '2026-11-10'
   kat: 1
   ereignis: 'ANKER-TERMIN: Chinas 12-monatige Aussetzung der erweiterten SE-Exportkontrollen laeuft aus (Notice 61 inkl. extraterritorialer 0,1%-Regel)'
   werte: MP, LYC.AX, ILU.AX / Abnehmer IFX.DE, CON.DE, VOW3.DE
   wirkung: + Nicht-China-Foerderer bei Nichtverlaengerung / - europaeische Magnet-Abnehmer
   status: offen
   quelle: 'mining-technology.com, 2026-08-04 (Notice 61 und 0,1-%-Regel); Datumsgrundlage jetzt zusaetzlich: Blank Rome LLP, ''The BR International Trade Report: October 2026'' (blankrome.com), woertlich ''two-month extension of the Busan Agreement trade truce'' von 2026-11-10 auf 2027-01-10, angekuendigt von Finanzminister Bessent waehrend des Staatsbesuchs 23.-25.09.2026; techtimes.com 2026-09-29 nennt dieselbe Verlaengerung. Abruf 2026-10-19.'
-  note: 'KORR 2026-09-28: Datum 2026-11-10 -> 2027-01-10 (Busan-Truce am 24.09. um zwei Monate verlaengert). 2026-10-19 Pflegelauf: Die Verlaengerung ist jetzt von einer Kanzleiquelle bestaetigt (Blank Rome, Oktober-Trade-Report) - die US-Zollerleichterung wurde im Gegenzug fuer eine Lockerung der chinesischen Seltenerd-Exportkontrollen verlaengert, ''among other terms''. Die itemisierte Bestaetigung, dass Notice 61 samt 0,1-%-Regel mitverlaengert wurde, fehlt weiterhin -> confidence MITTEL bleibt. ZWEITES INSTRUMENT AM SELBEN DATUM: Am 2027-01-10 laeuft auch der Waffenstillstand selbst aus (ausgesetzte Erhoehung des reziproken US-Zollsatzes). Bewusst KEINE eigene Zeile angelegt, um keine Dublette auf dasselbe Datum zu erzeugen; wer Z19 liest, muss wissen, dass zwei Instrumente am selben Tag fallen. Blank Rome nennt zusaetzlich, dass die ausgesetzte Affiliates Rule (EAR) ''widely understood (though not yet formally announced)'' dieselbe Zwei-Monats-Verlaengerung bekommt - unbestaetigt.'
+  note: 'DATUMSKORREKTUR 2026-11-02 Pflegelauf, von 2027-01-10 auf 2026-11-10. Befund: die bisherige Angabe verwechselte den Horizont des breiteren Handelsabkommens mit der Laufzeit der Aussetzung selbst. Die Aussetzung von Notice 61 steht unter Announcement 70 und gilt woertlich ''until 10 November 2026''. MOFCOM hat am 2026-09-28 erklaert, dass das uebergreifende China-US-Arrangement (Kuala-Lumpur-Vereinbarung) bis 2027-01-10 laeuft - diese Erklaerung nennt Seltene Erden NICHT, und bis zum 2026-10-14 gab es keine nummerierte Mitteilung, die Announcement 70 aendert. Damit laeuft die extraterritoriale 0,1-%-Regel ab 2026-11-10 wieder, mangels Verlaengerung. Das ist dieselbe Mechanik wie bei Z20: die Verlaengerung des Waffenstillstands nimmt die Einzelmassnahmen nicht automatisch mit, dafuer braeuchte es einen eigenen Rechtsakt. FOLGE: Z19 gehoert damit in das Cluster 2026-11-10 (zusammen mit Z20, Z81, Z95) und faellt ab sofort ins 28-Tage-Fenster, statt erst im Dezember zugestellt zu werden
+    - der Termin waere unter dem alten Datum nach dem Ereignis aufgeschlagen. || carraglobe.com ''China Rare Earth Export Controls 2026: The 0.1% Rule Returns November 10'' (Artikel 2026-05-05, Stand 2026-10-14, Abruf 2026-11-02, Announcement-70-Wortlaut); gestuetzt durch mining-technology.com ''China rare earth export pause nears expiry'', technology.org 2026-10-19 ''China''s Rare-Earth Export Pause: What Ends on 10 November'', rareearthdirectory.com, startupfortune.com, alle Abruf 2026-11-02. Gegenquelle fuer das Altdatum war der Katalysator-Kalender, der 2026-11-10 fuehrt - der Widerspruch kam aus dem Radar, nicht aus der Datei. confidence hoch fuer 2026-11-10'
 - id: Z20
   date: '2026-11-10'
   kat: 1
@@ -385,7 +385,8 @@ rows:
   wirkung: + Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher als Gegenseite. Erst mit dem Zuschlag steht die Menge je Technologie fest.
   status: offen
   quelle: 'Bundesnetzagentur, Pressemitteilung ''Start der Ausschreibungen fuer Langzeitkapazitaeten nach StromVKG'' (bundesnetzagentur.de/SharedDocs/Pressemitteilungen/DE/2026/20260721_StromVKG.html, 2026-07-21), woertlich: Gebotstermin 08.09.2026 24:00, Zuschlaege werden bis zum 3. November 2026 bekannt gegeben, 4.500 MW reduzierte Leistung, Hoechstpreis 244.000 EUR/MW*a. Abruf 2026-10-19. confidence hoch (Primaerquelle, ersetzt boersen-zeitung.de 2026-08-04 und techzeitgeist.de 2026-09-12). Split von Z14 am 2026-09-07.'
-  note: '2026-10-19 Pflegelauf: Der FRIST-Charakter ist jetzt primaer belegt - die BNetzA-Pressemitteilung vom 2026-07-21 sagt woertlich, die Zuschlaege wuerden ''bis zum 3. November 2026'' bekannt gegeben; bisher stuetzte sich die Zeile dafuer auf eine Sekundaerquelle. Fuer die Zufuhr unveraendert: die Bekanntgabe ist ab sofort taeglich moeglich, nicht erst am 03.11. WIRKUNGSWIDERSPRUCH (unveraendert offen seit 2026-10-12): ENR.DE traegt die passende aktive Zeile (klasse event_watch, Anker TIEF, Verfall exakt 2026-11-03), das Feld treiber dort ist weiterhin leer - der Radar kennt den datierten Treiber, die Watchlist-Zeile nicht. Entscheidung dazu trifft Matthias im Chat. Anschlusstermin: ENR.DE Q4-FY2026-Call am 2026-11-11 (Z92), ab 2026-11-04 greift der Universal-Disqualifier ''Earnings <= 7 Tage'' - der Verfall der Zeile liegt genau einen Tag davor, die Konstruktion ist insoweit sauber.'
+  note: '2026-11-02 Pflegelauf: Faktenlage unveraendert, Frist-Charakter weiter primaer belegt (BNetzA-PM 2026-07-21: Zuschlaege werden ''bis zum 3. November 2026'' bekannt gegeben). Ein Beleg, dass die Zuschlaege inzwischen veroeffentlicht sind, liess sich nicht finden; der juengste auffindbare Stand (techzeitgeist.de, 2026-09-12) meldet die Gebote als ''deutlich ueberzeichnet'' und die Zuschlaege ausdruecklich als noch nicht veroeffentlicht, bei 4.500 MW ausgeschriebener reduzierter Leistung. WIRKUNGSWIDERSPRUCH, verschaerft: die ENR.DE-Zeile ist klasse event_watch, Leg A Gate ⏳, und ihr expiry steht auf genau 2026-11-03 - dem letzten Tag der Bekanntgabefrist. Faellt die Bekanntgabe auf den 03.11., laeuft der Traeger am Tag des Ausloesers aus, und die Aktivierung (''bei Bekanntgabe Setup frisch am Chart fassen'') hat keine Zeile mehr. Im selben Fenster liegt der ENR-Q3-Print am 2026-11-11 (= Z92, Messtermin Falsifikat (b) These A). Verlaengerung oder Neuanlage der Zeile ist eine Watchlist-Entscheidung
+    des Users, kein Radar-Eingriff.'
 - id: Z67
   date: '2026-09-21'
   kat: 4
@@ -512,10 +513,11 @@ rows:
   kat: 1
   ereignis: 'UK Autumn Budget 2026 (Chancellor John Healey) — Steuer- und Abgabenpaket inkl. Business Rates; bereits zugesagt: Steuersenkung fuer Pubs und Clubs, Beteiligung der Mayors an Einkommensteuer und Business Rates'
   werte: WTB.L, BARC.L, HSBA.L, LLOY.L, NWG.L, TSCO.L, SBRY.L
-  wirkung: Kostenbasis ueber Business Rates, Arbeitgeberabgaben und etwaige Sektorsteuern (Bankenabgabe/-zuschlag kursiert als Geruecht, unbelegt). Fuer Gastgewerbe/Hotels ist die Richtung durch die Pub-/Club-Entlastung teilweise vorgezeichnet, fuer Banken offen. Fiskaltermin, kein Einzelwert-Katalysator. Zugleich Messtermin fuer These N2 (UK-Ersterwerber, Verdikt beobachten).
-  status: offen
+  wirkung: 'BELEGT 2026-11-02 (vorher ''Richtung offen''): Banken - Surcharge 3 % -> 6 % ab 2027-01-01 hebt die Ertragsteuerquote der betroffenen Bankgesellschaften (Gewinn > 100 Mio GBP) auf effektiv 31 %, senkt mechanisch den Nachsteuergewinn. Grossflaechenhandel - Business-Rates-Surtax auf groessere Gewerbeimmobilien plus Multiplier-Freeze heben die Kostenbasis pro Quadratmeter Verkaufsflaeche. Kleinflaechen (Rateable Value <= 18.000 GBP) ab April 2027 entlastet. Mechanische Kostenwirkung, keine Kursaussage.'
+  status: erledigt
   quelle: 'Grant Thornton UK ''Autumn Budget 2026: what we know so far'', woertlich ''The Autumn Budget will take place on 28 October 2026''; Which? 14.09.2026. Abruf 2026-09-21 | confidence HOCH fuer das Datum, NIEDRIG fuer den Inhalt'
-  note: '2026-10-19 Pflegelauf: Termin 2026-10-28 unveraendert; Watchlist-Stand aus dem Feld wirkung entfernt, weil er dort veraltete. Inhalt des Pakets unbelegt (confidence NIEDRIG). || 2026-10-26 Pflegelauf: Termin und Ressortzuordnung doppelt belegt - cambridgenetwork.co.uk zur Videobotschaft des Kanzlers, woertlich ''the Budget would be on Wednesday 28 October'', Chancellor John Healey (Abruf 2026-10-26), dazu der Grant-Thornton-Wortlaut vom 2026-09-21. Datum und Amtstraeger damit confidence HOCH, Inhalt weiter NIEDRIG. Watchlist-Stand 2026-10-26: keiner der sieben genannten UK-Werte traegt eine aktive Zeile (watchlist.yaml 2026-10-24T05:41). Nebenbefund: der Digest fuehrt WTB.L im Ex-Div-Radar mit Rolle ''watchlist'' und Ex-Tag 2026-10-30, obwohl keine aktive Zeile existiert - Rollen-Fehlgriff des Digests, ohne Folge fuer den Radar.'
+  note: 'erledigt 2026-11-02 - UK Autumn Budget fand am 2026-10-28 statt wie datiert. Inhalt jetzt belegt und richtungsklar: Bank Corporation Tax Surcharge 3 % -> 6 % fuer 15 Monate ab 2027-01-01 (Bankgesellschaften mit Gewinn > 100 Mio GBP, Aufkommen ~1,5 Mrd GBP, effektiver KSt-Satz 31 %); fuer den Grossflaechenhandel Business-Rates-Surtax auf groessere Gewerbeimmobilien bestaetigt plus Multiplier-Freeze statt Entlastung (BRC: ~600 Mio GBP Mehrbelastung, 400 Grossflaechen gefaehrdet), Small-Business-Rates-Relief-Schwelle steigt ab April 2027 von 12.000 auf 18.000 GBP Rateable Value. Der Bankenteil ist als eigene Zeile zum 2027-01-01 nachgetragen. WIRKUNGSWIDERSPRUCH: TSCO.L traegt seit 2026-10-26 eine aktive LONG-trend_pullback-Zeile (Verfall 2026-11-13), deren einzige Budget-Vorsorge ''Einstieg fruehestens nach Tagesschluss 2026-10-28'' war - die Sperre ist gefallen, der Kostengegenwind steht nicht im treiber. (Pflegelauf 02.11.) || grantthornton.co.uk ''Autumn Budget 2026: tax response''
+    und traverssmith.com ''The Autumn Budget 2026 Business Taxes'', beide Abruf 2026-11-02; retail-systems.com / retail-week.com zur Business-Rates-Wirkung, Abruf 2026-11-02'
 - id: Z83
   date: '2027-03-10'
   kat: 5
@@ -566,9 +568,9 @@ rows:
   wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: bestaetigt oder kippt das AI-Strom-Narrativ ueber die Nachfrageseite (Rechenzentren-Capex). Guidance-Cut = Falsifikat (a) eingetreten -> Korb A auf Verdikt pruefen.'
   quelle: 'Alphabet-IR ''Alphabet Announces Date of Third Quarter 2026 Financial Results Conference Call'' (abc.xyz/investor/news, Pressemitteilung 2026-10-06): Mittwoch 2026-10-28, 13:30 Pacific / 22:30 CEST. Abruf 2026-10-12. confidence hoch (Primaerquelle, ersetzt den Sekundaerkalender aus dem Thesen-Lauf 2026-10-03).'
   id: Z88
-  status: offen
+  status: erledigt
   added: '2026-10-05'
-  note: '2026-10-12 geprueft und aufgewertet: Datum jetzt primaer belegt (IR-Mitteilung 2026-10-06), confidence MITTEL -> HOCH. Beruehrt zwei Dinge: (a) GOOGL traegt eine aktive Watchlist-Zeile (trend_pullback EMA50-1D, Verfall 2026-10-13) — bei Verlaengerung ueber 2026-10-21 hinaus greift der Universal-Disqualifier ''Earnings <= 7 Tage''; (b) These A nennt Falsifikat (a) an genau diesem Termin, die drei Korb-Ausdruecke ABBN.SW/PWR/ETN verfallen aber am 2026-10-12/20/23 — der Messtermin liegt hinter dem Traeger. Entscheidung Watchlist/Korb beim User.'
+  note: 'erledigt 2026-11-02 - Alphabet Q3 am 2026-10-28 wie datiert. Falsifikat (a) der These A (Hyperscaler-Capex-Cut) NICHT eingetreten: Capex 2026 unveraendert gehalten, fuer 2027 ausdruecklich ''significant increase'' angekuendigt. Aktie -10 % auf den Print - die Nachfrageseite des AI-Strom-Narrativs ist damit bestaetigt, die Aktienreaktion lief gegen den Capex-Anstieg, nicht gegen die Elektrifizierungsthese. Lernschleife: ein Capex-Messtermin kann die These stuetzen und den Messwert-Traeger gleichzeitig abverkaufen - die Zeile mass das Richtige, der Kursweg des Messwerts ist kein Thesen-Signal. (Pflegelauf 02.11.) || cnbc.com ''Alphabet sinks 10% as it holds 2026 capex unchanged, expects significant increase in 2027'', 2026-10-28, Abruf 2026-11-02'
 - date: '2026-10-12'
   kat: 5
   ereignis: 'OCP Global Summit 2026 (San Jose, 2026-10-12 bis 10-15): Marvell zeigt AI-Rechenzentrums-Infrastruktur (Teralynx T100 102,4T-Switch, Structera CXL, Ara DSP 1,6T Optik), 14 Sessions.'
@@ -596,8 +598,9 @@ rows:
   wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: Auftragseingang und Auftragsbestand im Netz-/Hochspannungsgeschaeft zeigen die Nachfrageseite der Elektrifizierungs-These. book-to-bill unter 1 = Falsifikat (b) eingetreten -> Korb A auf Verdikt pruefen.'
   quelle: prysmian.com/en/investors/financial-calendar, woertlich 'Third quarter results — Milan, Italy — Oct 29, 2026', Abruf 2026-10-12. confidence hoch (Primaerquelle).
   id: Z91
-  status: offen
+  status: erledigt
   added: '2026-10-12'
+  note: 'erledigt 2026-11-02 - Prysmian Q3/9M am 2026-10-29 wie datiert. Falsifikat (b) der These A (book-to-bill < 1) NICHT eingetreten: Rekordquartal mit EBITDA 851 Mio EUR, Guidance erneut erhoeht, die 2028er-Finanzziele zwei Jahre vorgezogen, ausdruecklich steigende Rechenzentren-Nachfrage im Power-Transmission-Geschaeft; Aktie +4,2 %. Zusammen mit Z88 sind beide genannten Falsifikate der These A an ihren datierten Messterminen durchgelaufen, ohne einzutreten. (Pflegelauf 02.11.) || prysmian.com PR Q3''26 (PR_Q326_ENGLISH.pdf) und ''Prysmian to exceed 2028 financial targets two years early'', investing.com ''Prysmian Q3 2026 slides: record margins, guidance raised'', alle Abruf 2026-11-02'
 - date: '2026-11-11'
   kat: 5
   ereignis: Siemens Energy Extended Q4-FY2026-Call (Geschaeftsjahresende 30.09.) — zweiter datierter Messpunkt fuer Falsifikat (b) der These A (book-to-bill < 1). Von der These benannt, im Radar bisher nicht gefuehrt.
@@ -659,9 +662,9 @@ rows:
   wirkung: 'Raffinerie-Margen (Diesel-Crack >90 USD/bbl seit Aug) vs. Erwartung: Reaktion auf Rekordzahlen entscheidet, ob der Trend Traeger behaelt oder die Story eingepreist ist'
   quelle: Earnings-Termin PSX aus Digest (earn_next 2026-10-28); Diesel-Crack RBN Energy 2026-08-27, Abruf 2026-10-19
   id: Z98
-  status: offen
+  status: erledigt
   added: '2026-10-19'
-  note: '2026-10-26 Pflegelauf: Feld werte korrigiert. Der Vorbehalt ''(sobald im Universum, PR Weg B)'' ist erledigt - VLO und MPC stehen im Digest-Universum (earn_next VLO 2027-01-28, MPC 2026-11-03; Digest 2026-10-23T22:33) und tragen beide aktive Watchlist-Zeilen mit Treiber These OEL (VLO Verfall 2026-11-06, MPC Verfall 2026-10-26). Der PSX-Termin 2026-10-28 ist gegen das Digest-Feld earn_next unveraendert.'
+  note: 'erledigt 2026-11-02 - PSX Q3 am 2026-10-28 wie datiert, mit Rekord-Raffineriemargen und einem Gewinn von 5,6 Mrd USD; die in der Zeile vorgesehene Post-Earnings-Neurechnung war am 2026-10-29 faellig und ist durch das Zeitfenster gelaufen. KORREKTUR zum Pflegestand 2026-10-26: der Hinweis, VLO und MPC truegen beide aktive Zeilen mit Treiber These OEL, ist ueberholt - in watchlist.yaml (Stand 2026-10-31T13:55) traegt keiner der drei Werte eine aktive Zeile; MPC laeuft stattdessen als eigene Re-Eval-Zeile Z119 zum 2026-11-04. (Pflegelauf 02.11.) || investing.com ''Phillips 66 Q3 2026 slides: record refining margins drive earnings'', ad-hoc-news.de, beide Abruf 2026-11-02'
 - date: '2026-10-31'
   kat: 5
   ereignis: EXC nach Q3-Zahlen (2026-10-30) Short-Trend-Pullback EMA20 neu rechnen (Re-Eval von Hand, Morning Check 2026-10-20)
@@ -669,8 +672,9 @@ rows:
   wirkung: Setup-Neubewertung
   quelle: Morning Check 2026-10-20
   id: Z99
-  status: offen
+  status: erledigt
   added: '2026-10-20'
+  note: erledigt 2026-11-02 - EXC Q3 am 2026-10-30 wie datiert (8-K exc-20261030ex991). Umsatz und bereinigtes EPS ueber Erwartung, Aktie rund +2 % - der Short-Trend-Pullback hat damit keinen Traeger bekommen, Re-Eval abgearbeitet ohne Zeile. (Pflegelauf 02.11.) || sec.gov 8-K Exelon 2026-10-30, finviz.com 'exelon shares gain 2 as q3 earnings and revenue beat expectations', zacks.com, Abruf 2026-11-02
 - date: '2026-10-21'
   kat: 5
   ereignis: 'ISRG nach Q3-Zahlen (2026-10-20 nach US-Schluss) Post-Earnings-Setup neu rechnen: Gap ueber ~445 und Halten -> Breakout-Retest @ ~445 mit frischem Vol (Entry erst am Retest); Ruecksetzer in 415-429 (EMA20/EMA200) -> Trend-Pullback, sobald EMA50 > EMA100; Gap unter ~406 (EMA100) -> kein Long-Setup'
@@ -688,8 +692,9 @@ rows:
   wirkung: Setup-Neubewertung Post-Earnings; Niveau 160,81, Stack bearish
   quelle: 'Morning Check 2026-10-21, User: Re-Evals wie vorgeschlagen'
   id: Z101
-  status: offen
+  status: erledigt
   added: '2026-10-21'
+  note: 'erledigt 2026-11-02 - TMUS Q3 am 2026-10-28 wie datiert. Nettogewinn +27 % auf 3,46 Mrd USD und erhoehter Ausblick, die Aktie dennoch -5,01 % wegen hoeherer Capex-Prognose. Die Bewegung, auf die der Breakdown-Short gewartet hat, lief am Event selbst ab, waehrend die Zeile per Earnings-Disqualifier (<= 7 d) gesperrt war. Lernschleife zur Kategorie: Re-Eval-Zeilen, deren Ausloeser ein Earnings-Termin ist, liefern die Bewegung regelmaessig im Sperrfenster - der Folgetag ist kein Einstieg in dieselbe Bewegung, sondern eine neue Lage. (Pflegelauf 02.11.) || vermoegenszentrum.ch zu den Q3-Zahlen, itiger.com ''T-Mobile Plummets 5.01% Despite Strong Q3 Results as Increased Capex Forecast Worries Investors'', Abruf 2026-11-02'
 - date: '2026-10-30'
   kat: 5
   werte: LLY
@@ -697,8 +702,9 @@ rows:
   wirkung: Setup-Neubewertung Post-Earnings; Ausbruch 1216,71, 52W-Hoch ~1292,7
   quelle: 'Morning Check 2026-10-21, User: Re-Evals wie vorgeschlagen'
   id: Z102
-  status: offen
+  status: erledigt
   added: '2026-10-21'
+  note: erledigt 2026-11-02 - LLY Q3 am 2026-10-29 wie datiert. EPS 1,88 USD ueber Erwartung, Umsatz +39 %, Mounjaro und Zepbound zusammen ueber 16 Mrd USD, Jahresguidance auf 91-92 Mrd USD erhoeht, Aktie +8 %. Der Breakout ueber 1.275 hat damit nach den Zahlen Bestand; keine LLY-Zeile angelegt, die Re-Eval ist durch. (Pflegelauf 02.11.) || 247wallst.com 'Eli Lilly Jumps 8% as Strong Quarter Lifts Revenue Outlook', gurufocus.com Q3-2026-Call-Highlights, Abruf 2026-11-02
 - date: '2026-10-27'
   kat: 5
   werte: GIS
@@ -716,8 +722,9 @@ rows:
   wirkung: Gespraeche abgesagt + Trend intakt -> Pullback-Long EMA20/EMA50 neu rechnen; offizielles Angebot -> kein Trade (Spread-Arbitrage, keine Klasse)
   quelle: 'Morning Check 2026-10-21, User-Chart QGEN 14:05, User: wie vorgeschlagen'
   id: Z104
-  status: offen
+  status: erledigt
   added: '2026-10-21'
+  note: 'erledigt 2026-11-02 - der Ast ''offizielles Angebot -> kein Trade'' ist eingetreten: QIAGEN und EQT haben am 2026-10-21 ein empfohlenes freiwilliges oeffentliches Barangebot ueber 46,50 EUR je Aktie vereinbart (Transaktionswert je Quelle 10,8 Mrd EUR / 12,1 Mrd USD), mit geplantem Delisting von NYSE und Frankfurt. Die im Feld wirkung genannte Gegenbedingung (Gespraeche abgesagt -> Pullback-Long neu rechnen) ist damit erledigt, der Wert ist eine Spread-Situation und keine Setup-Klasse. (Pflegelauf 02.11.) || biospace.com ''QIAGEN and EQT Private Equity announce agreement on a recommended voluntary all-cash public takeover offer'', seekingalpha.com, ad-hoc-news.de, Abruf 2026-11-02'
 - date: '2026-11-03'
   kat: 5
   werte: AAPL
@@ -780,8 +787,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Abend-Check 2026-10-22, Tech-Abdeckung Weg A
   id: Z111
-  status: offen
+  status: erledigt
   added: '2026-10-22'
+  note: 'erledigt 2026-11-02 - MSFT Q1 FY27 am 2026-10-28 wie datiert: Umsatz 92,3 Mrd USD, Azure +48 %, Capex 39,4 Mrd USD im Quartal, FY27-Capex-Guide rund 175 Mrd USD. Damit ist das Capex-Cut-Falsifikat der These A auch beim zweiten Hyperscaler nicht eingetreten. Keine MSFT-Zeile angelegt. (Pflegelauf 02.11.) || aiweekly.co ''Microsoft Q1 Revenue Hits $92.3B, Azure Up 48% as Capex Jumps to $39.4B With $175B FY27 Guide'', Abruf 2026-11-02 - Sekundaerquelle, Zahlen nicht gegen das 10-Q gegengelesen'
 - date: '2026-10-30'
   kat: 5
   werte: AMZN
@@ -789,8 +797,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Abend-Check 2026-10-22, Tech-Abdeckung Weg A
   id: Z112
-  status: offen
+  status: erledigt
   added: '2026-10-22'
+  note: 'erledigt 2026-11-02 - AMZN Q3 am 2026-10-29 wie datiert; die vorgesehene Neurechnung ist abgearbeitet. Ergebnis steht in der Watchlist, nicht im Radar: am 2026-10-30 Position #20 AV (8 Stk Direktaktie zu 202,20 EUR, TP1 215,00 am selben Tag fuer 4 Stk gefuellt, Rest als BE-Runner mit SL 203,00), angelegt als klasse ''sonstige'' Bauchgefuehl-Trade ohne Score und ohne Trend-Pullback-Gate. Der Radar-Termin hat seine Zufuhr-Aufgabe erfuellt; dass daraus keine Klassen-Zeile wurde, ist eine Watchlist-Frage. (Pflegelauf 02.11.) || watchlist.yaml Stand 2026-10-31T13:55, Eintrag AMZN'
 - date: '2026-11-03'
   kat: 1
   werte: These OEL (VLO, MPC, XOM, ENI.MI, PSX, LHA.DE), These TECH, Indizes
@@ -809,6 +818,7 @@ rows:
   id: Z114
   status: offen
   added: '2026-10-26'
+  note: '2026-11-02 Pflegelauf, Beweislast erhoeht: Der Vorbehalt der Zeile ist jetzt quantifiziert. Der federal_register-Collector des Katalysator-Kalenders liefert in der Datei vom 2026-10-31 bei 0 von 34 Fenster-Eintraegen einen Titel, der den eigenen Suchbegriff enthaelt (gesucht ''Section 301 exclusion'', ''Section 232'', ''tariff exclusion extension''; getroffen u. a. ''Chrysanthemum White Rust'', ''Airworthiness Directives; Airbus'', ''Electronic Payments for FOIA Requests''). Der Treffer ''Federal Register 2026-20281'' stammt aus genau diesem Collector. Vor jeder Verwendung ist der Federal-Register-Eintrag direkt zu pruefen; ohne Primaerbeleg bis 2026-11-30 ist die Zeile zu verwerfen, nicht zuzustellen. Z96 (CMS-Frist Hoechstpreise Runde 3, selber Tag) ist davon unberuehrt - dort liegt die CMS-Primaerquelle vor.'
 - date: '2026-11-09'
   kat: 3
   ereignis: 'Cerebras Systems: letzte und groesste Lockup-Stufe laeuft ab, alle restlichen gesperrten Aktien werden frei (IPO 2026-05-14, 34,5 Mio. Aktien zu 185 USD). Mechanik: 180 Tage nach dem IPO-Prospekt ODER zweiter Handelstag nach dem Q3-Bericht, je nachdem was frueher eintritt. Die Stufen davor (2026-06-23, 08-12, 08-19, 09-02, 09-16, 09-30, 10-14, 10-28) haben laut Quelle zusammen rund 171 Mio. Aktien freigegeben; das Restvolumen hat die Gesellschaft nicht veroeffentlicht. Faellt in das Cluster 2026-11-10 (Z20, Z81, Z95).'
@@ -897,8 +907,9 @@ rows:
   wirkung: 'Re-Eval nach Earnings: Schluss > 101,66 (EMA50-1D) bzw. neues Niveau aus dem Gap'
   quelle: User-Chart 1D/4h 2026-10-27 14:35, Morning Check
   id: Z124
-  status: offen
+  status: erledigt
   added: '2026-10-27'
+  note: 'erledigt 2026-11-02 - INTC Q3 wie datiert (Reaktion am 2026-10-30). Die in der Zeile formulierte Re-Eval-Bedingung (1D-Schluss ueber 99,41-101,66 = EMA100/EMA50-Rueckeroberung) ist gegenstandslos: der Earnings-Tag brachte -28,6 % bei Vol ~3,9x, Kurs danach bei rund 61-68 EUR, unter allen 1D-EMAs, RSI-1D 25,1, ATR-1D 10,6 %. Die Rueckeroberungsmarke liegt jetzt ueber 30 ATR entfernt. Stattdessen am 2026-10-30 Position #19 AV (16 Stk zu 61,00 EUR, klasse ''sonstige'', Bauchgefuehl, dokumentierter Regelbruch gegen L23 Veto 2). Lernschleife: eine Re-Eval, die ein Niveau nennt, verfaellt mit dem Gap-Ereignis - sie misst eine Chartlage, die nach einem 28-%-Tag nicht mehr existiert. (Pflegelauf 02.11.) || watchlist.yaml Stand 2026-10-31T13:55, Eintrag INTC'
 - date: '2026-11-06'
   kat: 5
   ereignis: 'NET nach Q3-Zahlen (2026-11-05) neu rechnen: Trend-Pullback @ EMA100 bzw. Breakout-Retest je nach Earnings-Gap; Charts 1D+4h'
@@ -906,8 +917,9 @@ rows:
   wirkung: Re-Eval nach Zahlen (User 2026-10-28)
   quelle: Morning Check 2026-10-28
   id: Z125
-  status: offen
+  status: verworfen
   added: '2026-10-28'
+  note: verworfen 2026-11-02 - DOPPELEINTRAG zu Z118. Beide Zeilen tragen Datum 2026-11-06, Wert NET und denselben Gegenstand ('nach Q3 2026-11-05 neu rechnen, Trend-Pullback @ EMA100 bzw. Breakout-Retest'). Z118 ist die aeltere und inhaltlich vollstaendigere Zeile (Re-Eval >315 vom 2026-10-23, Exit-Test an der Bruchzone 334-342, 0,6 R bei ATR 5,7 %) und bleibt stehen; Z125 entstand im Abend-Check ohne Abgleich. Die Idempotenz von radar.add greift ueber (date, ereignis) und hat hier nicht gefasst, weil der ereignis-Text abweichend formuliert war. (Pflegelauf 02.11.)
 - date: '2026-11-06'
   kat: 5
   ereignis: 'COP und EOG nach Q3-Zahlen (2026-11-05) neu rechnen: Breakout-Long-Pitches (Niveau COP 147,55 / EOG 160,31), vor den Zahlen gesperrt (Earnings <= 7 d); TP1 nach L13 n.F. (erster starker Widerstand), Korrelation Oel-Block pruefen'
@@ -944,4 +956,31 @@ rows:
   id: Z129
   status: offen
   added: '2026-10-31'
-updated: '2026-10-31T13:55:54+00:00'
+- date: '2027-01-01'
+  kat: 1
+  ereignis: UK Bank Corporation Tax Surcharge steigt von 3 % auf 6 % - befristet auf 15 Monate vom 2027-01-01 bis 2028-03-31, fuer Bankgesellschaften mit Gewinnen ueber 100 Mio GBP; erwartetes Aufkommen rund 1,5 Mrd GBP. Beschlossen im UK Autumn Budget 2026-10-28 (= Z82).
+  werte: BARC.L, HSBA.L, LLOY.L, NWG.L, STAN.L
+  wirkung: 'Kostenbasis: die Ertragsteuerquote der betroffenen Bankgesellschaften steigt auf effektiv 31 % (Koerperschaftsteuer plus Surcharge) und senkt damit mechanisch den Nachsteuergewinn des britischen Bankgeschaefts; Wirkung nur oberhalb der 100-Mio-GBP-Gewinnschwelle, befristet bis 2028-03-31. Kein Kapitalthema - abzugrenzen von Z94 (UK Basel 3.1 zum selben Datum) und Z77 (FRTB/CRR3 zum selben Datum), die Eigenmittelanforderungen betreffen, nicht die Steuer.'
+  quelle: 'grantthornton.co.uk ''Autumn Budget 2026: tax response'', woertlich ''the Bank Corporation Tax Surcharge increasing from 3% to 6% for 15 months from 1 January 2027'' (Abruf 2026-11-02); gestuetzt durch traverssmith.com ''The Autumn Budget 2026 Business Taxes'' (Gewinnschwelle 100 Mio GBP, Befristung bis 2028-03-31, Aufkommen ~1,5 Mrd GBP, effektiver Satz 31 %; Abruf 2026-11-02). confidence hoch - zwei unabhaengige Kanzlei-/WP-Analysen des Budgets, Finance-Bill-Wortlaut nicht gegengelesen'
+  id: Z130
+  status: offen
+  added: '2026-11-02'
+- date: '2026-12-12'
+  kat: 5
+  ereignis: 'FDA-PDUFA-Zieldatum fuer Imsidolimab (Vanda Pharmaceuticals) bei generalisierter pustuloeser Psoriasis (GPP); BLA-Annahme am 2026-02-25. ACHTUNG TICKER-ZUORDNUNG: der Wirkstoff stammt aus der AnaptysBio-Pipeline, die Zulassungsrechte und damit der Termin liegen bei VNDA - der Aggregator catalystalert.io fuehrt diesen Termin faelschlich unter ANAB.'
+  werte: VNDA
+  wirkung: 'Angebotsseite: Zulassung oeffnet den US-Markt fuer die erste gezielte GPP-Therapie dieses Unternehmens (Orphan-Indikation, kleine Patientenzahl); Ablehnung oder Fristverlaengerung haelt ihn zu. Einzelwert-Ereignis ohne Lieferketten- oder Sektorwirkung.'
+  quelle: 'prnewswire.com, Vanda-IR-Pressemitteilung ''Vanda Pharmaceuticals Announces FDA Acceptance of Biologics License Application Filing for Imsidolimab for the Treatment of Generalized Pustular Psoriasis'', 2026-02-25 07:18 ET, woertlich ''target action date of December 12, 2026'' (Abruf 2026-11-02). confidence mittel-hoch: Primaerquelle und Datum woertlich, aber acht Monate alt - eine spaetere Fristverlaengerung liess sich in der Suche am 2026-11-02 nicht finden, ist aber auch nicht ausgeschlossen (Z17-Lehre: vor Nutzung ''Antrag noch anhaengig?'' pruefen). Marktkapitalisierung, Liquiditaet und KO-Abdeckung NICHT verifiziert.'
+  id: Z131
+  status: offen
+  added: '2026-11-02'
+- date: '2026-12-27'
+  kat: 5
+  ereignis: FDA-PDUFA-Zieldatum fuer Relutrigine (Praxis Precision Medicines) bei SCN2A- und SCN8A-assoziierten entwicklungsbedingten und epileptischen Enzephalopathien (DEE) - um drei Monate verlaengerte Frist (Extension Period, bekannt gegeben 2026-06-29). Zweiter PRAX-Termin im Fenster neben Z84 (Ulixacaltamide bei essentiellem Tremor, 2027-01-29) - zwei verschiedene Programme, nicht verwechseln.
+  werte: PRAX
+  wirkung: 'Angebotsseite: Zulassung oeffnet den US-Markt fuer das erste Produkt des Unternehmens in einer Orphan-Indikation ohne zugelassene gezielte Therapie; Ablehnung haelt ihn zu. Einzelwert-Ereignis. Terminhaeufung PRAX: 2026-12-27 und 2027-01-29 liegen 33 Tage auseinander.'
+  quelle: 'investors.praxismedicines.com / globenewswire.com, ''Praxis Precision Medicines Announces Extension Period for Relutrigine for Treatment of SCN2A and SCN8A Developmental and Epileptic Encephalopathies'', 2026-06-29, sowie das zugehoerige 8-K (stocktitan.net/sec-filings/PRAX): neue Frist ''December 27, 2026'' (Abruf 2026-11-02). confidence hoch - Primaerquelle plus SEC-Filing. Marktkapitalisierung, Liquiditaet und KO-Abdeckung NICHT verifiziert.'
+  id: Z132
+  status: offen
+  added: '2026-11-02'
+updated: '2026-11-02T16:30:52+00:00'

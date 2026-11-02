@@ -354,27 +354,6 @@ entries:
   archived:
     date: '2026-09-14'
     reason: TIW gebrochen, Range statt Trend
-- symbol: DLTR
-  name: Dollar Tree (DLTR, NASDAQ)
-  direction: LONG
-  klasse: sonstige
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-07-22'
-  expiry: '2026-09-18'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '[2026-10-23] Re-Eval >125,50 am 22.10. ausgeloest (131,04), 23.10. Rueckfall auf 123,54 (-5,7 %), Ausbruchsvolumen nur 0,94x - Zaehlung ab 23.10. || ARCHIVIERT 2026-09-14 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >125,50$ + Vol >Avg-20d. [Sp. Trigger-Historie]'
-  - label: B
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: '[ARCHIVIERT 2026-09-14] DER KLARSTE FALL DER SECHS: TIW 1,13 ATR gebrochen, Kurs 1,42 ATR unter der Zone 124,90-127,50. Der Wert ist von 137 auf 118 gefallen (-14 Prozent in rund sechs Sitzungen) und durch EMA20/50/100 hindurch; nur die EMA200 115,55 liegt noch 0,55 ATR darunter. RSI-1D 35,55 unter Signal 49,62, RSI-4h 30,47 - und das ist kein Kaufargument, sondern die Bestaetigung der Richtung. COUNTER-THESE-BEFUND, DER DEN AUSSCHLAG GIBT (Note #61, Punkt 5): Barclays hat das Kursziel auf 160$ angehoben - rund +35 Prozent - und die Aktie ist danach 14 Prozent GEFALLEN. Ein Wert, der auf gute '
-  journal_row: 28
-  archived:
-    date: '2026-10-23'
-    reason: Re-Eval >125,50 am 22.10. ausgeloest (131,04), 23.10. Rueckfall auf 123,54 (-5,7 %), Ausbruchsvolumen nur 0,94x - Zaehlu
 - symbol: DR0.DE
   name: Deutsche Rohstoff AG (DR0) (ehem. Monitor)
   direction: LONG
@@ -474,24 +453,6 @@ entries:
   archived:
     date: '2026-09-22'
     reason: 'TIW gebrochen: 1D-Schluss 21.09. 401,65 > 396,00'
-- symbol: CTAS
-  name: Cintas Corporation (CTAS)
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20
-  treiber: ''
-  status: archiviert
-  added: '2026-08-05'
-  expiry: '2026-09-23'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-09-23 - kein Entry-Trigger (#94 Exit vor Earnings). RE-EVAL: Touch EMA20-1D -0,50/+0,50 ATR [pullback].'
-  notes: 'NEU GEFASST 2026-08-26 11:45 CEST (User-Charts 1D+4h). ZONE HOCHGEZOGEN, VERFALL NEU (nicht verlaengert). CHARTSTAND 1D: C 204,76 (-1,27%), O206,68 H207,09 L203,61, Pre-Market 202,78 (-0,97%). MASCHINEN-GATE ERFUELLT: EMA20 202,19 > EMA50 195,33 > EMA100 189,93 > EMA200 189,50, alle steigend. Kurs UEBER allen vier. EXTENSION-GATE FREI: (204,76-202,19)/4,47 = 0,58 ATR, weit unter der 2-ATR-Schwelle - kein Chase. ATR-1D 4,47 und fallend (von ~5,65 bei der Anlage am 05.08.). RSI-1D 56,98 UEBER Signal 55,91. 4h: Kurs 204,75 ueber ALLEN vier EMAs (20: 203,43 / 50: 201,07 / 100: 195,31 / 200: 189,94'
-  journal_row: 37
-  archived:
-    date: '2026-09-23'
-    reason: 'Trade #94 vor Earnings geschlossen (These nicht invalidiert, Neubewertung nach Zahlen'
 - symbol: NEX.PA
   name: Nexans SA (NEX) — Kabel/Netzanschluss (ehem. Monitor)
   direction: LONG
@@ -699,16 +660,19 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-15'
   expiry: '2026-11-02'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-15 BREAKOUT-RETEST-LONG: Niveau 76,82€ (Ausbruch per Schluss 14.10., Vol 1,20x = Daempfer). Touch 76,14-77,35€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 76,43). TIW = 1D-Schluss unter 76,82€. TP1 80,00€ (Aug-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR, Runner-Ziel 84,20€ (52W-Hoch). R:R TP1 1,30-1,89 ueber die Zone. 1% Sizing (Pilot, Vol-Daempfer). ATR 1,7 % frei. Earnings Handcheck (Digest ohne Termin).'
+    gate: 🔴
+    text: 'nach 2026-10-15 BREAKOUT-RETEST-LONG: Niveau 76,82€ (Ausbruch per Schluss 14.10., Vol 1,20x = Daempfer). Touch 76,14-77,35€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 76,43). TIW = 1D-Schluss unter 76,82€. TP1 80,00€ (Aug-Hoch), 1/3 raus; Rest Chandelier 2,0 ATR, Runner-Ziel 84,20€ (52W-Hoch). R:R TP1 1,30-1,89 ueber die Zone. 1% Sizing (Pilot, Vol-Daempfer). ATR 1,7 % frei. Earnings Handcheck (Digest ohne Termin). RE-EVAL: 1D-Schluss <77,35 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[v76 2026-10-22, Hebel C] SL-Term auf TIW (= Niveau 76,82) - 0,30 ATR = 76,43 umgestellt (vorher Retest-Tief - 0,30 ATR); TIW unveraendert. || [RE-EVAL AUSGELOEST 2026-10-14, NEU 2026-10-15, User 13:44, Linien von Claude, User-Chart 1D+4h 13:36] Schluss 14.10. 77,24 > 75,80 (Re-Eval), Ausbruch ueber 76,82 (Sept-Hoch) mit 1,20x Vol. Chart: C 78,28 (H 79,14), EMA20/50/100/200-1D 74,73/74,47/73,66/72,76 bullisch, RSI-1D 68,3 > 50,0, ATR 1,36; 4h EMA 75,84/74,77/74,59/74,21, RSI-4h 77,0 = ueberkauft. Kurs 0,28 ATR ueber der Band-OG, Extension 2,6 ATR -> heute kein Entry, Retest abwarten. Rechnung: an 77,35 SL 75,31 (ATR-Term), R 2,04, TP1 80,00 = 1,30 R; an 76,14 = 1,89 R. 1 % = 73 Stk (~5.600 EUR Direktaktie, E@h5 ~1.120 EUR). GEGENREDE: Aug-Hoch 80 nur 1,3 R ueber der Zone, RSI-4h ueberkauft, Volumen nur Daempfer-Niveau. || UPDATE 2026-09-01 13:35 CEST (User-Charts 1D+4h, Auftrag ''auch nochmal bewerten'') — ZONE GEKAPPT, VERFALL 2026-09-11 BLEIBT, KEIN NEUFASSEN. Es steht weiterhin
     ALLES AUSSER DEM PREIS, und das jetzt seit acht Handelstagen. MESSUNG: Kurs 76,10 EUR (+0,08%), 1D O 76,00 H 76,84 L 75,80 C 76,10. Maschinen-Gate erfuellt: EMA20-1D 76,05 > EMA50-1D 74,80 > EMA100-1D 73,10 > EMA200-1D 72,19, alle steigend. RSI-1D 51,47 ueber Signal 50,39 = Trigger-Bedingung >50 ERFUELLT. RSI-4h 52,49 ueber Signal 48,89, Kurs ueber EMA20-4h 75,92 und EMA50-4h 76,04 - der 4h-Reverse steht wie am 25.08. Earnings in 188 Ta'
   journal_row: 53
+  archived:
+    date: '2026-11-02'
+    reason: 'Auto-Archiv: Halbzeit-Check +2.82 ATR zur Zone 76.14-77.35, Verfall 2026-11-02 (Dauerregel 2026-10-19)'
 - symbol: ROST
   name: Ross Stores (ROST, NASDAQ) — Off-Price-Retail
   direction: LONG
@@ -2573,25 +2537,6 @@ entries:
   archived:
     date: '2026-10-14'
     reason: TIW gebrochen
-- symbol: DE
-  name: Deere & Company (DE, NYSE) - Landmaschinen
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-09-23'
-  expiry: '2026-10-20'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '🔴 ARCHIVIERT 2026-10-14 - kein Entry-Trigger (TIW 662,00$ per Schluss 2026-10-13 gebrochen, 650,00). RE-EVAL: 1D-Schluss >662,00€ (USD, € nur Parser-Konvention). TIW bei Reaktivierung neu rechnen.'
-  notes: '[ARCHIVIERT 2026-10-14, User-Entscheid Morning Check] kein Entry-Trigger (TIW 662,00$ per Schluss 2026-10-13 gebrochen, 650,00); Re-Eval >662,00. Alter Trigger: A: nach 2026-09-30 TREND-PULLBACK-LONG: Touch EMA20-1D -0,60/-0,10 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Stopweite entry-relativ -1,5xATR-1D (16,53 -> -24,80). TIW = 1D-Schluss unter 662,00$. TP1 708,00$ = BE-Stufe (L6). TP2 720,00$ = Runner L6. R:R Runner 1,71-2,05. 1% Sizing. Non-Quanto USD. || [NEU GEFASST 2026-09-30, User-Charts 1D+4h 13:20] ALTE FASSUNG TOT: Ausbruch ueber 708 am 23.09. (Spitze ~720) nicht gehalten = Fehlausbruch, TIW 690 per Schluss 29.09. (680,50) gebrochen. CHART: 1D-EMA 679,17/652,57/625,55/590,55 bullisch, Kurs auf der EMA20, RSI-1D 53,7 < 60,9. 4h: unter EMA20-4h 687,4, ueber EMA50-4h 673,8, RSI-4h 47,0 < 56,4. NEU: Pullback in die Range-Unterkante 668-678 (Sept-Tiefs ~668 + 4h-EMA50). TIW 662 = unter den Sept-Tiefs. TP1 708 = altes Hoch, TP2
-    720 = Spitze 23.09. R:R TP1 1,23-1,56 / TP2 1,71-2,05. FLAG: Fehlausbruch frisch - Bounce-Kerze muss ueberzeugen. Ear'
-  journal_row: 106
-  archived:
-    date: '2026-10-14'
-    reason: TIW gebrochen
 - symbol: BEI.DE
   name: Beiersdorf AG (BEI)
   direction: LONG
@@ -3843,23 +3788,6 @@ entries:
   archived:
     date: '2026-10-27'
     reason: 'Re-Eval >177,90 ausgeloest, Neurechnung: Stack neutral, Earnings 2026-11-04; neuer Re-Eval >181'
-- symbol: CAP.PA
-  name: Capgemini SE (CAP.PA, Euronext Paris) - IT-Dienstleistungen
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 127,30
-  expiry: '2026-10-28'
-  status: archiviert
-  archived:
-    date: '2026-10-28'
-    reason: 'Pitch 2026-10-28: Exit-Test faellt (BRT @ 120,50, erster Widerstand Doppeltop 127,30 = 0,85 R)'
-  treiber: ''
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'BEOBACHTUNG (Pitch 2026-10-28) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >127,30 (Doppeltop 20./22.10., abgelesen) - dann Breakout-Retest @ 127,30 neu rechnen, TIW Kanal-Unterkante pruefen, TP1 Kanal-Oberkante (User-Linie). Parallel PT-5 im Journal. Gegenrede: US-Visa/H-1B-Debatte trifft IT-Dienstleister mit Indien-Anteil. Earnings 2027-02-16.'
-  notes: '[NEU 2026-10-28 11:3x, User 1-3] Kanal-Idee des Users (Trendkanal seit 2026-10-01, Linien steigen ~1 EUR/HT). Re-Eval statt Zeile, weil TP1 ueber ungebrochenes Doppeltop = R:R rueckwaerts (L13).'
-  added: '2026-10-28'
 - symbol: JUN3.DE
   name: Jungheinrich AG Vz (JUN3, Xetra) - Intralogistik, Flurfoerderzeuge
   direction: SHORT
@@ -3973,4 +3901,64 @@ entries:
     gate: 🟢
     text: POSITION-MONITOR (#20 AV, Rest 4 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-30 8 x 202,20EUR Direktaktie (ISIN US0231351067), gettex, Gebuehr 0,00. TP1 215,00EUR gefuellt 2026-10-30 (4 Stk, +51,20 EUR). SL 203,00EUR fuer 4 Stk scharf (User) - ueber Einstand, BE-Runner (L7). Kein Ziel fuer den Rest. Review 2026-11-06.
   notes: '[ENTRY + TEILEXIT #20 AV 2026-10-30, User, Bauchgefuehl] Kauf und Teilverkauf am Tag nach den Q3-Zahlen (2026-10-29). Kein Plan bei Entry, kein Score.'
-updated: '2026-10-31T13:55:54+00:00'
+- symbol: CAP.PA
+  name: CAP.PA (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-02'
+  expiry: '2026-11-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-02 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 119,89€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (3,909 -> -5,864). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 131,15€ [stark: Mehrfach, Rollentausch] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,62 an 118,84 / 1,30 an 119,89. 1 % (Auto-Zeile). Earnings 2027-02-16.'
+  notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Re-Eval >127.3] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 127,65, ATR 3,909, EMA20/50/100/200 120,01/113,58/109,47/110,84, Stack bullish. Zone 118,84–121,97, TIW heute 112,41, TP1-Zone [''2x'', ''Rollentausch'']. Quelle: Re-Eval >127.3.'
+- symbol: DLTR
+  name: DLTR (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-02'
+  expiry: '2026-11-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-02 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 126,52$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,205 -> -6,308). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 137,07$ [stark: Mehrfach, Woche] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 2,21 an 123,16 / 1,55 an 126,52. 1 % (Auto-Zeile). Earnings 2026-12-02.'
+  notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Re-Eval >125.5] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 133,87, ATR 4,205, EMA20/50/100/200 124,42/122,24/120,42/116,52, Stack bullish. Zone 123,16–126,52, TIW heute 120,98, TP1-Zone [''3x'', ''Reaktion 6.1 ATR'', ''Woche'']. Quelle: Re-Eval >125.5.'
+- symbol: DE
+  name: DE (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-02'
+  expiry: '2026-11-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-02 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 661,46$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (18,70 -> -28,04). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 721,22$ [stark: Woche, 52W] 1/3 raus. Flags: 692,69$ mittel (1,65 R) · 705,88$ mittel (2,12 R). Rest Chandelier 2,0 ATR. R:R TP1 2,66 an 646,50 / 2,13 an 661,46. 1 % (Auto-Zeile). Earnings 2026-11-25.'
+  notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Re-Eval >662.0] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 675,48, ATR 18,70, EMA20/50/100/200 652,11/651,05/634,85/603,12, Stack bullish. Zone 646,50–661,46, TIW heute 645,44, TP1-Zone [''Reaktion 4.1 ATR'', ''Woche'', ''52W-Hoch'']. Quelle: Re-Eval >662.0.'
+- symbol: CTAS
+  name: CTAS (Auto-Zeile)
+  direction: LONG
+  klasse: grinder
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-02'
+  expiry: '2026-11-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-02 GRINDER-CONTINUATION-LONG [AUTO]: Touch EMA20-1D -0,25/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 213,39$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,890 -> -7,335). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 226,69$ [stark: Woche, 52W] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,74 an 211,76 / 1,30 an 213,39. Trail EMA20-1,25xATR statt Chandelier. 1 % (Auto-Zeile). Earnings 2026-12-17.'
+  notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Grinder Tag 2] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 219,82, ATR 4,890, EMA20/50/100/200 212,98/206,10/199,81/195,57, Stack bullish. Zone 211,76–215,43, TIW heute 204,63, TP1-Zone [''Reaktion 3.6 ATR'', ''Woche'', ''52W-Hoch'']. Quelle: Grinder Tag 2.'
+updated: '2026-11-02T16:30:52+00:00'

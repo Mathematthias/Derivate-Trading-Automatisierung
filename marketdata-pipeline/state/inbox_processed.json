@@ -143,6 +143,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1OD_BFkyVAz-r3Rq8fjvZQFmvhVEg9rgQ": {
+  "actions": 21,
+  "at": "2026-11-02T16:30:52+00:00",
+  "name": "INBOX-termin-radar-20261102-0832.json",
+  "source": "termin-radar",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1QeQUQuu6-FMe4b9IEfYciEc9DtGcX738": {
   "actions": 1,
   "at": "2026-10-14T11:59:50+00:00",
@@ -179,6 +187,14 @@
   "actions": 1,
   "at": "2026-10-27T11:20:14+00:00",
   "name": "INBOX-morning-check-20261027-1150.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1SbUlTVL9r5xwrN98cmnJIKZa7voGi0v-": {
+  "actions": 4,
+  "at": "2026-11-02T16:30:52+00:00",
+  "name": "INBOX-morning-check-2026-11-02-1235.json",
   "source": "morning-check",
   "status": "ok",
   "verworfen": 0
@@ -251,6 +267,14 @@
   "actions": 2,
   "at": "2026-10-26T16:40:40+00:00",
   "name": "INBOX-morning-check-20261026-1620.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1_2QqLl4tkc3MhI40CRIxU9Dsy8cSDy8C": {
+  "actions": 3,
+  "at": "2026-11-02T16:30:52+00:00",
+  "name": "INBOX-morning-check-20261102-0834.json",
   "source": "morning-check",
   "status": "ok",
   "verworfen": 0
