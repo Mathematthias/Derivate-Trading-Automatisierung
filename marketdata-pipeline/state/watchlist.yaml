@@ -3961,4 +3961,19 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-02 GRINDER-CONTINUATION-LONG [AUTO]: Touch EMA20-1D -0,25/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 213,39$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,890 -> -7,335). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 226,69$ [stark: Woche, 52W] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,74 an 211,76 / 1,30 an 213,39. Trail EMA20-1,25xATR statt Chandelier. 1 % (Auto-Zeile). Earnings 2026-12-17.'
   notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Grinder Tag 2] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 219,82, ATR 4,890, EMA20/50/100/200 212,98/206,10/199,81/195,57, Stack bullish. Zone 211,76–215,43, TIW heute 204,63, TP1-Zone [''Reaktion 3.6 ATR'', ''Woche'', ''52W-Hoch'']. Quelle: Grinder Tag 2.'
-updated: '2026-11-02T16:30:52+00:00'
+- symbol: DHER.DE
+  name: DHER.DE (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-02'
+  expiry: '2026-11-16'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-02 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 37,38€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,3507 -> -0,5261). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 38,21€ [stark: Mehrfach, Woche] 1/3 raus. Flags: 37,18€ mittel (0,06 R) · 37,38€ mittel (0,44 R) · 37,76€ mittel (1,17 R). Rest Chandelier 2,0 ATR. R:R TP1 2,02 an 37,15 / 1,30 an 37,38. 1 % (Auto-Zeile). Earnings 2027-03-25.'
+  notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Pitch long_trend_pullback RRprox 2.19] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 37,06, ATR 0,3507, EMA20/50/100/200 37,25/36,95/35,56/32,49, Stack bullish. Zone 37,15–37,43, TIW heute 36,84, TP1-Zone [''8x'', ''Reaktion 3.3 ATR'', ''Woche'']. Quelle: Pitch long_trend_pullback RRprox 2.19.'
+updated: '2026-11-02T18:42:21+00:00'
