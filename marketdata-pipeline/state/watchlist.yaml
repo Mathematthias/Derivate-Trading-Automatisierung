@@ -333,27 +333,6 @@ entries:
   archived:
     date: '2026-09-01'
     reason: 'Position #81 komplett geschlossen, SL-Exit'
-- symbol: SIX2.DE
-  name: Sixt SE (SIX2)
-  direction: LONG
-  klasse: sonstige
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-07-23'
-  expiry: '2026-09-18'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-09-14 - kein Entry-Trigger. RE-EVAL: 1D-Schluss >74,10€ (Sep-Hoch, abgelesen) + Vol >Avg-20d. [2026-10-19: Re-Eval 71,50 ausgeloest, neu gerechnet: Stop-Buy 71,70 / SL 69,40 / TP1 74 = 1,0 R -> keine Zeile, Schwelle angehoben (User)] [Sp. Trigger-Historie]'
-  - label: B
-    gate: 🔴
-    text: ARCHIVIERT - kein Entry-Trigger. Volltext im Sheet Trigger-Historie.
-  notes: '[ARCHIVIERT 2026-09-14] TIW gebrochen (1D-Schluss 11.09. unter 69,00). DER EIGENTLICHE BEFUND IST DAS REGIME: Die vier Tages-EMAs liegen zwischen 70,73 und 71,46, Spanne 0,46 ATR - das ist ein flaches Cluster, also eine Seitwaertsrange und kein Trend. Genau der Blindfleck aus Note #256: der Pullback-Filter prueft EMA-Stack und Distanz, nicht ob ein Trend ueberhaupt laeuft. Kurs 68,80 unter ALLEN VIER EMAs. Dazu eine unerfuellbare Bedingung: der Trigger verlangt RSI-1D >50, Ist-Wert 38,02 - das sind rund 4 Prozent Kursabstand. NEBENBEFUND: Die Zeile trug als Klasse den Platzhalter ''SETUP'' statt'
-  journal_row: 26
-  archived:
-    date: '2026-09-14'
-    reason: TIW gebrochen, Range statt Trend
 - symbol: DR0.DE
   name: Deutsche Rohstoff AG (DR0) (ehem. Monitor)
   direction: LONG
@@ -3533,9 +3512,10 @@ entries:
   - label: A
     gate: 🟢
     text: 'ARCHIVIERT 2026-11-03 nach Stop-Out. RE-EVAL: 1D-Schluss >35,70€ (Ausbruchsniveau zurueckerobert) - dann Breakout-Retest neu rechnen, fruehestens nach Earnings 2026-11-12. || POSITION-MONITOR (#17 AV, 90 Stk) - kein Entry-Trigger. Entry 2026-10-26 ~16:5x 90 x 36,20EUR Direktaktie (ISIN DE000A3E00M1). SL 34,54EUR (L25 ATR-Term) fuer 90 Stk im Broker setzen. TIW = 1D-Schluss unter 35,70€ (Niveau, BRT-Klassenregel v76; im Review 2026-11-02 von 35,00 zurueckgesetzt, User A). TP1 38,40EUR fuer 30 Stk (1/3). Rest Chandelier 2,0 ATR (Exit-Test v49). Review 2026-11-09 (1. Verlaengerung, Review 2026-11-02, User A). Earnings 2026-11-12. [Sp. Trigger-Historie]'
-  notes: '[EXIT #17 AV 2026-11-03, User] Stop-Out 60 x 34,54 + 30 x 34,44 = 3.105,60 EUR, G/V -152,40 EUR = -1,02 R. Tag -3,6 % (Tief 34,52, Digest 17:33). NACHFOLGE (v62): RE-EVAL eingetragen (Vorschlag Claude, Veto moeglich) - Schluss zurueck ueber das Ausbruchsniveau 35,70; Earnings 2026-11-12 sperren einen Neueinstieg bis danach (Disqualifier <= 7 d) || [REVIEW 2026-11-02, User A] Verlaengert bis 2026-11-09 (1. Verlaengerung), TIW zurueck auf das Niveau 35,70 (hebt die Abweichung vom 2026-10-27 auf). Stand U 36,00, -0,12 R; L19 frisch ja: SL nach Klassenregel MIN(36,00-1,44 ; 35,70-0,29) = 34,56 = bestehender SL, R:R bis TP1 1,64; L26-Puffer (35,70-34,54)/0,961 = 1,21 ATR. Ausdruecklich: die alte These war per Schluss 35,44 am 2026-10-27 gebrochen (L23), die Position traegt sich als neues Setup. OCO 34,54/38,40 unveraendert. || [TIW-VERSCHIEBUNG 2026-10-27 23:48, User B] TIW von 35,70 (Ausbruchsniveau, Klassenregel v76) auf 35,00 (4h-Retest-Tief 23.10., vor dem Einstieg sichtbar). REGELABWEICHUNG, zweite des Tages (nach HBH #109): Verschiebung NACH dem Bruch per Schluss (Xetra 35,44 < 35,70) und gegen die BRT-Klassenregel TIW = Niveau. Claude-Position war A (Ausstieg zur Eroeffnung). SL unveraendert 34,54, Risiko unveraendert, L26-Puffer (35,00-34,548)/1,074 = 0,42 ATR. Ein 1D-Schluss unter 35,00 ist endgueltig (Ausstieg naechste
-    Eroeffnung). || [ENTRY #17 AV 2026-10-26 ~16:5x, User] 90 x 36,20 EUR Live nach 4h-Bestaetigung (Plan-Limit 36,25 bis 17:00), Gebuehr 0,00. R 1,66, Max-Verlust 149,40 EUR, R:R TP1 1,33, L26-Puffer 1,05 ATR. || ENTRY-TEXT VORHER: nach 2026-10-22 BREAKOUT-RETEST-LONG: Niveau 35,70€ (Range-Hoch Sep/Okt, Ausbruch per Schluss 2026-10-21, Vol 1,04x). Touch 35,70-36,27€ [pullback] (Niveau bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 36,27€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 35,37). Stopweite entry-relativ -1,5xATR-1D (1,092 -> -1,64). TIW = 1D-Schluss unter 35,70€ (Niveau, v76). TP1 38,40€ (Measured Move Range 33,0-35,7, aus User-Chart abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,59 an 35,80. Pilot 1 % (Vol-Daempfer). ATR 3,0 % gelb: Direktaktie 91 Stk oder KO Hebel <=8,3. Earnings 2026-11-12 -> Entry bis 2026-11-04.
-    || [NEU 2026-10-22 ~19:50, Pitch breakout_long RRprox 3,8, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] 1D O 36,26 H 36,56 (52W-Hoch) L 35,80 C 36,10, nachboerslich 35,96; EMA20/50/100/200 34,32/33,55/32,18/30,83 bullisch, RSI-1D 63,2/53,1, ATR 1,092 (3,0 %), Extension 1,63 ATR (frei). Range Aug-Okt ~33,0-35,7 (Okt-Docht ~31,3 nicht gezaehlt) -> Measured Move 38,40, darueber kein alter Widerstand. 4h: letzte Kerze rot am Tief 36,14, EMA20-4h 35,22, RSI-4h 64,7/64,2. Fenster 0,52 ATR eng -> Live-Entry Default. Rechnung: an 35,80 R 1,638 TP1 1,59 R; 36,00 1,47 R; 36,27 1,30 R. Gegenrede: Ausbruchsvolumen schwach (1,04x); Schluss unter 35,70 beendet die Zeile.'
+  notes: '[EXIT #17 AV 2026-11-03, User] Stop-Out 60 x 34,54 + 30 x 34,44 = 3.105,60 EUR, G/V -152,40 EUR = -1,02 R. Tag -3,6 % (Tief 34,52, Digest 17:33). NACHFOLGE (v62): RE-EVAL eingetragen (Vorschlag Claude, Veto moeglich) - Schluss zurueck ueber das Ausbruchsniveau 35,70; Earnings 2026-11-12 sperren einen Neueinstieg bis danach (Disqualifier <= 7 d) || [REVIEW 2026-11-02, User A] Verlaengert bis 2026-11-09 (1. Verlaengerung), TIW zurueck auf das Niveau 35,70 (hebt die Abweichung vom 2026-10-27 auf). Stand U 36,00, -0,12 R; L19 frisch ja: SL nach Klassenregel MIN(36,00-1,44 ; 35,70-0,29) = 34,56 = bestehender SL, R:R bis TP1 1,64; L26-Puffer (35,70-34,54)/0,961 = 1,21 ATR. Ausdruecklich: die alte These war per Schluss 35,44 am 2026-10-27 gebrochen (L23), die Position traegt sich als neues Setup. OCO 34,54/38,40 unveraendert. || [TIW-VERSCHIEBUNG 2026-10-27 23:48, User B] TIW von 35,70 (Ausbruchsniveau, Klassenregel v76) auf 35,00 (4h-Retest-Tief 23.10., vor dem Einstieg sichtbar). REGELABWEICHUNG,
+    zweite des Tages (nach HBH #109): Verschiebung NACH dem Bruch per Schluss (Xetra 35,44 < 35,70) und gegen die BRT-Klassenregel TIW = Niveau. Claude-Position war A (Ausstieg zur Eroeffnung). SL unveraendert 34,54, Risiko unveraendert, L26-Puffer (35,00-34,548)/1,074 = 0,42 ATR. Ein 1D-Schluss unter 35,00 ist endgueltig (Ausstieg naechste Eroeffnung). || [ENTRY #17 AV 2026-10-26 ~16:5x, User] 90 x 36,20 EUR Live nach 4h-Bestaetigung (Plan-Limit 36,25 bis 17:00), Gebuehr 0,00. R 1,66, Max-Verlust 149,40 EUR, R:R TP1 1,33, L26-Puffer 1,05 ATR. || ENTRY-TEXT VORHER: nach 2026-10-22 BREAKOUT-RETEST-LONG: Niveau 35,70€ (Range-Hoch Sep/Okt, Ausbruch per Schluss 2026-10-21, Vol 1,04x). Touch 35,70-36,27€ [pullback] (Niveau bis Entry-Grenze 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 36,27€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 35,37). Stopweite entry-relativ
+    -1,5xATR-1D (1,092 -> -1,64). TIW = 1D-Schluss unter 35,70€ (Niveau, v76). TP1 38,40€ (Measured Move Range 33,0-35,7, aus User-Chart abgelesen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,59 an 35,80. Pilot 1 % (Vol-Daempfer). ATR 3,0 % gelb: Direktaktie 91 Stk oder KO Hebel <=8,3. Earnings 2026-11-12 -> Entry bis 2026-11-04. || [NEU 2026-10-22 ~19:50, Pitch breakout_long RRprox 3,8, User-Auftrag "Beide anlegen", Linien von Claude, User-Chart 1D+4h 19:44] 1D O 36,26 H 36,56 (52W-Hoch) L 35,80 C 36,10, nachboerslich 35,96; EMA20/50/100/200 34,32/33,55/32,18/30,83 bullisch, RSI-1D 63,2/53,1, ATR 1,092 (3,0 %), Extension 1,63 ATR (frei). Range Aug-Okt ~33,0-35,7 (Okt-Docht ~31,3 nicht gezaehlt) -> Measured Move 38,40, darueber kein alter Widerstand. 4h: letzte Kerze rot am Tief 36,14, EMA20-4h 35,22, RSI-4h 64,7/64,2. Fenster 0,52 ATR eng -> Live-Entry Default. Rechnung: an 35,80 R 1,638 TP1 1,59 R; 36,00 1,47 R; 36,27 1,30 R. Gegenrede: Ausbruchsvolumen schwach (1,04x); Schluss unter
+    35,70 beendet die Zeile.'
   trade_nr: '17'
 - symbol: TSCO.L
   name: Tesco PLC (TSCO, LSE) - Lebensmittelhandel UK
@@ -3885,7 +3865,7 @@ entries:
   legs:
   - label: A
     gate: 🟢
-    text: 'POSITION-MONITOR (#18 AV, 1 Stk) - Thesen-Spur TECH, kein Entry-Trigger. Entry 2026-10-29 ~17:3x 1 x 1505,00EUR Direktaktie (ISIN NL0010273215), Gebuehr 0,00. SL 1369,83EUR (= Okt-Tief 1.385,00 - 0,30 x ATR 50,57; User 2026-10-29 17:46). Preis-Falsifikat Vehikel 1D-Schluss unter 1.385,00. TP1 1632,00EUR (Teilgewinn, erste starke Marke nach der Bremse 1.525-1.541). Ziel 52W-Hoch ~1.741. Review 2026-11-18 (nach NVDA Q3 2026-11-17, zweite Haelfte NVDA). Zeitstopp 2026-12-02. Kein Auto-Archiv (Thesen-Spur).'
+    text: POSITION-MONITOR (#18 AV, 1 Stk) - Thesen-Spur TECH, kein Entry-Trigger. Entry 2026-10-29 ~17:3x 1 x 1505,00EUR Direktaktie (ISIN NL0010273215), Gebuehr 0,00. SL 1369,83EUR (= Okt-Tief 1.385,00 - 0,30 x ATR 50,57; User 2026-10-29 17:46). Preis-Falsifikat Vehikel 1D-Schluss unter 1.385,00. TP1 1632,00EUR (Teilgewinn, erste starke Marke nach der Bremse 1.525-1.541). Ziel 52W-Hoch ~1.741. Review 2026-11-18 (nach NVDA Q3 2026-11-17, zweite Haelfte NVDA). Zeitstopp 2026-12-02. Kein Auto-Archiv (Thesen-Spur).
   notes: '[EXIT #18 AV 2026-11-03, User] Stop-Out 1 x 1.367,20 EUR (Stop 1.369,83 im Gap unterschritten, Open 1.367,00, Gap -2,9 %; Kurs 17:33 1.391,60). G/V -137,80 EUR = -1,02 R am Vehikel-Stop, -0,92 R Thesen-Budget. These TECH: ^IXIC-Schluss 2026-11-02 25.164 unter EMA200 ~25.222 = Preis-Falsifikat (b). NACHFOLGE (v62): keine Chart-Zeile (Thesen-Spur); Verdikt der These entscheidet der User || [ENTRY #18 AV 2026-10-29 17:39, User "Kauf 1x1505"] Starter der These TECH (v82, Budget 2 R, Starter 1/2). Risiko 115,20 EUR = 0,77 R. Gekauft vor den AMZN-Zahlen 2026-10-29 (Claude-Vorschlag war morgen, regelkonform beides).'
 - symbol: INTC
   name: 'Intel Corporation (INTC, NASDAQ) [MONITOR #19 AV] - Bauchgefuehl-Trade'
@@ -3995,4 +3975,19 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-02 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 37,38€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,3507 -> -0,5261). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 38,21€ [stark: Mehrfach, Woche] 1/3 raus. Flags: 37,18€ mittel (0,06 R) · 37,38€ mittel (0,44 R) · 37,76€ mittel (1,17 R). Rest Chandelier 2,0 ATR. R:R TP1 2,02 an 37,15 / 1,30 an 37,38. 1 % (Auto-Zeile). Earnings 2027-03-25.'
   notes: '[AUTO 2026-11-02 Morning Check v83, Quelle Pitch long_trend_pullback RRprox 2.19] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 37,06, ATR 0,3507, EMA20/50/100/200 37,25/36,95/35,56/32,49, Stack bullish. Zone 37,15–37,43, TIW heute 36,84, TP1-Zone [''8x'', ''Reaktion 3.3 ATR'', ''Woche'']. Quelle: Pitch long_trend_pullback RRprox 2.19.'
-updated: '2026-11-03T14:39:15+00:00'
+- symbol: SIX2.DE
+  name: SIX2.DE (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-03'
+  expiry: '2026-11-17'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-03 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 72,91€ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (1,634 -> -2,451). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 76,10€ [stark: Mehrfach, Woche, 52W] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,54 an 72,32 / 1,30 an 72,91. 1 % (Auto-Zeile). Earnings 2026-11-12.'
+  notes: '[AUTO 2026-11-03 Morning Check v83, Quelle Re-Eval >74.1] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 76,60, ATR 1,634, EMA20/50/100/200 72,81/71,45/70,94/71,27, Stack bullish. Zone 72,32–73,62, TIW heute 70,96, TP1-Zone [''7x'', ''Reaktion 8.2 ATR'', ''Woche'', ''52W-Hoch'']. Quelle: Re-Eval >74.1.'
+updated: '2026-11-03T17:02:01+00:00'
