@@ -357,6 +357,7 @@ def watchlist_meta(block: dict) -> list[dict]:
 #    {"op": "watchlist.set_gate",   "symbol": "ENR.DE", "leg": "B", "gate": "🔴"},
 #    {"op": "watchlist.set_expiry", "symbol": "JNJ", "expiry": "2026-10-13"},
 #    {"op": "watchlist.add",        "entry": {...wie in watchlist.yaml...}},
+#    {"op": "watchlist.reeval_auto", "symbol": "IOS.DE", "trade_nr": "17", "reeval_op": ">", "reeval_level": 35.7},
 #    {"op": "watchlist.set_field",  "symbol": "PRY.MI", "field": "treiber", "value": "Q3 2026-10-29"},
 #    {"op": "radar.add",            "row": {"date": "2026-10-28", "kat": 1, "ereignis": "...", "werte": "GOOGL", "wirkung": "...", "quelle": "..."}},
 #    {"op": "radar.set_status",     "id": "Z16", "status": "erledigt", "note": "..."},
@@ -504,6 +505,31 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                     raise InboxError(f"Feld {field!r} nicht per set_field aenderbar")
                 e[field] = a.get("value")
                 log.append(f"watchlist {a['symbol']}: {field} -> {a.get('value')!r}")
+
+            elif op == "watchlist.reeval_auto":
+                # v84 (User 2026-11-03, Anlass MRK.DE #83): nach dem Komplett-Exit bekommt die
+                # archivierte Monitor-Zeile ihre Re-Eval automatisch, wenn die Struktur intakt ist.
+                sym, nr = str(a["symbol"]), str(a.get("trade_nr") or "")
+                re_op, re_lvl = str(a["reeval_op"]), float(a["reeval_level"])
+                if re_op not in ("<", ">"):
+                    raise InboxError(f"reeval_op {re_op!r} nicht < oder >")
+                rows = [e for e in wl["entries"] if str(e.get("symbol", "")).upper() == sym.upper()
+                        and e.get("status") == "archiviert" and str(e.get("trade_nr") or "") == nr]
+                if not rows:
+                    log.append(f"watchlist {sym}: reeval_auto uebersprungen (kein Archiv zu #{nr})")
+                    continue
+                e = rows[-1]
+                legs = e.get("legs") or []
+                gesamt = " ".join(str(l.get("text") or "") for l in legs).lower()
+                if "re-eval:" in gesamt or "kein re-eval" in gesamt or "kein re-eval" in str(e.get("notes") or "").lower():
+                    log.append(f"watchlist {sym}: reeval_auto uebersprungen (Re-Eval oder Veto steht schon)")
+                    continue
+                if not legs:
+                    raise InboxError(f"watchlist.reeval_auto {sym} ohne legs")
+                note = f" ({a['reeval_note']})" if a.get("reeval_note") else ""
+                legs[0]["text"] = (str(legs[0].get("text") or "").rstrip()
+                                   + f" RE-EVAL: 1D-Schluss {re_op}{_de_num(re_lvl)}{note} - dann neu rechnen.").strip()
+                log.append(f"watchlist {sym}: Re-Eval {re_op}{_de_num(re_lvl)} nach Exit #{nr}")
 
             elif op == "watchlist.add":
                 entry = dict(a["entry"])
