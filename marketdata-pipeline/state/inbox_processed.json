@@ -135,6 +135,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1LvHQtGXNmJZvZXkEmselMDKVzjdwn60p": {
+  "actions": 2,
+  "at": "2026-11-04T11:27:49+00:00",
+  "name": "INBOX-morning-check-20261104-1228.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1MdML4sRqLoWG4aJsz4HZz62pk8bYVS1v": {
   "actions": 13,
   "at": "2026-10-27T11:20:14+00:00",
