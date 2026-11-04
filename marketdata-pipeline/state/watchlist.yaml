@@ -1990,26 +1990,6 @@ entries:
   archived:
     date: '2026-10-22'
     reason: 'Auto-Archiv: TIW per Schluss gebrochen (72.6 < 74.6654 = EMA50-1D −0,30 ATR) (Dauerregel 2026-10-19)'
-- symbol: DUE.DE
-  name: 'Duerr AG (DUE, XETR) [MONITOR #101] — Maschinenbau/Lackieranlagen'
-  direction: SHORT
-  klasse: position_monitor
-  anker: ''
-  treiber: ''
-  status: archiviert
-  added: '2026-09-07'
-  expiry: '2026-11-05'
-  legs:
-  - label: A
-    gate: 🟢
-    text: 'ARCHIVIERT 2026-11-04 nach Exit Rest vor Earnings. RE-EVAL: 1D-Schluss <17,75€ (alte TIW, Struktur intakt, v84 auto) - Setup fruehestens nach Earnings 2026-11-12 neu rechnen. || POSITION-MONITOR (#101, Rest 80 Stk, RUNNER) - kein Entry-Trigger. OCO 2026-11-04 ~13:00 (User): SL 4,15EUR / TP 4,22EUR fuer 80 Stk. Sichert 80 x (4,15-3,95) - 4,00 = +12,00 EUR (TP +17,60). KO-Exit spaetestens 2026-11-05 (Earnings 2026-11-12, L23 Veto 2) - greift die OCO bis dahin nicht, manuell schliessen. Review 2026-11-05. || POSITION-MONITOR (#101, Rest 80 Stk, RUNNER) - kein Entry-Trigger. TP1 4,65EUR gefuellt 2026-10-08 (80 Stk, U ~16,31). SL 4,02EUR (U ~16,92, Chandelier 1,5 ATR Altregel, nachgezogen 2026-10-22 ~12:1x User; sichert 80 x 0,07 - 4,00 = +1,60 EUR auf den Rest). TIW = 1D-Schluss ueber 17,75€. TP2 5,56EUR (U 15,40) = Runner. Recheck 2026-10-29. Earnings 2026-11-12. [Sp. Trigger-Historie]'
-  notes: '[EXIT #101 2026-11-04, User] Rest 80 x 4,22 = 337,60 - 4,00 (angenommen) = 333,60 EUR, G/V Rest +17,60; Trade gesamt +69,60 EUR = +0,52 R. NACHFOLGE (v62/v84): RE-EVAL <17,75 eingetragen (Struktur intakt: Kurs 16,70 < EMA200 18,69, Stack bearish), Earnings-Sperre bis 2026-11-12. || [OCO 2026-11-04, User] SL 4,02 -> 4,15 EUR, Ziel 4,22 EUR fuer 80 Stk (eingesperrt vor Earnings 2026-11-12). || [RUNNER-RECHECK 2026-10-22, Morning Check, User 12:19] U 16,22, ATR 0,4654. Chandelier 1,5 ATR (Entry vor v49) = 16,22 + 0,70 = U 16,92, 0,89 ATR ueber EMA20-1D 16,50 -> kein Veto. SL 3,64 -> 4,02 EUR (Zert grob aus Basis ~20,94, nicht Methode A). BE-Runner (L7). Naechster Recheck 2026-10-29. || [RUNNER-RECHECK 2026-10-15, Morning Check, User 13:44 ''so umsetzen''] U 15,86 (intraday), ATR 0,456. Chandelier v49: MIN(17,30 ; 15,86+2,0x0,456=16,77) = 16,77 -> VETO (0,39 ATR zur EMA20-1D 16,60 < 0,50). SL bleibt 3,64 EUR (U ~17,30). TP2 15,40 = 1,0 ATR entfernt, 52W-Tief 0,4 % unter Kurs. Naechster
-    Recheck 2026-10-22. || [SYNC 2026-10-09 mit Journal-Uebersicht, Anlass Morning Check] TP1 80x4,65 am 2026-10-08 (+52,00 EUR / +0,39 R), Rest-Risiko 80x(3,95-3,64)=24,80 EUR + 4,00 Gebuehr; Chandelier U 16,93 und BE U ~16,96 per Veto (<0,50 ATR) gesperrt. Gegenargument: bullishe RSI-Divergenz 4h. || [ENTRY #101 2026-09-30: 160 x 3,90 (Limit 3,95), Fill-U ~17,06 geschaetzt, Details im Detail-Sheet] || [30.09. 13:43, User] 4h-Trigger bestaetigt (Schluss 13:00, RSI-4h-Cross unter Signal). LIMIT-KAUF tagesgueltig: Short-Zert (KO 20,30, Basispreis ~20,96 rueckgerechnet aus Zert 4,06 bei U 16,90, BV 1) Limit 3,95 = U ~17,01. Plan bei Fill: 170 Stk, SL 3,07 (U 17,89, L25), TP1 4,56 (U 16,40) fuer 85 Stk, TP2 5,56 (U 15,40). R:R 0,69/1,83. 1%. Vorstandswechsel 01.10. = Risiko in der Haltedauer. || [NEU GEFASST 2026-09-22, User-Charts 1D+4h] Alte Zone an der EMA50 (17,65-17,89) lag -2,53 ATR entfe'
-  journal_row: 69
-  trade_nr: '101'
-  archived:
-    date: '2026-11-04'
-    reason: 'Rest #101 per OCO-Ziel 4,22 vor Earnings 2026-11-12 (User): 80 x 4,22, Trade gesamt +69,60 EUR = +0,52 R'
 - symbol: FPE3.DE
   name: FUCHS SE Vz (FPE3, XETRA) — Schmierstoffe
   direction: LONG
@@ -3749,23 +3729,6 @@ entries:
   archived:
     date: '2026-10-22'
     reason: Verfall 2026-10-22, Kurs 21,48 unter dem Band 21,64-22,51 (Gate ⛔); Klassenfenster Breakdown <= 10 HT endet heute
-- symbol: AFX.DE
-  name: Carl Zeiss Meditec AG (AFX, Xetra) - Medizintechnik/Ophthalmologie
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 35,10
-  expiry: '2026-11-06'
-  treiber: ''
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-28 BREAKOUT-RETEST-LONG: Niveau 35,10€ (Ausbruch per Schluss vor 3 HT, Vol 1,21x = Daempfer). Touch 34,61-35,84€ [pullback] (Niveau -0,50/+0,75 ATR, Stand ATR 0,988) + 4h-Bullish-Reverse-Close (MANUELL) und RSI-1D <= 70 (Klassen-Gate; Stand 71,1). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 35,84€ kein Entry. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (0,988 -> -1,48). TIW = 1D-Schluss unter 35,10€ (Niveau, v76). TP1 38,62€ [stark: Mehrfach] (Pipeline-Zone 38,62-39,20, 3 Beruehrungen; liegt ausserhalb des 6M-Chartfensters - am 1J-Chart pruefen) 1/3 raus. Flags: 36,35 mittel (Okt-Hoch 27.10., Swing). Rest Chandelier 2,0 ATR. R:R TP1 2,23 an 35,32 / 1,88 an 35,84. 1 % (Pilot BRT, Vol-Daempfer): Direktaktie ~100 Stk oder KO Hebel <=8,9. Earnings 2026-12-10. Non-Quanto EUR. RE-EVAL: 1D-Schluss >35,10 (TIW-Rueckeroberung) - dann neu rechnen.'
-  notes: '[NEU 2026-10-28 14:4x, User: Pitches brauchen Zeilen, User-Chart 1D+4h 14:26] Chart: Kurs 35,32, Hoch 27.10. ~36,4 (Docht), EMA20/50/100/200-1D 33,48/32,07/31,00/32,12 (EMA200 ueber EMA100), RSI-1D 71,1 > Signal 65,4, RSI-4h 64,7 < Signal 72,3 (Abkuehlung), ATR 0,988 (2,8 %). Ausbruch aus der Aug/Sep-Range ~28,9-33,0. News: neue CEO Bronwyn Brophy O''Connor (2 Tage alt). GEGENREDE: RSI-1D ueber 70, heute rote Kerze von 35,80, TP1 nur aus der Pipeline-Zone (Kalibrierung PR #48 offen), Flag 36,35 wird an der Band-OG 35,84 zur Bremse (0,34 R).'
-  status: archiviert
-  added: '2026-10-28'
-  archived:
-    date: '2026-10-28'
-    reason: 'Auto-Archiv: TIW per Schluss gebrochen (34.72 < 35.1) (Dauerregel 2026-10-19)'
 - symbol: COP
   name: ConocoPhillips (COP, NYSE) - Oel/Gas E&P
   direction: LONG
@@ -4053,4 +4016,34 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG: Niveau 351,73$ (52W-Hoch Ende Okt., am 04.11. per Docht 354,50 ueberschritten, Schluss 349,51 darunter). Bedingung: Daily-Close >351,73$ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 347,47-358,13$ [pullback] (= Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 358,13$ kein Entry (Zonenkante). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 349,17). Stopweite entry-relativ -1,5xATR-1D (8,53 -> -12,80). TIW = 1D-Schluss unter 351,73$ (Niveau, v76). TP1 377,65$ [stark: Measured Move] (Range 325,81-351,73) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 2,36 an 347,47 / 1,53 an 358,13. Pilot 1 %. Earnings 2027-01-28.'
   notes: '[NEU 2026-11-04 22:30, User: ''neue Zeile'', User-Chart 1D+4h 22:29, Linien von Claude] Earnings Q4 2026-11-02 AMC (Umsatz 114,5 Mrd, EPS 2,10 Beat, Bruttomarge 47,9 %, Guide 45-46 % laut TV-Key-Facts): 03.11. Gap-down bis ~326, 04.11. Reversal O 341,57 H 354,50 L 340,99 C 349,51 (+5,31 %), Vol 88,8 Mio = 2,1x Avg-30d 42,35 Mio. EMA20/50/100/200-1D 341,74/334,87/323,32/304,27 bullish, RSI-1D 57,8, ATR-1D 8,53 (2,44 %). Alte Re-Eval-Marke 348,15 mit Schluss erfuellt (Radar Z105), aber Breakout-Retest @ 348,15 nicht anlegbar: starke Zone 351,43-351,73 (52W-Hoch) nur 0,16 R darueber = TP1 unter 1,3 R (L13 n.F.). Deshalb Niveau = 52W-Hoch 351,73; Docht 354,50 heute mit Schluss darunter = Abweisung, Bedingung Schluss darueber noch offen. Trend-Pullback EMA20 (339,18-346,01) verworfen: starke Zone 342,99-348,15 direkt ueber der Zone. Darueber keine Zone bekannt (ATH) -> TP1 Measured Move (v84), 3,3 ATR vom Kurs.'
-updated: '2026-11-04T22:31:48+01:00'
+- symbol: DUE.DE
+  name: DUE.DE (Auto-Zeile)
+  direction: SHORT
+  klasse: trend_pullback
+  anker: EMA100-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-04'
+  expiry: '2026-11-18'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-04 TREND-PULLBACK-SHORT [AUTO]: Touch EMA100-1D -0,50/+0,30 ATR [pullback] + 4h-Bearish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss - 0,25 ATR, v76) oder Stop-Sell unter deren Tief, unter 17,58€ kein Entry (TP1 < 1,3 R). SL = MAX(Entry+1,5xATR ; TIW+0,30xATR). Stopweite entry-relativ +1,5xATR-1D (0,5017 -> +0,7526). TIW = 1D-Schluss ueber EMA200-1D +0,30 ATR. TP1 15,74€ [stark: Mehrfach, Woche, 52W] 1/3 raus. Flags: 16,24€ mittel (1,14 R). Rest Chandelier 2,0 ATR. R:R TP1 1,53 an 17,71 / 1,30 an 17,58. 1 % (Auto-Zeile). Earnings 2026-11-12.'
+  notes: '[AUTO 2026-11-04 Morning Check v83, Quelle Re-Eval <17.75] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 16,64, ATR 0,5017, EMA20/50/100/200 16,44/16,80/17,56/18,69, Stack bearish. Zone 17,31–17,71, TIW heute 18,84, TP1-Zone [''2x'', ''Woche'', ''52W-Tief'']. Quelle: Re-Eval <17.75.'
+- symbol: AFX.DE
+  name: AFX.DE (Auto-Zeile)
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-04'
+  expiry: '2026-11-18'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG [AUTO]: Niveau 35,10€ (Ausbruch vor 8 HT, Vol 1,21x = Daempfer). Touch 34,60-35,85€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 34,80). TIW = 1D-Schluss unter 35,10€. TP1 38,62€ [stark: Mehrfach, Rollentausch, Woche] 1/3 raus. Flags: 36,10€ mittel (1,00 R). Rest Chandelier 2,0 ATR. R:R TP1 2,67 an 34,60 / 1,83 an 35,85. 1 % (Pilot, Auto-Zeile). Earnings 2026-12-10.'
+  notes: '[AUTO 2026-11-04 Morning Check v83, Quelle Re-Eval >35.1] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 35,78, ATR 1,006, EMA20/50/100/200 34,09/32,60/31,37/32,13, Stack bullish. Zone 34,60–35,85, TP1-Zone [''3x'', ''Rollentausch'', ''Reaktion 4.5 ATR'', ''Woche'']. Quelle: Re-Eval >35.1.'
+updated: '2026-11-04T22:10:06+00:00'
