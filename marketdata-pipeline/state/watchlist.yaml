@@ -1998,13 +1998,13 @@ entries:
   treiber: ''
   status: position
   added: '2026-09-07'
-  expiry: '2026-10-29'
+  expiry: '2026-11-05'
   legs:
   - label: A
     gate: 🟢
-    text: POSITION-MONITOR (#101, Rest 80 Stk, RUNNER) - kein Entry-Trigger. TP1 4,65EUR gefuellt 2026-10-08 (80 Stk, U ~16,31). SL 4,02EUR (U ~16,92, Chandelier 1,5 ATR Altregel, nachgezogen 2026-10-22 ~12:1x User; sichert 80 x 0,07 - 4,00 = +1,60 EUR auf den Rest). TIW = 1D-Schluss ueber 17,75€. TP2 5,56EUR (U 15,40) = Runner. Recheck 2026-10-29. Earnings 2026-11-12. [Sp. Trigger-Historie]
-  notes: '[RUNNER-RECHECK 2026-10-22, Morning Check, User 12:19] U 16,22, ATR 0,4654. Chandelier 1,5 ATR (Entry vor v49) = 16,22 + 0,70 = U 16,92, 0,89 ATR ueber EMA20-1D 16,50 -> kein Veto. SL 3,64 -> 4,02 EUR (Zert grob aus Basis ~20,94, nicht Methode A). BE-Runner (L7). Naechster Recheck 2026-10-29. || [RUNNER-RECHECK 2026-10-15, Morning Check, User 13:44 ''so umsetzen''] U 15,86 (intraday), ATR 0,456. Chandelier v49: MIN(17,30 ; 15,86+2,0x0,456=16,77) = 16,77 -> VETO (0,39 ATR zur EMA20-1D 16,60 < 0,50). SL bleibt 3,64 EUR (U ~17,30). TP2 15,40 = 1,0 ATR entfernt, 52W-Tief 0,4 % unter Kurs. Naechster Recheck 2026-10-22. || [SYNC 2026-10-09 mit Journal-Uebersicht, Anlass Morning Check] TP1 80x4,65 am 2026-10-08 (+52,00 EUR / +0,39 R), Rest-Risiko 80x(3,95-3,64)=24,80 EUR + 4,00 Gebuehr; Chandelier U 16,93 und BE U ~16,96 per Veto (<0,50 ATR) gesperrt. Gegenargument: bullishe RSI-Divergenz 4h. || [ENTRY #101 2026-09-30: 160 x 3,90 (Limit 3,95), Fill-U ~17,06 geschaetzt, Details im Detail-Sheet]
-    || [30.09. 13:43, User] 4h-Trigger bestaetigt (Schluss 13:00, RSI-4h-Cross unter Signal). LIMIT-KAUF tagesgueltig: Short-Zert (KO 20,30, Basispreis ~20,96 rueckgerechnet aus Zert 4,06 bei U 16,90, BV 1) Limit 3,95 = U ~17,01. Plan bei Fill: 170 Stk, SL 3,07 (U 17,89, L25), TP1 4,56 (U 16,40) fuer 85 Stk, TP2 5,56 (U 15,40). R:R 0,69/1,83. 1%. Vorstandswechsel 01.10. = Risiko in der Haltedauer. || [NEU GEFASST 2026-09-22, User-Charts 1D+4h] Alte Zone an der EMA50 (17,65-17,89) lag -2,53 ATR entfe'
+    text: 'POSITION-MONITOR (#101, Rest 80 Stk, RUNNER) - kein Entry-Trigger. OCO 2026-11-04 ~13:00 (User): SL 4,15EUR / TP 4,22EUR fuer 80 Stk. Sichert 80 x (4,15-3,95) - 4,00 = +12,00 EUR (TP +17,60). KO-Exit spaetestens 2026-11-05 (Earnings 2026-11-12, L23 Veto 2) - greift die OCO bis dahin nicht, manuell schliessen. Review 2026-11-05. || POSITION-MONITOR (#101, Rest 80 Stk, RUNNER) - kein Entry-Trigger. TP1 4,65EUR gefuellt 2026-10-08 (80 Stk, U ~16,31). SL 4,02EUR (U ~16,92, Chandelier 1,5 ATR Altregel, nachgezogen 2026-10-22 ~12:1x User; sichert 80 x 0,07 - 4,00 = +1,60 EUR auf den Rest). TIW = 1D-Schluss ueber 17,75€. TP2 5,56EUR (U 15,40) = Runner. Recheck 2026-10-29. Earnings 2026-11-12. [Sp. Trigger-Historie]'
+  notes: '[OCO 2026-11-04, User] SL 4,02 -> 4,15 EUR, Ziel 4,22 EUR fuer 80 Stk (eingesperrt vor Earnings 2026-11-12). || [RUNNER-RECHECK 2026-10-22, Morning Check, User 12:19] U 16,22, ATR 0,4654. Chandelier 1,5 ATR (Entry vor v49) = 16,22 + 0,70 = U 16,92, 0,89 ATR ueber EMA20-1D 16,50 -> kein Veto. SL 3,64 -> 4,02 EUR (Zert grob aus Basis ~20,94, nicht Methode A). BE-Runner (L7). Naechster Recheck 2026-10-29. || [RUNNER-RECHECK 2026-10-15, Morning Check, User 13:44 ''so umsetzen''] U 15,86 (intraday), ATR 0,456. Chandelier v49: MIN(17,30 ; 15,86+2,0x0,456=16,77) = 16,77 -> VETO (0,39 ATR zur EMA20-1D 16,60 < 0,50). SL bleibt 3,64 EUR (U ~17,30). TP2 15,40 = 1,0 ATR entfernt, 52W-Tief 0,4 % unter Kurs. Naechster Recheck 2026-10-22. || [SYNC 2026-10-09 mit Journal-Uebersicht, Anlass Morning Check] TP1 80x4,65 am 2026-10-08 (+52,00 EUR / +0,39 R), Rest-Risiko 80x(3,95-3,64)=24,80 EUR + 4,00 Gebuehr; Chandelier U 16,93 und BE U ~16,96 per Veto (<0,50 ATR) gesperrt. Gegenargument: bullishe
+    RSI-Divergenz 4h. || [ENTRY #101 2026-09-30: 160 x 3,90 (Limit 3,95), Fill-U ~17,06 geschaetzt, Details im Detail-Sheet] || [30.09. 13:43, User] 4h-Trigger bestaetigt (Schluss 13:00, RSI-4h-Cross unter Signal). LIMIT-KAUF tagesgueltig: Short-Zert (KO 20,30, Basispreis ~20,96 rueckgerechnet aus Zert 4,06 bei U 16,90, BV 1) Limit 3,95 = U ~17,01. Plan bei Fill: 170 Stk, SL 3,07 (U 17,89, L25), TP1 4,56 (U 16,40) fuer 85 Stk, TP2 5,56 (U 15,40). R:R 0,69/1,83. 1%. Vorstandswechsel 01.10. = Risiko in der Haltedauer. || [NEU GEFASST 2026-09-22, User-Charts 1D+4h] Alte Zone an der EMA50 (17,65-17,89) lag -2,53 ATR entfe'
   journal_row: 69
   trade_nr: '101'
 - symbol: FPE3.DE
@@ -3989,7 +3989,7 @@ entries:
   direction: LONG
   klasse: breakout_retest
   anker: Ausbruchsniveau
-  treiber: ''
+  treiber: Q3 2026-11-03 (Zahlen, Ausbruch ist Earnings-Reaktion; User 2026-11-04). Naechste Earnings ~Feb 2027
   status: aktiv
   quelle: auto
   added: '2026-11-04'
@@ -3999,4 +3999,18 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG [AUTO]: Niveau 359,35€ (Ausbruch vor 1 HT, Vol 3,78x). Touch 354,85-359,96€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: TP1 < 1,3 R) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 356,65). TIW = 1D-Schluss unter 359,35€. TP1 377,50€ [stark: Woche, 52W] 1/3 raus. Flags: 373,00€ mittel (1,34 R). Rest Chandelier 2,0 ATR. R:R TP1 1,68 an 354,85 / 1,30 an 359,96. 1 % (Pilot, Auto-Zeile). Earnings Handcheck (Digest ohne Termin).'
   notes: '[AUTO 2026-11-04 Morning Check v83, Quelle Re-Eval >369.0] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 369,15, ATR 8,995, EMA20/50/100/200 356,46/352,41/344,43/339,59, Stack bullish. Zone 354,85–359,96, TP1-Zone [''Reaktion 5.3 ATR'', ''Woche'', ''52W-Hoch'']. Quelle: Re-Eval >369.0.'
-updated: '2026-11-04T11:27:49+00:00'
+- symbol: RSG
+  name: Republic Services Inc. (RSG, NYSE) - Abfallentsorgung/Recycling USA
+  direction: LONG
+  klasse: grinder
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  added: '2026-11-04'
+  expiry: '2026-11-18'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-04 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 234,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,17 -> -7,75). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR (Zustand: Stack, Faecher, Tempo unter 0,6). TP1 249,00$ [stark: 52W] 1/3 raus. Kein TP2, Trail EMA20-1,25xATR. R:R TP1 1,84 an 231,84 / 1,30 an 234,00. 1 % Pilot: Direktaktie. Earnings 2027-02-16.'
+  notes: '[NEU 2026-11-04 ~13:10, Morning Check, User-Chart 1D+4h 12:58, Linien von Claude] Grinder Tag 2 (seit 2026-11-03), Tempo 2,23, ATR 2,13 %, r2 0,86, Stack 233,13/225,60/221,21/219,28. Zone EMA20 +-0,25 ATR deckt sich mit starker Zone 230,88-233,42 (2x, Rollentausch, Woche). TP1 knapp unter 52W-Hoch 249,4 (Docht 2026-11-02); darueber kein Widerstand im Digest. Flags: baerische RSI-1D-Divergenz (Hoch 2026-11-02 ueber Ende-Okt-Hoch, RSI ~70 unter ~78), ATR beschleunigt 3,5 -> 5,17 (atr_z 2,45) nach Q3 2026-10-29 und Barclays-Kursziel 254. Darum nur am EMA20-Ruecksetzer, nicht in die Staerke. 4h 12:58: Kurs 242,86 ueber 4h-EMA20 238,43, RSI-4h 63,4 unter Signal 64,5.'
+updated: '2026-11-04T13:03:21+01:00'
