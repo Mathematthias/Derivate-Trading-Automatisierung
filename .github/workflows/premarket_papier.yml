@@ -1,0 +1,114 @@
+name: Premarket-Papier (Limit am PM-Tief nach Earnings)
+
+# Papier-Spur, User-Idee 2026-11-04 (Anlass ANET): Limit am unteren Rand der vorboerslichen
+# Spanne nach guten Zahlen, Ziel A = PM-Hoch, Vergleich „Markt zur Eroeffnung“.
+# Reine Messung (L24), kein Geld, Urteil ab n >= 20 gefuellten Faellen.
+# Regeln und Ersatzkriterien: src/premarket_papier.py (Docstring).
+#
+# Laeuft Mo-Fr 21:45 UTC (nach US-Schluss, Winter 21:00 / Sommer 20:00 UTC).
+# On demand mit backfill_days (yfinance liefert 5m-Kerzen inkl. Premarket ~60 Tage zurueck).
+
+on:
+  schedule:
+    - cron: '45 21 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Auswertungstag JJJJ-MM-TT (leer = heute, New York)'
+        required: false
+        default: ''
+      backfill_days:
+        description: 'Zusaetzlich so viele Kalendertage zurueck (0-55)'
+        required: false
+        default: '0'
+      symbols:
+        description: 'Optional: Komma-Liste, beschraenkt die Kandidaten'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-yaml
+  cancel-in-progress: false
+
+jobs:
+  papier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Juengsten Digest aus Drive holen
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
+        run: |
+          mkdir -p work
+          python - <<'PY'
+          import json, os, pathlib, sys
+          from drive_writer import build_drive_service, read_latest_json_file
+          svc = build_drive_service()
+          dg = read_latest_json_file(svc, os.environ["BRIEFING_FOLDER_ID"], "BRIEFING-DIGEST-")
+          if not dg:
+              sys.exit("kein BRIEFING-DIGEST gefunden")
+          pathlib.Path("work/digest.json").write_text(json.dumps(dg), encoding="utf-8")
+          print("Digest:", dg.get("generated"))
+          PY
+
+      - name: Auswerten
+        working-directory: marketdata-pipeline
+        env:
+          PYTHONPATH: ./src
+          IN_DATE: ${{ github.event.inputs.date }}
+          IN_BACKFILL: ${{ github.event.inputs.backfill_days }}
+          IN_SYMBOLS: ${{ github.event.inputs.symbols }}
+        run: |
+          STAMP=$(date +%Y%m%d-%H%M)
+          ARGS="--digest work/digest.json --state-dir state --md work/PREMARKET-PAPIER-$STAMP.md"
+          [ -n "$IN_DATE" ] && ARGS="$ARGS --date $IN_DATE"
+          [ -n "$IN_BACKFILL" ] && ARGS="$ARGS --backfill-days $IN_BACKFILL"
+          [ -n "$IN_SYMBOLS" ] && ARGS="$ARGS --symbols $IN_SYMBOLS"
+          python src/premarket_papier.py $ARGS
+          cat work/PREMARKET-PAPIER-*.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/state/premarket_papier.csv
+          git commit -m "state: Premarket-Papier ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Zusammenfassung in den Briefing-Ordner
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, write_markdown_file
+          svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
+          for p in sorted(pathlib.Path("work").glob("PREMARKET-PAPIER-*.md")):
+              write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
+          PY
