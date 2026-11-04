@@ -3841,14 +3841,17 @@ entries:
   anker: Tief Earnings-Tag 63,20
   treiber: ''
   expiry: '2026-11-06'
-  status: position
+  status: archiviert
   added: '2026-10-30'
   trade_nr: '19'
   legs:
   - label: A
     gate: 🟢
-    text: POSITION-MONITOR (#19 AV, 16 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-30 16 x 61,00EUR Direktaktie (ISIN US4581401001), gettex, Gebuehr 0,00. SL 51,63EUR (U 57,66$ = MIN(68,12-1,5x6,97 ; TIW-0,30 ATR), FX 1,1168) als OCO mit TP1 72,50EUR fuer 16 Stk (U ~80,97$, in der Earnings-Luecke 68,77-92,07, unter der starken Zone Aug-/Okt-Tiefs ~82-86$) - vom User zu setzen. TIW = 1D-Schluss unter 63,20 (Tief Earnings-Tag 30.10.). R:R 1,23. Review 2026-11-06.
-  notes: '[ENTRY #19 AV 2026-10-30, User, Bauchgefuehl] Kauf nahe Tageshoch am Earnings-Tag (Q3: -28,6 %, Vol 448 M ~3,9x, Q4-Guide 15-16 Mrd / EPS 0,25, Fab-Ausfall Israel). Kurs unter allen 1D-EMAs (94,30/99,70/98,54/87,25), RSI-1D 25,1, ATR-1D 6,97 (10,6 %). Bewusster Regelbruch: L23 Veto 2 (frischer Gegen-Katalysator), ATR > 8 %. Variante A (L25, 1,0 R) und TP 72,50 fuer alle 16 Stk vom User gewaehlt 21:39.'
+    text: 'ARCHIVIERT 2026-11-04 nach Stop-Out. Nachfolge offen (Struktur gebrochen: Kurs 60,55 unter EMA200 86,67, Stack neutral) - Frage an User. || POSITION-MONITOR (#19 AV, 16 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-10-30 16 x 61,00EUR Direktaktie (ISIN US4581401001), gettex, Gebuehr 0,00. SL 51,63EUR (U 57,66$ = MIN(68,12-1,5x6,97 ; TIW-0,30 ATR), FX 1,1168) als OCO mit TP1 72,50EUR fuer 16 Stk (U ~80,97$, in der Earnings-Luecke 68,77-92,07, unter der starken Zone Aug-/Okt-Tiefs ~82-86$) - vom User zu setzen. TIW = 1D-Schluss unter 63,20 (Tief Earnings-Tag 30.10.). R:R 1,23. Review 2026-11-06.'
+  notes: '[EXIT #19 AV 2026-11-04, User] Stop-Out 16 x 51,58 = 825,28 EUR (SL 51,63), G/V -150,72 EUR = -1,01 R. v62/v84: Struktur gebrochen -> kein Auto-Re-Eval, Frage Re-Eval/Nachfolge/nichts gestellt. || [ENTRY #19 AV 2026-10-30, User, Bauchgefuehl] Kauf nahe Tageshoch am Earnings-Tag (Q3: -28,6 %, Vol 448 M ~3,9x, Q4-Guide 15-16 Mrd / EPS 0,25, Fab-Ausfall Israel). Kurs unter allen 1D-EMAs (94,30/99,70/98,54/87,25), RSI-1D 25,1, ATR-1D 6,97 (10,6 %). Bewusster Regelbruch: L23 Veto 2 (frischer Gegen-Katalysator), ATR > 8 %. Variante A (L25, 1,0 R) und TP 72,50 fuer alle 16 Stk vom User gewaehlt 21:39.'
+  archived:
+    date: '2026-11-04'
+    reason: 'Stop-Out #19 AV (User): 16 x 51,58 EUR, G/V -150,72 EUR = -1,01 R'
 - symbol: AMZN
   name: 'Amazon.com Inc. (AMZN, NASDAQ) [MONITOR #20 AV] - Bauchgefuehl-Trade'
   direction: LONG
@@ -4016,4 +4019,4 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-04 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,25 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 234,00$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,17 -> -7,75). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR (Zustand: Stack, Faecher, Tempo unter 0,6). TP1 249,00$ [stark: 52W] 1/3 raus. Kein TP2, Trail EMA20-1,25xATR. R:R TP1 1,84 an 231,84 / 1,30 an 234,00. 1 % Pilot: Direktaktie. Earnings 2027-02-16.'
   notes: '[NEU 2026-11-04 ~13:10, Morning Check, User-Chart 1D+4h 12:58, Linien von Claude] Grinder Tag 2 (seit 2026-11-03), Tempo 2,23, ATR 2,13 %, r2 0,86, Stack 233,13/225,60/221,21/219,28. Zone EMA20 +-0,25 ATR deckt sich mit starker Zone 230,88-233,42 (2x, Rollentausch, Woche). TP1 knapp unter 52W-Hoch 249,4 (Docht 2026-11-02); darueber kein Widerstand im Digest. Flags: baerische RSI-1D-Divergenz (Hoch 2026-11-02 ueber Ende-Okt-Hoch, RSI ~70 unter ~78), ATR beschleunigt 3,5 -> 5,17 (atr_z 2,45) nach Q3 2026-10-29 und Barclays-Kursziel 254. Darum nur am EMA20-Ruecksetzer, nicht in die Staerke. 4h 12:58: Kurs 242,86 ueber 4h-EMA20 238,43, RSI-4h 63,4 unter Signal 64,5.'
-updated: '2026-11-04T13:11:19+01:00'
+updated: '2026-11-04T14:20:33+01:00'
