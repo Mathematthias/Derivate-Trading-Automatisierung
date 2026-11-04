@@ -68,3 +68,4 @@ skills/
 !marketdata-pipeline/state/mfe_mae.csv
 !marketdata-pipeline/state/tiw_events.csv
 !marketdata-pipeline/state/thesen_audit.csv
+!marketdata-pipeline/state/premarket_papier.csv
