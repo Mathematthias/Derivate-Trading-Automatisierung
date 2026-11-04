@@ -732,8 +732,9 @@ rows:
   wirkung: 'Setup-Neubewertung; Stand 2026-10-21: Kurs 339,50, 4h tiefere Hochs seit 15.10., EMA20-Pullback an 338 nur ~1,0 R bis ATH'
   quelle: 'Morning Check 2026-10-21, User-Chart AAPL 14:21, User: ja'
   id: Z105
-  status: offen
+  status: erledigt
   added: '2026-10-21'
+  note: '2026-11-04: Schluss 349,51 > 348,15 bei 2,1x Vol erfuellt; Zeile AAPL neu als Breakout-Retest @ 351,73 (52W-Hoch), weil 348,15 vom 52W-Hoch 0,16 R gedeckelt'
 - date: '2026-11-05'
   kat: 5
   werte: MCD
@@ -983,4 +984,4 @@ rows:
   id: Z132
   status: offen
   added: '2026-11-02'
-updated: '2026-11-04T22:00:50+01:00'
+updated: '2026-11-04T22:31:48+01:00'

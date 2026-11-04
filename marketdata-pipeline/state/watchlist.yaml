@@ -4038,4 +4038,19 @@ entries:
     gate: 🟢
     text: POSITION-MONITOR (#21 AV, 12 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-11-04 ~15:3x 12 x 156,00EUR Direktaktie (ISIN US0404132054), gettex, Gebuehr 0,00, Fill-U ~175,69$ (FX 1,1262, geschaetzt). SL 154,51EUR (U 173,82$ = Tief Earnings-Tag 176,66 - 0,30 x ATR 9,47, nachgezogen 04.11. 16:07 User; vorher Vorschlag 144,32) als OCO mit TP1 170,04EUR fuer 12 Stk (U 191,50$, 4h-Erholungshoch Ende Okt., abgelesen; R:R 1,20). TIW = 1D-Schluss unter 169,89$ (EMA200-1D / Lueckenschluss nach Q3). Widerstaende 183,6-183,7 und 188,9$. Review 2026-11-11.
   notes: '[SL 2026-11-04 16:07, User Variante A] 144,32 -> 154,51 EUR (U 173,82, Earnings-Tagestief - 0,30 ATR), ersetzt TIW 169,89 funktional; am Stop -17,88 EUR. || [ENTRY #21 AV 2026-11-04, User, Bauchgefuehl nach Q3] Kauf zur US-Eroeffnung, Variante B aus dem Sparring (Kauf jetzt, R:R 1,11-1,20), Claude-Empfehlung war C (Limit 172) oder nichts; L31 (kein Bauchgefuehl-Trade ohne Karte) bewusst gebrochen. Q3 Umsatz/Guide je ~+10 % ueber Konsens, Billings-Proxy QoQ ~-2 %. ATR 5,2 % (rot). Max-Verlust 140,16 EUR.'
-updated: '2026-11-04T22:00:50+01:00'
+- symbol: AAPL
+  name: Apple Inc. (AAPL, NASDAQ) - Consumer Electronics/Services
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau 351,73 (52W-Hoch)
+  treiber: Q4 FY26 2026-11-02 (Gap-down 03.11., Reversal 04.11. +5,3 % bei 2,1x Vol)
+  status: aktiv
+  quelle: hand
+  added: '2026-11-04'
+  expiry: '2026-11-18'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG: Niveau 351,73$ (52W-Hoch Ende Okt., am 04.11. per Docht 354,50 ueberschritten, Schluss 349,51 darunter). Bedingung: Daily-Close >351,73$ + Vol >=1,0x Avg-20d (unter 1,3x Daempfer) bestaetigt, danach Touch 347,47-358,13$ [pullback] (= Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 358,13$ kein Entry (Zonenkante). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 349,17). Stopweite entry-relativ -1,5xATR-1D (8,53 -> -12,80). TIW = 1D-Schluss unter 351,73$ (Niveau, v76). TP1 377,65$ [stark: Measured Move] (Range 325,81-351,73) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 2,36 an 347,47 / 1,53 an 358,13. Pilot 1 %. Earnings 2027-01-28.'
+  notes: '[NEU 2026-11-04 22:30, User: ''neue Zeile'', User-Chart 1D+4h 22:29, Linien von Claude] Earnings Q4 2026-11-02 AMC (Umsatz 114,5 Mrd, EPS 2,10 Beat, Bruttomarge 47,9 %, Guide 45-46 % laut TV-Key-Facts): 03.11. Gap-down bis ~326, 04.11. Reversal O 341,57 H 354,50 L 340,99 C 349,51 (+5,31 %), Vol 88,8 Mio = 2,1x Avg-30d 42,35 Mio. EMA20/50/100/200-1D 341,74/334,87/323,32/304,27 bullish, RSI-1D 57,8, ATR-1D 8,53 (2,44 %). Alte Re-Eval-Marke 348,15 mit Schluss erfuellt (Radar Z105), aber Breakout-Retest @ 348,15 nicht anlegbar: starke Zone 351,43-351,73 (52W-Hoch) nur 0,16 R darueber = TP1 unter 1,3 R (L13 n.F.). Deshalb Niveau = 52W-Hoch 351,73; Docht 354,50 heute mit Schluss darunter = Abweisung, Bedingung Schluss darueber noch offen. Trend-Pullback EMA20 (339,18-346,01) verworfen: starke Zone 342,99-348,15 direkt ueber der Zone. Darueber keine Zone bekannt (ATH) -> TP1 Measured Move (v84), 3,3 ATR vom Kurs.'
+updated: '2026-11-04T22:31:48+01:00'
