@@ -87,6 +87,7 @@ class Zeile:
     klasse: str
     text: str
     added: Optional[date]
+    kurs_anlage: Optional[float] = None   # „Kurs X“ aus der Notiz der Zeile (Auto-Zeilen schreiben ihn)
 
     @property
     def tp1(self) -> Optional[float]:
@@ -242,9 +243,10 @@ def ohne_touch(z: Zeile, daily: pd.DataFrame) -> Optional[Fall]:
     vor = daily[[pd.Timestamp(i).date() < z.added for i in daily.index]]
     if seit.empty or vor.empty:
         return None
-    # Fix 2026-11-05 (SMIN.L): stand der Kurs schon am Anlagetag am/ueber TP1, ist „TP1 erreicht“ kein Weglaufen
-    c0 = float(seit["Close"].iloc[0])
-    if (c0 >= z.tp1) if z.long else (c0 <= z.tp1):
+    # Fix 2026-11-05 (SMIN.L): stand der Kurs bei Anlage der Zeile schon am/ueber TP1, ist „TP1 erreicht“
+    # kein Weglaufen. Massgeblich ist der Kurs zum Anlagezeitpunkt (Notiz), sonst der Eroeffnungskurs des Tages.
+    k0 = z.kurs_anlage if z.kurs_anlage is not None else float(seit["Open"].iloc[0])
+    if (k0 >= z.tp1) if z.long else (k0 <= z.tp1):
         return None
     zone, _, A = zone_und_tiw(z, vor)
     if not zone:
@@ -292,8 +294,11 @@ def zeilen_aus_state(state_dir: str) -> list[Zeile]:
             added = date.fromisoformat(str(w.get("added"))[:10])
         except ValueError:
             added = None
+        # Notizen werden vorne angefuegt: die Anlage-Notiz steht am Ende -> letzter Treffer
+        km = re.findall(r"\bKurs\s+" + NUM, str(w.get("notes") or ""))
         out.append(Zeile(str(w["symbol"]), str(w.get("direction", "LONG")).upper().startswith("L"),
-                         str(w.get("klasse")), str(w["legs"][0].get("text", "")), added))
+                         str(w.get("klasse")), str(w["legs"][0].get("text", "")), added,
+                         _zahl(km[-1]) if km else None))
     return out
 
 

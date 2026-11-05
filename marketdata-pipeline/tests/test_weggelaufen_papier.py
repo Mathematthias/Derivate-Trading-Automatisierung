@@ -110,7 +110,16 @@ def test_lauf_ein_offener_trade_je_zeile_und_nicht_vor_anlage(tmp_path, monkeypa
 
 
 def test_ohne_touch_nicht_wenn_kurs_bei_anlage_schon_ueber_tp1():
-    z = wp.Zeile("SMIN.L", True, "trend_pullback", "Touch 25,51-25,94 [pullback]. TIW = 1D-Schluss unter 25,42. TP1 26,98 [stark: Mehrfach].", TAG)
+    z = wp.Zeile("SMIN.L", True, "trend_pullback", "Touch 25,51-25,94 [pullback]. TIW = 1D-Schluss unter 25,42. TP1 26,98 [stark: Mehrfach].",
+                 TAG, kurs_anlage=26.98)
     d = _daily()
-    d.loc[pd.Timestamp(TAG)] = [27.0, 27.3, 26.9, 27.16]
+    d.loc[pd.Timestamp(TAG)] = [26.9, 27.3, 26.8, 27.16]
     assert wp.ohne_touch(z, d) is None
+
+
+def test_ohne_touch_race_schluss_am_anlagetag_ueber_tp1_zaehlt():
+    z = wp.Zeile("RACE.MI", True, "breakout_retest", "Touch 354,85-359,96€ [pullback]. TIW = 1D-Schluss unter 359,35€. TP1 377,50€.",
+                 TAG, kurs_anlage=369.15)
+    d = _daily()
+    d.loc[pd.Timestamp(TAG)] = [373.4, 379.0, 363.85, 378.0]
+    assert wp.ohne_touch(z, d) is not None
