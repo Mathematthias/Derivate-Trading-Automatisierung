@@ -95,3 +95,22 @@ def test_csv_roundtrip(tmp_path):
     g = wp._fall_aus_row(rows[0])
     assert g.Entry == f.Entry and g.Status == "offen"
     assert "weggelaufen" in wp.zusammenfassung(rows)
+
+
+def test_lauf_ein_offener_trade_je_zeile_und_nicht_vor_anlage(tmp_path, monkeypatch):
+    z = wp.Zeile("DE", True, "trend_pullback", TEXT, TAG)
+    monkeypatch.setattr(wp, "zeilen_aus_state", lambda d: [z])
+    rows2 = _signal_tag_bars() + [(r[0] + timedelta(days=1), *r[1:]) for r in _signal_tag_bars() if r[0] == TAG]
+    d = _daily()
+    d.loc[pd.Timestamp(TAG + timedelta(days=1))] = [662.0, 676.0, 645.0, 675.0]
+    faelle, _ = wp.lauf(str(tmp_path), [TAG - timedelta(days=1), TAG, TAG + timedelta(days=1)],
+                        daily_fn=lambda s: d, h1_fn=lambda s: _h1(rows2), csv_path=tmp_path / "w.csv")
+    w = [f for f in faelle if f.Art == "weggelaufen"]
+    assert [f.Signal_Datum for f in w] == [TAG.isoformat()]
+
+
+def test_ohne_touch_nicht_wenn_kurs_bei_anlage_schon_ueber_tp1():
+    z = wp.Zeile("SMIN.L", True, "trend_pullback", "Touch 25,51-25,94 [pullback]. TIW = 1D-Schluss unter 25,42. TP1 26,98 [stark: Mehrfach].", TAG)
+    d = _daily()
+    d.loc[pd.Timestamp(TAG)] = [27.0, 27.3, 26.9, 27.16]
+    assert wp.ohne_touch(z, d) is None

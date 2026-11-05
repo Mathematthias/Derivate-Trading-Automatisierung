@@ -242,6 +242,10 @@ def ohne_touch(z: Zeile, daily: pd.DataFrame) -> Optional[Fall]:
     vor = daily[[pd.Timestamp(i).date() < z.added for i in daily.index]]
     if seit.empty or vor.empty:
         return None
+    # Fix 2026-11-05 (SMIN.L): stand der Kurs schon am Anlagetag am/ueber TP1, ist „TP1 erreicht“ kein Weglaufen
+    c0 = float(seit["Close"].iloc[0])
+    if (c0 >= z.tp1) if z.long else (c0 <= z.tp1):
+        return None
     zone, _, A = zone_und_tiw(z, vor)
     if not zone:
         return None
@@ -373,7 +377,11 @@ def lauf(state_dir: str, tage: list[date], daily_fn: Callable = yf_daily, h1_fn:
             prot.append(f"{z.symbol}: keine Daten")
             continue
         for t in tage:
-            if any(b.Symbol == z.symbol and b.Signal_Datum == t.isoformat() and b.Art == "weggelaufen" for b in bestand + neu):
+            # Fix 2026-11-05: keine Signale vor Anlage der Zeile (RACE.MI), und je Zeile nur ein offener Papiertrade (SRT.DE, DE)
+            if z.added and t < z.added:
+                continue
+            if any(b.Symbol == z.symbol and b.Art == "weggelaufen" and (b.Signal_Datum == t.isoformat() or b.Status == "offen")
+                   for b in bestand + neu):
                 continue
             f = finde_signal(z, t, d, h)
             if f:
