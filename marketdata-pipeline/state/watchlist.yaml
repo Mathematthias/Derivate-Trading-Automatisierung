@@ -3992,15 +3992,18 @@ entries:
   klasse: sonstige
   anker: EMA200 / Lueckenschluss 169,89
   treiber: Q3 2026-11-03
-  status: position
+  status: archiviert
   added: '2026-11-04'
   expiry: '2026-11-11'
   trade_nr: '21'
   legs:
   - label: A
     gate: 🟢
-    text: POSITION-MONITOR (#21 AV, 12 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-11-04 ~15:3x 12 x 156,00EUR Direktaktie (ISIN US0404132054), gettex, Gebuehr 0,00, Fill-U ~175,69$ (FX 1,1262, geschaetzt). SL 154,51EUR (U 173,82$ = Tief Earnings-Tag 176,66 - 0,30 x ATR 9,47, nachgezogen 04.11. 16:07 User; vorher Vorschlag 144,32) als OCO mit TP1 170,04EUR fuer 12 Stk (U 191,50$, 4h-Erholungshoch Ende Okt., abgelesen; R:R 1,20). TIW = 1D-Schluss unter 169,89$ (EMA200-1D / Lueckenschluss nach Q3). Widerstaende 183,6-183,7 und 188,9$. Review 2026-11-11.
-  notes: '[SL 2026-11-04 16:07, User Variante A] 144,32 -> 154,51 EUR (U 173,82, Earnings-Tagestief - 0,30 ATR), ersetzt TIW 169,89 funktional; am Stop -17,88 EUR. || [ENTRY #21 AV 2026-11-04, User, Bauchgefuehl nach Q3] Kauf zur US-Eroeffnung, Variante B aus dem Sparring (Kauf jetzt, R:R 1,11-1,20), Claude-Empfehlung war C (Limit 172) oder nichts; L31 (kein Bauchgefuehl-Trade ohne Karte) bewusst gebrochen. Q3 Umsatz/Guide je ~+10 % ueber Konsens, Billings-Proxy QoQ ~-2 %. ATR 5,2 % (rot). Max-Verlust 140,16 EUR.'
+    text: 'ARCHIVIERT 2026-11-05 nach Verkauf. Kein Re-Eval: Bauchgefuehl-Trade ohne Setup-Klasse (wie AMZN #20) - kein Re-Eval (kein Klassen-Setup); Wiedervorlage >183,70 nur auf User-Wunsch. || POSITION-MONITOR (#21 AV, 12 Stk, BAUCHGEFUEHL-TRADE) - kein Entry-Trigger. Entry 2026-11-04 ~15:3x 12 x 156,00EUR Direktaktie (ISIN US0404132054), gettex, Gebuehr 0,00, Fill-U ~175,69$ (FX 1,1262, geschaetzt). SL 154,51EUR (U 173,82$ = Tief Earnings-Tag 176,66 - 0,30 x ATR 9,47, nachgezogen 04.11. 16:07 User; vorher Vorschlag 144,32) als OCO mit TP1 170,04EUR fuer 12 Stk (U 191,50$, 4h-Erholungshoch Ende Okt., abgelesen; R:R 1,20). TIW = 1D-Schluss unter 169,89$ (EMA200-1D / Lueckenschluss nach Q3). Widerstaende 183,6-183,7 und 188,9$. Review 2026-11-11.'
+  notes: '[EXIT #21 AV 2026-11-05 ~10:3x, User] 12 x 155,30 = 1.863,60 EUR (2 Ausfuehrungen), Gebuehr 0,00, G/V -8,40 EUR = -0,06 R. || [SL 2026-11-04 16:07, User Variante A] 144,32 -> 154,51 EUR (U 173,82, Earnings-Tagestief - 0,30 ATR), ersetzt TIW 169,89 funktional; am Stop -17,88 EUR. || [ENTRY #21 AV 2026-11-04, User, Bauchgefuehl nach Q3] Kauf zur US-Eroeffnung, Variante B aus dem Sparring (Kauf jetzt, R:R 1,11-1,20), Claude-Empfehlung war C (Limit 172) oder nichts; L31 (kein Bauchgefuehl-Trade ohne Karte) bewusst gebrochen. Q3 Umsatz/Guide je ~+10 % ueber Konsens, Billings-Proxy QoQ ~-2 %. ATR 5,2 % (rot). Max-Verlust 140,16 EUR.'
+  archived:
+    date: '2026-11-05'
+    reason: 'Verkauf #21 AV (User): 2 x 6 x 155,30 EUR, G/V -8,40 EUR = -0,06 R'
 - symbol: AAPL
   name: Apple Inc. (AAPL, NASDAQ) - Consumer Electronics/Services
   direction: LONG
@@ -4046,4 +4049,4 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG [AUTO]: Niveau 35,10€ (Ausbruch vor 8 HT, Vol 1,21x = Daempfer). Touch 34,60-35,85€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 34,80). TIW = 1D-Schluss unter 35,10€. TP1 38,62€ [stark: Mehrfach, Rollentausch, Woche] 1/3 raus. Flags: 36,10€ mittel (1,00 R). Rest Chandelier 2,0 ATR. R:R TP1 2,67 an 34,60 / 1,83 an 35,85. 1 % (Pilot, Auto-Zeile). Earnings 2026-12-10.'
   notes: '[AUTO 2026-11-04 Morning Check v83, Quelle Re-Eval >35.1] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 35,78, ATR 1,006, EMA20/50/100/200 34,09/32,60/31,37/32,13, Stack bullish. Zone 34,60–35,85, TP1-Zone [''3x'', ''Rollentausch'', ''Reaktion 4.5 ATR'', ''Woche'']. Quelle: Re-Eval >35.1.'
-updated: '2026-11-04T22:10:06+00:00'
+updated: '2026-11-05T10:37:10+01:00'
