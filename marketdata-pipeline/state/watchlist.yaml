@@ -3335,14 +3335,17 @@ entries:
   klasse: grinder
   anker: EMA20-1D
   treiber: ''
-  status: aktiv
+  status: archiviert
   added: '2026-10-23'
   expiry: '2026-11-06'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-10-23 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 275,00 SEK kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,55 -> -6,83). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR (Zustand: Stack, Faecher, Tempo unter 0,6). TP1 284,00 SEK (unter Range-Hoch Aug/Docht 22.10. 284-286, abgelesen) 1/3 raus. Kein TP2, Trail EMA20-1,25xATR. R:R TP1 1,70 an 272,40 / 2,05 an 270,00. 1 % Pilot: Direktaktie. Earnings vorbei (Q3 2026-10-22).'
+    gate: 🔴
+    text: 'nach 2026-10-23 GRINDER-CONTINUATION-LONG: Touch EMA20-1D -0,25/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 275,00 SEK kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (4,55 -> -6,83). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR (Zustand: Stack, Faecher, Tempo unter 0,6). TP1 284,00 SEK (unter Range-Hoch Aug/Docht 22.10. 284-286, abgelesen) 1/3 raus. Kein TP2, Trail EMA20-1,25xATR. R:R TP1 1,70 an 272,40 / 2,05 an 270,00. 1 % Pilot: Direktaktie. Earnings vorbei (Q3 2026-10-22). RE-EVAL: 1D-Schluss <278,92 (Rueckkehr in die alte Zone) - dann neu rechnen.'
   notes: '[NEU 2026-10-23 ~16:30, Morning Check, User: "Zeilen anlegen", User-Chart 1D+4h 16:13-16:16, Linien von Claude] Grinder-Gate gruen (Stack 270,1/268,9/268,4/267,1 - eng und frisch, Tempo 2,07 vorlaeufig, ATR 1,6 %), Tag 1 im Block (Zwei-Laeufe-Regel: frueheste Freigabe Mo 2026-10-26). Q3 am 22.10.: Docht bis 286,5 und Schluss ~277, Schlagzeile ''Hoejt vinstkonsensus efter rapporten'' (Affaersvaerlden, Datum ungeprueft). GEGENREDE: das ist eher die Oberkante einer Range Jun-Okt (256-286) als ein Grinder - Range-Hoch zweimal abgewiesen (Aug, 22.10.), EMAs liegen in 3 SEK zusammen. Digest-Feld earn_days = 2 trotz vergangener Earnings (Datenfehler, gemeldet).'
+  archived:
+    date: '2026-11-05'
+    reason: 'Auto-Archiv: Halbzeit-Check +2.31 ATR zur Zone 275.296-278.919, Verfall 2026-11-06 (Dauerregel 2026-10-19)'
 - symbol: HNR1.DE
   name: Hannover Rueck SE (HNR1, Xetra) - Rueckversicherung
   direction: LONG
@@ -4055,4 +4058,19 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG [AUTO]: Niveau 35,10€ (Ausbruch vor 8 HT, Vol 1,21x = Daempfer). Touch 34,60-35,85€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 34,80). TIW = 1D-Schluss unter 35,10€. TP1 38,62€ [stark: Mehrfach, Rollentausch, Woche] 1/3 raus. Flags: 36,10€ mittel (1,00 R). Rest Chandelier 2,0 ATR. R:R TP1 2,67 an 34,60 / 1,83 an 35,85. 1 % (Pilot, Auto-Zeile). Earnings 2026-12-10.'
   notes: '[AUTO 2026-11-04 Morning Check v83, Quelle Re-Eval >35.1] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 35,78, ATR 1,006, EMA20/50/100/200 34,09/32,60/31,37/32,13, Stack bullish. Zone 34,60–35,85, TP1-Zone [''3x'', ''Rollentausch'', ''Reaktion 4.5 ATR'', ''Woche'']. Quelle: Re-Eval >35.1.'
-updated: '2026-11-05T09:38:16+00:00'
+- symbol: HM-B.ST
+  name: HM-B.ST (Auto-Zeile)
+  direction: LONG
+  klasse: grinder
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-05'
+  expiry: '2026-11-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-05 GRINDER-CONTINUATION-LONG [AUTO]: Touch EMA20-1D -0,25/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 175,98 SEK kein Entry (Zonenkante). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (3,523 -> -5,285). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 185,50 SEK [stark: Mehrfach, Woche] 1/3 raus. Flags: 182,20 SEK mittel (1,68 R). Rest Chandelier 2,0 ATR. R:R TP1 2,30 an 173,34 / 1,37 an 175,98. Trail EMA20-1,25xATR statt Chandelier. 1 % (Auto-Zeile). Earnings 2027-01-28.'
+  notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Grinder Tag 2] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 180,80, ATR 3,523, EMA20/50/100/200 174,22/171,13/170,45/169,59, Stack bullish. Zone 173,34–175,98, TIW heute 170,08, TP1-Zone [''9x'', ''Reaktion 4.6 ATR'', ''Woche'']. Quelle: Grinder Tag 2.'
+updated: '2026-11-05T09:45:42+00:00'
