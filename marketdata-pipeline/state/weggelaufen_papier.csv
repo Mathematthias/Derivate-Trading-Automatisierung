@@ -1,0 +1,9 @@
+Symbol,Richtung,Klasse,Signal_Datum,Kerze,Art,Zone_UG,Zone_OG,Tagesextrem,Entry,Abstand_Zone_ATR,Grenze,Hinter_Grenze,ATR,TIW,SL,R_Einheit,TP1,RR_TP1,Status,Ergebnis,R,Exit_Datum,MFE_R,MAE_R,Zone_spaeter,R_ab_Zone,Hinweis
+SRT.DE,LONG,breakout_retest,2026-10-26,2026-10-26 13:00:00+01:00,weggelaufen,220.59,224.71,220.5,226.0,0.18,224.71,ja,7.1953,224.0,215.2071,10.7929,238.0,1.11,offen,,,,1.07,0.46,2026-10-26,1.23,Bullish-Engulfing
+SRT.DE,LONG,breakout_retest,2026-10-27,2026-10-27 13:00:00+01:00,weggelaufen,220.59,224.71,221.0,227.0,0.32,224.71,ja,7.1099,224.0,216.3351,10.6649,238.0,1.03,offen,,,,0.98,0.09,,,Bullish-Engulfing
+DE,LONG,trend_pullback,2026-11-03,2026-11-03 09:30:00-05:00,weggelaufen,647.9452,662.9904,659.46,673.68,0.57,676.0,nein,18.8065,646.0565,640.4146,33.2654,721.22,1.43,offen,,,,0.11,0.5,2026-11-04,2.06,"Hammer (Wick 74%, Close-Pos 100%)"
+RACE.MI,LONG,breakout_retest,2026-11-03,2026-11-03 09:00:00+01:00,weggelaufen,354.85,359.96,341.9,361.5,0.22,,,6.9164,359.35,351.1254,10.3746,377.5,1.54,zu,TP1,1.54,2026-11-04,2.81,0.36,2026-11-03,1.69,"2-Kerzen-Umkehr (Close 361.5 > Hoch der roten Kerze 356); Hammer (Wick 54%, Close-Pos 91%)"
+SBLK,LONG,trend_pullback,2026-11-03,2026-11-03 09:30:00-05:00,weggelaufen,26.3299,27.0139,26.79,27.22,0.24,,,0.855,25.9,25.6435,1.5765,28.5,0.81,offen,,,,0.39,0.18,2026-11-04,1.08,"Hammer (Wick 83%, Close-Pos 83%)"
+DE,LONG,trend_pullback,2026-11-04,2026-11-04 09:30:00-05:00,weggelaufen,649.1992,664.0097,656.99,675.72,0.63,676.0,nein,18.5131,646.6987,641.1447,34.5752,721.22,1.32,offen,,,,0.05,0.07,,,"Hammer (Wick 93%, Close-Pos 97%)"
+RACE.MI,LONG,breakout_retest,2026-11-04,,ohne Touch,354.85,359.96,,,,,,,,,,377.5,,zu,TP1 ohne Zone,,,,,,,"Zone nie beruehrt, TP1 erreicht"
+SMIN.L,LONG,trend_pullback,2026-11-04,,ohne Touch,25.5058,25.9386,,,,,,,,,,26.98,,zu,TP1 ohne Zone,,,,,,,"Zone nie beruehrt, TP1 erreicht"
