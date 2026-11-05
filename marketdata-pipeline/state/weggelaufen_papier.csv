@@ -1,5 +1,0 @@
-Symbol,Richtung,Klasse,Signal_Datum,Kerze,Art,Zone_UG,Zone_OG,Tagesextrem,Entry,Abstand_Zone_ATR,Grenze,Hinter_Grenze,ATR,TIW,SL,R_Einheit,TP1,RR_TP1,Status,Ergebnis,R,Exit_Datum,MFE_R,MAE_R,Zone_spaeter,R_ab_Zone,Hinweis
-SRT.DE,LONG,breakout_retest,2026-10-27,2026-10-27 13:00:00+01:00,weggelaufen,220.59,224.71,221.0,227.0,0.32,224.71,ja,7.1099,224.0,216.3351,10.6649,238.0,1.03,offen,,,,0.98,0.09,,,Bullish-Engulfing
-DE,LONG,trend_pullback,2026-11-03,2026-11-03 09:30:00-05:00,weggelaufen,647.9452,662.9904,659.46,673.68,0.57,676.0,nein,18.8065,646.0565,640.4146,33.2654,721.22,1.43,offen,,,,0.11,0.5,2026-11-04,2.06,"Hammer (Wick 74%, Close-Pos 100%)"
-SBLK,LONG,trend_pullback,2026-11-03,2026-11-03 09:30:00-05:00,weggelaufen,26.3299,27.0139,26.79,27.22,0.24,,,0.855,25.9,25.6435,1.5765,28.5,0.81,offen,,,,0.39,0.18,2026-11-04,1.08,"Hammer (Wick 83%, Close-Pos 83%)"
-SMIN.L,LONG,trend_pullback,2026-11-04,,ohne Touch,25.5058,25.9386,,,,,,,,,,26.98,,zu,TP1 ohne Zone,,,,,,,"Zone nie beruehrt, TP1 erreicht"
