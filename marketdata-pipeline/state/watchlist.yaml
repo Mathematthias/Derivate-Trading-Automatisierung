@@ -1667,25 +1667,6 @@ entries:
   archived:
     date: '2026-10-08'
     reason: '#92 geschlossen 2026-10-08: Rest 500x1,54 am Trail-SL, Trade +273,00 EUR / +1,76 R'
-- symbol: PFE
-  name: Pfizer Inc. (PFE, NYSE) — Pharma
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA50-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-10-02'
-  expiry: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-06 TREND-PULLBACK-LONG: Touch EMA50-1D -0,30/+0,30 ATR [pullback] + 1D-Schluss ueber EMA50-1D (Klassen-Gate >= 3/4 EMAs) + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D (0,527 -> -0,79). TIW = 1D-Schluss unter 27,00$. TP1 29,00$ = Sept-Doppelhoch (1/3 raus, Exit-Test v49). TP2 29,20$ = Sept-Hoch, Rest 2/3 Chandelier 2,0 ATR. R:R TP1 1,78-2,19 / TP2 2,04-2,44 (an Zone OG/UG). 1% Sizing. Non-Quanto USD. Earnings 2026-11-03. RE-EVAL: 1D-Schluss <28,01 (Rueckkehr in die alte Zone) - dann neu rechnen.'
-  notes: '[NEU GEFASST 2026-10-06, User-OK] TP1 28,20 (v48-BE-Stufe, nur 0,97 R an der EMA50) -> 29,00 = Sept-Doppelhoch; Gate-Bedingung Schluss ueber EMA50 ergaenzt (Mo-Schluss 27,41 knapp unter EMA50 27,43 = Kurs ueber nur 2/4 EMAs -> Gate ⛔). Chart 06.10. 13:27: EMA 28,01/27,43/26,86/26,42, RSI-1D 41,9 < 56,4, 4h RSI 37,3 < 55,5, Kurs auf 4h-EMA100 27,42. L25: SL = MIN(E-0,79 ; 26,84) -> ATR-Term, TIW-Puffer 0,38 (OG) bis 1,0 ATR (UG). || [NEU GEFASST 2026-10-02 nach Exit #97 (0 R, SL auf Einstand), User-Auftrag ''EMA50-Pullback'', Linien von Claude, Chart 1D+4h 20:59] Ruecksetzer vom Doppelhoch Ende Sept (~28,9-29,0) auf 27,44 in zwei Tagen; Kurs 27,60 knapp ueber EMA50-1D 27,43, Stack bullisch 28,05/27,43/26,85/26,41, Kurs unter 1/4 EMAs. RSI-1D 44,8 < 56,8; 4h RSI 38,7 < 59,5, Kurs unter EMA20/50-4h -> 4h-Bestaetigung abwarten. TIW 27,00 = unter Sept-Tief ~27,2, ueber EMA100 26,85 (L25 frei, SL ATR-bestimmt). TP1 28,20 = EMA20-1D/4h-EMA20, TP2 29,20 = Sept-Hoch. R:R TP1 0,80-1,18,
-    Runner 2,10-2,47. Auslöser des Ruecksetzers ni'
-  journal_row: 93
-  archived:
-    date: '2026-10-19'
-    reason: 'Auto-Archiv: Halbzeit-Check +2.53 ATR zur Zone 27.6801-28.0069, Verfall 2026-10-22 (Dauerregel 2026-10-19)'
 - symbol: JEN.DE
   name: Jenoptik AG (JEN, Xetra) - Optik/Photonik fuer Halbleiter und Messtechnik
   direction: LONG
@@ -2096,23 +2077,6 @@ entries:
   archived:
     date: '2026-10-21'
     reason: 'Auto-Archiv: TIW per Schluss gebrochen (134.02 > 133.766 = EMA50-1D +0,30 ATR) (Dauerregel 2026-10-19)'
-- symbol: MO
-  name: Altria Group (MO, NYSE) — Tabak
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 71,05
-  treiber: null
-  status: archiviert
-  added: '2026-10-12'
-  expiry: '2026-10-21'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-12 BREAKOUT-RETEST-LONG: Niveau 71,05$ (Range-Hoch Sept, Ausbruch 2026-10-09, Vol 1,51x). Touch 70,70–71,00$ [pullback] (= Niveau -0,25/-0,04 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der Retest-Kerze (L27). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). TIW = 1D-Schluss unter 70,64$ (Niveau -0,30 ATR, Retest-Raum). TP1 73,80$ (Juli-Congestion 73,5-74,5), 1/3 raus; TP2 76,80$ (unter 52W-Hoch 77,06), Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,50 / TP2 2,81-2,95. 1% Sizing (Pilot). Earnings 2026-10-29 -> KO-Exit bis 2026-10-22. Non-Quanto USD. RE-EVAL: 1D-Schluss <71,00 (Rueckkehr in die alte Zone) - dann neu rechnen.'
-  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Chart: 1D EMA-Buendel 69,1/69,0/68,9/67,5 (Seitwaertsphase Aug-Okt, r2 0,01), RSI 65,4; 4h RSI 71,5 = Retest wahrscheinlich. Zone bewusst unter dem Niveau: Ueber 71,00 faellt TP1 unter 1,3 R. Gegenrede: Kurs ueber mittlerem Kursziel ~70, Barclays Underweight KZ 58 (2026-08-11), keine frische Nachricht = reine Geometrie. Verdikt: traegt duenn.'
-  archived:
-    date: '2026-10-19'
-    reason: 'Auto-Archiv: Halbzeit-Check +2.34 ATR zur Zone 70.7-71, Verfall 2026-10-21 (Dauerregel 2026-10-19)'
 - symbol: DRW3.DE
   name: Draegerwerk AG & Co. KGaA Vz (DRW3, XETR) — Medizin-/Sicherheitstechnik
   direction: LONG
@@ -3048,24 +3012,6 @@ entries:
   archived:
     date: '2026-10-22'
     reason: 'Pitch-Top 2026-10-22: Rueckfall unter das Ausbruchsniveau am Earnings-Tag'
-- symbol: PFE
-  name: Pfizer Inc. (PFE, NYSE) - Pharma
-  direction: LONG
-  klasse: breakout_retest
-  anker: Ausbruchsniveau 29,88
-  treiber: ''
-  expiry: '2026-10-22'
-  status: archiviert
-  added: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🔴
-    text: '[2026-10-23] Re-Eval >30,25 am 22.10. ausgeloest (30,42, Vol 0,96x), 23.10. Rueckfall auf 29,98; Earnings 2026-11-03 - Zaehlung ab 23.10. || BEOBACHTUNG (Pitch 2026-10-22) - kein Entry-Trigger. RE-EVAL: 1D-Schluss >30,25$ (52W-Hoch) + Vol >= 1,0x Avg-20d - dann Breakout-Retest neu rechnen. Schluss 2026-10-21 29,85 knapp UNTER dem Niveau 29,88 = Rueckfall (Klassendefinition Punkt 2). Earnings 2026-11-03.'
-  notes: '[PITCH 2026-10-22, ohne Chart] Digest: Vol 1,14x (Daempfer), RSI 67,7, ATR 0,55.'
-  trade_nr: null
-  archived:
-    date: '2026-10-23'
-    reason: Re-Eval-Rueckfall 23.10.
 - symbol: MLP.DE
   name: MLP SE (MLP, XETRA) - Finanzberatung/Vermoegensverwaltung
   direction: LONG
@@ -4098,4 +4044,34 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-05 GRINDER-CONTINUATION-LONG [AUTO]: Touch EMA20-1D -0,25/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 175,98 SEK kein Entry (Zonenkante). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (3,523 -> -5,285). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 185,50 SEK [stark: Mehrfach, Woche] 1/3 raus. Flags: 182,20 SEK mittel (1,68 R). Rest Chandelier 2,0 ATR. R:R TP1 2,30 an 173,34 / 1,37 an 175,98. Trail EMA20-1,25xATR statt Chandelier. 1 % (Auto-Zeile). Earnings 2027-01-28.'
   notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Grinder Tag 2] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 180,80, ATR 3,523, EMA20/50/100/200 174,22/171,13/170,45/169,59, Stack bullish. Zone 173,34–175,98, TIW heute 170,08, TP1-Zone [''9x'', ''Reaktion 4.6 ATR'', ''Woche'']. Quelle: Grinder Tag 2.'
-updated: '2026-11-05T14:44:17+01:00'
+- symbol: PFE
+  name: Pfizer Inc. (PFE, NYSE) - Pharma (Auto-Zeile)
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-05'
+  expiry: '2026-11-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-05 BREAKOUT-RETEST-LONG [AUTO]: Niveau 30,44$ (Ausbruch vor 3 HT, Vol 1,55x). Touch 30,11-30,93$ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 30,24). TIW = 1D-Schluss unter 30,44$. TP1 33,76$ [stark: Measured Move] 1/3 raus. Flags: 31,06$ mittel (0,97 R). Rest Chandelier 2,0 ATR. R:R TP1 3,72 an 30,11 / 2,89 an 30,93. 1 % (Pilot, Auto-Zeile). Earnings 2027-02-02.'
+  notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Re-Eval >30.25] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 30,79, ATR 0,6538, EMA20/50/100/200 29,68/28,72/27,81/27,01, Stack bullish. Zone 30,11–30,93, TP1-Zone [''Measured Move'']. Quelle: Re-Eval >30.25.'
+- symbol: MO
+  name: Altria Group Inc. (MO, NYSE) - Tabak (Auto-Zeile)
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-05'
+  expiry: '2026-11-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-05 BREAKOUT-RETEST-LONG [AUTO]: Niveau 76,81$ (Ausbruch vor 3 HT, Vol 2,63x). Touch 75,97-78,07$ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 76,31). TIW = 1D-Schluss unter 76,81$. TP1 87,84$ [stark: Measured Move] 1/3 raus. Flags: 79,81$ mittel (1,53 R). Rest Chandelier 2,0 ATR. R:R TP1 4,72 an 75,97 / 3,89 an 78,07. 1 % (Pilot, Auto-Zeile). Earnings 2027-01-28.'
+  notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Pitch breakout_long RRprox 5.85] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 78,01, ATR 1,677, EMA20/50/100/200 74,45/72,12/70,73/68,76, Stack bullish. Zone 75,97–78,07, TP1-Zone [''Measured Move''] 5,9 ATR vom Kurs (nahe L13-Grenze). Quelle: Pitch breakout_long RRprox 5.85.'
+updated: '2026-11-05T14:06:18+00:00'
