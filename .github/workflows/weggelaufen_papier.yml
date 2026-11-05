@@ -1,0 +1,71 @@
+name: Weggelaufen-Papier (bestaetigt, aber ausserhalb der Zone)
+
+# Papier-Spur, User-Entscheid B 2026-11-05 (Anlass DE 2026-11-04, RACE.MI 2026-11-05):
+# misst, was die Regel „Live-Entry nach 4h-Bestaetigung nur innerhalb der Zone“ (L26, v81.1)
+# kostet. Reine Messung (L24), Entscheid ueber Live-Entry bis zur Entry-Grenze beim 20er-Review.
+# Regeln: src/weggelaufen_papier.py (Docstring). Laeuft Mo-Fr 22:20 UTC nach US-Schluss.
+
+on:
+  schedule:
+    - cron: '20 22 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      backfill_days:
+        description: 'Zusaetzlich so viele Kalendertage zurueck (0-55)'
+        required: false
+        default: '0'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-yaml
+  cancel-in-progress: false
+
+jobs:
+  papier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Auswerten
+        working-directory: marketdata-pipeline
+        env:
+          PYTHONPATH: ./src
+          IN_BACKFILL: ${{ github.event.inputs.backfill_days }}
+        run: |
+          mkdir -p work
+          STAMP=$(date +%Y%m%d-%H%M)
+          python src/weggelaufen_papier.py --state-dir state --backfill-days "${IN_BACKFILL:-0}" --md "work/WEGGELAUFEN-PAPIER-$STAMP.md"
+          cat work/WEGGELAUFEN-PAPIER-*.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/state/weggelaufen_papier.csv
+          git commit -m "state: Weggelaufen-Papier ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Zusammenfassung in den Briefing-Ordner
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, write_markdown_file
+          svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
+          for p in sorted(pathlib.Path("work").glob("WEGGELAUFEN-PAPIER-*.md")):
+              write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
+          PY
