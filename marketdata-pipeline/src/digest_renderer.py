@@ -212,6 +212,9 @@ def _compact_snap(snap: Any) -> dict[str, Any]:
         "late_entry": bool(getattr(snap, "late_entry", False)),
         "bo_level": getattr(snap, "bo_level", None),
         "bo_bars_ago": getattr(snap, "bo_bars_ago", None),
+        # v84: Hoehe der Referenz-Range vor dem Ausbruch (Measured Move ohne Widerstand im Suchfenster)
+        "bo_range": _r(getattr(snap, "bo_range", None), 4),
+        "bd_range": _r(getattr(snap, "bd_range", None), 4),
         # 2026-10-09: Volumen-Vielfaches am Ausbruchs-/Breakdown-Tag — ersetzt den
         # Handcheck „Vol MANUELL" in den Watchlist-Zeilen (Boden 1,0 / Daempfer 1,3).
         "bo_vol_mult": (round(getattr(snap, "bo_vol_mult"), 2)

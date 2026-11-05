@@ -294,12 +294,16 @@ class TickerSnapshot:
     # Kurs zurueckkommen soll (Retest). None = kein Ausbruch im Fenster.
     bo_level: Optional[float] = None
     bo_bars_ago: Optional[int] = None
+    # v84 (2026-11-03, Anlass MRK.DE): Hoehe der Referenz-Range vor dem Ausbruch, die Basis
+    # des Measured Move, wenn ueber dem Niveau kein starker Widerstand mehr liegt.
+    bo_range: Optional[float] = None
     bo_vol_mult: Optional[float] = None
     bo_failed: Optional[bool] = None
     """True, wenn seit dem Ausbruch ein Tagesschluss wieder UNTER dem Niveau
     lag (Fehlausbruch) — dann ist der Retest kein Retest mehr."""
     bd_level: Optional[float] = None
     bd_bars_ago: Optional[int] = None
+    bd_range: Optional[float] = None
     bd_vol_mult: Optional[float] = None
     bd_failed: Optional[bool] = None
 
@@ -1080,6 +1084,7 @@ def _compute_breakout_retest_fields(snap: TickerSnapshot, df: pd.DataFrame) -> N
         if closes[i] > level:
             snap.bo_level = level
             snap.bo_bars_ago = bars_ago
+            snap.bo_range = level - float(lows[i - BREAKOUT_REF_BARS:i].min())
             snap.bo_vol_mult = _vol_mult(i)
             # Fehlausbruch: ein Schluss nach dem Ausbruch wieder unter dem Niveau
             after = closes[i + 1:n - 1]  # abgeschlossene Balken danach
@@ -1094,6 +1099,7 @@ def _compute_breakout_retest_fields(snap: TickerSnapshot, df: pd.DataFrame) -> N
         if closes[i] < level:
             snap.bd_level = level
             snap.bd_bars_ago = bars_ago
+            snap.bd_range = float(highs[i - BREAKOUT_REF_BARS:i].max()) - level
             snap.bd_vol_mult = _vol_mult(i)
             after = closes[i + 1:n - 1]
             snap.bd_failed = bool((after > level).any()) if len(after) else False
