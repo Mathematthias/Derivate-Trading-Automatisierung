@@ -105,9 +105,9 @@ rows:
   ereignis: 'BNetzA Wind an Land: Gebotstermin (Basis 2.500 MW, Hoechstwert 7,25 ct/kWh). Mai-Runde war deutlich ueberzeichnet (6.409 MW Gebote auf 2.495 MW)'
   werte: NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE
   wirkung: + Projektierer bei Ueberzeichnung
-  status: offen
+  status: erledigt
   quelle: 'bundesnetzagentur.de, Fachthemen > Ausschreibungen > Wind_Onshore > ''Gebotstermin 1. November 2026'' (Primaerquelle: Volumen 2.495,009 MW und Hoechstwert 7,25 ct/kWh woertlich, Fristverschiebung auf Montag 02.11.2026 24:00 woertlich), Abruf 2026-10-19; Ergebnis der Vorrunde aus Pressemitteilung bundesnetzagentur.de 2026-09-17. confidence hoch'
-  note: '2026-11-02 Pflegelauf: Zum Stichtag NICHT erledigt. Der Gebotstermin 2026-11-01 war ein Sonntag; die BNetzA nennt die Abgabefrist woertlich Montag 2026-11-02 24:00 (Gebote an der Pforte Bonn, belegt im Pflegestand 2026-10-19). Die Frist laeuft also am Stichtag dieses Laufs (08:05 Berlin) noch, das Ereignis ist noch nicht durch - Status bleibt offen, Verdikt faellt im naechsten Lauf. Das ZWEI-TERMIN-PROBLEM bleibt unveraendert: der Gebotstermin bewegt nichts, erst die Ergebnisbekanntgabe tut es, und die ist auf der BNetzA-Seite weiter nicht datiert (Freigabe der Sicherheiten bis zu sechs Wochen nach Veroeffentlichung). Keine Teil-2-Zeile, weil kein Datum belegt ist. Weiterhin keine aktive Watchlist-Zeile auf NDX1.DE, VWS, PNE3.DE, EKT.DE, AB9.DE (watchlist.yaml 2026-10-31T13:55). || VORSTAND DER ZEILE: siehe quelle, Primaerbelege unveraendert'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - id: Z19
   date: '2026-11-10'
   kat: 1
@@ -383,10 +383,9 @@ rows:
   ereignis: 'ERSTE deutsche Kapazitaetsmarkt-Auktion (StromVKG) — TEIL 2/2: ZUSCHLAGSBEKANNTGABE 03.11.2026. Abgespalten von Z14 am 2026-09-07 (Zwei-Termin-Problem). ERGAENZT 2026-09-09: Vertragslaufzeit der bezuschlagten Kapazitaet 15 Jahre.'
   werte: ENR.DE, RWE.DE, UN01.DE, VOW3.DE
   wirkung: + Gasturbinen-/Kraftwerksbau bei hohem Zuschlagsvolumen; Batteriespeicher als Gegenseite. Erst mit dem Zuschlag steht die Menge je Technologie fest.
-  status: offen
+  status: erledigt
   quelle: 'Bundesnetzagentur, Pressemitteilung ''Start der Ausschreibungen fuer Langzeitkapazitaeten nach StromVKG'' (bundesnetzagentur.de/SharedDocs/Pressemitteilungen/DE/2026/20260721_StromVKG.html, 2026-07-21), woertlich: Gebotstermin 08.09.2026 24:00, Zuschlaege werden bis zum 3. November 2026 bekannt gegeben, 4.500 MW reduzierte Leistung, Hoechstpreis 244.000 EUR/MW*a. Abruf 2026-10-19. confidence hoch (Primaerquelle, ersetzt boersen-zeitung.de 2026-08-04 und techzeitgeist.de 2026-09-12). Split von Z14 am 2026-09-07.'
-  note: '2026-11-02 Pflegelauf: Faktenlage unveraendert, Frist-Charakter weiter primaer belegt (BNetzA-PM 2026-07-21: Zuschlaege werden ''bis zum 3. November 2026'' bekannt gegeben). Ein Beleg, dass die Zuschlaege inzwischen veroeffentlicht sind, liess sich nicht finden; der juengste auffindbare Stand (techzeitgeist.de, 2026-09-12) meldet die Gebote als ''deutlich ueberzeichnet'' und die Zuschlaege ausdruecklich als noch nicht veroeffentlicht, bei 4.500 MW ausgeschriebener reduzierter Leistung. WIRKUNGSWIDERSPRUCH, verschaerft: die ENR.DE-Zeile ist klasse event_watch, Leg A Gate ⏳, und ihr expiry steht auf genau 2026-11-03 - dem letzten Tag der Bekanntgabefrist. Faellt die Bekanntgabe auf den 03.11., laeuft der Traeger am Tag des Ausloesers aus, und die Aktivierung (''bei Bekanntgabe Setup frisch am Chart fassen'') hat keine Zeile mehr. Im selben Fenster liegt der ENR-Q3-Print am 2026-11-11 (= Z92, Messtermin Falsifikat (b) These A). Verlaengerung oder Neuanlage der Zeile ist eine Watchlist-Entscheidung
-    des Users, kein Radar-Eingriff.'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - id: Z67
   date: '2026-09-21'
   kat: 4
@@ -427,9 +426,9 @@ rows:
   ereignis: 'Ahold Delhaize Q3-2026-Zahlen. EINZIGER echter Katalysator fuer die AD.AS-Short-These: Die Guidance "mittleres bis hohes einstelliges EPS-Wachstum zu konstanten Kursen" steht gegen ein Q2 mit -1,4% waehrungsbereinigt. Falsifikat/Bestaetigung faellt hier.'
   werte: AD.AS
   wirkung: Binaer. Guidance-Senkung bestaetigt die Short-These (JPM-Ziel 24,07 EUR); bestaetigte Guidance loest bei Konsensziel 38,58 EUR und 0,00% gemeldeten Shorts eine Gegenbewegung aus.
-  status: offen
+  status: erledigt
   quelle: aholddelhaize.com/investors, Finanzkalender woertlich '4 November — Results Q3 2026', Abruf 2026-10-12 (Primaerquelle, ersetzt den Kalenderstand vom 2026-09-08). confidence hoch.
-  note: '2026-10-12 geprueft: Datum 2026-11-04 im IR-Finanzkalender unveraendert; Folgetermine dort 17.02. (Q4/FY 2026) und 03.03. (Geschaeftsbericht). Unveraendert gilt der Befund vom 2026-10-05: beide AD.AS-Watchlist-Zeilen sind archiviert (letzte 2026-09-28, Trade #96 per Review-Frist geschlossen) — Z71 und Z72 stehen auf einer These ohne Traeger. Zweiter Lauf in Folge mit diesem Befund; Entscheidung (neue Zeile oder Zeilen streichen) liegt beim User.'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - id: Z72
   date: '2026-10-13'
   kat: 1
@@ -760,8 +759,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Morning Check 2026-10-22 13:2x, Korrektur der Migration
   id: Z108
-  status: offen
+  status: erledigt
   added: '2026-10-22'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2026-10-26'
   kat: 5
   werte: HOLN.SW
@@ -779,8 +779,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Abend-Check 2026-10-22, User-Chart 19:45
   id: Z110
-  status: offen
+  status: erledigt
   added: '2026-10-22'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2026-10-29'
   kat: 5
   werte: MSFT
@@ -808,8 +809,9 @@ rows:
   wirkung: 'Oel: Eskalation stuetzt These OEL (Falsifikat Brent < 88 / Waffenruhe weit weg); Risiko-aus fuer Tech; Gap-Risiko ueber Nacht fuer KO-Positionen'
   quelle: Yahoo Finance Liveblog Stock market today 2026-10-22 (Abruf 2026-10-22), Recherche Tech-Abverkauf
   id: Z113
-  status: offen
+  status: erledigt
   added: '2026-10-22'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2026-11-30'
   kat: 1
   ereignis: 'GLOBE-Modell (Global Benchmark for Efficient Drug Pricing): US-Referenzpreismodell fuer Arzneimittel - Stichtag laut Federal-Register-Eintrag 2026-20281. VORBEHALT: Primaerquelle nicht gegengelesen, der Treffer stammt aus dem Katalysator-Kalender-Collector, der ueberwiegend Suchartefakte liefert; vor jeder Verwendung Federal Register direkt pruefen. Zusammen mit Z96 (CMS-Frist Hoechstpreise Runde 3, selber Tag) und Z30 (Medicare-Verhandlungspreise Runde 2 wirksam 2027-01-01) der Messkalender zu These N7.'
@@ -863,8 +865,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Morning Check 2026-10-26, User-Entscheid
   id: Z119
-  status: offen
+  status: erledigt
   added: '2026-10-26'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2026-11-06'
   kat: 5
   werte: BDX
@@ -881,8 +884,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: Morning Check 2026-10-26, Re-Eval-Lauf
   id: Z121
-  status: offen
+  status: erledigt
   added: '2026-10-26'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2026-11-06'
   kat: 5
   werte: MAERSK-B.CO
@@ -946,8 +950,9 @@ rows:
   wirkung: 'Thesen-Messpunkt: AI-Beschleuniger-Nachfrage als Zwischenstand vor NVDA 2026-11-17. AMD stand am 2026-10-30 bei 504,80 nach -10,88 % am Tag, 30d -18,02 %, ATR 5,83 %.'
   quelle: Digest BRIEFING-DIGEST-2026-10-30-2234.json, Feld earn_next AMD (Abruf 2026-10-31); Karte These TECH
   id: Z128
-  status: offen
+  status: erledigt
   added: '2026-10-31'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2026-11-03'
   kat: 5
   ereignis: ETN Q3-Zahlen - letzter per Earnings-Disqualifier gesperrter Ausdruck der These A; danach sind alle vier Ausdruecke wieder frei. ETN schloss am 2026-10-30 bei 369,97 nach einem Gap von -5,1 %.
@@ -955,8 +960,9 @@ rows:
   wirkung: 'Thesen-Messpunkt und Ende der Entry-Sperre: Auftragseingang Electrical Americas misst die Rechenzentrums-Nachfrageseite der These A. Capex-/Auftragssenkung = Hinweis auf Falsifikat (b) vor dem ENR.DE-Messtermin 2026-11-11 (Z92).'
   quelle: Digest BRIEFING-DIGEST-2026-10-30-2234.json, Feld earn_next ETN (Abruf 2026-10-31)
   id: Z129
-  status: offen
+  status: erledigt
   added: '2026-10-31'
+  note: 'Aufraeumen 2026-11-05 (User): Termin vorbei, Inhalt ueber Morning Check/Zeilen abgedeckt'
 - date: '2027-01-01'
   kat: 1
   ereignis: UK Bank Corporation Tax Surcharge steigt von 3 % auf 6 % - befristet auf 15 Monate vom 2027-01-01 bis 2028-03-31, fuer Bankgesellschaften mit Gewinnen ueber 100 Mio GBP; erwartetes Aufkommen rund 1,5 Mrd GBP. Beschlossen im UK Autumn Budget 2026-10-28 (= Z82).
@@ -984,4 +990,4 @@ rows:
   id: Z132
   status: offen
   added: '2026-11-02'
-updated: '2026-11-05T09:45:42+00:00'
+updated: '2026-11-05T10:52:04+01:00'

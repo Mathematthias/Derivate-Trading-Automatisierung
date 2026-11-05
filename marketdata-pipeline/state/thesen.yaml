@@ -3,7 +3,7 @@ source: Thesen-Lauf 2026-10-03
 thesen:
 - id: A
   titel: AI-Strom/Elektrifizierung
-  verdikt: spielen
+  verdikt: verworfen
   korb_budget_pct: null
   crowdedness_pp: -10.21
   re_check: '2026-11-12'
@@ -14,8 +14,7 @@ thesen:
   - ABBN.SW
   - PRY.MI
   - ETN
-  note: 'RE-CHECK 2026-10-30 faellig, hier erledigt. Verdikt von beobachten zurueck auf SPIELEN, Karte vollstaendig geschrieben, Spur thesen, 2 R, Starter 1/2, neuer Re-Check 2026-11-12 (Tag nach ENR.DE). BEGRUENDUNG IST DER WEGFALL DES AUFSCHUBS, NICHT DER CHART: Die Herabstufung vom 2026-10-24 stuetzte sich ausdruecklich auf zwei Dinge, den offenen Messkalender und die Earnings-Sperre. Beide sind weg - Alphabet (10-28), MSFT (10-28), AMZN (10-30) und PRY.MI (10-29) haben berichtet, PWR am 10-29; gesperrt ist nur noch ETN bis 2026-11-03. Falsifikat (a) ist damit vollstaendig gemessen und widerlegt, (b) an der benannten Quelle nicht messbar und per Ersatzmessung ebenfalls nicht eingetreten. Crowdedness -10,21 PP (Vorwoche -14,52) = Unterperformance, Zonenregel ohne Deckel. Chartstand nur als Timing und Groesse protokolliert (Schritt 4c): PWR 620,73 ueber EMA20/EMA200 (2 von 4), RSI 48,9; PRY.MI 110,40 (+11,4 % Woche nach Q3) unter allen vier, RSI 46,1; ABBN.SW 70,68 unter allen vier, RSI
-    37,8; ETN 369,97 unter allen vier, RSI 37,1, Gap -5,1 % am 10-30. Die Spur hat keine Chart-Gates, der Chart bestimmt nur Stop und Ziel. Alle Kurswerte Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  note: '2026-11-05 User: These A raus - Preis-Falsifikat gebrochen (PWR Schluss 2026-11-04 580,44 < 607,73), kein Starter eroeffnet.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -45,6 +44,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: -10.21
     source: thesen-lauf
+  - date: '2026-11-05'
+    verdikt: verworfen
+    crowdedness_pp: null
+    source: null
   spur: thesen
   budget_r: 2
   starter_anteil: 0.5
@@ -379,4 +382,4 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
-updated: '2026-11-05T09:45:42+00:00'
+updated: '2026-11-05T10:52:04+01:00'
