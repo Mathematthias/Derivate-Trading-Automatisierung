@@ -31,6 +31,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "16SrzpM1GRB2FiUQXpJ6cTwp7vALoVXEe": {
+  "actions": 3,
+  "at": "2026-11-05T09:38:16+00:00",
+  "name": "INBOX-morning-check-20261105-0823.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "16uazDujrMT02HZVEGqpWNDVADVoDaIB-": {
   "actions": 6,
   "at": "2026-10-21T11:18:31+00:00",
