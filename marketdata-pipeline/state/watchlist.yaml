@@ -1379,25 +1379,6 @@ entries:
   archived:
     date: '2026-10-21'
     reason: 'Morning Check 2026-10-21, User: TP1 12,40 ohne Entry erreicht (R:R -0,03), Setup durchgelaufen'
-- symbol: DHL.DE
-  name: 'DHL Group (DHL, XETRA) [MONITOR #102] - Logistik/Express'
-  direction: LONG
-  klasse: position_monitor
-  anker: EMA20-1D
-  treiber: ''
-  status: archiviert
-  added: '2026-09-29'
-  expiry: '2026-10-08'
-  legs:
-  - label: A
-    gate: 🟢
-    text: 'POSITION-MONITOR (#102) - kein Entry-Trigger. SL 9,68EUR (U ~54,94). Invalidator = Zustand: 1D-Schluss unter EMA50-1D (~55,86€). TP1 13,54EUR (U 58,80) = BE-Stufe, 45 Stk + SL->BE (L6). Kein TP2, Trail EMA20-1,25xATR. Review 2026-10-08. [Sp. Trigger-Historie]'
-  notes: '[ENTRY #102 2026-10-01: 90 x 11,32, Fill-U ~56,55 geschaetzt, Details im Detail-Sheet] || [NEU 2026-09-29, Pitch Grinder long Tempo 1,00, Recherche S0+S1, TIW/Linien von Claude (User-Auftrag)] Stack bullisch, Spanne Jul-Sep 55-58,9, Hoch 58,90 (22.09.) = Deckel fuer TP1; der Grinder lebt vom Bruch ueber 58,9. Kurs 56,96 = +0,49 ATR ueber EMA20, RSI-4h 50 < 54 (Konsolidierung). PRO: Aktienrueckkauf laeuft (2,79 Mio Stk seit 10.08.), Deutsche Bank KZ 62 (17.09.). FLAG: Capital Group unter 3% (24.09.). Earnings ~2026-11-05 (TV). Zwei-Laeufe-Regel nicht geprueft. Pilot-Vergleichsgroesse: passiv 20'
-  journal_row: 118
-  trade_nr: '102'
-  archived:
-    date: '2026-10-08'
-    reason: '#102 geschlossen 2026-10-08: 90 Stk am SL (9,59/9,60), -163,25 EUR / -1,11 R, Grinder-Pilot'
 - symbol: ALC.SW
   name: Alcon AG (ALC, SIX) - Augenmedizin
   direction: SHORT
@@ -2095,23 +2076,6 @@ entries:
   archived:
     date: '2026-10-19'
     reason: 'TIW per 1D-Schluss gebrochen (95,80 < 110,00, 2026-10-19); Dauerregel User 2026-10-19: TIW gebrochen = sofort archivieren mit Re-Eval'
-- symbol: DHL.DE
-  name: DHL Group (DHL, XETR) — Logistik/Post
-  direction: LONG
-  klasse: trend_pullback
-  anker: EMA20-1D
-  treiber: Porto-Vorschlag BNetzA (TV-Key-Facts, NICHT verifiziert)
-  status: archiviert
-  added: '2026-10-12'
-  expiry: '2026-10-28'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-12 TREND-PULLBACK-LONG: Touch EMA20-1D -0,30/+0,30 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL) + RSI-4h Cross ueber die Signallinie. Einstieg Stop-Buy ueber Hoch der Bestaetigungskerze (L27). Stopweite entry-relativ -1,5xATR-1D. TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 58,80€ (unter 52W-Hoch 58,90), 1/3 raus; Rest Chandelier 2,0 ATR. R:R TP1 1,35-1,89. 1% Sizing. Earnings 2026-11-05. RE-EVAL: 1D-Schluss >58,90 (ueber 52W-Hoch, erst nach Earnings 2026-11-05) - dann neu rechnen.'
-  notes: '[NEU 2026-10-12, Pitch-Lauf Morning Check, User-Auftrag, Linien von Claude an User-Charts 1D+4h 12:24-12:29, Recherche Stufe 1 per Subagent] Pitch offen seit 2026-10-09, User-Auftrag 2026-10-12. Chart: 1D EMA 56,19/55,86/54,50/51,59 bullish, Range 54,5-58,9 seit Juli (r2 0,10), Okt-Tief 54,7 an EMA100; 4h ueber allen EMAs, RSI 54,5. Wiedereinstieg 4 HT nach #102 (Grinder, SL 08.10., -1,11 R) - andere Klasse, eigenes Setup. TV-Key-Facts melden BNetzA-Preisobergrenzen Brief +20,35 % (2027-28), Paket +10,72 %, Kommentierung bis 30.10.; Recherche fand die Quelle NICHT -> als Treiber unbelegt.'
-  archived:
-    date: '2026-10-27'
-    reason: Fenster tot (beste Kante 1,24 R), Verfall 2026-10-28 (User-Entscheid MC 2026-10-27)
 - symbol: ALGN
   name: Align Technology (ALGN, Nasdaq) — Aligner/Dental
   direction: SHORT
@@ -2619,23 +2583,6 @@ entries:
   archived:
     date: '2026-10-23'
     reason: Re-Eval ohne Volumen
-- symbol: CVX
-  name: Chevron Corp. (CVX, NYSE) - Oel/Gas integriert
-  direction: LONG
-  klasse: thesen_korb
-  anker: Ausbruch 218,79 (Rekordhoch)
-  treiber: These OEL Oel/Hormus (spielen, Korb 2 % RK, Re-Check 2026-10-19); Q3 2026-10-30 mit Buyback-Guidance
-  status: archiviert
-  added: '2026-10-16'
-  expiry: '2026-10-22'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'nach 2026-10-16 BREAKOUT-RETEST-LONG (Korb OEL): Niveau 218,79$ (20-Tage-Hoch = Rekordhoch, Ausbruch per Schluss 2026-10-14, Vol 1,02x = Daempfer). Touch 216,57-222,12$ [pullback] (Niveau -0,50/+0,75 ATR) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Stop-Buy ueber Hoch der 4h-Bestaetigungskerze (L27), ueber 222,79$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 215,24). Stopweite entry-relativ -1,5xATR-1D (4,435 -> -6,65). TIW = 1D-Schluss unter 216,57$. TP1 232,60$ GESCHAETZT (Measured Move, Basis ~205-218,8 nicht am Chart abgelesen - vor Entry pruefen) 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,74 an 221,00 / 1,30 an 222,79. Korb-Anteil 75 EUR Risk, Platz teilt sich mit XOM (L7: nur einer der beiden). Earnings 2026-10-30 -> KO-Exit bis 2026-10-23. Non-Quanto USD RE-EVAL: 1D-Schluss <221,00 (Ruecksetzer an den Ausbruch 218,79 + 0,5 ATR; nach den Zahlen neu rechnen) - dann neu rechnen.'
-  notes: '[NEU 2026-10-16, Pitch breakout_long RRprox 4,03, User-Auftrag Morning Check, Linien von Claude] Digest 10:32: Kurs 219,32 (-1,22 %), H 223,46 = neues Rekordhoch, EMA20/50/100/200 211,16/205,64/198,81/189,13 bullish, RSI 65,4, ATR 4,435 (2,0 %), 30d +3,7 %. 4h: Bullish-Reverse am 15.10. 13:30 ET, RSI-4h 66,9 > 64,2. COUNTER-THESE [S1, 3 Quellen]: Treiber fast reiner Oelpreis (Hormus-Praemie); Rekordschluss 02.09. 211,78; BMO KZ 235 Outperform (03.09., Venezuela-Ausbau), Morgan Stanley KZ 218 (Aug); TIKR fairer Wert ~219 = Kurs (Aug). Risiko: Oeffnung Hormus / Waffenruhe = Falsifikat der These OEL, USOIL 16.10. 95,5 (-2,1 %). KLASSE: Thesen-Korb schlaegt Breakout-Retest (Doppel-Trigger-Regel), Geometrie aus der BRT-Schablone. TP1 ist Schaetzung - Chart 1D anfordern. Earnings 2026-10-30.'
-  archived:
-    date: '2026-10-22'
-    reason: 'Verfall 2026-10-22; Kurs 226,78 1,78 ATR ueber dem Ausbruch, Ext 2,43, Earnings 2026-10-30 (User: wie vorgeschlagen)'
 - symbol: ABBV
   name: AbbVie Inc. (ABBV, NYSE) - Pharma (Immunologie Skyrizi/Rinvoq, Neurologie)
   direction: LONG
@@ -3338,20 +3285,6 @@ entries:
   archived:
     date: '2026-10-27'
     reason: Verfall 2026-10-28, Kurs ueber der Zone, UK-Budget 2026-10-28 (User-Entscheid MC 2026-10-27)
-- symbol: ULVR.L
-  name: Unilever PLC (ULVR, LSE) - Konsumgueter
-  direction: LONG
-  klasse: breakout_retest
-  anker: Jul-Hoch 50,30
-  treiber: ''
-  status: archiviert
-  added: '2026-10-23'
-  expiry: '2026-11-06'
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-10-23 bei Anlage - Exit-Test nicht bestanden: Ausbruch ueber das Okt-Hoch ~49,70 laeuft direkt ins Jul-Hoch ~50,20-50,30 (Docht 31.07., abgelesen; Tageshoch 23.10. 50,16 = Abweisung). An 49,90 mit SL 48,47 (1,5 ATR) liegt das Hindernis bei 0,3 R. RE-EVAL: 1D-Schluss >50,30€ (GBP). Dann Breakout-Retest @ 50,30, TP1 Measured Move Okt-Range 45,60-49,70 = ~53,80 (unter 52W-Hoch ~55,4), SL MIN(Entry-1,5xATR ; 50,30-0,30xATR).'
-  notes: '[NEU 2026-10-23 ~16:30, Morning Check, User: "Zeilen anlegen", User-Chart 1D+4h 16:13-16:16, Linien von Claude] Pitch breakout_long RRprox 3,84 faellt durch die Rechnung (erstes Hindernis Jul-Hoch). Statt Zeile: Re-Eval-Marke. Extension am Kurs 2,1 ATR.'
 - symbol: NET
   name: Cloudflare Inc. (NET, NYSE) - Netzwerk/Security-Software
   direction: LONG
@@ -4075,4 +4008,49 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-05 BREAKOUT-RETEST-LONG [AUTO]: Niveau 76,81$ (Ausbruch vor 3 HT, Vol 2,63x). Touch 75,97-78,07$ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 76,31). TIW = 1D-Schluss unter 76,81$. TP1 87,84$ [stark: Measured Move] 1/3 raus. Flags: 79,81$ mittel (1,53 R). Rest Chandelier 2,0 ATR. R:R TP1 4,72 an 75,97 / 3,89 an 78,07. 1 % (Pilot, Auto-Zeile). Earnings 2027-01-28.'
   notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Pitch breakout_long RRprox 5.85] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 78,01, ATR 1,677, EMA20/50/100/200 74,45/72,12/70,73/68,76, Stack bullish. Zone 75,97–78,07, TP1-Zone [''Measured Move''] 5,9 ATR vom Kurs (nahe L13-Grenze). Quelle: Pitch breakout_long RRprox 5.85.'
-updated: '2026-11-05T15:12:29+01:00'
+- symbol: DHL.DE
+  name: DHL.DE (Auto-Zeile)
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-05'
+  expiry: '2026-11-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-05 BREAKOUT-RETEST-LONG [AUTO]: Niveau 59,40€ (Ausbruch vor 1 HT, Vol 1,76x). Touch 58,82-60,27€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 59,05). TIW = 1D-Schluss unter 59,40€. TP1 64,20€ [stark: Measured Move] 1/3 raus. Flags: 61,30€ mittel (1,43 R). Rest Chandelier 2,0 ATR. R:R TP1 3,10 an 58,82 / 2,27 an 60,27. 1 % (Pilot, Auto-Zeile). Earnings Handcheck (Digest ohne Termin).'
+  notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Re-Eval >58.9] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 60,38, ATR 1,156, EMA20/50/100/200 58,30/57,19/55,66/52,68, Stack bullish. Zone 58,82–60,27, TP1-Zone [''Measured Move'']. Quelle: Re-Eval >58.9.'
+- symbol: CVX
+  name: CVX (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA50-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-05'
+  expiry: '2026-11-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-05 TREND-PULLBACK-LONG [AUTO]: Touch EMA50-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 216,52$ kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (5,170 -> -7,755). TIW = 1D-Schluss unter EMA100-1D -0,30 ATR. TP1 234,08$ [stark: Mehrfach, 52W] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,92 an 213,66 / 1,30 an 216,52. 1 % (Auto-Zeile). Earnings 2027-01-29.'
+  notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Re-Eval <221.0] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 218,19, ATR 5,170, EMA20/50/100/200 222,94/215,21/206,11/194,44, Stack bullish. Zone 213,66–217,80, TIW heute 204,56, TP1-Zone [''2x'', ''Reaktion 4.2 ATR'', ''52W-Hoch'']. Quelle: Re-Eval <221.0.'
+- symbol: ULVR.L
+  name: ULVR.L (Auto-Zeile)
+  direction: LONG
+  klasse: trend_pullback
+  anker: EMA20-1D
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-05'
+  expiry: '2026-11-19'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-05 TREND-PULLBACK-LONG [AUTO]: Touch EMA20-1D -0,30/+0,50 ATR [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 48,85 GBP kein Entry (TP1 < 1,3 R). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR). Stopweite entry-relativ -1,5xATR-1D (1,170 -> -1,755). TIW = 1D-Schluss unter EMA50-1D -0,30 ATR. TP1 51,30 GBP [stark: Mehrfach, Rollentausch, Woche] 1/3 raus. Rest Chandelier 2,0 ATR. R:R TP1 1,76 an 48,21 / 1,30 an 48,85. 1 % (Auto-Zeile). Earnings 2027-02-11.'
+  notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Re-Eval >50.3] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 50,32, ATR 1,170, EMA20/50/100/200 48,56/47,67/46,99/46,85, Stack bullish. Zone 48,21–49,14, TIW heute 47,31, TP1-Zone [''3x'', ''Rollentausch'', ''Reaktion 3.4 ATR'', ''Woche'']. Quelle: Re-Eval >50.3.'
+updated: '2026-11-05T22:16:10+00:00'

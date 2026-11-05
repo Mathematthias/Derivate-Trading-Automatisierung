@@ -175,6 +175,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1NGB68J9LVq7nfwOEAZZsRnBWfVaBFAz1": {
+  "actions": 3,
+  "at": "2026-11-05T22:16:10+00:00",
+  "name": "INBOX-morning-check-20261105-1814.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1NUtmZeru3GNdukf0JYp5iD-Dwo4I2M11": {
   "actions": 1,
   "at": "2026-10-24T05:41:02+00:00",
