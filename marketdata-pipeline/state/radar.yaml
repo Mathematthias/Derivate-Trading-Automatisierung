@@ -856,8 +856,9 @@ rows:
   wirkung: Setup-Neubewertung nach den Zahlen
   quelle: 'Abend-Chat 2026-10-25 (User: A-C)'
   id: Z118
-  status: offen
+  status: erledigt
   added: '2026-10-25'
+  note: '2026-11-06 neu gerechnet: Q3-Beat, Vorboerse ~294; kein Setup. Stack neutral, kein Ausbruch, TP1 309,53 ab 294 nur 0,52 R. Neu rechnen, sobald EMA20 ueber EMA50 steht.'
 - date: '2026-11-04'
   kat: 5
   werte: MPC
@@ -990,4 +991,4 @@ rows:
   id: Z132
   status: offen
   added: '2026-11-02'
-updated: '2026-11-05T22:16:10+00:00'
+updated: '2026-11-06T14:35:41+00:00'

@@ -6,3 +6,4 @@ Datum,Symbol,Leg,Klasse,Richtung,TIW,Schluss,ATR,Abstand_ATR,Aktion,Quelle,Kurs_
 2026-11-02,ENR.DE,,event_watch,LONG,132.2,130.42,6.1314,-0.29,archiviert,morning-check,,,,,,
 2026-11-02,NVDA,B,trend_pullback,LONG,202.87,202.06,6.3735,-0.127,angekratzt,morning-check,,,,,,
 2026-11-04,NVDA,B,trend_pullback,LONG,202.87,200.13,6.473,-0.423,archiviert,morning-check,,,,,,
+2026-11-05,PFE,A,breakout_retest,LONG,30.44,29.88,0.7206,-0.777,archiviert,morning-check,,,,,,

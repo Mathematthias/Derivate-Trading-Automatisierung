@@ -135,6 +135,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1KgukBhtU2jwHwAekp3fixV9dEZtHSr7C": {
+  "actions": 1,
+  "at": "2026-11-06T14:35:41+00:00",
+  "name": "INBOX-morning-check-20261106-1351.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1KqYnDF4A7rTR49gfiQaMiXAulQr390c7": {
   "actions": 1,
   "at": "2026-10-16T05:41:00+00:00",
@@ -392,6 +400,14 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1jops68W7UyQIpO3iHaHg4sNgZ4T9Rnm-": {
+  "actions": 4,
+  "at": "2026-11-06T14:35:41+00:00",
+  "name": "INBOX-morning-check-20261106-0824.json",
+  "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1kOiMvXsdC2f20WhYTLFwYUiPeKlmHhnq": {
   "actions": 1,
   "at": "2026-11-03T21:57:52+00:00",
@@ -533,6 +549,14 @@
   "at": "2026-10-19T05:40:55+00:00",
   "name": "INBOX-thesen-lauf-20261017-0920.json",
   "source": "thesen-lauf",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1vkJ0k4iQrjjVjZg1aGQjItFMEdyrOwOe": {
+  "actions": 3,
+  "at": "2026-11-06T14:35:41+00:00",
+  "name": "INBOX-morning-check-20261106-1511.json",
+  "source": "morning-check",
   "status": "ok",
   "verworfen": 0
  }
