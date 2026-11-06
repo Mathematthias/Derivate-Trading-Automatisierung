@@ -7,3 +7,5 @@ Datum,Symbol,Leg,Klasse,Richtung,TIW,Schluss,ATR,Abstand_ATR,Aktion,Quelle,Kurs_
 2026-11-02,NVDA,B,trend_pullback,LONG,202.87,202.06,6.3735,-0.127,angekratzt,morning-check,,,,,,
 2026-11-04,NVDA,B,trend_pullback,LONG,202.87,200.13,6.473,-0.423,archiviert,morning-check,,,,,,
 2026-11-05,PFE,A,breakout_retest,LONG,30.44,29.88,0.7206,-0.777,archiviert,morning-check,,,,,,
+2026-11-06,AFX.DE,A,breakout_retest,LONG,35.1,34.96,1.0197,-0.137,angekratzt,morning-check,,,,,,
+2026-11-06,DHL.DE,A,breakout_retest,LONG,59.4,58.02,1.3074,-1.056,archiviert,morning-check,,,,,,

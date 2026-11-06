@@ -3325,23 +3325,6 @@ entries:
   archived:
     date: '2026-10-26'
     reason: 'Re-Eval >324 ausgeloest 2026-10-23 (325,43), neu gerechnet 2026-10-26: kein Setup (Exit-Test am Widerstand 349)'
-- symbol: BDX
-  name: Becton, Dickinson and Company (BDX, NYSE) - Medtech
-  direction: LONG
-  klasse: breakout_retest
-  anker: 52W-Hoch 196,00
-  treiber: ''
-  status: archiviert
-  expiry: '2026-10-20'
-  archived:
-    date: '2026-10-26'
-    reason: 'Re-Eval >196 ausgeloest 2026-10-23 (198,91), neu gerechnet 2026-10-26: kein Setup (Vol 0,90x, Earnings 2026-11-05)'
-  notes: Ausbruch ueber 189,99 vor 2 HT (Vol 1,09x), Kurs 190,74, ATR 4,14. Earnings 2026-11-05.
-  legs:
-  - label: A
-    gate: 🔴
-    text: 'ARCHIVIERT 2026-10-20 - Pitch breakout_long, kein Setup: 52W-Hoch ~196,00 liegt 0,97 R ueber dem Entry, TP1 < 1,3 R. RE-EVAL: 1D-Schluss >200,50 (neues 52W-Hoch mit Vol >=1,0x, fruehestens nach Earnings 2026-11-05; Re-Eval >196 am 2026-10-26 verbraucht: Ausbruchsvolumen 0,90x < 1,0x) - dann neu rechnen.'
-  added: '2026-10-20'
 - symbol: FANG
   name: Diamondback Energy (FANG, NASDAQ) - Oel/Gas E&P
   direction: LONG
@@ -3892,6 +3875,10 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-04 BREAKOUT-RETEST-LONG [AUTO]: Niveau 35,10€ (Ausbruch vor 8 HT, Vol 1,21x = Daempfer). Touch 34,60-35,85€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 34,80). TIW = 1D-Schluss unter 35,10€. TP1 38,62€ [stark: Mehrfach, Rollentausch, Woche] 1/3 raus. Flags: 36,10€ mittel (1,00 R). Rest Chandelier 2,0 ATR. R:R TP1 2,67 an 34,60 / 1,83 an 35,85. 1 % (Pilot, Auto-Zeile). Earnings 2026-12-10.'
   notes: '[AUTO 2026-11-04 Morning Check v83, Quelle Re-Eval >35.1] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 35,78, ATR 1,006, EMA20/50/100/200 34,09/32,60/31,37/32,13, Stack bullish. Zone 34,60–35,85, TP1-Zone [''3x'', ''Rollentausch'', ''Reaktion 4.5 ATR'', ''Woche'']. Quelle: Re-Eval >35.1.'
+  tiw_angekratzt:
+    date: '2026-11-06'
+    schluss: 34.96
+    abstand_atr: -0.137
 - symbol: HM-B.ST
   name: HM-B.ST (Auto-Zeile)
   direction: LONG
@@ -3946,15 +3933,18 @@ entries:
   klasse: breakout_retest
   anker: Ausbruchsniveau
   treiber: ''
-  status: aktiv
+  status: archiviert
   quelle: auto
   added: '2026-11-05'
   expiry: '2026-11-19'
   legs:
   - label: A
-    gate: 🟡
-    text: 'nach 2026-11-05 BREAKOUT-RETEST-LONG [AUTO]: Niveau 59,40€ (Ausbruch vor 1 HT, Vol 1,76x). Touch 58,82-60,27€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 59,05). TIW = 1D-Schluss unter 59,40€. TP1 64,20€ [stark: Measured Move] 1/3 raus. Flags: 61,30€ mittel (1,43 R). Rest Chandelier 2,0 ATR. R:R TP1 3,10 an 58,82 / 2,27 an 60,27. 1 % (Pilot, Auto-Zeile). Earnings Handcheck (Digest ohne Termin).'
+    gate: 🔴
+    text: 'nach 2026-11-05 BREAKOUT-RETEST-LONG [AUTO]: Niveau 59,40€ (Ausbruch vor 1 HT, Vol 1,76x). Touch 58,82-60,27€ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 59,05). TIW = 1D-Schluss unter 59,40€. TP1 64,20€ [stark: Measured Move] 1/3 raus. Flags: 61,30€ mittel (1,43 R). Rest Chandelier 2,0 ATR. R:R TP1 3,10 an 58,82 / 2,27 an 60,27. 1 % (Pilot, Auto-Zeile). Earnings Handcheck (Digest ohne Termin). RE-EVAL: 1D-Schluss >59,40 (TIW-Rueckeroberung) - dann neu rechnen.'
   notes: '[AUTO 2026-11-05 Morning Check v83, Quelle Re-Eval >58.9] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 60,38, ATR 1,156, EMA20/50/100/200 58,30/57,19/55,66/52,68, Stack bullish. Zone 58,82–60,27, TP1-Zone [''Measured Move'']. Quelle: Re-Eval >58.9.'
+  archived:
+    date: '2026-11-06'
+    reason: 'Auto-Archiv: TIW per Schluss gebrochen (58.02 < 59.4) (Dauerregel 2026-10-19)'
 - symbol: CVX
   name: CVX (Auto-Zeile)
   direction: LONG
@@ -4060,4 +4050,19 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-06 TREND-PULLBACK-LONG: Touch 199,60-203,05€ [pullback] + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch, ueber 203,05€ kein Entry (Zonenkante). SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 197,77). Stopweite entry-relativ -1,5xATR-1D (6,096 -> -9,144). TIW = 1D-Schluss unter 199,60€. TP1 216,65€ [stark: Mehrfach, Woche, 52W] 1/3 raus. Flags: 206,15€ mittel (0,72 R) · 210,50€ mittel (1,19 R). Rest Chandelier 2,0 ATR. R:R TP1 1,86 an 199,60 / 1,49 an 203,05. 1 %. Earnings 2027-01-28.'
   notes: '[NEU 2026-11-06 15:1x, User-Auftrag ''rechne mal und baue Zeilen'', Linien von Claude aus Digest 15:03 (sr-Zonen, EMA, ATR), kein Chart gesehen] Kurs 209,60, ATR 6,096, EMA20/50/100/200 206,36/195,18/183,84/181,17, Stack bullish. Zone = starke Rollentausch-Zone 199,60-203,05 (10x, Reaktion 7,1 ATR), Kurs bleibt ueber EMA50 195,18 = 3/4 EMAs. Auto-Zeile am EMA50 verworfen: Die Zone liegt zwischen EMA50 und TP1 (L13).'
-updated: '2026-11-06T14:35:41+00:00'
+- symbol: BDX
+  name: BDX (Auto-Zeile)
+  direction: LONG
+  klasse: breakout_retest
+  anker: Ausbruchsniveau
+  treiber: ''
+  status: aktiv
+  quelle: auto
+  added: '2026-11-06'
+  expiry: '2026-11-20'
+  legs:
+  - label: A
+    gate: 🟡
+    text: 'nach 2026-11-06 BREAKOUT-RETEST-LONG [AUTO]: Niveau 209,84$ (Ausbruch vor 1 HT, Vol 2,32x). Touch 207,51-213,33$ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 208,44). TIW = 1D-Schluss unter 209,84$. TP1 240,78$ [stark: Measured Move] 1/3 raus. Flags: 214,88$ mittel (1,05 R). Rest Chandelier 2,0 ATR. R:R TP1 4,76 an 207,51 / 3,93 an 213,33. 1 % (Pilot, Auto-Zeile). Earnings 2027-02-09.'
+  notes: '[AUTO 2026-11-06 Morning Check v83, Quelle Re-Eval >200.5] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 213,91, ATR 4,654, EMA20/50/100/200 198,27/189,50/180,32/171,26, Stack bullish. Zone 207,51–213,33, TP1-Zone [''Measured Move'']. Quelle: Re-Eval >200.5.'
+updated: '2026-11-06T21:45:55+00:00'
