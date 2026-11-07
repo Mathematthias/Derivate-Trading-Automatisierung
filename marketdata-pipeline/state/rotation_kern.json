@@ -1,0 +1,82 @@
+{
+  "bestand": [
+    "XLV",
+    "XLE",
+    "XLP",
+    "XLB"
+  ],
+  "historie": [
+    {
+      "datum": "2026-11-06",
+      "bestand": [
+        "XLV",
+        "XLE",
+        "XLP",
+        "XLB"
+      ],
+      "erzwungen": true
+    }
+  ],
+  "signal": {
+    "datum": "2026-11-06",
+    "aktionen": [
+      {
+        "aktion": "kaufen",
+        "signal": "XLV",
+        "ziel_eur": 2000.0,
+        "name": "SPDR S&P U.S. Health Care Select Sector UCITS ETF",
+        "isin": "IE00BWBXM617"
+      },
+      {
+        "aktion": "kaufen",
+        "signal": "XLE",
+        "ziel_eur": 2000.0,
+        "name": "SPDR S&P U.S. Energy Select Sector UCITS ETF",
+        "isin": "IE00BWBXM492"
+      },
+      {
+        "aktion": "kaufen",
+        "signal": "XLP",
+        "ziel_eur": 2000.0,
+        "name": "SPDR S&P U.S. Consumer Staples Select Sector UCITS ETF",
+        "isin": "IE00BWBXM385"
+      },
+      {
+        "aktion": "kaufen",
+        "signal": "XLB",
+        "ziel_eur": 2000.0,
+        "name": "SPDR S&P U.S. Materials Select Sector UCITS ETF",
+        "isin": "IE00BWBXM831"
+      }
+    ],
+    "umgesetzt": false
+  },
+  "vorschau": {
+    "datum": "2026-11-06",
+    "auswahl": [
+      "XLV",
+      "XLE",
+      "XLP",
+      "XLB"
+    ],
+    "scores": {
+      "XLK": -0.0172,
+      "XLF": 0.0732,
+      "XLV": 0.2299,
+      "XLE": 0.2003,
+      "XLY": -0.0165,
+      "XLP": 0.1236,
+      "XLU": -0.0055,
+      "XLB": 0.0793,
+      "SMH": -0.0239,
+      "SKYY": 0.0319,
+      "QQQ": -0.0356,
+      "IWM": 0.0041,
+      "EFA": 0.0194,
+      "EEM": -0.0381,
+      "TLT": -0.0211,
+      "IEF": -0.0128
+    }
+  },
+  "aktualisiert": "2026-11-07T15:36+00:00"
+}
