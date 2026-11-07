@@ -330,7 +330,7 @@ def s5_pullback(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
     rows = []
     for s, d in dd.items():
         stack = (d.ema20 > d.ema50) & (d.ema50 > d.ema200) & (d.ema50 > d.ema50.shift(10))
-        rueck = (d.Low <= d.ema20) & (d.Close >= d.ema50) & (d.atrp <= 0.05)
+        rueck = (d.Low <= d.ema20) & (d.Close >= d.ema50) & (d.atrp <= 0.05) & (d.atrp >= 0.005)
         sig = stack & rueck
         frei = 0
         for j in np.flatnonzero(sig.values):
@@ -455,12 +455,13 @@ def main() -> int:
     t1.to_csv(out / "s1_rotation.csv")
 
     # S2
-    et = pd.DataFrame({s: raw[s].Close for s in ETFS if s in raw})
     res2 = {}
-    for n in (2, 3, 4):
-        for ab in (True, False):
-            p, tu = rotation(et, None, n, "mix", False, ab, start="2008-06-01")
-            res2[f"Top{n} 3/6/12M{' + absolut>0' if ab else ''}"] = (kennz(p), tu)
+    for lab, liste in (("alle 20", ETFS), ("ohne XLI", [e for e in ETFS if e != "XLI"])):
+        et = pd.DataFrame({s: raw[s].Close for s in liste if s in raw})
+        for n in (3, 4):
+            for ab in (True, False):
+                p, tu = rotation(et, None, n, "mix", False, ab, start="2008-06-01")
+                res2[f"{lab}: Top{n} 3/6/12M{' + absolut>0' if ab else ''}"] = (kennz(p), tu)
     res2["SPY B&H ab 2008-06"] = (kennz(raw["SPY"].Close.pct_change().loc["2008-06-01":]), np.nan)
     t2 = pd.DataFrame({k: {**v[0], "Umschlag/Monat": v[1]} for k, v in res2.items()}).T
     t2.index.name = "Variante"
