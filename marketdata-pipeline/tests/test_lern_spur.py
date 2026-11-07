@@ -48,7 +48,10 @@ def test_sperre_review_und_notbremse():
     assert "Trade 5" in ls.sperre(st, CFG)
     st["reviews"] = {"5": "2026-12-01"}
     assert ls.sperre(st, CFG) is None
-    st = {"abgeschlossen": [{"r": -1.0}] * 6, "reviews": {"5": "x"}}
+    n = int(-CFG["notbremse_r"])
+    st = {"abgeschlossen": [{"r": -1.0}] * (n - 1), "reviews": {"5": "x"}}
+    assert ls.sperre(st, CFG) is None or not ls.sperre(st, CFG).startswith("Notbremse")
+    st = {"abgeschlossen": [{"r": -1.0}] * n, "reviews": {"5": "x", "10": "x"}}
     assert ls.sperre(st, CFG).startswith("Notbremse")
 
 
@@ -71,3 +74,57 @@ def test_einsatzdeckel_und_rangfolge():
     assert c["einsatz_eur"] <= CFG["max_einsatz_eur"] + 1e-6
     assert c["r_eur_effektiv"] <= CFG["r_eur"] + 1e-6
     assert CFG["auswahl"] == {"feld": "atrp", "absteigend": False}
+
+
+def test_ls2_filter_ema50_ueber_ema200():
+    # Kreuzung EMA20/50 mit Schluss ueber EMA200, aber EMA50 noch darunter (ALGN-Fall 2026-11-06)
+    base = list(np.linspace(150, 100, 220)) + list(np.linspace(100, 90, 15)) + list(np.linspace(90, 160, 25))
+    d = _df(base)
+    lose = dict(CFG, signal=dict(CFG["signal"], ema50_ueber_ema200=False))
+    tage = [k for k in range(215, len(d)) if ls.signal_heute(d.iloc[:k + 1], lose)]
+    assert tage, "ohne Filter muss das Signal kommen"
+    assert any(d.ema50.iloc[k] < d.ema200.iloc[k] for k in tage)
+    assert not any(ls.signal_heute(d.iloc[:k + 1], CFG) and d.ema50.iloc[k] < d.ema200.iloc[k]
+                   for k in range(215, len(d)))
+
+
+def test_ls2_risikobudget_und_kapital():
+    cfg = dict(CFG)
+    assert cfg["r_eur"] == 50 and cfg["risiko_budget_r"] == 3 and cfg["kapital_eur"] == 12000
+    voll = {"symbol": "X.DE", "einstieg_kurs": 100, "stop_initial": 95, "stop": 95, "stueck": 10, "einsatz_eur": 1000}
+    halb = dict(voll, stop=97.5)
+    sicher = dict(voll, stop=100)
+    b = ls.budget([voll, halb, sicher], cfg, 1.1)
+    assert b["risiko_offen_eur"] == 75.0 and b["risiko_frei_eur"] == 75.0
+    assert b["kapital_gebunden_eur"] == 3000.0
+    kand = [{"stueck": 5, "r_eur_effektiv": 50, "einsatz_eur": 1800},
+            {"stueck": 5, "r_eur_effektiv": 50, "einsatz_eur": 1800},
+            {"stueck": 5, "r_eur_effektiv": 20, "einsatz_eur": 900}]
+    assert ls.zuege_markieren(kand, b) == 2 and [c["zug"] for c in kand] == [True, False, True]
+    eng = dict(b, kapital_frei_eur=1000.0)
+    assert ls.zuege_markieren(kand, eng) == 1 and [c["zug"] for c in kand] == [False, False, True]
+    # USD-Position: Risiko in EUR umgerechnet
+    usd = {"symbol": "ALGN", "einstieg_kurs": 110, "stop_initial": 100, "stop": 100, "stueck": 5}
+    assert round(ls.rest_risiko_eur(usd, cfg, 1.25), 2) == 40.0
+
+
+def test_ls2_stop_abgesichert():
+    d = _df(list(np.linspace(100, 160, 260)))
+    pos = {"symbol": "X", "einstieg_datum": str(d.index[200].date()), "einstieg_kurs": float(d.Close.iloc[200]),
+           "stop_initial": float(d.Close.iloc[200]) - 3, "stop": float(d.Close.iloc[200]) - 3}
+    assert ls.stop_nachziehen(pos, d, CFG)["abgesichert"]
+
+
+def test_veto_papiertrade_wie_backtest():
+    # Anstieg, dann Einbruch: Papier-Trade laeuft mit, zieht Stop nach und wird am Stop geschlossen
+    d = _df(list(np.linspace(100, 110, 200)) + list(np.linspace(110, 150, 15)) + list(np.linspace(150, 100, 45)))
+    i = 199
+    e, a = float(d.Close.iloc[i]), float(d.atr.iloc[i])
+    p = {"symbol": "X", "einstieg_datum": str(d.index[i].date()), "einstieg_kurs": e,
+         "stop_initial": e - 1.5 * a, "stop": e - 1.5 * a, "grund": "Story gefaellt mir nicht"}
+    halb = ls.papier_update(p, d.iloc[:215], CFG)
+    assert not halb.get("ausstieg_datum") and halb["stop"] > p["stop"]
+    assert ls.papier_update(dict(p), d.iloc[:201], CFG)["stop"] >= p["stop"]          # Rundung lockert nie
+    fertig = ls.papier_update(halb, d, CFG)
+    assert fertig["grund_ausstieg"] == "stop" and fertig["r"] > 0
+    assert ls.papier_update(fertig, d, CFG) == fertig

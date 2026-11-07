@@ -1,13 +1,20 @@
-# Lern-Spur LS-1 (User-Entscheid 2026-11-07, Variante B): eingefroren bis Trade 20.
-# Bugfixes erlaubt, Regelaenderungen nur im Review. Backtest: research/backtest-2026-11-07 (S6 Variante A).
+# Lern-Spur LS-2 (User-Entscheide 2026-11-07, vor dem ersten Lern-Trade): eingefroren bis Trade 20.
+# Bugfixes erlaubt, Regelaenderungen nur im Review. Backtest: research/backtest-2026-11-07
+# (S6 Variante A, FILTER_SEITWAERTS.md, LERNSPUR_SLOTS.md).
+# LS-2 gegenueber LS-1: Filter EMA50 > EMA200; Risikobudget statt Plaetze (offenes Risiko bis zum
+# aktuellen Stop <= 3 R), R = 50 EUR, Kapital 12.000 EUR auf SB+ (User 2026-11-07).
+# Simulation 2009-2026 (LERNSPUR_BUDGET.md): 20 Trades in ~17 statt ~44 Wochen, Ø R etwa gleich.
+# US-Werte handelt der User in EUR ueber gettex: Stops zusaetzlich in EUR.
+# Vetos des Users laufen als Papier-Trades mit (Feld abgelehnt), zaehlen nicht zu den 20 Trades.
 
-version: "LS-1 2026-11-07"
-kapital_eur: 4000
-r_eur: 75
-max_parallel: 2
+version: "LS-2 2026-11-07"
+kapital_eur: 12000
+r_eur: 50
+risiko_budget_r: 3       # Summe Restrisiko aller offenen Lern-Positionen, in R
 
 signal:
   # EMA20 kreuzt EMA50 nach oben (heute ueber, gestern nicht), Schluss ueber EMA200
+  ema50_ueber_ema200: true   # LS-2 (User 2026-11-07): Filtertest +0,02 R alle / +0,06 R letzte 5 J
   atr_pct_min: 0.005
   atr_pct_max: 0.06
 stop_atr: 1.5            # Anfangsstop = Einstieg - 1,5 ATR
@@ -17,11 +24,11 @@ max_ht: 60               # Zeitausstieg
 # Rangfolge, wenn mehr Signale als freie Plaetze (Auswahl-Test 2026-11-07, 2.848 Tage mit >= 2 Signalen):
 # niedrigste ATR% +0,31 R (2009-17 +0,33 / 2018-26 +0,29) gegen alle Signale +0,26 R, Zufall +0,22 R.
 auswahl: {feld: atrp, absteigend: false}
-# Kapitalgrenze je Position = kapital_eur / max_parallel; R sinkt dann unter r_eur, nie darueber.
+# Kapitalgrenze je Position; R sinkt dann unter r_eur, nie darueber.
 max_einsatz_eur: 2000
 
 # Nur Direktaktien in EUR oder USD (Gebuehrenfreiheit SB+, keine Pence-/Fremdwaehrungs-Fallen)
 suffixe_eur: [".DE", ".PA", ".AS", ".MI", ".MC", ".BR", ".HE", ".VI"]
 
 reviews: [5, 10, 15, 20]
-notbremse_r: -6
+notbremse_r: -10         # User 2026-11-07: -6 R loeste in 23-26 % der 20er-Fenster aus (LERNSPUR_NOTBREMSE.md), -10 R in 9 %
