@@ -82,19 +82,18 @@ thesen:
     notiz: 'ETN bis 2026-11-03 per Earnings-Disqualifier aus den Vehikeln heraus. KEIN benannter UCITS-Netz-/Elektrifizierungs-ETF - die Spur bevorzugt ETFs, hier bleiben es 3 Direktaktien, weil kein Produkt belegt benannt werden kann (nichts erfunden). KOPPLUNG: Falsifikat (a) ist identisch mit dem der These TECH; nach L7 sind A und TECH EIN Risikoblock. A und TECH zusammen fuellen die Spur vollstaendig (2 von 2 Thesen, 4 von 4 R) auf einem einzigen Treiber - ob beide einen Starter tragen, ist eine Entscheidung des Users, nicht dieses Laufs.'
 - id: OEL
   titel: Oel/Hormus
-  verdikt: spielen
-  korb_budget_pct: 2
-  crowdedness_pp: 7.39
-  re_check: '2026-11-02'
-  falsifikat: Brent-Schluss < 88 USD ODER Waffenruhe/Deeskalationsvereinbarung USA-Iran
+  verdikt: beobachten
+  korb_budget_pct: null
+  crowdedness_pp: -8.95
+  re_check: '2026-11-13'
+  falsifikat: 'Brent-Schluss (BZ=F) < 88 USD ODER Waffenruhe bzw. formelle Deeskalationsvereinbarung USA-Iran. ZUSATZ 2026-11-07: ein 1D-Schluss unter 88 beendet die These sofort, ohne auf den Re-Check zu warten.'
   ausdruecke:
   - VLO
   - MPC
   - XOM
   - PSX
-  note: 'RE-CHECK 2026-11-02 NICHT faellig - keine Verdikt- oder Budgetaenderung. Erledigt wird nur die am 2026-10-24 offen gelassene Haelfte des Falsifikats: KEINE WAFFENRUHE, KEINE DEESKALATIONSVEREINBARUNG. Die Strasse von Hormus ist geschlossen, Iran bindet die Wiedereroeffnung an die Aufhebung der Blockade (4-5 Tage nach Aufhebung, Stand 2026-10-28), die Gespraeche stehen, Trump hat eine ''crushing economic operation'' angekuendigt; Meldungen vom 2026-10-31 sprechen von Gespraechsbereitschaft bei fortgesetzten Angriffen auf Hormus (cbsnews.com, aljazeera.com, houseofsaud.com, Abruf 2026-10-31 - Sekundaerquellen, teils unbestaetigt). Zweite Haelfte ebenfalls nicht eingetreten: Brent BZ=F 112,33 USD = +27,6 % ueber der Schwelle 88, bullischer Stack ueber EMA20 109,89 und EMA50 104,01, 30d +9,79 %; WTI CL=F 102,95. Crowdedness der vier Ausdruecke 30d gegen ^GSPC -1,13: VLO -1,02 / MPC +6,98 / XOM +15,43 / PSX +8,17, Mittel +7,39 PP - ZONENWECHSEL von 10-20 PP (Vorwoche 13,57) zurueck unter
-    10 PP, also kein Groessendeckel mehr; das Budget bleibt in diesem Lauf dennoch bei 2 %, weil der Re-Check nicht faellig ist. Ausdrucksstand: XOM 187,25 ueber allen vier EMAs, RSI 73,0, Ext 2,57 ATR, 52W-Hoch -0,66 %, Earnings 2026-10-30 gerade durch; PSX 282,83 ueber allen vier, RSI 55,3, Ext 0,41; MPC 444,73 ueber 3 von 4, RSI 51,4, Earnings 2026-11-03 (gesperrt); VLO 399,66 ueber 3 von 4, RSI 45,4. Nicht in der Liste, aber ueber allen vier EMAs und mit Treiber OEL: CVX 235,52 (RSI 72,9, 52W-Hoch -0,40 %) und ENI.MI 27,135 (RSI 65,6). OFFEN FUER DEN RE-CHECK AM 2026-11-02: OEL steht auf spielen, hat aber spur=null und keine Thesen-Karte und fuehrt ein korb_budget_pct aus der am 2026-10-29 abgeloesten Korb-Klasse. Nach v82 Regel 3 ist spielen ohne Karte folgenlos. Es ist die EINZIGE These mit intakten Ausdruecken - und die einzige ohne Zugang zur Spur. Termin Z113 am 2026-11-03 (US-Midterms, Berichte ueber Schlaege nach der Wahl) ist Gap-Risiko ueber Nacht. Alle Kurswerte Digest BRIEFING-DIGEST-2026-10-30-2234.json
-    (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  note: 'RE-CHECK 2026-11-02 war ueberfaellig, hier erledigt. Falsifikat an BEIDEN Haelften geprueft und NICHT eingetreten: Brent 97,87 USD am 2026-11-06 = +11,22 % ueber 88 (1,88 ATR, ATR 5,26); keine Waffenruhe und keine Deeskalationsvereinbarung - es gibt einen von Katar vermittelten ENTWURF und Gespraechsbereitschaft (Gulf News 2026-11-05/06), Trump am 2026-11-05 ''no immediate plans to order attacks'', Entscheidung offen. Physische Stoerung haelt an: JMIC Update 111 vom 2026-11-05 zaehlt vier Angriffe in 96 Stunden, UKMTO bestaetigt einen Tankertreffer am 2026-11-04 23:20 UTC. HERABSTUFUNG auf beobachten NICHT wegen des Kursverlaufs (Schritt 4c verbietet das), sondern weil die Thesen-Karte nicht vollstaendig werden kann: das Pflichtfeld katalysator braucht ein DATUM, und im Horizont 2-6 Wochen gibt es keines - der Katar-Entwurf hat keinen Tag (''within days'', unbestaetigt), die naechsten datierten Punkte der Ausdruecke sind Earnings im Januar/Februar 2027. Nach v82 Regel 3 bleibt eine
+    These ohne vollstaendige Karte bei beobachten. korb_budget_pct von 2 auf null, weil die Korb-Klasse am 2026-10-29 abgeloest ist. CROWDEDNESS-Zonenwechsel nur als Messung: +7,39 -> -8,95 PP (VLO -16,94 / MPC -14,55 / XOM +3,44 / PSX -7,74 gegen ^GSPC -5,00), Unterperformance, Zone ohne Deckel.'
   historie:
   - date: '2026-10-05'
     verdikt: spielen
@@ -132,19 +131,22 @@ thesen:
     verdikt: spielen
     crowdedness_pp: 7.39
     source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: -8.95
+    source: thesen-lauf
 - id: STAHL
   titel: EU-Stahl melt-and-pour
   verdikt: spielen
   korb_budget_pct: 3
-  crowdedness_pp: -5.92
+  crowdedness_pp: -0.02
   re_check: '2026-11-13'
   falsifikat: HRC Nordeuropa EXW (Fastmarkets/SMM-Serie) unter 745 EUR/t am 2026-11-12 (Referenz 745 EUR/t; Basis EXW, nicht DDP)
   ausdruecke:
   - SZG.DE
   - MT.AS
   - VOE.VI
-  note: 'RE-CHECK 2026-11-13 NICHT faellig - keine Verdikt- oder Budgetaenderung, nur Messung. Crowdedness 30d: SZG.DE -1,46 gegen ^GDAXI +3,52 = -4,98 / MT.AS -5,53 gegen ^STOXX50E -0,71 = -4,82 / VOE.VI -8,67 gegen ^STOXX50E = -7,96, Mittel -5,92 PP (Vorwoche -10,06) - Unterperformance schrumpft, Zone ohne Deckel. HRC-PREIS IN DIESEM LAUF NICHT NEU ABGERUFEN (Regel 16, Re-Check nicht faellig): letzter belegter Stand bleibt 748,75 EUR/t EXW Nordeuropa am 2026-10-19 gegen die Schwelle 745 (Fastmarkets via eurometal.net, veroeff. 2026-10-20) - das ist eine fruehere Chat-Aussage, heute nicht gegengeprueft. Messtermin Z90 am 2026-11-12, am selben Tag Salzgitter Q3. Ausdrucksstand (Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30)): SZG.DE 47,10 (von 43,82 vor einer Woche, +7,5 %), RSI 47,7, Ext -0,12, dicht unter EMA20 47,43 und EMA200 48,20, ATR 5,68 % (ueber der 5-%-Stufe); MT.AS 53,60 unter EMA200 54,10, also 0,93 % unter dem Anker der archivierten
-    Korb-Zeile, RSI 37,8; VOE.VI 41,30 unter allen vier, RSI 37,9. Earnings sperren: MT.AS 2026-11-05, VOE.VI 2026-11-11, SZG.DE 2026-11-12. Gleiche Luecke wie bei OEL: spielen ohne Karte und ohne spur - am 2026-11-13 zu entscheiden.'
+  note: 'RE-CHECK 2026-11-13 NICHT faellig, keine Verdikt- oder Budgetaenderung, nur Messung. HRC-PREIS IN DIESEM LAUF NICHT NEU ABGERUFEN (Regel 16): letzter belegter Stand 748,75 EUR/t am 2026-10-19, eine frueher im Chat genannte Zahl, heute nicht gegengeprueft. Messtermin bleibt Z90 am 2026-11-12, am selben Tag Salzgitter Q3 (earn_next SZG.DE 2026-11-12) und VOE.VI am 2026-11-11. BEFUND UNVERAENDERT SEIT 2026-10-31: STAHL steht auf spielen, hat aber spur=null, keine Thesen-Karte und ein korb_budget_pct aus der am 2026-10-29 abgeloesten Korb-Klasse - nach v82 Regel 3 ist spielen ohne Karte folgenlos. Am 2026-11-13 ist entweder die Karte zu schreiben oder das Verdikt zu korrigieren. CROWDEDNESS: -0,02 PP (Vorwoche -5,92; SZG.DE +6,90 gegen ^GDAXI +4,09, MT.AS +0,40 / VOE.VI -7,36 gegen ^STOXX50E +0,71) - die Unterperformance ist in einer Woche vollstaendig verschwunden, Zone weiter ohne Deckel.'
   historie:
   - date: '2026-10-12'
     verdikt: spielen
@@ -166,18 +168,20 @@ thesen:
     verdikt: spielen
     crowdedness_pp: -5.92
     source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: spielen
+    crowdedness_pp: -0.02
+    source: thesen-lauf
 - id: N2
   titel: UK-Ersterwerber (N-2)
   verdikt: beobachten
   korb_budget_pct: 0
-  crowdedness_pp: -3.09
+  crowdedness_pp: 6.02
   re_check: '2026-12-01'
-  falsifikat: '''Your First Home'' oeffnet die Vorregistrierung nicht bis 2026-12-31, ODER das Programm wird auf Bestandsimmobilien ausgeweitet bzw. vom Neubau geloest (damit faellt der mechanische Kanal zu den Neubau-Entwicklern), ODER der staatliche Eigenkapitalanteil sinkt unter 20 % -> verworfen.'
+  falsifikat: '''Your First Home'' oeffnet die Vorregistrierung nicht bis 2026-12-31, ODER das Programm wird auf Bestandsimmobilien ausgeweitet bzw. vom Neubau geloest, ODER der staatliche Eigenkapitalanteil sinkt unter 20 % -> verworfen.'
   ausdruecke:
   - PSN.L
-  note: 'RE-CHECK 2026-10-29 faellig, hier erledigt. ALTES FALSIFIKAT WIDERLEGT, nicht eingetreten: Der Autumn Budget vom 2026-10-28 (Chancellor John Healey) hat ein beziffertes Ersterwerber-Paket gebracht - (1) ''Your First Home'' als Help-to-Buy-Nachfolger, NUR fuer Ersterwerber von NEUBAUTEN, staatliches Eigenkapitaldarlehen 20 %, fuenf Jahre zinsfrei, Eigenkapital 2,5-15 %, Haushaltseinkommen max. 110.000 GBP (140.000 GBP London), Preisdeckel 650.000 GBP Inner- und 500.000 GBP Outer-London, sonst Median der Kommune; Vorregistrierung bis Ende Dezember 2026, Antraege ab Februar 2027, erste Darlehen ab April 2027. (2) First-Time-Buyer-ISA ab April 2029, 4.000 GBP/Jahr, 25 % Bonus, Deckel 20.000 GBP, Objekt bis 450.000 GBP, keine Altersgrenze. (3) Lifetime-ISA-Strafe fuer Objekte ueber 450.000 GBP von 25 auf 20 % gesenkt, ab 2026-10-29 00:00. (4) Stamp Duty UNVERAENDERT, keine Entlastung. GEGENSEITE derselben These: Einkommensteuer auf Mieteinkuenfte ab April 2027 um weitere 2 Prozentpunkte
-    auf 24/44/49 %, Mansion Tax ab April 2028 (2.500 GBP ab 2 Mio., 7.500 GBP ab 5 Mio.) - senkt die Vermieter-Nachfrage nach Neubau und erhoeht das Angebot an Ex-Mietbestand. Quelle which.co.uk und moneysavingexpert.com, Abruf 2026-10-31. WARUM TROTZDEM BEOBACHTEN und nicht spielen: Das Pflichtfeld katalysator der Karte verlangt ein Datum, und das Programm hat keines - ''bis Ende Dezember 2026'', ''ab Februar 2027'', ''ab April 2027'' sind Zeitfenster ohne Tag. Nach Routine 9 v82 Regel 3 bleibt eine These ohne vollstaendige Karte bei beobachten. Das ist der Grund, nicht die Handelbarkeit. Nebenbefund, nach Schritt 4c ausdruecklich KEIN Thesenargument: der Markt hatte die Nachricht am 2026-10-28 und hat die Bauwerte nicht neu bewertet - PSN.L 12,455 (+0,52 % am 10-30), 30d -0,20 %, 52W-Hoch -19,75 %, Crowdedness -3,09 PP gegen ^FTSE (n=1, die Stichprobe traegt die Zahl nicht); TW.L laeuft im Digest als SHORT-Pitch (bearish, unter 3 von 4 EMAs) - ein Wert kann nicht in beiden Richtungen laufen,
-    das ist ein Befund fuer Block 5. Neuer Re-Check 2026-12-01: dann muss ein fester Vorregistrierungstermin publiziert sein. Kurswerte Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  note: 'Re-Check 2026-12-01 nicht faellig, keine Aenderung. Nur Crowdedness: +6,02 PP (Vorwoche -3,09; PSN.L +8,25 gegen ^FTSE +2,23), n=1 - die Stichprobe traegt die Zahl nicht. PSN.L 13,05 bullisch ueber allen vier EMAs, RSI 59,5 (Digest 2026-11-06).'
   historie:
   - date: '2026-10-12'
     verdikt: beobachten
@@ -187,14 +191,19 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: -3.09
     source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: 6.02
+    source: thesen-lauf
 - id: N3
   titel: Deutscher Kapazitaetsmarkt - Zuschlag 2026-11-03
   verdikt: beobachten
-  re_check: '2026-11-06'
-  crowdedness_pp: -10.76
+  re_check: '2026-11-12'
+  crowdedness_pp: -14.36
   korb_budget_pct: 0
-  falsifikat: Zuschlagsvolumen am 2026-11-03 deutlich unter den ausgeschriebenen 4.500 MW ODER Gasturbinen-/Neubauanteil im Zuschlag marginal (Schwerpunkt Bestandsanlagen) -> verworfen
-  note: 'Re-Check 2026-11-06 nicht faellig, keine Aenderung. Nur Crowdedness nachgezogen: ENR.DE -10,95 gegen ^GDAXI +3,52 = -14,47 / SIE.DE -2,30 = -5,82 / GEV -13,12 gegen ^GSPC -1,13 = -11,99, Mittel -10,76 PP (Vorwoche -11,99). Zuschlagsbekanntgabe Kapazitaetsmarkt unveraendert Z66 am 2026-11-03; ENR.DE 126,92 bearisch unter allen vier EMAs (EMA20 133,48 / EMA200 142,95), RSI 42,2, Gap -4,09 % am 2026-10-30, Earnings 2026-11-11; SIE.DE 265,65 unter allen vier, RSI 47,3; GEV 857,87 unter allen vier, RSI 40,6, ATR 5,52 %. Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  falsifikat: (a) BNetzA gibt am 2026-11-10 keinen Gebotstermin fuer die zweite Langzeitkapazitaets-Runde bekannt, der Termin bleibt also unbestimmt, ODER (b) ENR.DE meldet am 2026-11-11 im Q4-FY2026-Call fuer Gas Services einen Auftragseingang unter dem Umsatz (book-to-bill < 1) -> verworfen.
+  note: 'RE-CHECK 2026-11-06 war ueberfaellig, hier erledigt. Das ALTE Falsifikat ist an BEIDEN Haelften WIDERLEGT, nicht eingetreten: (1) Zuschlagsvolumen 5.160 rMW auf 11 Zuschlaege gegen ausgeschriebene 4.500 rMW, 41 Gebote ueber rund 11.958 rMW (BNetzA PM 2026-11-03) - also ueber, nicht deutlich unter dem Volumen; (2) Gasturbinenanteil nicht marginal, sondern vollstaendig: alle 11 Zuschlaege gingen an Gaskraftwerke, kein einziger Stromspeicher (energiezukunft 2026-11-05, cleanthinking 2026-11-03, photon 2026-11-04); Technologieaufteilung laut BMWi rund 2 GW GuD und rund 3 GW Gasturbinen und Gasmotoren. Durchschnittswert 155.296 EUR je rMW und Jahr gegen Hoechstpreis 244.000 EUR, Laufzeit 15 Jahre ab 2031, Zuschlaege gelten ab 2026-11-10. KEINE Hochstufung auf spielen, gemessen allein an 4b/4c und am Falsifikat: (i) die Verguetung beginnt erst 2031 und keine Quelle nennt eine Inbetriebnahmefrist, der Zeitpunkt der Turbinenbestellungen ist also unbestimmt; (ii) der einzige EU-Ausdruck
+    ENR.DE ist derselbe Name und nach L7 derselbe Risikoblock wie die am 2026-11-05 verworfene These A, deren Preis-Falsifikat inzwischen um 11,0 % gebrochen ist (PWR 540,90 gegen 607,73); (iii) ein Preis-Falsifikat waere nicht konstruierbar - ENR.DE 118,10 sitzt auf der Unterkante seiner letzten starken Zone 115,00-118,15 (Abstand -0,01 ATR), das Kill-Switch laege also bei null Abstand, derselbe Defekt, der das spielen von TECH wertlos gemacht hat. CROWDEDNESS: -14,36 PP (Vorwoche -10,76; ENR.DE -21,21 / SIE.DE -4,32 gegen ^GDAXI +4,09, GEV -17,54 gegen ^GSPC -5,00).'
   historie:
   - date: '2026-10-12'
     verdikt: beobachten
@@ -208,6 +217,10 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: -10.76
     source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: -14.36
+    source: thesen-lauf
   ausdruecke:
   - ENR.DE
   - SIE.DE
@@ -219,9 +232,13 @@ thesen:
   crowdedness_pp: null
   korb_budget_pct: 0
   falsifikat: Kommission verschiebt den Stichtag oder entschaerft die Brems-/Reifenabriebgrenzwerte per Uebergangsfrist bzw. die Durchfuehrungsrechtsakte zum Abriebmessverfahren liegen am 2026-11-29 nicht vor -> verworfen
-  note: 'Kandidat aus Gruppe 2 (Regulierungs-/Fristenkalender, Radar Z23, CATALYST-CALENDAR 2026-10-10). VO (EU) 2024/1257 gilt ab 2026-11-29 fuer neue Typgenehmigungen Pkw/leichte Nutzfahrzeuge und bringt erstmals Grenzwerte fuer Brems- und Reifenabrieb. Kausalkette: Stichtag am Inverkehrbringen -> Content-per-Vehicle bei Abriebminderung und Abgasnachbehandlung steigt, Vorzieheffekt davor. Genannte Werte UMI.BR, JMAT.L, BAS.DE, CON.DE, ML.PA, TYRES.HE - KEINER im Universum, Crowdedness nicht messbar. VORBEHALT: Datum und Abriebgrenzwerte stehen nur im Kalender-Seed (EUR-Lex 2024/1257, Abruf 2026-08-04), Primaerquelle nicht gegengelesen - vor jeder Vertiefung Artikel und Anhang pruefen. Gleiche Schwaeche wie K-3 am 2026-10-03: ein Vorzieheffekt ist aus veroeffentlichten Zahlen kaum von Saisonalitaet zu trennen.'
+  note: 'Re-Check 2026-11-21 nicht faellig, keine Aenderung. Crowdedness nicht messbar: keiner der benannten Werte (UMI.BR, JMAT.L, BAS.DE, CON.DE, ML.PA, TYRES.HE) ist im Universum des Digests. Termin unveraendert Z23 am 2026-11-29, im CATALYST-CALENDAR 2026-11-07 als verified/seeds bestaetigt.'
   historie:
   - date: '2026-10-12'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+  - date: '2026-11-07'
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
@@ -232,20 +249,25 @@ thesen:
   crowdedness_pp: null
   korb_budget_pct: 0
   falsifikat: Lockup wird verlaengert oder per Waiver aufgehoben, ODER der Kurs schliesst in den fuenf Handelstagen nach 2026-12-09 hoeher als am 2026-12-08 (Angebot absorbiert) -> verworfen
-  note: 'Kandidat aus Gruppe 2 (Lockup-/Kapitalmassnahmen-Kalender, Radar Z26). Am 2026-12-09 fallen alle Restbeschraenkungen des 180-Tage-Lockups ausser der 366-Tage-Gruppe um Musk (2027-06-13); Streubesitz waechst von rund 5 % Richtung Mehrheit. Kausalkette: datierter Angebotsschock im Papier selbst, unabhaengig vom Geschaeft. Gegenargument im eigenen Haus: der Spektrumskauf von Grain Management (800-MHz-Low-Band, bis 14 MHz paired, angekuendigt 2026-10-08) hat am 2026-10-09 den Telekomsektor umgepreist und waere eine Story gegen den Angebotsdruck. SPCX nicht im Universum, kein KO-Vehikel bekannt - nach Reform 2026-08-04 eine Vehikelfrage, kein Ausschlussgrund (Kriterium 4 ist kein Gate mehr).'
+  note: 'Re-Check 2026-11-28 nicht faellig, keine Aenderung. Termin im CATALYST-CALENDAR 2026-11-07 doppelt gefuehrt (verified/seeds und sec_lockups/heuristic), beide auf 2026-12-09. Messbar ist der Wert inzwischen: SPCX steht im Digest mit Kurs 134,27 (+8,62 % am 2026-11-06), neutral, RSI 42,5, ATR 6,19 %, 52W-Hoch -40,49 % - Crowdedness bleibt trotzdem offen, weil die These keinen Sektor-Vergleich hat (n=1 gegen ^GSPC waere -11,38 PP, nicht als Zonenwert gefuehrt).'
   historie:
   - date: '2026-10-12'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+  - date: '2026-11-07'
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
 - id: N6
   titel: Seltene Erden - Ablauf der Aussetzung 2026-11-10
   verdikt: beobachten
-  re_check: '2026-11-06'
-  crowdedness_pp: -15.72
+  re_check: '2026-11-11'
+  crowdedness_pp: -22.34
   korb_budget_pct: 0
-  falsifikat: China verlaengert die Aussetzung von Announcement 61 vor dem 2026-11-10, ODER MOFCOM bestaetigt itemisiert, dass die SE-Exportkontrollen in der Waffenstillstands-Verlaengerung vom 2026-09-28 bis 2027-01-10 enthalten sind -> verworfen
-  note: 'Re-Check 2026-11-06 nicht faellig, keine Aenderung. Crowdedness nachgezogen: MP -14,15 gegen ^GSPC -1,13 = -13,02 / IFX.DE -14,91 gegen ^GDAXI +3,52 = -18,43, Mittel -15,72 PP (Vorwoche -21,27), n=2. MP 39,57 bearisch unter allen vier EMAs, RSI 39,3, ATR 5,78 %, 52W-Hoch -48,48 %, Gap -5,72 % am 2026-10-30, Earnings 2026-11-05; IFX.DE 50,56 unter allen vier, RSI 40,0, ATR 5,36 %, Earnings 2026-11-10 = am Ereignistag selbst. Ablauf der Aussetzung unveraendert 2026-11-10; der zweite Termin Z22 (Announcement 72/2025: Gallium, Germanium, Antimon, Graphit) am 2026-11-27 steht. Die Pruefung gegen die MOFCOM-Primaerquelle steht weiter aus (Termin-Radar-Pflege). Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  falsifikat: China verlaengert die Aussetzung von Announcement 61 vor dem 2026-11-10, ODER MOFCOM bestaetigt itemisiert, dass die SE-Exportkontrollen in der Waffenstillstands-Verlaengerung vom 2026-09-28 bis 2027-01-10 enthalten sind -> verworfen.
+  note: 'RE-CHECK 2026-11-06 war ueberfaellig, hier erledigt. Falsifikat NICHT eingetreten, soweit heute belegbar: keine Verlaengerung publiziert; die Aussetzung aus MOFCOM-Announcement 70 vom 2025-11-07 laeuft woertlich ''to November 10, 2026'' und umfasst die Announcements 55, 56, 57, 58, 61 und 62 von 2025 (Global Times 2025-11-07). Die Truce-Verlaengerung bis 2027-01-10 nennt Seltene Erden NICHT (MINING.COM, 2026-11-04, rund sechs Tage vor dem Termin). EINSCHRAENKUNG: die MOFCOM-Primaerquelle ist in diesem Lauf nicht gelesen, und rareearthdirectory.com ist nach eigener Angabe nur bis 2026-10-01 geprueft - eine Verlaengerung nach dem 2026-10-01 kann ich nicht ausschliessen. KEINE Hochstufung auf spielen, gemessen an 4b: Gate 1 ist nur bedingt erfuellt. Die These sagt ''bei Nichtverlaengerung long Nicht-China-Foerderer, short europaeische Magnet-Abnehmer'' - sie sagt nicht, wie die politische Entscheidung am 2026-11-10 ausgeht, und einen Informationsvorsprung darueber habe ich nicht; das
+    ist eine Wette auf den Ausgang eines binaeren politischen Ereignisses in drei Tagen, nicht auf eine Fehlbewertung. Gate 2 ist fuer IFX.DE als ''Magnet-Abnehmer'' schwach (Magnetanteil an den Kosten eines Halbleiterherstellers nicht bezifferbar). Nebenbefund, kein Thesenargument: MP 35,41 steht im Digest selbst als breakdown_short-Pitch (bearisch unter allen vier EMAs, RSI 34,2, ATR 7,06 %, 52W-Hoch -53,89 %) und hat ueberhaupt keine sr-Zone unterhalb des Kurses; IFX.DE 45,755 bearisch unter allen vier, Earnings genau am 2026-11-10. CROWDEDNESS: -22,34 PP (Vorwoche -15,72; MP -18,26 gegen ^GSPC -5,00, IFX.DE -26,41 gegen ^GDAXI +4,09), n=2.'
   historie:
   - date: '2026-10-19'
     verdikt: beobachten
@@ -259,20 +281,24 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: -15.72
     source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: -22.34
+    source: thesen-lauf
   ausdruecke:
   - MP
   - IFX.DE
 - id: TECH
   titel: AI-Capex-Zulieferer (Halbleiter)
-  verdikt: spielen
+  verdikt: verworfen
   korb_budget_pct: null
-  crowdedness_pp: -8.42
+  crowdedness_pp: -18.0
   re_check: '2026-11-18'
-  falsifikat: '(a) Hyperscaler-Capex-Cut - VOLLSTAENDIG GEMESSEN UND WIDERLEGT, siehe These A (META 10-21 angehoben, Alphabet 10-28 gehalten plus 2027-Anstieg, AMZN 10-30 Q3-Capex 77,3 Mrd. USD / FY26 rund 220 Mrd. gehalten / 2027 ''meaningfully more''); gekoppelt mit These A. (b) ^IXIC-Schluss unter EMA200-1D: Stand 2026-10-30 ^IXIC 25.436,998 gegen EMA200 25.221,05 = +0,86 % bzw. 0,53 ATR-1D (ATR 420,79) - NICHT eingetreten, aber der engste Abstand seit Anlage der These.'
+  falsifikat: '(a) Hyperscaler-Capex-Cut: weiterhin WIDERLEGT (META 2026-10-21 angehoben, Alphabet 2026-10-28 gehalten plus 2027-Anstieg, AMZN 2026-10-30 Q3-Capex 77,3 Mrd. USD / FY26 rund 220 Mrd. gehalten). (b) PREIS-FALSIFIKAT EINGETRETEN: ^IXIC-Schluss 2026-11-06 24.579,42 gegen Karten-Level 25.221,05 = -641,63 Punkte bzw. -1,24 ATR-1D (ATR 518,88), zugleich -2,54 % unter der aktuellen EMA200-1D 25.219,42 (Digest 2026-11-06 22:33).'
   ausdruecke:
   - ASML.AS
   - NVDA
-  note: 'RE-CHECK 2026-10-30 faellig, hier erledigt. Verdikt SPIELEN unveraendert, Karte bleibt vollstaendig (karte_fehlt leer), neuer Re-Check 2026-11-18 (Tag nach NVDA Q3). Falsifikat (a) widerlegt, (b) nicht eingetreten, aber nur noch 0,86 % / 0,53 ATR entfernt - ^IXIC hat am 2026-10-30 2,86 % verloren, Halbleiter-Cluster median -6,01 % am Tag (INTC -28,6 %, AMD -10,9 %, QCOM -11,1 %, MRVL -10,1 %, AMAT -7,5 %, ASML.AS -6,1 %, NVDA -4,2 %). Crowdedness -8,42 PP (Vorwoche -6,42) = Unterperformance, Zone ohne Deckel. Beide Vehikel haben Struktur verloren: ASML.AS unter EMA20/50/100 und nur 3,29 % ueber EMA200, NVDA unter allen EMAs einschliesslich EMA200 (-0,56 %). Das ist nach Schritt 4c kein Thesenargument, aber es ist die Stop-Geometrie. Alle Werte Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  note: Preis-Falsifikat gebrochen, nach references/thesen-spur.md nicht verhandelbar - Verdikt verworfen, obwohl das Thesen-Falsifikat weiter widerlegt ist und NVDA Q3 am 2026-11-17 noch aussteht. Kein Starter eroeffnet, also kein Kapitalverlust; der am 2026-10-31 gerechnete Starter waere in BEIDEN Vehikeln ausgestoppt worden (ASML.AS 1.283,60 unter Stop 1.367,86 / NVDA 186,64 unter Stop 198,39). Ein Nachfolger mit weiter gelegtem Kill-Switch ist eine Entscheidung des Users und braucht eine NEUE id mit neuer Karte - das Kill-Switch einer getroffenen These nachtraeglich zu verlegen ist genau das Festhalten, das die Spur verbietet.
   historie:
   - date: '2026-10-19'
     verdikt: spielen
@@ -289,6 +315,10 @@ thesen:
   - date: '2026-10-31'
     verdikt: spielen
     crowdedness_pp: -8.42
+    source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: verworfen
+    crowdedness_pp: -18.0
     source: thesen-lauf
   spur: thesen
   budget_r: 2
@@ -318,13 +348,13 @@ thesen:
   titel: US-Arzneimittelpreis-Pfad - Payer-Seite (Managed Care)
   verdikt: beobachten
   re_check: '2026-12-01'
-  crowdedness_pp: 11.88
+  crowdedness_pp: 11.21
   korb_budget_pct: 0
   falsifikat: CMS verschiebt oder entschaerft den Wirksamkeitstermin der Medicare-Verhandlungspreise Runde 2 (2027-01-01), ODER UNH bzw. ELV nennen in den Q4-Guidances eine Medical-Loss-Ratio, die den Arzneimittelkosten-Entlastungseffekt ausdruecklich nicht enthaelt -> verworfen
   ausdruecke:
   - UNH
   - ELV
-  note: 'Re-Check 2026-12-01 nicht faellig, keine Aenderung. Crowdedness nachgezogen: UNH +11,44 / ELV +10,06 gegen ^GSPC -1,13, Mittel +11,88 PP (Vorwoche +12,02) = Zone 10-20, bei einer spaeteren Hochstufung Groesse eine Stufe tiefer. Beide Ausdruecke halten die Struktur, die sie am 2026-10-24 hatten: UNH 406,97 ueber allen vier EMAs, bullisch, RSI 56,1, Ext 0,47, ATR 2,69 %, Earnings 2027-01-12; ELV 420,07 ueber 3 von 4 (knapp unter EMA20 421,55), bullisch, RSI 50,8, ATR 2,75 %, Earnings 2027-01-28 - ELV steht zugleich als long_trend_pullback-Pitch im Digest. Offener Pruefschritt unveraendert: CMS-Primaerquelle zur Runde-2-Wirkstoffliste und zum GLOBE-Modell. Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  note: 'Re-Check 2026-12-01 nicht faellig, keine Aenderung. Nur Crowdedness: +11,21 PP (Vorwoche +11,88; UNH +11,25 / ELV +11,16 gegen ^GSPC -5,00) = Zone 10-20, bei einer spaeteren Hochstufung Groesse eine Stufe tiefer. Beide Ausdruecke halten die Struktur: UNH 394,15 bullisch, RSI 46,2; ELV 425,62 bullisch ueber allen vier, RSI 53,1. Messkalender Z96 und Z114 am 2026-11-30.'
   historie:
   - date: '2026-10-26'
     verdikt: beobachten
@@ -334,23 +364,30 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: 11.88
     source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: 11.21
+    source: thesen-lauf
 - id: N8
   titel: US-Hafengebuehren auf China-Tonnage - Ablauf der Aussetzung 2026-11-10
   verdikt: beobachten
-  re_check: '2026-11-09'
-  crowdedness_pp: -3.1
+  re_check: '2026-11-10'
+  crowdedness_pp: -12.64
   korb_budget_pct: 0
-  falsifikat: USTR verlaengert die Aussetzung der Section-301-Hafengebuehren vor dem 2026-11-10, ODER China verlaengert die Aussetzung der Gegen-Hafengebuehren, ODER die Pruefung der Flottenzusammensetzung ergibt fuer die benannten Werte keinen wesentlichen Anteil chinesisch gebauter bzw. betriebener Tonnage (dann faellt die Kausalkette je Wert) -> verworfen.
+  falsifikat: USTR verlaengert die Aussetzung der Section-301-Hafengebuehren vor dem 2026-11-10, ODER China verlaengert die Aussetzung der Gegen-Hafengebuehren, ODER die Pruefung der Flottenzusammensetzung ergibt fuer die benannten Werte keinen wesentlichen Anteil chinesisch gebauter bzw. betriebener Tonnage -> verworfen.
   ausdruecke:
   - SBLK
   - MAERSK-B.CO
-  note: 'NEU, Thesen-Lauf 2026-10-31. Kandidat aus GRUPPE 2 (Regulierungs- und Fristenkalender; Radar Z81). Treiber: Am 2026-11-10 werden die USTR-Section-301-Hafengebuehren auf chinesisch gebaute oder betriebene Schiffe (Annex I/II) und auf Nicht-US-Autotransporter (Annex III) wieder faellig; zeitgleich endet die Aussetzung der chinesischen Gegen-Hafengebuehren auf US-Schiffe. Die Aussetzung lief vom 2025-11-10 bis 2026-11-09, eine Verlaengerung ist nicht publiziert. Kausalkette: Gebuehr je US-Hafenanlauf nach Nettotonnage = unmittelbare Betriebskostenposition, daraus relativer Vorteil fuer Flotten ohne China-Bau auf US-Routen und Belastung US-verbundener Schiffe in chinesischen Haefen. KONVIKTIONS-GATE 4b: (1) gerichtet erfuellt, (2) mechanisch-direkt NUR AUF SEKTORENEBENE erfuellt - JE WERT NICHT, weil der Anteil chinesisch gebauter Tonnage an den Flotten von SBLK und Maersk ungeprueft ist; die Radar-Zeile sagt das selbst (''Tickerliste illustrativ, Flottenanteil je Wert ungeprueft'').
-    Ohne diese Zahl ist die Richtung je Name nicht bestimmbar, und genau deshalb beobachten statt spielen. (3) falsifizierbar erfuellt. Im Universum nur zwei Werte: SBLK 28,36 (neutral, unter EMA20 29,05 und EMA50 29,31, ueber EMA100 28,56 und EMA200 26,58, RSI 41,0, ATR 2,90 %, 30d -6,8 %, Earnings 2026-11-18) und MAERSK-B.CO 23.070 (bullisch, ueber 3 von 4, unter EMA20 23.602,78, RSI 45,3, 30d -1,24 %, Earnings 2026-11-05 = in 5 HT, Earnings-Disqualifier). HLAG.DE, ZIM, GOGL, WAWI.OL nicht im Universum - nach der Reform vom 2026-08-04 eine Vehikelfrage, kein Ausschlussgrund. Crowdedness: SBLK -6,8 gegen ^GSPC -1,13 = -5,67; MAERSK-B.CO -1,24 gegen ^STOXX50E -0,71 = -0,53 (Proxy, kein daenischer Index im Universum), Mittel -3,10 PP, n=2 - Zone ohne Deckel, aber die Stichprobe traegt die Zahl kaum. NAECHSTER PRUEFSCHRITT vor jeder Hochstufung: Anteil chinesisch gebauter Tonnage je Flotte aus den Geschaeftsberichten, und USTR-Primaerquelle zur Nicht-Verlaengerung. Re-Check 2026-11-09, einen
-    Tag vor dem Ereignis. Das Datum liegt im Cluster 2026-11-10 mit Z20, Z95, Z115 und dem Ablauf der SE-Aussetzung (These N6) - fuenf datierte Ereignisse an einem Tag. Kurswerte Digest BRIEFING-DIGEST-2026-10-30-2234.json (generated 2026-10-30 22:34 CET, as_of 2026-10-30).'
+  note: 'Re-Check von 2026-11-09 auf 2026-11-10 gezogen, weil das Falsifikat an diesem Tag entschieden wird. BEFUND 2026-11-07: Die USTR hat die Verlaengerung VORGESCHLAGEN, aber laut Quellenlage NICHT final beschlossen - Federal-Register-Dokument 2026-21755, vorgesehene Veroeffentlichung 2026-10-26, Aussetzung vorgeschlagen von 2026-11-10 00:00 ET bis 2027-01-09 23:59 ET fuer die Annexe I, II und III sowie Annex V.A, Kommentarfrist bis 2026-10-30 17:00 ET, Docket USTR-2026-0694 (Holland & Knight 2026-10-26; gCaptain 2026-10-23 woertlich ''The extension has not yet been finalized''). Ob eine finale Notice nach dem 2026-10-30 erschienen ist, konnte ich nicht belegen - die beiden Seiten, die es gesagt haetten (seatrade-maritime, ustariffrates), sind nicht abrufbar. Chinas Gegengebuehren: fuer 2026 nicht belegt. Wird die Verlaengerung final, ist das Falsifikat eingetreten und die These verworfen; laeuft die Aussetzung aus, greifen die Gebuehren ab 2026-11-10. Primaerquelle fuer Montag: federalregister.gov/d/2026-21755.
+    CROWDEDNESS: -12,64 PP (Vorwoche -3,10; SBLK -7,27 gegen ^GSPC -5,00, MAERSK-B.CO -18,02 gegen ^STOXX50E +0,71, Proxy fuer einen daenischen Wert). Flottenanteil chinesisch gebauter Tonnage je Wert weiter ungeprueft - Gate 2 damit nur sektoral erfuellt.'
   historie:
   - date: '2026-10-31'
     verdikt: beobachten
     crowdedness_pp: -3.1
+    source: thesen-lauf
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: -12.64
     source: thesen-lauf
 - id: N9
   titel: Italien MACSE-2 Batteriespeicher-Auktion 2026-11-24
@@ -360,10 +397,13 @@ thesen:
   korb_budget_pct: 0
   falsifikat: Terna verschiebt die Auktion vom 2026-11-24, ODER das zugeschlagene Volumen bleibt deutlich unter den rund 16 GWh der Ausschreibung, ODER die Zuschlaege gehen ueberwiegend an Bestandsanlagen statt an Neubau -> verworfen.
   ausdruecke: []
-  note: 'NEU, Thesen-Lauf 2026-10-31. Kandidat aus GRUPPE 2 (Vergabe- und Auktionstermine; Radar Z52). Treiber: Terna fuehrt am 2026-11-24 ab 10:00 die zweite MACSE-Auktion (Mercato a Termine dello Stoccaggio) fuer das Lieferjahr 2029 durch, ausgeschrieben rund 16 GWh neue Batteriespeicherkapazitaet nach 10 GWh in der Vorrunde. Kausalkette: der Zuschlag begruendet 15-jaehrige indexierte Kapazitaetsvertraege, also eine vertraglich fixierte BESS-Bestellmenge in Italien mit Lieferziel 2029 - Mengenwirkung fuer Zellen, Container, Umrichter und Netzanschluss, unabhaengig vom Strompreis. 4b: gerichtet erfuellt (long Speicher-Lieferkette und italienische Netz-/Versorger-Seite), mechanisch-direkt erfuellt (Zuschlagsmenge = Auftragsmenge), falsifizierbar erfuellt. WORAN ES HEUTE HAENGT: KEIN BENANNTER WERT IST IM UNIVERSUM - TRN.MI, ENEL.MI, A2A.MI, IRE.MI, ERG.MI und FLNC fehlen alle, Crowdedness damit nicht messbar und ausdruecke leer. Nach der Reform vom 2026-08-04 ist das eine Vehikelfrage und
-    kein Ausschlussgrund (Kriterium 4 ist kein Gate mehr), aber ohne messbaren Ausdruck bleibt das Verdikt beobachten. Naechster Pruefschritt: Terna-Primaerquelle zu Termin und Ausschreibungsvolumen (bisher nur die Radar-Zeile), und Pruefung, ob ein Wert der Lieferkette ins Universum gehoert - das waere ein Vorschlag fuer die Watchlist-Pflege im Chat, nicht aus diesem Lauf. Ueberschneidung benannt: derselbe Termin steht als Katalysator in der Karte der These A (Netz- und Elektrifizierungs-Lieferkette) - N9 ist nur dann eine eigene These, wenn ein italienischer oder reiner BESS-Ausdruck dazukommt. Re-Check 2026-11-25.'
+  note: 'Re-Check 2026-11-25 nicht faellig, keine Aenderung. Crowdedness nicht messbar: TRN.MI, ENEL.MI, A2A.MI, IRE.MI, ERG.MI und FLNC sind alle nicht im Universum. Querbezug neu: die deutsche StromVKG-Runde hat am 2026-11-03 keinen einzigen Speicher bezuschlagt (Zehn-Stunden-Regel), eine eigene Speicherrunde ueber rund 2 GW ist fuer Mai 2027 vorgesehen - die italienische BESS-Auktion ist damit das naehere datierte Speicher-Mengensignal.'
   historie:
   - date: '2026-10-31'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+  - date: '2026-11-07'
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
@@ -375,11 +415,56 @@ thesen:
   korb_budget_pct: 0
   falsifikat: USTR eroeffnet vor dem 2026-11-10 eine neue Antragsrunde oder verlaengert die 178 Ausnahmen, ODER die 14 Ausnahmen fuer Solarfertigungs-Equipment werden einzeln fortgeschrieben -> verworfen.
   ausdruecke: []
-  note: 'NEU, Thesen-Lauf 2026-10-31. Kandidat aus GRUPPE 2 (Regulierungs- und Fristenkalender; Radar Z20). Treiber: Am 2026-11-10 laufen 178 US-Section-301-Ausnahmen aus, davon 164 produktspezifische und 14 fuer Solarfertigungs-Equipment; eine neue Antragsrunde ist nicht offen. Kausalkette: der Zoll auf Fertigungsanlagen erhoeht die Investitionskosten fuer NEUE US-Solarfabriken, die chinesische Anlagentechnik einsetzen - relativer Vorteil fuer bereits ausgeruestete heimische Fertiger, Belastung fuer Ausbauprojekte mit chinesischem Equipment. 4b: gerichtet erfuellt, falsifizierbar erfuellt, mechanisch-direkt NUR EINGESCHRAENKT - die GEGENTHESE steht in derselben Mechanik: ein Zoll auf Anlagen verteuert jeden Kapazitaetsausbau, auch den der heimischen Fertiger selbst, sodass der relative Vorteil nur fuer bereits abgeschlossene Investitionen gilt. Diese Ambivalenz ist der Grund fuer beobachten. KEIN benannter Wert im Universum: FSLR, SEDG, WCH.DE und NXT fehlen alle, Crowdedness nicht messbar,
-    ausdruecke leer (Vehikelfrage nach der Reform 2026-08-04, kein Ausschlussgrund). Naechster Pruefschritt: USTR-Primaerquelle zur Ausnahmeliste und zum Fehlen einer Antragsrunde (bisher nur die Radar-Zeile), danach Pruefung, welcher Fertiger ueberhaupt ohne chinesisches Equipment ausbaut. Re-Check 2026-11-11, Tag nach dem Ereignis. Liegt im Cluster 2026-11-10 (Z81, Z95, Z115, N6).'
+  note: 'Re-Check 2026-11-11 nicht faellig, keine Aenderung. Eine Verlaengerung der 178 Ausnahmen ist in diesem Lauf NICHT belegbar - die Seite, die es gesagt haette (ustariffrates.com), ist nicht abrufbar; die uebrigen gelesenen Quellen nennen die Ausnahmen nicht. Crowdedness nicht messbar: FSLR, SEDG, WCH.DE, NXT alle nicht im Universum. Termin Z20 bleibt, im CATALYST-CALENDAR 2026-11-07 als verified/seeds bestaetigt.'
   historie:
   - date: '2026-10-31'
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
-updated: '2026-11-06T21:45:55+00:00'
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+- id: N11
+  titel: China Announcement 72/2025 - Ablauf der Aussetzung 2026-11-27 (Gallium, Germanium, Antimon, Graphit)
+  verdikt: beobachten
+  re_check: '2026-11-28'
+  crowdedness_pp: null
+  korb_budget_pct: 0
+  falsifikat: China verlaengert die Aussetzung von Announcement 72/2025 vor dem 2026-11-27, ODER die Pruefung der MOFCOM-Primaerquelle ergibt, dass Artikel 2 von Announcement 46 bereits dauerhaft aufgehoben oder in die Truce bis 2027-01-10 einbezogen ist (dann faellt der datierte Treiber) -> verworfen.
+  note: 'NEU, Thesen-Lauf 2026-11-07. Kandidat aus GRUPPE 2 (Regulierungs- und Fristenkalender; Radar Z22, im CATALYST-CALENDAR 2026-11-07 als verified/seeds gefuehrt). Treiber: Announcement 72/2025 (laut rareearthdirectory.com vom 2025-11-09) setzt Artikel 2 von Announcement 46 aus - die verschaerfte Lizenzierung von Gallium, Germanium und Antimon speziell fuer die USA - und zwar bis 2026-11-27, also 17 Tage NACH dem Seltene-Erden-Termin vom 2026-11-10. Das ist der zweite, bisher nicht eigenstaendig gefuehrte Ast des chinesischen Exportkontroll-Kalenders. Kausalkette: faellt die Aussetzung weg, gilt fuer US-Abnehmer wieder eine Einzelfall-Lizenzpflicht fuer Ga/Ge/Sb - Inputkosten und Verfuegbarkeit fuer US-Verbindungshalbleiter, Optoelektronik und Munitionsersatzstoffe, relativer Vorteil fuer Nicht-China-Quellen. Warum beobachten und nicht spielen: (1) kein Ausdruck im Universum - kein Ga/Ge-Foerderer gelistet, also Crowdedness nicht messbar; nach der Reform vom 2026-08-04 ist das eine
+    Vehikelfrage, kein Ausschlussgrund, aber ohne messbaren Ausdruck bleibt es beobachten; (2) dieselbe Gate-1-Schwaeche wie N6 - die These sagt nicht, wie Peking am 2026-11-27 entscheidet; (3) die Announcement-Nummern 72 und 46 stammen aus einer SEKUNDAERQUELLE, MOFCOM ist nicht gegengelesen. Erster Pruefschritt vor jeder Hochstufung: MOFCOM-Primaertext und ein handelbarer Ga/Ge-Ausdruck.'
+  historie:
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+- id: N12
+  titel: Cerebras-Lockup-Vollablauf 2026-11-09/10
+  verdikt: beobachten
+  re_check: '2026-11-17'
+  crowdedness_pp: null
+  korb_budget_pct: 0
+  falsifikat: Das Lockup wird verlaengert oder per Waiver aufgehoben, ODER CBRS schliesst in den fuenf Handelstagen nach dem Ablauftag hoeher als am Vortag (Angebot absorbiert), ODER die Pruefung des Prospekts ergibt, dass die Resttranche unwesentlich ist -> verworfen.
+  note: 'NEU, Thesen-Lauf 2026-11-07. Kandidat aus GRUPPE 2 (Lockup- und Kapitalmassnahmen-Kalender; Radar Z115, zusaetzlich im CATALYST-CALENDAR 2026-11-07 als sec_lockups/heuristic). Treiber: letzte und groesste Lockup-Stufe nach dem IPO vom 2026-05-14 (34,5 Mio. Aktien zu 185 USD); Mechanik laut Radar 180 Tage nach dem Prospekt ODER zweiter Handelstag nach dem Q3-Bericht, je nachdem was frueher eintritt. Die acht Stufen davor haben zusammen rund 171 Mio. Aktien freigegeben. Kausalkette: datierter Angebotsschock im Papier selbst, unabhaengig vom Geschaeft. Warum beobachten und nicht spielen: (1) DATUMSWIDERSPRUCH - das Radar fuehrt 2026-11-09, der Katalysator-Kalender 2026-11-10, und dessen Datum ist ausdruecklich ''GESCHAETZT: Filing + 180 Tage''; ein Lockup-Trade auf einen geschaetzten Tag ist kein datierter Treiber; (2) das RESTVOLUMEN hat die Gesellschaft nicht veroeffentlicht - ohne Menge ist die Mechanik nicht bezifferbar (Gate 2 nur qualitativ); (3) CBRS ist nicht im Universum,
+    Crowdedness nicht messbar. Erster Pruefschritt: Prospekt 424B4 auf die Stufenmengen lesen und den Ablauftag aus dem Prospekt statt aus der Schaetzung nehmen.'
+  historie:
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+- id: N13
+  titel: Zweite StromVKG-Runde - Volumen schrumpft auf rund 3.840 rMW, Bekanntgabe 2026-11-10
+  verdikt: beobachten
+  re_check: '2026-11-11'
+  crowdedness_pp: null
+  korb_budget_pct: 0
+  falsifikat: Die BNetzA gibt am 2026-11-10 fuer die zweite Runde ein Volumen von rund 4.500 rMW oder mehr bekannt (dann ist die Ueberzeichnung der ersten Runde nicht gegengerechnet und der Treiber faellt), ODER der Gebotstermin wird nicht auf Dezember 2026 gelegt -> verworfen.
+  note: 'NEU, Thesen-Lauf 2026-11-07. Kandidat aus GRUPPE 2 (Vergabe- und Auktionstermine). Gegenstueck zu N3 und ausdruecklich die GEGENLAEUFIGE Behauptung: nicht ''der Kapazitaetsmarkt bringt Turbinenmengen'', sondern ''die naechste Tranche ist kleiner als die Schlagzeile''. Treiber: Die erste Runde hat 5.160 rMW auf 4.500 rMW ausgeschriebene Menge zugeschlagen, weil das Gebot, das das Volumen erstmals ueberschritt, noch bezuschlagt wurde (BNetzA PM 2026-11-03). energiezukunft (2026-11-05) rechnet das Volumen der zweiten Runde deshalb auf ''rund 3.840 rMW'' herunter und nennt den Gebotstermin 2026-12-29; cleanthinking (2026-11-03) nennt ''Ende Dezember'' ohne Tag; photon (2026-11-04) schreibt dagegen ''in den ersten beiden Ausschreibungsrunden werden jeweils 4,5 Gigawatt gefoerdert''. Dieser Widerspruch ist der Kern der These. Kausalkette: 660 rMW weniger ausgeschriebene Menge sind rund 15 % weniger Auftragsvolumen in der naechsten Tranche fuer Gasturbinen-, Gasmotoren- und EPC-Anbieter;
+    die Bekanntgabe am 2026-11-10 entscheidet die Zahl. Warum beobachten und nicht spielen: (1) die 3.840 rMW sind eine RECHNUNG einer Sekundaerquelle, nicht eine Angabe der BNetzA - am 2026-11-10 steht die amtliche Zahl, vorher ist die These unmessbar; (2) ein Minus von 15 % an der naechsten Tranche ist fuer ENR.DE oder GEV keine bezifferbare Ergebniswirkung (Gate 2 schwach); (3) Ausdruck waere wieder ENR.DE, nach L7 derselbe Risikoblock wie die verworfene These A. Nebenbefund fuer die Radar-Pflege: Z73 fuehrt den 2026-12-29 bisher ausdruecklich als Platzhalter - energiezukunft ist jetzt eine zweite, unabhaengige Sekundaerquelle fuer genau dieses Datum; die amtliche Festlegung kommt am 2026-11-10 (Z95).'
+  historie:
+  - date: '2026-11-07'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: thesen-lauf
+updated: '2026-11-07T14:25:07+00:00'

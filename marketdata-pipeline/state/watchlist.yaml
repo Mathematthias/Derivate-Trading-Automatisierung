@@ -4065,4 +4065,4 @@ entries:
     gate: 🟡
     text: 'nach 2026-11-06 BREAKOUT-RETEST-LONG [AUTO]: Niveau 209,84$ (Ausbruch vor 1 HT, Vol 2,32x). Touch 207,51-213,33$ [pullback] (= Niveau -0,50 ATR bis Entry-Grenze: Zonenkante) + 4h-Bullish-Reverse-Close (MANUELL). Einstieg Live nach Schluss der 4h-Bestaetigungskerze (<= Schluss + 0,25 ATR, v76) oder Stop-Buy ueber deren Hoch. SL = MIN(Entry-1,5xATR ; TIW-0,30xATR = 208,44). TIW = 1D-Schluss unter 209,84$. TP1 240,78$ [stark: Measured Move] 1/3 raus. Flags: 214,88$ mittel (1,05 R). Rest Chandelier 2,0 ATR. R:R TP1 4,76 an 207,51 / 3,93 an 213,33. 1 % (Pilot, Auto-Zeile). Earnings 2027-02-09.'
   notes: '[AUTO 2026-11-06 Morning Check v83, Quelle Re-Eval >200.5] Linien maschinell aus dem Digest (EMA, ATR, sr-Zonen), kein Chart gesehen. Kurs 213,91, ATR 4,654, EMA20/50/100/200 198,27/189,50/180,32/171,26, Stack bullish. Zone 207,51–213,33, TP1-Zone [''Measured Move'']. Quelle: Re-Eval >200.5.'
-updated: '2026-11-06T21:45:55+00:00'
+updated: '2026-11-07T14:25:07+00:00'

@@ -991,4 +991,22 @@ rows:
   id: Z132
   status: offen
   added: '2026-11-02'
-updated: '2026-11-06T21:45:55+00:00'
+- date: '2026-11-10'
+  kat: 1
+  ereignis: 'USTR-Entscheid ueber die zweimonatige Verlaengerung der Aussetzung der Section-301-Hafengebuehren (Annexe I, II, III und Annex V.A): Vorschlag vom 2026-10-26 (FR-Dokument 2026-21755, Docket USTR-2026-0694), Kommentarfrist lief bis 2026-10-30 17:00 ET, am 2026-10-23 laut gCaptain ausdruecklich ''not yet been finalized''. Wird die Notice final, gilt die Aussetzung bis 2027-01-09 23:59 ET; ohne finale Notice werden die Gebuehren ab 2026-11-10 00:00 ET wieder faellig. Entscheidet das Falsifikat der These N8.'
+  werte: SBLK, MAERSK-B.CO, HLAG.DE, ZIM, GOGL, WAWI.OL
+  wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: bei finaler Verlaengerung entfaellt die Kostenbasis je US-Hafenanlauf bis 2027-01-09 und das Falsifikat der These N8 ist eingetreten; ohne Verlaengerung greift die Gebuehr je Nettotonne fuer chinesisch gebaute bzw. betriebene Tonnage und fuer Nicht-US-Autotransporter ab dem Tag. Chinas Gegengebuehren fuer 2026 unbelegt.'
+  quelle: 'Holland & Knight, ''USTR Proposes 2-Month Extension of Suspension of Section 301 Maritime Actions Against China'' (hklaw.com, 2026-10-26, Abruf 2026-11-07); gCaptain, ''USTR Proposes Extending China Ship Port Fee Suspension Through January 2027'' (gcaptain.com, 2026-10-23, Abruf 2026-11-07); Primaerquelle nicht gelesen: federalregister.gov/d/2026-21755'
+  id: Z133
+  status: offen
+  added: '2026-11-07'
+- date: '2026-11-12'
+  kat: 5
+  ereignis: AMAT Q4-FY2026-Zahlen - naechster datierter Messpunkt fuer die AI-Capex-Lieferkette, nachdem die These TECH am 2026-11-07 wegen gebrochenem Preis-Falsifikat verworfen wurde. Im Entwurf einer Nachfolge-Karte vom 2026-11-06 als Katalysator benannt, im Radar bisher nicht gefuehrt.
+  werte: AMAT, ASML.AS, LRCX, KLAC
+  wirkung: 'Thesen-Messpunkt, kein Trade-Trigger: WFE-Auftragseingang und Guidance messen, ob die erhoehte Hyperscaler-Capex bei den Anlagenbauern als Umsatz ankommt. AMAT steht am 2026-11-06 bei 332,715 (+4,22 %), neutral, RSI 30,5, ATR 7,06 %, 52W-Hoch -55,02 % - Earnings-Disqualifier bis 2026-11-12.'
+  quelle: Feld earn_next im BRIEFING-DIGEST-2026-11-06-2233.json (Abruf 2026-11-07)
+  id: Z134
+  status: offen
+  added: '2026-11-07'
+updated: '2026-11-07T14:25:07+00:00'
