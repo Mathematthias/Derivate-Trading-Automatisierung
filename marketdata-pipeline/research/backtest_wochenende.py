@@ -456,7 +456,9 @@ def main() -> int:
 
     # S2
     res2 = {}
-    for lab, liste in (("alle 20", ETFS), ("ohne XLI", [e for e in ETFS if e != "XLI"])):
+    for lab, liste in (("alle 20", ETFS), ("ohne XLI", [e for e in ETFS if e != "XLI"]),
+                       ("ohne XLI+EWG", [e for e in ETFS if e not in ("XLI", "EWG")]),
+                       ("ohne XLI+EWG+EWJ", [e for e in ETFS if e not in ("XLI", "EWG", "EWJ")])):
         et = pd.DataFrame({s: raw[s].Close for s in liste if s in raw})
         for n in (3, 4):
             for ab in (True, False):
