@@ -155,12 +155,19 @@ def main(argv: Optional[list[str]] = None) -> int:
     lb, n, ab = cfg["lookbacks_ht"], cfg["top_n"], cfg["absolutfilter"]
 
     if a.backtest:
-        closes = _lade(syms + [cfg.get("benchmark", "URTH")], period="max")
+        bm = cfg.get("benchmark", "URTH")
+        closes = _lade(syms + [bm], period="max")
         r = backtest(closes[syms], n, ab, lb, cfg["kosten_je_seite"])
-        k = kennzahlen(r)
-        b = kennzahlen(closes[cfg.get("benchmark", "URTH")].pct_change().loc[r.index[0]:])
-        print("Regel:", {x: round(y, 4) for x, y in k.items()})
-        print("Benchmark:", {x: round(y, 4) for x, y in b.items()})
+        bret = closes[bm].pct_change(fill_method=None).dropna()
+        start = max(r.index[0], bret.index[0])               # gemeinsamer Zeitraum
+        for lab, ser in (("Regel ab 2008", r), ("Regel gleicher Zeitraum", r.loc[start:]),
+                         (f"{bm} gleicher Zeitraum", bret.loc[start:])):
+            k = kennzahlen(ser)
+            print(f"{lab} ({ser.index[0].date()}..{ser.index[-1].date()}):",
+                  {x: round(float(y), 4) for x, y in k.items()})
+        jahre = pd.DataFrame({"Regel": (1 + r.loc[start:]).groupby(r.loc[start:].index.year).prod() - 1,
+                              bm: (1 + bret.loc[start:]).groupby(bret.loc[start:].index.year).prod() - 1})
+        print(jahre.round(3).to_string())
         return 0
 
     closes = _lade(syms)
