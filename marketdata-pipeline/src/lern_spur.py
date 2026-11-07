@@ -7,10 +7,15 @@ FILTER_SEITWAERTS.md und LERNSPUR_SLOTS.md):
   Einstieg naechste Eroeffnung (Direktaktie, EUR- oder USD-Notiz).
   Stop     Einstieg - 1,5 ATR; danach Chandelier: MAX(alter Stop ; hoechster Schluss seit Einstieg - 3 ATR).
   Ausstieg Stop oder nach 60 Handelstagen.
-  Groesse  R = 75 EUR, Stueck = R / (1,5 ATR in EUR), hoechstens 2.000 EUR Einsatz.
-  Plaetze  max. 2 Positionen mit Risiko. Eine Position, deren Chandelier-Stop auf oder ueber dem
-           Einstieg liegt (abgesichert), belegt keinen Risiko-Platz mehr (LS-2). Gesamtgrenze
-           max_positionen aus der Config.
+  Groesse  R = 50 EUR, Stueck = R / (1,5 ATR in EUR), hoechstens 2.000 EUR Einsatz.
+  Budget   offenes Risiko bis zum AKTUELLEN Stop <= 3 R (150 EUR), gebundenes Kapital <= 12.000 EUR.
+           Eine Position, deren Chandelier-Stop steigt, belegt nur noch ihr Restrisiko; ab Stop >=
+           Einstieg belegt sie nichts mehr (LS-2, Simulation LERNSPUR_BUDGET.md).
+  Waehrung US-Werte handelt der User in EUR ueber gettex: Stops und Kurse zusaetzlich in EUR zum
+           aktuellen EURUSD. Die Regel selbst rechnet in der Heimatwaehrung.
+  Veto     Der User darf ein Signal ablehnen. Abgelehnte Signale laufen als Papier-Trade mit
+           denselben Regeln weiter (abgelehnt / abgelehnt_abgeschlossen), damit sich messen
+           laesst, ob seine Vetos helfen. Sie zaehlen nicht zu den 20 Trades.
   Auswahl  bei mehr Signalen als Plaetzen: niedrigste ATR% zuerst (Auswahl-Test 2026-11-07).
 
 Der Job laeuft nach US-Schluss und schreibt state/lern_spur.json:
@@ -110,6 +115,8 @@ def kandidat(sym: str, d: pd.DataFrame, cfg: dict, fx_usd: float) -> dict:
             "r_eur_effektiv": round(stueck * risiko_je_stk, 2),
             "atr": round(float(x.atr), 4), "atr_pct": round(float(x.atrp), 4),
             "stop_vorschlag": round(float(x.Close - cfg["stop_atr"] * x.atr), 4),
+            "stop_vorschlag_eur": round(float(x.Close - cfg["stop_atr"] * x.atr) / (fx_usd if waehrung(sym) == "USD" else 1.0), 2),
+            "schluss_eur": round(float(kurs_eur), 2),
             "stueck": stueck, "einsatz_eur": round(stueck * kurs_eur, 2),
             "rang": rangwert(d, cfg["auswahl"]["feld"])}
 
@@ -138,11 +145,76 @@ def stop_nachziehen(pos: dict, d: pd.DataFrame, cfg: dict) -> dict:
     return p
 
 
-def freie_plaetze(pos: list[dict], cfg: dict) -> int:
-    """Risiko-Plaetze minus Positionen mit Stop unter Einstieg, begrenzt durch die Gesamtzahl."""
-    risiko = sum(1 for p in pos if not (float(p.get("stop", 0)) >= float(p.get("einstieg_kurs", 0))))
-    gesamt = cfg.get("max_positionen", cfg["max_parallel"])
-    return max(0, min(cfg["max_parallel"] - risiko, gesamt - len(pos)))
+def _fx(p: dict, fx_usd: float) -> float:
+    return fx_usd if p.get("waehrung", waehrung(p.get("symbol", ""))) == "USD" else 1.0
+
+
+def rest_risiko_eur(p: dict, cfg: dict, fx_usd: float) -> float:
+    """Offenes Risiko bis zum aktuellen Stop in EUR (0, sobald Stop >= Einstieg)."""
+    e, stop = float(p["einstieg_kurs"]), float(p["stop"])
+    if stop >= e:
+        return 0.0
+    if p.get("stueck"):
+        return (e - stop) * float(p["stueck"]) / _fx(p, fx_usd)
+    anfang = e - float(p.get("stop_initial", stop))
+    return cfg["r_eur"] * ((e - stop) / anfang if anfang > 0 else 1.0)
+
+
+def einsatz_eur(p: dict, cfg: dict, fx_usd: float) -> float:
+    if p.get("einsatz_eur"):
+        return float(p["einsatz_eur"])
+    if p.get("stueck"):
+        return float(p["stueck"]) * float(p["einstieg_kurs"]) / _fx(p, fx_usd)
+    return float(cfg.get("max_einsatz_eur", 0))
+
+
+def budget(pos: list[dict], cfg: dict, fx_usd: float) -> dict:
+    risiko = sum(rest_risiko_eur(p, cfg, fx_usd) for p in pos)
+    kapital = sum(einsatz_eur(p, cfg, fx_usd) for p in pos)
+    b = cfg["risiko_budget_r"] * cfg["r_eur"]
+    return {"budget_eur": round(b, 2), "risiko_offen_eur": round(risiko, 2), "risiko_frei_eur": round(max(0.0, b - risiko), 2),
+            "kapital_eur": cfg["kapital_eur"], "kapital_gebunden_eur": round(kapital, 2),
+            "kapital_frei_eur": round(max(0.0, cfg["kapital_eur"] - kapital), 2)}
+
+
+def zuege_markieren(kand: list[dict], bud: dict) -> int:
+    """Kandidaten in Rangfolge markieren, solange Risiko- und Kapitalbudget reichen."""
+    r_frei, k_frei, n = bud["risiko_frei_eur"] + 0.01, bud["kapital_frei_eur"] + 0.01, 0
+    for c in kand:
+        c["zug"] = bool(c["stueck"] > 0 and c["r_eur_effektiv"] <= r_frei and c["einsatz_eur"] <= k_frei)
+        if c["zug"]:
+            r_frei -= c["r_eur_effektiv"]; k_frei -= c["einsatz_eur"]; n += 1
+    return n
+
+
+def papier_update(p: dict, d: pd.DataFrame, cfg: dict) -> dict:
+    """Abgelehntes Signal mit denselben Regeln Tag fuer Tag weiterfuehren (wie der Backtest:
+    Stop zuerst, dann Chandelier auf Schlusskurs, Zeitausstieg am Schluss von Tag max_ht)."""
+    p = dict(p)
+    if p.get("ausstieg_datum"):
+        return p
+    e, s0 = float(p["einstieg_kurs"]), float(p["stop_initial"])
+    risk = e - s0
+    stop = float(p.get("stop", s0))
+    hoch = float(p.get("hoechster_schluss", e))
+    zuletzt = pd.Timestamp(p.get("geprueft_bis") or p["einstieg_datum"])
+    ht = int(p.get("handelstage", 0))
+    for ts, row in d.loc[d.index > zuletzt].iterrows():
+        ht += 1
+        if row.Low <= stop:
+            px = min(float(row.Open), stop)
+            p.update(ausstieg_datum=ts.date().isoformat(), ausstieg_kurs=round(px, 4), grund_ausstieg="stop",
+                     r=round((px - e) / risk, 2))
+            break
+        hoch = max(hoch, float(row.Close))
+        stop = max(stop, hoch - cfg["chandelier_atr"] * float(row.atr))
+        if ht >= cfg["max_ht"]:
+            p.update(ausstieg_datum=ts.date().isoformat(), ausstieg_kurs=round(float(row.Close), 4),
+                     grund_ausstieg="zeit", r=round((float(row.Close) - e) / risk, 2))
+            break
+        p["geprueft_bis"] = ts.date().isoformat()
+    p.update(stop=math.ceil(stop * 1e4) / 1e4, hoechster_schluss=round(hoch, 4), handelstage=ht)   # Rundung nie lockernd
+    return p
 
 
 def sperre(st: dict, cfg: dict) -> Optional[str]:
@@ -172,20 +244,29 @@ def render(st: dict, cfg: dict) -> str:
                                                                      else ("abgesichert, Platz frei" if p.get("abgesichert") else ""))
             L.append(f"| {p['symbol']} | {p['einstieg_kurs']} ({p['einstieg_datum']}) | {p['stop']} | {p.get('r_offen', '–')} | {p.get('handelstage', '–')} | {hinweis} |")
         L.append("")
-    frei = freie_plaetze(pos, cfg)
+    b = st.get("budget") or {}
     k = st.get("kandidaten", [])
+    if b:
+        L.append(f"Risiko offen {b['risiko_offen_eur']:.0f} von {b['budget_eur']:.0f} €, Kapital gebunden "
+                 f"{b['kapital_gebunden_eur']:.0f} von {b['kapital_eur']:.0f} €.")
     if k:
-        L += [f"Signale heute: {len(k)}, freie Plätze: {frei}.", "",
-              "| # | Symbol | Schluss | Stop | Stück | Einsatz € | R € | ATR % |", "|---|---|---|---|---|---|---|---|"]
-        for i, c in enumerate(k[:max(frei + 2, 3)], 1):
-            mark = " ⚡" if i <= frei and not st.get("sperre") else ""
-            L.append(f"| {i}{mark} | {c['symbol']} | {c['schluss']} {c['waehrung']} | {c['stop_vorschlag']} | {c['stueck']} | "
+        n = sum(1 for c in k if c.get("zug"))
+        L += [f"Signale heute: {len(k)}, davon im Budget: {n}.", "",
+              "| # | Symbol | Schluss | Stop | Stop € (gettex) | Stück | Einsatz € | R € | ATR % |", "|---|---|---|---|---|---|---|---|---|"]
+        for i, c in enumerate(k[:max(n + 2, 3)], 1):
+            mark = " ⚡" if c.get("zug") and not st.get("sperre") else ""
+            L.append(f"| {i}{mark} | {c['symbol']} | {c['schluss']} {c['waehrung']} | {c['stop_vorschlag']} | "
+                     f"{c.get('stop_vorschlag_eur', '–')} | {c['stueck']} | "
                      f"{c['einsatz_eur']:.0f} | {c['r_eur_effektiv']:.0f} | {c['atr_pct'] * 100:.1f} |")
     else:
         L.append("Heute keine Signale.")
     zu = st.get("abgeschlossen", [])
     if zu:
         L += ["", f"Abgeschlossen: {len(zu)} Trades, Summe {sum(float(t.get('r', 0)) for t in zu):+.2f} R."]
+    ab = st.get("abgelehnt_abgeschlossen", [])
+    if st.get("abgelehnt") or ab:
+        L += [f"Vetos: {len(st.get('abgelehnt', []))} laufen als Papier-Trade, {len(ab)} abgeschlossen"
+              + (f", Summe {sum(float(t.get('r', 0)) for t in ab):+.2f} R." if ab else ".")]
     return "\n".join(L) + "\n"
 
 
@@ -220,7 +301,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     sp = Path(a.state_dir) / "lern_spur.json"
     st = json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else {
         "version": cfg["version"], "positionen": [], "abgeschlossen": [], "reviews": {}}
-    pos_syms = [p["symbol"] for p in st.get("positionen", [])]
+    pos_syms = [p["symbol"] for p in st.get("positionen", []) + st.get("abgelehnt", [])]
     daten = _lade(sorted(set(syms) | set(pos_syms)))
     import yfinance as yf
     fx = yf.download("EURUSD=X", period="5d", progress=False)["Close"].dropna()
@@ -232,9 +313,18 @@ def main(argv: Optional[list[str]] = None) -> int:
     kand.sort(key=lambda c: (math.isnan(c["rang"]), -c["rang"] if cfg["auswahl"]["absteigend"] else c["rang"]))
     st["positionen"] = [stop_nachziehen(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
                         for p in st.get("positionen", [])]
+    for p in st["positionen"]:
+        if p.get("waehrung", waehrung(p["symbol"])) == "USD":
+            p["stop_eur"] = round(float(p["stop"]) / fx_usd, 2)
+    lauf, fertig = [], st.get("abgelehnt_abgeschlossen", [])
+    for p in st.get("abgelehnt", []):
+        q = papier_update(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
+        (fertig if q.get("ausstieg_datum") else lauf).append(q)
+    st["abgelehnt"], st["abgelehnt_abgeschlossen"] = lauf, fertig
+    st["budget"] = budget(st["positionen"], cfg, fx_usd)
     st["kandidaten"] = kand
-    st["freie_plaetze"] = freie_plaetze(st["positionen"], cfg)
     st["sperre"] = sperre(st, cfg)
+    st["anzahl_zuege"] = zuege_markieren(kand, st["budget"]) if not st.get("sperre") else 0
     st["stand"] = stand.isoformat()
     st["eurusd"] = round(fx_usd, 4)
     st["aktualisiert"] = datetime.now(timezone.utc).isoformat(timespec="minutes")

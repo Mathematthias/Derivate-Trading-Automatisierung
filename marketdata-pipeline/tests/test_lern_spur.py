@@ -85,17 +85,43 @@ def test_ls2_filter_ema50_ueber_ema200():
                    for k in range(215, len(d)))
 
 
-def test_ls2_abgesicherte_position_gibt_platz_frei():
+def test_ls2_risikobudget_und_kapital():
     cfg = dict(CFG)
-    risiko = {"einstieg_kurs": 100, "stop": 95}
-    sicher = {"einstieg_kurs": 100, "stop": 100}
-    assert ls.freie_plaetze([], cfg) == 2
-    assert ls.freie_plaetze([risiko], cfg) == 1
-    assert ls.freie_plaetze([risiko, risiko], cfg) == 0
-    assert ls.freie_plaetze([risiko, sicher], cfg) == 1
-    assert ls.freie_plaetze([sicher, sicher], cfg) == 1          # Gesamtgrenze 3
-    assert ls.freie_plaetze([sicher, sicher, sicher], cfg) == 0
+    assert cfg["r_eur"] == 50 and cfg["risiko_budget_r"] == 3 and cfg["kapital_eur"] == 12000
+    voll = {"symbol": "X.DE", "einstieg_kurs": 100, "stop_initial": 95, "stop": 95, "stueck": 10, "einsatz_eur": 1000}
+    halb = dict(voll, stop=97.5)
+    sicher = dict(voll, stop=100)
+    b = ls.budget([voll, halb, sicher], cfg, 1.1)
+    assert b["risiko_offen_eur"] == 75.0 and b["risiko_frei_eur"] == 75.0
+    assert b["kapital_gebunden_eur"] == 3000.0
+    kand = [{"stueck": 5, "r_eur_effektiv": 50, "einsatz_eur": 1800},
+            {"stueck": 5, "r_eur_effektiv": 50, "einsatz_eur": 1800},
+            {"stueck": 5, "r_eur_effektiv": 20, "einsatz_eur": 900}]
+    assert ls.zuege_markieren(kand, b) == 2 and [c["zug"] for c in kand] == [True, False, True]
+    eng = dict(b, kapital_frei_eur=1000.0)
+    assert ls.zuege_markieren(kand, eng) == 1 and [c["zug"] for c in kand] == [False, False, True]
+    # USD-Position: Risiko in EUR umgerechnet
+    usd = {"symbol": "ALGN", "einstieg_kurs": 110, "stop_initial": 100, "stop": 100, "stueck": 5}
+    assert round(ls.rest_risiko_eur(usd, cfg, 1.25), 2) == 40.0
+
+
+def test_ls2_stop_abgesichert():
     d = _df(list(np.linspace(100, 160, 260)))
     pos = {"symbol": "X", "einstieg_datum": str(d.index[200].date()), "einstieg_kurs": float(d.Close.iloc[200]),
            "stop_initial": float(d.Close.iloc[200]) - 3, "stop": float(d.Close.iloc[200]) - 3}
-    assert ls.stop_nachziehen(pos, d, cfg)["abgesichert"]
+    assert ls.stop_nachziehen(pos, d, CFG)["abgesichert"]
+
+
+def test_veto_papiertrade_wie_backtest():
+    # Anstieg, dann Einbruch: Papier-Trade laeuft mit, zieht Stop nach und wird am Stop geschlossen
+    d = _df(list(np.linspace(100, 110, 200)) + list(np.linspace(110, 150, 15)) + list(np.linspace(150, 100, 45)))
+    i = 199
+    e, a = float(d.Close.iloc[i]), float(d.atr.iloc[i])
+    p = {"symbol": "X", "einstieg_datum": str(d.index[i].date()), "einstieg_kurs": e,
+         "stop_initial": e - 1.5 * a, "stop": e - 1.5 * a, "grund": "Story gefaellt mir nicht"}
+    halb = ls.papier_update(p, d.iloc[:215], CFG)
+    assert not halb.get("ausstieg_datum") and halb["stop"] > p["stop"]
+    assert ls.papier_update(dict(p), d.iloc[:201], CFG)["stop"] >= p["stop"]          # Rundung lockert nie
+    fertig = ls.papier_update(halb, d, CFG)
+    assert fertig["grund_ausstieg"] == "stop" and fertig["r"] > 0
+    assert ls.papier_update(fertig, d, CFG) == fertig

@@ -602,7 +602,8 @@ def apply_actions(state: dict, actions: list[dict], today: Optional[date] = None
                     # Katalysator nachziehen, ohne Konsens und Falsifikate neu zu schreiben.
                     if not isinstance(a["karte"], dict):
                         raise InboxError("karte muss ein Objekt sein")
-                    unbekannt = set(a["karte"]) - set(KARTE_FELDER) - {"ziel", "zweite_haelfte", "notiz", "einstieg", "position"}
+                    unbekannt = set(a["karte"]) - set(KARTE_FELDER) - {"ziel", "zweite_haelfte", "notiz", "einstieg", "position",
+                                                              "story", "gegenthese", "szenarien", "checkliste"}
                     if unbekannt:
                         raise InboxError(f"unbekannte Kartenfelder {sorted(unbekannt)}")
                     t.setdefault("karte", {}).update(a["karte"])

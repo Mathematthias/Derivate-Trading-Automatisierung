@@ -1,14 +1,16 @@
 # Lern-Spur LS-2 (User-Entscheide 2026-11-07, vor dem ersten Lern-Trade): eingefroren bis Trade 20.
 # Bugfixes erlaubt, Regelaenderungen nur im Review. Backtest: research/backtest-2026-11-07
 # (S6 Variante A, FILTER_SEITWAERTS.md, LERNSPUR_SLOTS.md).
-# LS-2 gegenueber LS-1: Filter EMA50 > EMA200; abgesicherte Positionen (Stop >= Einstieg) belegen
-# keinen Risiko-Platz. Slot-Simulation 2009-2026: 20 Trades in ~32 statt ~44 Wochen, Ø R etwa gleich.
+# LS-2 gegenueber LS-1: Filter EMA50 > EMA200; Risikobudget statt Plaetze (offenes Risiko bis zum
+# aktuellen Stop <= 3 R), R = 50 EUR, Kapital 12.000 EUR auf SB+ (User 2026-11-07).
+# Simulation 2009-2026 (LERNSPUR_BUDGET.md): 20 Trades in ~17 statt ~44 Wochen, Ø R etwa gleich.
+# US-Werte handelt der User in EUR ueber gettex: Stops zusaetzlich in EUR.
+# Vetos des Users laufen als Papier-Trades mit (Feld abgelehnt), zaehlen nicht zu den 20 Trades.
 
 version: "LS-2 2026-11-07"
-kapital_eur: 6000        # = max_positionen x max_einsatz_eur
-r_eur: 75
-max_parallel: 2          # Positionen mit Risiko (Stop unter Einstieg)
-max_positionen: 3        # alle offenen Lern-Positionen
+kapital_eur: 12000
+r_eur: 50
+risiko_budget_r: 3       # Summe Restrisiko aller offenen Lern-Positionen, in R
 
 signal:
   # EMA20 kreuzt EMA50 nach oben (heute ueber, gestern nicht), Schluss ueber EMA200
