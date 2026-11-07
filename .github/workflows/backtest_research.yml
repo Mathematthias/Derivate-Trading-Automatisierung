@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir -p work research/out
           [ "${NUR_ROTATION:-1}" = "1" ] || python research/backtest_wochenende.py --cfg config --out research/out --cache work/bt_cache.pkl
+          PYTHONPATH=./src python research/check_scores.py | tee research/out/CHECK_SCORES.txt
           for v in rotation_kern rotation_kern_ohne_gold rotation_kern_ohne_software; do echo "=== $v"; PYTHONPATH=./src python src/rotation_kern.py --cfg config/$v.yaml --backtest; done | tee research/out/ROTATION_KERN_BACKTEST.txt
       - name: Commit
         run: |
