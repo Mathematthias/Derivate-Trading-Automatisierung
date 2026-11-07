@@ -201,6 +201,194 @@ def sim_trail(d: pd.DataFrame, i: int, entry: float, stop: float, mult: float = 
     return (d.Close.iloc[i + max_ht] - entry) / risk, max_ht
 
 
+def sim_dir(d, i, entry, stop, ziel, max_ht, rich=1):
+    """rich=1 Long, -1 Short. Stop zuerst bei gleichem Tag."""
+    risk = (entry - stop) * rich
+    for k in range(1, max_ht + 1):
+        if i + k >= len(d):
+            return (d.Close.iloc[-1] - entry) * rich / risk, k
+        o, h, l = d.Open.iloc[i + k], d.High.iloc[i + k], d.Low.iloc[i + k]
+        if rich == 1:
+            if l <= stop:
+                return (min(o, stop) - entry) / risk, k
+            if ziel is not None and h >= ziel:
+                return (max(o, ziel) - entry) / risk, k
+        else:
+            if h >= stop:
+                return (entry - max(o, stop)) / risk, k
+            if ziel is not None and l <= ziel:
+                return (entry - min(o, ziel)) / risk, k
+    return (d.Close.iloc[i + max_ht] - entry) * rich / risk, max_ht
+
+
+def trail_dir(d, i, entry, stop, mult=3.0, max_ht=60, rich=1):
+    risk = (entry - stop) * rich
+    ext = entry
+    for k in range(1, max_ht + 1):
+        if i + k >= len(d):
+            return (d.Close.iloc[-1] - entry) * rich / risk, k
+        o, h, l, c, a = d.Open.iloc[i + k], d.High.iloc[i + k], d.Low.iloc[i + k], d.Close.iloc[i + k], d.atr.iloc[i + k]
+        if rich == 1:
+            if l <= stop:
+                return (min(o, stop) - entry) / risk, k
+            ext = max(ext, c); stop = max(stop, ext - mult * a)
+        else:
+            if h >= stop:
+                return (entry - max(o, stop)) / risk, k
+            ext = min(ext, c); stop = min(stop, ext + mult * a)
+    return (d.Close.iloc[i + max_ht] - entry) * rich / risk, max_ht
+
+
+def zufall_dir(dd, rich, modus, anteil=0.03, seed=11):
+    """Nullprobe je Richtung: modus 'z13' (Ziel 1,3 R/15 HT), 'tr3', 'tr2' (Chandelier), 'mix' (1/3 z13 + 2/3 tr2)."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for d in dd.values():
+        n = len(d)
+        for i in rng.choice(np.arange(210, n - 1), size=max(1, int((n - 211) * anteil)), replace=False):
+            e, a = d.Close.iloc[i], d.atr.iloc[i]
+            if pd.isna(a) or not (0.005 <= a / e <= 0.08):
+                continue
+            st = e - rich * 1.5 * a
+            z13 = sim_dir(d, i, e, st, e + rich * 1.3 * 1.5 * a, 15, rich)[0]
+            if modus == "z13":
+                out.append(z13)
+            elif modus == "tr3":
+                out.append(trail_dir(d, i, e, st, 3.0, 60, rich)[0])
+            elif modus == "tr2":
+                out.append(trail_dir(d, i, e, st, 2.0, 60, rich)[0])
+            else:
+                out.append(z13 / 3 + 2 / 3 * trail_dir(d, i, e, st, 2.0, 60, rich)[0])
+    return pd.Series(out)
+
+
+def s7_retest(dd):
+    """Breakout-Retest Long / Breakdown-Retest Short nach Skill v76 (Tagesnaeherung, ohne 4h)."""
+    rows = []
+    for s, d in dd.items():
+        vol20 = d.Volume.rolling(20).mean().shift()
+        hi20 = d.High.rolling(20).max().shift()
+        lo20 = d.Low.rolling(20).min().shift()
+        for rich in (1, -1):
+            if rich == 1:
+                bo = (d.Close > hi20) & (d.Volume >= vol20) & (d.ema20 > d.ema50) & (d.ema50 > d.ema200) & (d.rsi14 <= 70)
+            else:
+                bo = (d.Close < lo20) & (d.Volume >= vol20) & (d.ema20 < d.ema50) & (d.ema50 < d.ema200) & (d.rsi14 >= 30)
+            bo = bo & (d.atrp >= 0.005) & (d.atrp <= 0.08)
+            frei = 0
+            for b in np.flatnonzero(bo.values):
+                if b < frei or b < 210 or b >= len(d) - 15:
+                    continue
+                niveau = hi20.iloc[b] if rich == 1 else lo20.iloc[b]
+                rng_h = (hi20.iloc[b] - lo20.iloc[b])
+                ein = None
+                for r in range(b + 1, min(b + 11, len(d) - 2)):
+                    a = d.atr.iloc[r]
+                    if (d.Close.iloc[r] - niveau) * rich < 0:      # Fehlausbruch
+                        break
+                    if rich == 1:
+                        im_band = d.Low.iloc[r] <= niveau + 0.75 * a
+                    else:
+                        im_band = d.High.iloc[r] >= niveau - 0.75 * a
+                    if not im_band:
+                        continue
+                    marke = d.High.iloc[r] if rich == 1 else d.Low.iloc[r]
+                    for q in range(r + 1, min(r + 4, len(d) - 1)):  # Stop-Buy binnen 3 HT
+                        if (rich == 1 and d.High.iloc[q] >= marke) or (rich == -1 and d.Low.iloc[q] <= marke):
+                            o = d.Open.iloc[q]
+                            ein = (q, max(o, marke) if rich == 1 else min(o, marke))
+                            break
+                    break
+                if ein is None:
+                    frei = b + 1
+                    continue
+                q, e = ein
+                a = d.atr.iloc[q]
+                stop = min(e - 1.5 * a, niveau - 0.3 * a) if rich == 1 else max(e + 1.5 * a, niveau + 0.3 * a)
+                risk = (e - stop) * rich
+                if risk <= 0:
+                    frei = q + 1
+                    continue
+                # Simulation ab Entry-Tag: Entry intraday, daher ab Folgetag pruefen (Naeherung)
+                z13 = sim_dir(d, q, e, stop, e + rich * 1.3 * risk, 15, rich)[0]
+                mm = max(1.3 * risk, rng_h)
+                zmm = sim_dir(d, q, e, stop, e + rich * mm, 25, rich)[0]
+                tr2 = trail_dir(d, q, e, stop, 2.0, 60, rich)[0]
+                tr3, ht = trail_dir(d, q, e, stop, 3.0, 60, rich)
+                rows.append({"Richtung": "Long" if rich == 1 else "Short", "Symbol": s, "Datum": d.index[q],
+                             "R_z13": z13, "R_tr3": tr3, "R_tr2": tr2, "R_skill": zmm / 3 + 2 / 3 * tr2,
+                             "Regime_ueber200": None, "Tech": s in TECH})
+                frei = q + ht + 1
+    return pd.DataFrame(rows)
+
+
+def s8_grinder(dd):
+    """Grinder Long nach Skill (Stand 2026-10-22): Stack 20>50>100>200, ATR% <= 2,5, |Kurs-EMA20| <= 2 ATR,
+    Tempo |20-HT-Move| / ATR% >= 1, zwei Tage in Folge; Entry Schluss Tag 2, SL 1,5 ATR,
+    Trail MAX(SL; EMA20 - 1,25 ATR), Ausstieg bei Stackbruch (Schluss), Horizont 20/40 HT."""
+    rows = []
+    for s, d in dd.items():
+        stack = (d.ema20 > d.ema50) & (d.ema50 > d.ema100) & (d.ema100 > d.ema200)
+        tempo = (d.Close / d.Close.shift(20) - 1) / d.atrp
+        ok = stack & (d.atrp <= 0.025) & (d.atrp >= 0.005) & ((d.Close - d.ema20).abs() <= 2 * d.atr) & (tempo >= 1.0)
+        sig = ok & ok.shift().fillna(False).astype(bool)
+        frei = 0
+        for j in np.flatnonzero(sig.values):
+            if j < frei or j < 210 or j >= len(d) - 2:
+                continue
+            e, a = d.Close.iloc[j], d.atr.iloc[j]
+            res = {}
+            for hor in (20, 40):
+                stop = e - 1.5 * a
+                r = None
+                for k in range(1, hor + 1):
+                    if j + k >= len(d):
+                        r = (d.Close.iloc[-1] - e) / (1.5 * a); break
+                    o, l, c = d.Open.iloc[j + k], d.Low.iloc[j + k], d.Close.iloc[j + k]
+                    if l <= stop:
+                        r = (min(o, stop) - e) / (1.5 * a); break
+                    if not stack.iloc[j + k]:
+                        r = (c - e) / (1.5 * a); break
+                    stop = max(stop, d.ema20.iloc[j + k] - 1.25 * d.atr.iloc[j + k])
+                if r is None:
+                    r = (d.Close.iloc[j + hor] - e) / (1.5 * a)
+                res[f"R_{hor}"] = r
+            rows.append({"Symbol": s, "Datum": d.index[j], **res, "Tech": s in TECH})
+            frei = j + 20
+    return pd.DataFrame(rows)
+
+
+def s9_momcont(dd):
+    """Momentum-Continuation Trigger B: EMA20>50>100 alle steigend, Tief in Zone EMA20..EMA20+3 %, Schluss >= EMA20;
+    Einstieg Schluss des naechsten bullischen Tages binnen 3 HT, Stop 1,5 ATR."""
+    rows = []
+    for s, d in dd.items():
+        steig = (d.ema20 > d.ema20.shift(5)) & (d.ema50 > d.ema50.shift(5)) & (d.ema100 > d.ema100.shift(5))
+        zone = (d.Low <= d.ema20 * 1.03) & (d.Close >= d.ema20)
+        sig = (d.ema20 > d.ema50) & (d.ema50 > d.ema100) & steig & zone & (d.atrp >= 0.005) & (d.atrp <= 0.05)
+        frei = 0
+        for j in np.flatnonzero(sig.values):
+            if j < frei or j < 210:
+                continue
+            ein = None
+            for k in range(1, 4):
+                m = j + k
+                if m >= len(d) - 1:
+                    break
+                if d.Close.iloc[m] > d.Open.iloc[m] and d.Close.iloc[m] > d.Close.iloc[m - 1]:
+                    ein = m; break
+            if ein is None:
+                frei = j + 4; continue
+            e, a = d.Close.iloc[ein], d.atr.iloc[ein]
+            st = e - 1.5 * a
+            z13 = sim_dir(d, ein, e, st, e + 1.3 * 1.5 * a, 15, 1)[0]
+            tr3, ht = trail_dir(d, ein, e, st, 3.0, 60, 1)
+            tr2 = trail_dir(d, ein, e, st, 2.0, 60, 1)[0]
+            rows.append({"Symbol": s, "Datum": d.index[ein], "R_z13": z13, "R_tr3": tr3, "R_skill": z13 / 3 + 2 / 3 * tr2})
+            frei = ein + 10
+    return pd.DataFrame(rows)
+
+
 def s6_frueh(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Fruehe Stack-Umordnung (User-Idee 2026-11-07, Anlass DB1): drei Ausloeser, Einstieg am Signalschluss."""
     rows = []
@@ -563,6 +751,41 @@ def main() -> int:
         g = r6.groupby(["Signal", "Periode"]).R_trail3.mean().unstack()
         g.index.name = "Signal (Chandelier Ø R)"
         L += ["Stabilitaet nach Periode:\n", tab(g), "\n"]
+
+    # S7-S9 alle Skill-Klassen gegen Nullproben
+    rf2 = {"Treffer": "{:.0%}"}
+    nl = {m: zufall_dir(dd, 1, m) for m in ("z13", "tr3", "mix")}
+    ns = {m: zufall_dir(dd, -1, m) for m in ("z13", "tr3", "mix")}
+    zeilen = {}
+    r7 = s7_retest(dd); r7.to_csv(out / "s7_retest.csv", index=False)
+    for rich, nul in (("Long", nl), ("Short", ns)):
+        g = r7[r7.Richtung == rich] if len(r7) else r7
+        for col, lab, m in (("R_skill", "Skill-Exit (1/3 Measured Move, 2/3 Chandelier 2 ATR)", "mix"),
+                            ("R_z13", "Ziel 1,3 R / 15 HT", "z13"), ("R_tr3", "Chandelier 3 ATR", "tr3")):
+            if len(g):
+                zeilen[f"Breakout-Retest {rich} / {lab}"] = {**rstat(g[col]), "Zufall Ø": nul[m].mean()}
+    r9 = s9_momcont(dd); r9.to_csv(out / "s9_momcont.csv", index=False)
+    for col, lab, m in (("R_skill", "Skill-Exit (1/3 Ziel 1,3 R, 2/3 Chandelier 2 ATR)", "mix"),
+                        ("R_z13", "Ziel 1,3 R / 15 HT", "z13"), ("R_tr3", "Chandelier 3 ATR", "tr3")):
+        if len(r9):
+            zeilen[f"Momentum-Continuation Long / {lab}"] = {**rstat(r9[col]), "Zufall Ø": nl[m].mean()}
+    r8 = s8_grinder(dd); r8.to_csv(out / "s8_grinder.csv", index=False)
+    zg = zufall(dd, None, 20)
+    for col, lab in (("R_20", "Skill-Trail, Horizont 20 HT"), ("R_40", "Skill-Trail, Horizont 40 HT")):
+        if len(r8):
+            zeilen[f"Grinder Long / {lab}"] = {**rstat(r8[col]), "Zufall Ø": zg.mean() if col == "R_20" else zufall(dd, None, 40).mean()}
+    if len(r5):
+        zeilen["Trend-Pullback Long / Ziel 1,3 R / 15 HT"] = {**rstat(r5["R_1.3"]), "Zufall Ø": nl["z13"].mean()}
+        zeilen["Trend-Pullback Long / Chandelier 3 ATR"] = {**rstat(r5["R_trail3"]), "Zufall Ø": nl["tr3"].mean()}
+    if len(r6):
+        g6 = r6[r6.Signal.str.startswith("A ")]
+        zeilen["Frueh-Stack A Long / Chandelier 3 ATR"] = {**rstat(g6.R_trail3), "Zufall Ø": nl["tr3"].mean()}
+    tz = pd.DataFrame(zeilen).T
+    tz["Vorsprung"] = tz["Ø"] - tz["Zufall Ø"]
+    tz.index.name = "Klasse / Ausstieg"
+    L += ["## Uebersicht alle Skill-Klassen gegen Zufallseinstieg mit gleichem Ausstieg (R brutto)\n",
+          "Tagesnaeherung: keine 4h-Bestaetigung, keine Earnings-Sperre, keine Kosten. Short-Nullprobe = zufaellige Shorts.\n",
+          tab(tz, rf2), "\n"]
 
     (out / "REPORT.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))
