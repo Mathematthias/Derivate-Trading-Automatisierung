@@ -48,7 +48,10 @@ def test_sperre_review_und_notbremse():
     assert "Trade 5" in ls.sperre(st, CFG)
     st["reviews"] = {"5": "2026-12-01"}
     assert ls.sperre(st, CFG) is None
-    st = {"abgeschlossen": [{"r": -1.0}] * 6, "reviews": {"5": "x"}}
+    n = int(-CFG["notbremse_r"])
+    st = {"abgeschlossen": [{"r": -1.0}] * (n - 1), "reviews": {"5": "x"}}
+    assert ls.sperre(st, CFG) is None or not ls.sperre(st, CFG).startswith("Notbremse")
+    st = {"abgeschlossen": [{"r": -1.0}] * n, "reviews": {"5": "x", "10": "x"}}
     assert ls.sperre(st, CFG).startswith("Notbremse")
 
 
