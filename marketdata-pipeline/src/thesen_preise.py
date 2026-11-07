@@ -6,6 +6,12 @@ prueft am Tagesschluss die Marken der Karte:
   karte.preis_falsifikat {symbol, op, level}  -> gebrochen ja/nein
   karte.einstieg         {symbol, op, level}  -> ausgeloest ja/nein (optional)
 Dazu Schluss, 52W-Hoch (252 HT, Schlusskurse) und Abstand. Ergebnis: state/thesen_preise.json.
+
+Marken sind KLEBRIG (2026-11-07): Einmal erreicht, bleibt `erstmals` mit Datum stehen, auch wenn
+der Kurs zurueckspringt. Einstieg loescht sich erst, wenn karte.position eingetragen ist; das
+Preis-Falsifikat bleibt, bis die These verworfen ist. So geht nichts verloren, wenn der User
+einen Morning Check nicht liest. Verdikt `freigabe` (Kartenvorschlag des Thesen-Laufs) wird
+mitgeprueft, damit die Freigabe-Entscheidung die aktuellen Abstaende sieht.
 """
 from __future__ import annotations
 
@@ -28,10 +34,14 @@ def marke(m: Optional[dict], schluss: float) -> Optional[dict]:
             "abstand_pct": round((schluss / lvl - 1) * 100, 2)}
 
 
-def pruefe(thesen: dict, kurse: Callable[[str], Optional[pd.Series]]) -> dict:
+AKTIV = ("spielen", "beobachten", "freigabe")
+
+
+def pruefe(thesen: dict, kurse: Callable[[str], Optional[pd.Series]], vorher: Optional[dict] = None) -> dict:
+    vorher = vorher or {}
     out = {}
     for t in thesen.get("thesen", []):
-        if t.get("spur") != "thesen" or t.get("verdikt") not in ("spielen", "beobachten"):
+        if t.get("spur") != "thesen" or t.get("verdikt") not in AKTIV:
             continue
         k = t.get("karte") or {}
         syms = {m.get("symbol") for m in (k.get("preis_falsifikat"), k.get("einstieg")) if isinstance(m, dict)}
@@ -47,7 +57,17 @@ def pruefe(thesen: dict, kurse: Callable[[str], Optional[pd.Series]]) -> dict:
             for name in ("preis_falsifikat", "einstieg"):
                 m = k.get(name)
                 if isinstance(m, dict) and m.get("symbol") == sym:
-                    eintrag[name] = marke(m, schluss)
+                    r = marke(m, schluss)
+                    if r is None:
+                        continue
+                    alt = (((vorher.get(t["id"]) or {}).get(sym) or {}).get(name) or {})
+                    erstmals = alt.get("erstmals") if alt.get("level") == r["level"] else None
+                    if name == "einstieg" and k.get("position"):
+                        erstmals = None
+                    elif r["erreicht"] and not erstmals:
+                        erstmals = eintrag["datum"]
+                    r["erstmals"] = erstmals
+                    eintrag[name] = r
             out.setdefault(t["id"], {})[sym] = eintrag
     return out
 
@@ -70,7 +90,14 @@ def main(argv: Optional[list[str]] = None) -> int:
     a = ap.parse_args(argv)
     sd = Path(a.state_dir)
     thesen = yaml.safe_load((sd / "thesen.yaml").read_text(encoding="utf-8"))
-    res = pruefe(thesen, _yf)
+    alt_pfad = sd / "thesen_preise.json"
+    vorher = {}
+    if alt_pfad.exists():
+        try:
+            vorher = json.loads(alt_pfad.read_text(encoding="utf-8")).get("thesen", {})
+        except Exception:
+            vorher = {}
+    res = pruefe(thesen, _yf, vorher)
     res = {"aktualisiert": datetime.now(timezone.utc).isoformat(timespec="minutes"), "thesen": res}
     (sd / "thesen_preise.json").write_text(json.dumps(res, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(res, ensure_ascii=False, indent=2))

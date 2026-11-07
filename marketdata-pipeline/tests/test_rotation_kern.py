@@ -67,3 +67,30 @@ def test_thesen_preise_marken():
     assert x["einstieg"]["erreicht"] and not x["preis_falsifikat"]["erreicht"]
     assert x["hoch_52w"] == 200.0 and x["abstand_hoch_pct"] == -21.0
     assert "ALT" not in r
+
+
+def test_thesen_preise_klebrig_und_freigabe():
+    from src import thesen_preise as tp
+    idx = pd.bdate_range("2025-01-01", periods=300)
+    tief = pd.Series(np.r_[np.linspace(100, 200, 250), np.linspace(200, 158, 50)], index=idx)
+    erholt = tief.copy(); erholt.iloc[-1] = 170.0
+    karte = {"preis_falsifikat": {"symbol": "XLK", "op": "<", "level": 130},
+             "einstieg": {"symbol": "XLK", "op": "<", "level": 160}}
+    th = {"thesen": [{"id": "T", "spur": "thesen", "verdikt": "spielen", "karte": dict(karte)},
+                     {"id": "V", "spur": "thesen", "verdikt": "freigabe", "karte": dict(karte)}]}
+    r1 = tp.pruefe(th, lambda s: tief)
+    tag = r1["T"]["XLK"]["datum"]
+    assert r1["T"]["XLK"]["einstieg"]["erstmals"] == tag and "V" in r1
+    # Kurs springt zurueck ueber die Marke: erstmals bleibt stehen
+    r2 = tp.pruefe(th, lambda s: erholt, r1)
+    e = r2["T"]["XLK"]["einstieg"]
+    assert not e["erreicht"] and e["erstmals"] == tag
+    assert r2["T"]["XLK"]["preis_falsifikat"]["erstmals"] is None
+    # Position eingetragen: Einstieg erledigt
+    th["thesen"][0]["karte"]["position"] = {"datum": "2026-11-10", "betrag_eur": 800}
+    r3 = tp.pruefe(th, lambda s: erholt, r2)
+    assert r3["T"]["XLK"]["einstieg"]["erstmals"] is None
+    # Level geaendert: alte Ausloesung gilt nicht fuer die neue Marke
+    th["thesen"][1]["karte"]["einstieg"] = {"symbol": "XLK", "op": "<", "level": 150}
+    r4 = tp.pruefe(th, lambda s: erholt, r2)
+    assert r4["V"]["XLK"]["einstieg"]["erstmals"] is None
