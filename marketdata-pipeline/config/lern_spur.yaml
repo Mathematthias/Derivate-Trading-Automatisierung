@@ -31,4 +31,4 @@ max_einsatz_eur: 2000
 suffixe_eur: [".DE", ".PA", ".AS", ".MI", ".MC", ".BR", ".HE", ".VI"]
 
 reviews: [5, 10, 15, 20]
-notbremse_r: -6
+notbremse_r: -10         # User 2026-11-07: -6 R loeste in 23-26 % der 20er-Fenster aus (LERNSPUR_NOTBREMSE.md), -10 R in 9 %
