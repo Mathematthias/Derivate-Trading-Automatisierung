@@ -60,25 +60,25 @@ Signal: Ext EMA20 <= -3 ATR, RSI14 <= 30, ATR% <= 8 %; Einstieg Schluss des erst
 
 |  | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| Alle | 8208 | 52% | 0.08 | 0.08 | 685.75 | 1.21 |
+| Alle | 8209 | 52% | 0.08 | 0.08 | 685.85 | 1.21 |
 
 
 Nach Marktlage (SPY ueber SMA200):
 
 | Regime_ueber200 | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| False | 3037 | 55% | 0.12 | 0.15 | 362.64 | 1.31 |
-| True | 5171 | 51% | 0.06 | 0.03 | 323.11 | 1.15 |
+| False | 3038 | 55% | 0.12 | 0.15 | 362.97 | 1.31 |
+| True | 5171 | 51% | 0.06 | 0.03 | 322.89 | 1.15 |
 
 
 Nach Abstand zur EMA200:
 
 | Dist200_Bucket | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| < -30% | 588 | 54% | 0.16 | 0.20 | 94.80 | 1.42 |
+| < -30% | 589 | 54% | 0.16 | 0.20 | 93.80 | 1.41 |
 | -30..-20% | 1124 | 51% | 0.08 | 0.02 | 86.12 | 1.18 |
-| -20..-10% | 2347 | 51% | 0.08 | 0.02 | 185.00 | 1.19 |
-| -10..0% | 3094 | 53% | 0.09 | 0.10 | 272.65 | 1.22 |
+| -20..-10% | 2347 | 51% | 0.08 | 0.02 | 186.48 | 1.19 |
+| -10..0% | 3094 | 53% | 0.09 | 0.10 | 272.27 | 1.22 |
 | ueber EMA200 | 1055 | 54% | 0.04 | 0.14 | 47.18 | 1.11 |
 
 
@@ -86,7 +86,7 @@ Nach Tempo:
 
 | Tempo | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| langsam | 6774 | 53% | 0.09 | 0.09 | 576.51 | 1.21 |
+| langsam | 6775 | 53% | 0.09 | 0.09 | 576.61 | 1.21 |
 | schnell (30T <= -20%) | 1434 | 50% | 0.08 | 0.02 | 109.25 | 1.18 |
 
 
@@ -94,7 +94,7 @@ Tech-Werte:
 
 | Tech | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| False | 7478 | 52% | 0.09 | 0.08 | 652.79 | 1.22 |
+| False | 7479 | 52% | 0.09 | 0.08 | 652.89 | 1.22 |
 | True | 730 | 51% | 0.05 | 0.06 | 32.97 | 1.10 |
 
 
@@ -103,14 +103,14 @@ Nach Jahr:
 | Jahr | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
 | 2008 | 10 | 50% | 0.07 | -0.38 | 0.71 | 1.14 |
-| 2009 | 138 | 59% | 0.28 | 0.39 | 38.40 | 1.79 |
+| 2009 | 139 | 59% | 0.27 | 0.39 | 37.40 | 1.75 |
 | 2010 | 197 | 47% | -0.04 | -0.18 | -7.71 | 0.91 |
 | 2011 | 578 | 43% | -0.11 | -0.24 | -63.12 | 0.76 |
 | 2012 | 248 | 46% | -0.02 | -0.13 | -4.92 | 0.96 |
 | 2013 | 204 | 63% | 0.32 | 0.37 | 66.14 | 2.19 |
-| 2014 | 502 | 61% | 0.27 | 0.48 | 134.54 | 1.74 |
+| 2014 | 502 | 61% | 0.27 | 0.48 | 136.02 | 1.75 |
 | 2015 | 509 | 60% | 0.17 | 0.15 | 85.46 | 1.70 |
-| 2016 | 496 | 53% | 0.12 | 0.16 | 57.75 | 1.27 |
+| 2016 | 496 | 53% | 0.12 | 0.15 | 57.36 | 1.27 |
 | 2017 | 224 | 52% | 0.15 | 0.06 | 34.71 | 1.46 |
 | 2018 | 841 | 51% | 0.08 | 0.03 | 69.63 | 1.20 |
 | 2019 | 381 | 54% | 0.09 | 0.11 | 35.19 | 1.23 |
@@ -127,7 +127,7 @@ Variante Ziel EMA200 (mind. EMA20), max 60 HT:
 
 |  | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| Alle | 8208 | 42% | 0.21 | -1.00 | 1694.72 | 1.34 |
+| Alle | 8209 | 42% | 0.21 | -1.00 | 1697.52 | 1.34 |
 
 
 Median Ziel-Abstand 1.57 R, Median Risiko 5.4% vom Kurs.
@@ -165,7 +165,7 @@ Vergleich unbedingt (alle Tage, alle Werte): 20 HT Ø 1.3%, 60 HT Ø 3.8%, 60 HT
 
 | Periode | n | avg | med | hit |
 |---|---|---|---|---|
-| 2009-2017 | 29907 | 0.69% | 1.02% | 71% |
+| 2009-2017 | 29904 | 0.69% | 1.02% | 71% |
 | 2018-2026 | 27850 | 0.24% | 0.97% | 66% |
 
 
@@ -173,10 +173,10 @@ Vergleich unbedingt (alle Tage, alle Werte): 20 HT Ø 1.3%, 60 HT Ø 3.8%, 60 HT
 
 |  | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| Ziel 1,3 R (15 HT) | 42003 | 48% | 0.07 | -0.34 | 2970.72 | 1.14 |
-| Ziel 2,0 R (25 HT) | 42003 | 40% | 0.11 | -1.00 | 4719.30 | 1.18 |
-| kein Ziel, 20 HT | 42003 | 38% | 0.14 | -1.00 | 5745.05 | 1.22 |
-| Chandelier 3 ATR, max 60 HT | 42003 | 33% | 0.18 | -1.00 | 7415.60 | 1.28 |
+| Ziel 1,3 R (15 HT) | 41982 | 48% | 0.07 | -0.34 | 2990.86 | 1.14 |
+| Ziel 2,0 R (25 HT) | 41982 | 40% | 0.11 | -1.00 | 4737.05 | 1.18 |
+| kein Ziel, 20 HT | 41982 | 38% | 0.14 | -1.00 | 5765.18 | 1.22 |
+| Chandelier 3 ATR, max 60 HT | 41982 | 33% | 0.18 | -1.00 | 7461.66 | 1.29 |
 
 
 Nullprobe Zufallseinstieg, gleicher Stop/Ziel:
@@ -192,8 +192,8 @@ Nach Periode (Ziel 1,3 R):
 
 | Periode | n | Treffer | Ø | Median | Summe | PF |
 |---|---|---|---|---|---|---|
-| 2009-2017 | 21953 | 48% | 0.07 | -0.31 | 1557.90 | 1.14 |
-| 2018-2026 | 20050 | 48% | 0.07 | -0.39 | 1412.83 | 1.13 |
+| 2009-2017 | 21938 | 48% | 0.07 | -0.30 | 1579.00 | 1.14 |
+| 2018-2026 | 20044 | 48% | 0.07 | -0.39 | 1411.85 | 1.13 |
 
 
 ## S6 Fruehe Stack-Umordnung (User-Idee 2026-11-07, Anlass DB1): Einstieg am Signalschluss, Stop 1,5 ATR, R brutto
@@ -202,14 +202,14 @@ Nach Periode (Ziel 1,3 R):
 |---|---|---|---|---|---|---|---|
 | A EMA20 kreuzt EMA50, Schluss > EMA200 / Chandelier 3 ATR, max 60 HT | 14495 | 36% | 0.26 | -0.84 | 3809.15 | 1.44 | 3.5% |
 | A EMA20 kreuzt EMA50, Schluss > EMA200 / Ziel 1,3 R, 15 HT | 14495 | 50% | 0.12 | 0.06 | 1721.24 | 1.24 | 3.5% |
-| A EMA20 kreuzt EMA50, Schluss > EMA200 / kein Ziel, 20 HT | 14495 | 42% | 0.23 | -1.00 | 3406.19 | 1.40 | 3.5% |
+| A EMA20 kreuzt EMA50, Schluss > EMA200 / kein Ziel, 20 HT | 14495 | 42% | 0.24 | -1.00 | 3409.55 | 1.40 | 3.5% |
 | B EMA20 kreuzt EMA50, EMA50 dreht hoch / Chandelier 3 ATR, max 60 HT | 17715 | 35% | 0.23 | -0.87 | 4118.86 | 1.39 | 3.6% |
 | B EMA20 kreuzt EMA50, EMA50 dreht hoch / Ziel 1,3 R, 15 HT | 17715 | 50% | 0.11 | 0.01 | 2020.39 | 1.23 | 3.6% |
-| B EMA20 kreuzt EMA50, EMA50 dreht hoch / kein Ziel, 20 HT | 17715 | 41% | 0.21 | -1.00 | 3749.83 | 1.36 | 3.6% |
+| B EMA20 kreuzt EMA50, EMA50 dreht hoch / kein Ziel, 20 HT | 17715 | 41% | 0.21 | -1.00 | 3753.20 | 1.36 | 3.6% |
 | C Rueckeroberung EMA50 nach >= 20 HT darunter, EMA20 steigt / Chandelier 3 ATR, max 60 HT | 11537 | 35% | 0.21 | -0.89 | 2394.49 | 1.34 | 3.4% |
 | C Rueckeroberung EMA50 nach >= 20 HT darunter, EMA20 steigt / Ziel 1,3 R, 15 HT | 11537 | 50% | 0.12 | 0.00 | 1353.48 | 1.23 | 3.4% |
 | C Rueckeroberung EMA50 nach >= 20 HT darunter, EMA20 steigt / kein Ziel, 20 HT | 11537 | 40% | 0.20 | -1.00 | 2292.72 | 1.33 | 3.4% |
-| D EMA50 kreuzt EMA200 (Golden Cross) / Chandelier 3 ATR, max 60 HT | 5723 | 33% | 0.18 | -1.00 | 1019.35 | 1.29 | 3.8% |
+| D EMA50 kreuzt EMA200 (Golden Cross) / Chandelier 3 ATR, max 60 HT | 5723 | 33% | 0.18 | -1.00 | 1018.80 | 1.29 | 3.8% |
 | D EMA50 kreuzt EMA200 (Golden Cross) / Ziel 1,3 R, 15 HT | 5723 | 48% | 0.06 | -0.25 | 361.26 | 1.12 | 3.8% |
 | D EMA50 kreuzt EMA200 (Golden Cross) / kein Ziel, 20 HT | 5723 | 39% | 0.15 | -1.00 | 840.85 | 1.24 | 3.8% |
 | Spaet: Stack komplett (20>50>100>200) erstmals seit 60 HT / Chandelier 3 ATR, max 60 HT | 4518 | 33% | 0.12 | -0.96 | 531.00 | 1.19 | 3.8% |
@@ -233,4 +233,26 @@ Stabilitaet nach Periode:
 | C Rueckeroberung EMA50 nach >= 20 HT darunter, EMA20 steigt | 0.22 | 0.20 |
 | D EMA50 kreuzt EMA200 (Golden Cross) | 0.20 | 0.16 |
 | Spaet: Stack komplett (20>50>100>200) erstmals seit 60 HT | 0.17 | 0.08 |
+
+
+## Uebersicht alle Skill-Klassen gegen Zufallseinstieg mit gleichem Ausstieg (R brutto)
+
+Tagesnaeherung: keine 4h-Bestaetigung, keine Earnings-Sperre, keine Kosten. Short-Nullprobe = zufaellige Shorts.
+
+| Klasse / Ausstieg | n | Treffer | Ø | Median | Summe | PF | Zufall Ø | Vorsprung |
+|---|---|---|---|---|---|---|---|---|
+| Breakout-Retest Long / Skill-Exit (1/3 Measured Move, 2/3 Chandelier 2 ATR) | 11418 | 40% | 0.10 | -0.52 | 1093.44 | 1.19 | 0.12 | -0.03 |
+| Breakout-Retest Long / Ziel 1,3 R / 15 HT | 11418 | 49% | 0.08 | -0.07 | 904.42 | 1.16 | 0.09 | -0.02 |
+| Breakout-Retest Long / Chandelier 3 ATR | 11418 | 34% | 0.19 | -0.82 | 2130.49 | 1.31 | 0.22 | -0.03 |
+| Breakout-Retest Short / Skill-Exit (1/3 Measured Move, 2/3 Chandelier 2 ATR) | 4447 | 30% | -0.19 | -0.76 | -866.06 | 0.68 | -0.16 | -0.03 |
+| Breakout-Retest Short / Ziel 1,3 R / 15 HT | 4447 | 39% | -0.12 | -1.00 | -554.64 | 0.79 | -0.10 | -0.02 |
+| Breakout-Retest Short / Chandelier 3 ATR | 4447 | 24% | -0.30 | -1.00 | -1324.08 | 0.57 | -0.29 | -0.01 |
+| Momentum-Continuation Long / Skill-Exit (1/3 Ziel 1,3 R, 2/3 Chandelier 2 ATR) | 67766 | 44% | 0.08 | -0.46 | 5407.55 | 1.16 | 0.12 | -0.04 |
+| Momentum-Continuation Long / Ziel 1,3 R / 15 HT | 67766 | 48% | 0.07 | -0.31 | 4806.47 | 1.14 | 0.09 | -0.02 |
+| Momentum-Continuation Long / Chandelier 3 ATR | 67766 | 32% | 0.15 | -1.00 | 10374.90 | 1.24 | 0.22 | -0.06 |
+| Grinder Long / Skill-Trail, Horizont 20 HT | 29351 | 35% | 0.14 | -0.80 | 4197.71 | 1.24 | 0.17 | -0.03 |
+| Grinder Long / Skill-Trail, Horizont 40 HT | 29351 | 31% | 0.18 | -0.82 | 5393.20 | 1.30 | 0.27 | -0.08 |
+| Trend-Pullback Long / Ziel 1,3 R / 15 HT | 41982 | 48% | 0.07 | -0.34 | 2990.86 | 1.14 | 0.09 | -0.02 |
+| Trend-Pullback Long / Chandelier 3 ATR | 41982 | 33% | 0.18 | -1.00 | 7461.66 | 1.29 | 0.22 | -0.04 |
+| Frueh-Stack A Long / Chandelier 3 ATR | 14495 | 36% | 0.26 | -0.84 | 3809.15 | 1.44 | 0.22 | 0.05 |
 
