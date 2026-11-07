@@ -1,0 +1,61 @@
+kapital_eur: 8000
+top_n: 4
+absolutfilter: true
+lookbacks_ht:
+- 63
+- 126
+- 252
+kosten_je_seite: 0.001
+benchmark: URTH
+universum:
+- signal: XLK
+  name: SPDR S&P U.S. Technology Select Sector UCITS ETF
+  isin: IE00BWBXM948
+- signal: XLF
+  name: SPDR S&P U.S. Financials Select Sector UCITS ETF
+  isin: IE00BWBXM500
+- signal: XLV
+  name: SPDR S&P U.S. Health Care Select Sector UCITS ETF
+  isin: IE00BWBXM617
+- signal: XLE
+  name: SPDR S&P U.S. Energy Select Sector UCITS ETF
+  isin: IE00BWBXM492
+- signal: XLY
+  name: SPDR S&P U.S. Consumer Discretionary Select Sector UCITS ETF
+  isin: IE00BWBXM278
+- signal: XLP
+  name: SPDR S&P U.S. Consumer Staples Select Sector UCITS ETF
+  isin: IE00BWBXM385
+- signal: XLU
+  name: SPDR S&P U.S. Utilities Select Sector UCITS ETF
+  isin: IE00BWBXMB69
+- signal: XLB
+  name: SPDR S&P U.S. Materials Select Sector UCITS ETF
+  isin: IE00BWBXM831
+- signal: SMH
+  name: VanEck Semiconductor UCITS ETF
+  isin: IE00BMC38736
+- signal: SKYY
+  name: First Trust Cloud Computing UCITS ETF
+  isin: IE00BFD2H405
+  hinweis: Software/Cloud; TER 0,60 %
+- signal: QQQ
+  name: iShares Nasdaq 100 UCITS ETF (Acc)
+  isin: IE00B53SZB19
+- signal: IWM
+  name: Amundi Russell 2000 UCITS ETF
+  isin: LU1681038672
+- signal: EFA
+  name: iShares MSCI Europe SRI UCITS ETF
+  isin: IE00B52VJ196
+  hinweis: Naeherung, EFA enthaelt auch Japan
+- signal: EEM
+  name: iShares MSCI EM SRI UCITS ETF
+  isin: IE00BYVJRP78
+  hinweis: auch im Langfrist-Depot
+- signal: TLT
+  name: iShares $ Treasury Bond 20+yr UCITS ETF (Dist)
+  isin: IE00BSKRJZ44
+- signal: IEF
+  name: iShares $ Treasury Bond 7-10yr UCITS ETF (Acc)
+  isin: IE00B3VWN518

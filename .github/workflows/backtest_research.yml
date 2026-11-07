@@ -7,7 +7,7 @@ name: Research-Backtest (Wochenende 2026-11-07)
 on:
   push:
     branches: ['research/**']
-    paths: ['marketdata-pipeline/research/*.py', 'marketdata-pipeline/src/rotation_kern.py', '.github/workflows/backtest_research.yml']
+    paths: ['marketdata-pipeline/research/*.py', 'marketdata-pipeline/src/rotation_kern.py', 'marketdata-pipeline/config/rotation_kern*.yaml', '.github/workflows/backtest_research.yml']
   workflow_dispatch:
 
 permissions:
@@ -32,9 +32,8 @@ jobs:
         working-directory: marketdata-pipeline
         run: |
           mkdir -p work research/out
-          python research/backtest_wochenende.py --cfg config --out research/out --cache work/bt_cache.pkl
-          cat research/out/REPORT.md >> "$GITHUB_STEP_SUMMARY"
-          PYTHONPATH=./src python src/rotation_kern.py --cfg config/rotation_kern.yaml --backtest | tee research/out/ROTATION_KERN_BACKTEST.txt
+          [ "${NUR_ROTATION:-1}" = "1" ] || python research/backtest_wochenende.py --cfg config --out research/out --cache work/bt_cache.pkl
+          for v in rotation_kern rotation_kern_ohne_gold rotation_kern_ohne_software; do echo "=== $v"; PYTHONPATH=./src python src/rotation_kern.py --cfg config/$v.yaml --backtest; done | tee research/out/ROTATION_KERN_BACKTEST.txt
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"

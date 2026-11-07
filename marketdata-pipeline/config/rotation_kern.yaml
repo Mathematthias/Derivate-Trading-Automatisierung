@@ -1,7 +1,8 @@
 # Kern-Rotation (Neuaufstellung A+, User-Entscheid 2026-11-07)
 # Signal auf US-ETFs mit langer Historie, Ausfuehrung im UCITS-Pendant.
 # Ethik: US-Industrie (XLI) und Deutschland (EWG, Rheinmetall im DAX) raus;
-# Japan raus (kein brauchbares SRI-Vehikel); Software (IGV) raus (kein sauberes UCITS-Pendant).
+# Japan raus (kein brauchbares SRI-Vehikel). Software: kein UCITS-Pendant zu IGV, daher Signal SKYY
+# (ISE CTA Cloud Computing) mit dem First-Trust-UCITS als Vehikel (User 2026-11-07: Software soll rein).
 # Backtest 2008-2026 (research/backtest-2026-11-07): Top 4 + Absolutfilter ~13,6 % p. a., MaxDD -25,5 %.
 
 kapital_eur: 8000
@@ -21,6 +22,7 @@ universum:
   - {signal: XLU, name: "SPDR S&P U.S. Utilities Select Sector UCITS ETF", isin: IE00BWBXMB69}
   - {signal: XLB, name: "SPDR S&P U.S. Materials Select Sector UCITS ETF", isin: IE00BWBXM831}
   - {signal: SMH, name: "VanEck Semiconductor UCITS ETF", isin: IE00BMC38736}
+  - {signal: SKYY, name: "First Trust Cloud Computing UCITS ETF", isin: IE00BFD2H405, hinweis: "Software/Cloud; TER 0,60 %"}
   - {signal: QQQ, name: "iShares Nasdaq 100 UCITS ETF (Acc)", isin: IE00B53SZB19}
   - {signal: IWM, name: "Amundi Russell 2000 UCITS ETF", isin: LU1681038672}
   - {signal: EFA, name: "iShares MSCI Europe SRI UCITS ETF", isin: IE00B52VJ196, hinweis: "Naeherung, EFA enthaelt auch Japan"}
