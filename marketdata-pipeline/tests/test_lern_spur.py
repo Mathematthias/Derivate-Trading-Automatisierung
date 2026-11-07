@@ -63,3 +63,11 @@ def test_universum_nur_eur_usd():
     u = ls.universum(Path(__file__).parent.parent / "config", CFG["suffixe_eur"])
     assert u and all("." not in s or any(s.endswith(x) for x in CFG["suffixe_eur"]) for s in u)
     assert "RHM.DE" not in u
+
+
+def test_einsatzdeckel_und_rangfolge():
+    d = _df(list(np.linspace(50, 100, 260)))
+    c = ls.kandidat("SAP.DE", d, CFG, fx_usd=1.10)
+    assert c["einsatz_eur"] <= CFG["max_einsatz_eur"] + 1e-6
+    assert c["r_eur_effektiv"] <= CFG["r_eur"] + 1e-6
+    assert CFG["auswahl"] == {"feld": "atrp", "absteigend": False}

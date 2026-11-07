@@ -5,7 +5,8 @@ Regel (eingefroren bis Trade 20, Backtest research/backtest-2026-11-07, S6 Varia
   Einstieg naechste Eroeffnung (Direktaktie, EUR- oder USD-Notiz).
   Stop     Einstieg - 1,5 ATR; danach Chandelier: MAX(alter Stop ; hoechster Schluss seit Einstieg - 3 ATR).
   Ausstieg Stop oder nach 60 Handelstagen.
-  Groesse  R = 75 EUR, Stueck = R / (1,5 ATR in EUR), max. 2 Positionen.
+  Groesse  R = 75 EUR, Stueck = R / (1,5 ATR in EUR), hoechstens 2.000 EUR Einsatz, max. 2 Positionen.
+  Auswahl  bei mehr Signalen als Plaetzen: niedrigste ATR% zuerst (Auswahl-Test 2026-11-07).
 
 Der Job laeuft nach US-Schluss und schreibt state/lern_spur.json:
   - kandidaten: heutige Signale, gerankt nach config.auswahl, mit Stueckzahl und Stop,
@@ -95,7 +96,10 @@ def kandidat(sym: str, d: pd.DataFrame, cfg: dict, fx_usd: float) -> dict:
     atr_eur = x.atr / fx_usd if waehrung(sym) == "USD" else x.atr
     risiko_je_stk = cfg["stop_atr"] * atr_eur
     stueck = int(cfg["r_eur"] // risiko_je_stk) if risiko_je_stk > 0 else 0
+    deckel = int(cfg.get("max_einsatz_eur", 1e12) // kurs_eur) if kurs_eur > 0 else 0
+    stueck = min(stueck, deckel)
     return {"symbol": sym, "waehrung": waehrung(sym), "schluss": round(float(x.Close), 4),
+            "r_eur_effektiv": round(stueck * risiko_je_stk, 2),
             "atr": round(float(x.atr), 4), "atr_pct": round(float(x.atrp), 4),
             "stop_vorschlag": round(float(x.Close - cfg["stop_atr"] * x.atr), 4),
             "stueck": stueck, "einsatz_eur": round(stueck * kurs_eur, 2),
@@ -155,11 +159,11 @@ def render(st: dict, cfg: dict) -> str:
     k = st.get("kandidaten", [])
     if k:
         L += [f"Signale heute: {len(k)}, freie Plätze: {frei}.", "",
-              "| # | Symbol | Schluss | Stop | Stück | Einsatz € | Rang |", "|---|---|---|---|---|---|---|"]
+              "| # | Symbol | Schluss | Stop | Stück | Einsatz € | R € | ATR % |", "|---|---|---|---|---|---|---|---|"]
         for i, c in enumerate(k[:max(frei + 2, 3)], 1):
             mark = " ⚡" if i <= frei and not st.get("sperre") else ""
             L.append(f"| {i}{mark} | {c['symbol']} | {c['schluss']} {c['waehrung']} | {c['stop_vorschlag']} | {c['stueck']} | "
-                     f"{c['einsatz_eur']:.0f} | {c['rang']:+.2f} |")
+                     f"{c['einsatz_eur']:.0f} | {c['r_eur_effektiv']:.0f} | {c['atr_pct'] * 100:.1f} |")
     else:
         L.append("Heute keine Signale.")
     zu = st.get("abgeschlossen", [])

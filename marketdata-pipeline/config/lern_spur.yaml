@@ -14,8 +14,11 @@ stop_atr: 1.5            # Anfangsstop = Einstieg - 1,5 ATR
 chandelier_atr: 3.0      # Stop = MAX(alter Stop ; hoechster Schluss seit Einstieg - 3 ATR)
 max_ht: 60               # Zeitausstieg
 
-# Rangfolge, wenn mehr Signale als freie Plaetze: Spalte und Richtung (aus dem Auswahl-Test).
-auswahl: {feld: mom252, absteigend: true}
+# Rangfolge, wenn mehr Signale als freie Plaetze (Auswahl-Test 2026-11-07, 2.848 Tage mit >= 2 Signalen):
+# niedrigste ATR% +0,31 R (2009-17 +0,33 / 2018-26 +0,29) gegen alle Signale +0,26 R, Zufall +0,22 R.
+auswahl: {feld: atrp, absteigend: false}
+# Kapitalgrenze je Position = kapital_eur / max_parallel; R sinkt dann unter r_eur, nie darueber.
+max_einsatz_eur: 2000
 
 # Nur Direktaktien in EUR oder USD (Gebuehrenfreiheit SB+, keine Pence-/Fremdwaehrungs-Fallen)
 suffixe_eur: [".DE", ".PA", ".AS", ".MI", ".MC", ".BR", ".HE", ".VI"]
