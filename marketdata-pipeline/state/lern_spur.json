@@ -1,5 +1,5 @@
 {
-  "version": "LS-1 2026-11-07",
+  "version": "LS-2 2026-11-07",
   "positionen": [],
   "abgeschlossen": [],
   "reviews": {},
@@ -40,7 +40,7 @@
   "sperre": null,
   "stand": "2026-11-06",
   "eurusd": 1.1228,
-  "aktualisiert": "2026-11-07T20:57+00:00",
+  "aktualisiert": "2026-11-07T22:47+00:00",
   "abgelehnt": [],
   "abgelehnt_abgeschlossen": [],
   "budget": {
@@ -51,5 +51,6 @@
     "kapital_gebunden_eur": 0,
     "kapital_frei_eur": 12000
   },
-  "anzahl_zuege": 2
+  "anzahl_zuege": 2,
+  "eurchf": 0.9156
 }
