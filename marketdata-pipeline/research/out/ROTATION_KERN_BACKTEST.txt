@@ -1,0 +1,2 @@
+Regel: {'CAGR': np.float64(0.1143), 'Vol': np.float64(0.1682), 'MaxDD': -0.2532, 'Letzte12M': 0.2194}
+Benchmark: {'CAGR': np.float64(0.1183), 'Vol': np.float64(0.1691), 'MaxDD': -0.3401, 'Letzte12M': 0.1018}
