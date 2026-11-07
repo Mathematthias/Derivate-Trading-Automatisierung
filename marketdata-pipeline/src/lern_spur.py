@@ -1,11 +1,16 @@
-"""Lern-Spur LS-1 (Neuaufstellung A+, User-Entscheid 2026-11-07, Variante B).
+"""Lern-Spur LS-2 (Neuaufstellung A+, User-Entscheide 2026-11-07, vor dem ersten Lern-Trade).
 
-Regel (eingefroren bis Trade 20, Backtest research/backtest-2026-11-07, S6 Variante A):
-  Signal   EMA20 kreuzt EMA50 nach oben, Schluss ueber EMA200, 0,5 % <= ATR% <= 6 %.
+Regel (eingefroren bis Trade 20, Backtest research/backtest-2026-11-07, S6 Variante A,
+FILTER_SEITWAERTS.md und LERNSPUR_SLOTS.md):
+  Signal   EMA20 kreuzt EMA50 nach oben, Schluss ueber EMA200, EMA50 ueber EMA200 (LS-2),
+           0,5 % <= ATR% <= 6 %.
   Einstieg naechste Eroeffnung (Direktaktie, EUR- oder USD-Notiz).
   Stop     Einstieg - 1,5 ATR; danach Chandelier: MAX(alter Stop ; hoechster Schluss seit Einstieg - 3 ATR).
   Ausstieg Stop oder nach 60 Handelstagen.
-  Groesse  R = 75 EUR, Stueck = R / (1,5 ATR in EUR), hoechstens 2.000 EUR Einsatz, max. 2 Positionen.
+  Groesse  R = 75 EUR, Stueck = R / (1,5 ATR in EUR), hoechstens 2.000 EUR Einsatz.
+  Plaetze  max. 2 Positionen mit Risiko. Eine Position, deren Chandelier-Stop auf oder ueber dem
+           Einstieg liegt (abgesichert), belegt keinen Risiko-Platz mehr (LS-2). Gesamtgrenze
+           max_positionen aus der Config.
   Auswahl  bei mehr Signalen als Plaetzen: niedrigste ATR% zuerst (Auswahl-Test 2026-11-07).
 
 Der Job laeuft nach US-Schluss und schreibt state/lern_spur.json:
@@ -73,8 +78,11 @@ def signal_heute(d: pd.DataFrame, cfg: dict) -> bool:
         return False
     x, y = d.iloc[-1], d.iloc[-2]
     s = cfg["signal"]
-    return bool(x.ema20 > x.ema50 and y.ema20 <= y.ema50 and x.Close > x.ema200
-                and s["atr_pct_min"] <= x.atrp <= s["atr_pct_max"])
+    ok = (x.ema20 > x.ema50 and y.ema20 <= y.ema50 and x.Close > x.ema200
+          and s["atr_pct_min"] <= x.atrp <= s["atr_pct_max"])
+    if s.get("ema50_ueber_ema200"):
+        ok = ok and x.ema50 > x.ema200
+    return bool(ok)
 
 
 def rangwert(d: pd.DataFrame, feld: str) -> float:
@@ -126,7 +134,15 @@ def stop_nachziehen(pos: dict, d: pd.DataFrame, cfg: dict) -> dict:
     risk = float(p["einstieg_kurs"]) - float(p["stop_initial"])
     p["r_offen"] = round((float(seit.Close.iloc[-1]) - float(p["einstieg_kurs"])) / risk, 2) if risk > 0 else None
     p["geprueft_bis"] = seit.index[-1].date().isoformat()
+    p["abgesichert"] = float(p["stop"]) >= float(p["einstieg_kurs"])
     return p
+
+
+def freie_plaetze(pos: list[dict], cfg: dict) -> int:
+    """Risiko-Plaetze minus Positionen mit Stop unter Einstieg, begrenzt durch die Gesamtzahl."""
+    risiko = sum(1 for p in pos if not (float(p.get("stop", 0)) >= float(p.get("einstieg_kurs", 0))))
+    gesamt = cfg.get("max_positionen", cfg["max_parallel"])
+    return max(0, min(cfg["max_parallel"] - risiko, gesamt - len(pos)))
 
 
 def sperre(st: dict, cfg: dict) -> Optional[str]:
@@ -152,10 +168,11 @@ def render(st: dict, cfg: dict) -> str:
     if pos:
         L += ["Offene Lern-Trades:", "", "| Symbol | Einstieg | Stop neu | R offen | HT | Hinweis |", "|---|---|---|---|---|---|"]
         for p in pos:
-            hinweis = "Stop berührt?" if p.get("stop_beruehrt") else ("Zeitausstieg fällig" if p.get("zeitausstieg_faellig") else "")
+            hinweis = "Stop berührt?" if p.get("stop_beruehrt") else ("Zeitausstieg fällig" if p.get("zeitausstieg_faellig")
+                                                                     else ("abgesichert, Platz frei" if p.get("abgesichert") else ""))
             L.append(f"| {p['symbol']} | {p['einstieg_kurs']} ({p['einstieg_datum']}) | {p['stop']} | {p.get('r_offen', '–')} | {p.get('handelstage', '–')} | {hinweis} |")
         L.append("")
-    frei = max(0, cfg["max_parallel"] - len(pos))
+    frei = freie_plaetze(pos, cfg)
     k = st.get("kandidaten", [])
     if k:
         L += [f"Signale heute: {len(k)}, freie Plätze: {frei}.", "",
@@ -216,6 +233,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     st["positionen"] = [stop_nachziehen(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
                         for p in st.get("positionen", [])]
     st["kandidaten"] = kand
+    st["freie_plaetze"] = freie_plaetze(st["positionen"], cfg)
     st["sperre"] = sperre(st, cfg)
     st["stand"] = stand.isoformat()
     st["eurusd"] = round(fx_usd, 4)
