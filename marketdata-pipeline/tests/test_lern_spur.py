@@ -71,3 +71,31 @@ def test_einsatzdeckel_und_rangfolge():
     assert c["einsatz_eur"] <= CFG["max_einsatz_eur"] + 1e-6
     assert c["r_eur_effektiv"] <= CFG["r_eur"] + 1e-6
     assert CFG["auswahl"] == {"feld": "atrp", "absteigend": False}
+
+
+def test_ls2_filter_ema50_ueber_ema200():
+    # Kreuzung EMA20/50 mit Schluss ueber EMA200, aber EMA50 noch darunter (ALGN-Fall 2026-11-06)
+    base = list(np.linspace(150, 100, 220)) + list(np.linspace(100, 90, 15)) + list(np.linspace(90, 160, 25))
+    d = _df(base)
+    lose = dict(CFG, signal=dict(CFG["signal"], ema50_ueber_ema200=False))
+    tage = [k for k in range(215, len(d)) if ls.signal_heute(d.iloc[:k + 1], lose)]
+    assert tage, "ohne Filter muss das Signal kommen"
+    assert any(d.ema50.iloc[k] < d.ema200.iloc[k] for k in tage)
+    assert not any(ls.signal_heute(d.iloc[:k + 1], CFG) and d.ema50.iloc[k] < d.ema200.iloc[k]
+                   for k in range(215, len(d)))
+
+
+def test_ls2_abgesicherte_position_gibt_platz_frei():
+    cfg = dict(CFG)
+    risiko = {"einstieg_kurs": 100, "stop": 95}
+    sicher = {"einstieg_kurs": 100, "stop": 100}
+    assert ls.freie_plaetze([], cfg) == 2
+    assert ls.freie_plaetze([risiko], cfg) == 1
+    assert ls.freie_plaetze([risiko, risiko], cfg) == 0
+    assert ls.freie_plaetze([risiko, sicher], cfg) == 1
+    assert ls.freie_plaetze([sicher, sicher], cfg) == 1          # Gesamtgrenze 3
+    assert ls.freie_plaetze([sicher, sicher, sicher], cfg) == 0
+    d = _df(list(np.linspace(100, 160, 260)))
+    pos = {"symbol": "X", "einstieg_datum": str(d.index[200].date()), "einstieg_kurs": float(d.Close.iloc[200]),
+           "stop_initial": float(d.Close.iloc[200]) - 3, "stop": float(d.Close.iloc[200]) - 3}
+    assert ls.stop_nachziehen(pos, d, cfg)["abgesichert"]

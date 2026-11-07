@@ -510,15 +510,15 @@ thesen:
     preis_falsifikat:
       symbol: XLK
       op: <
-      level: 131.2
-      text: XLK-Tagesschluss 35 % unter 52W-Hoch. VORLAEUFIG aus Hoch ~201,9 USD (rueckgerechnet aus Schluss
-        164,74 und -18,4 %); exakter Wert nach erstem Lauf thesen_preise. Pruefung am Schluss, Verkauf
+      level: 131.3
+      text: XLK-Tagesschluss 35 % unter 52W-Hoch (202,00 USD laut thesen_preise 2026-11-06, Schlusskurse
+        ohne Dividendenbereinigung). Pruefung am Schluss, Verkauf
         naechster Handelstag. Nicht verhandelbar.
     einstieg:
       symbol: XLK
       op: <
-      level: 161.5
-      text: Starter erst bei XLK-Tagesschluss 20 % unter 52W-Hoch. VORLAEUFIG wie oben. Erholt sich der
+      level: 161.6
+      text: Starter erst bei XLK-Tagesschluss 20 % unter 52W-Hoch (202,00 USD). Erholt sich der
         Sektor vorher, kein Trade.
     horizont: '2027-05-07'
     vehikel:

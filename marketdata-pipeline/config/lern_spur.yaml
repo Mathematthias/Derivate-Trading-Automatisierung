@@ -1,13 +1,18 @@
-# Lern-Spur LS-1 (User-Entscheid 2026-11-07, Variante B): eingefroren bis Trade 20.
-# Bugfixes erlaubt, Regelaenderungen nur im Review. Backtest: research/backtest-2026-11-07 (S6 Variante A).
+# Lern-Spur LS-2 (User-Entscheide 2026-11-07, vor dem ersten Lern-Trade): eingefroren bis Trade 20.
+# Bugfixes erlaubt, Regelaenderungen nur im Review. Backtest: research/backtest-2026-11-07
+# (S6 Variante A, FILTER_SEITWAERTS.md, LERNSPUR_SLOTS.md).
+# LS-2 gegenueber LS-1: Filter EMA50 > EMA200; abgesicherte Positionen (Stop >= Einstieg) belegen
+# keinen Risiko-Platz. Slot-Simulation 2009-2026: 20 Trades in ~32 statt ~44 Wochen, Ø R etwa gleich.
 
-version: "LS-1 2026-11-07"
-kapital_eur: 4000
+version: "LS-2 2026-11-07"
+kapital_eur: 6000        # = max_positionen x max_einsatz_eur
 r_eur: 75
-max_parallel: 2
+max_parallel: 2          # Positionen mit Risiko (Stop unter Einstieg)
+max_positionen: 3        # alle offenen Lern-Positionen
 
 signal:
   # EMA20 kreuzt EMA50 nach oben (heute ueber, gestern nicht), Schluss ueber EMA200
+  ema50_ueber_ema200: true   # LS-2 (User 2026-11-07): Filtertest +0,02 R alle / +0,06 R letzte 5 J
   atr_pct_min: 0.005
   atr_pct_max: 0.06
 stop_atr: 1.5            # Anfangsstop = Einstieg - 1,5 ATR
@@ -17,7 +22,7 @@ max_ht: 60               # Zeitausstieg
 # Rangfolge, wenn mehr Signale als freie Plaetze (Auswahl-Test 2026-11-07, 2.848 Tage mit >= 2 Signalen):
 # niedrigste ATR% +0,31 R (2009-17 +0,33 / 2018-26 +0,29) gegen alle Signale +0,26 R, Zufall +0,22 R.
 auswahl: {feld: atrp, absteigend: false}
-# Kapitalgrenze je Position = kapital_eur / max_parallel; R sinkt dann unter r_eur, nie darueber.
+# Kapitalgrenze je Position; R sinkt dann unter r_eur, nie darueber.
 max_einsatz_eur: 2000
 
 # Nur Direktaktien in EUR oder USD (Gebuehrenfreiheit SB+, keine Pence-/Fremdwaehrungs-Fallen)
