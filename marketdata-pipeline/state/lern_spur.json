@@ -1,0 +1,48 @@
+{
+  "version": "LS-1 2026-11-07",
+  "positionen": [],
+  "abgeschlossen": [],
+  "reviews": {},
+  "kandidaten": [
+    {
+      "symbol": "AMZN",
+      "waehrung": "USD",
+      "schluss": 259.3,
+      "r_eur_effektiv": 73.65,
+      "atr": 9.1887,
+      "atr_pct": 0.0354,
+      "stop_vorschlag": 245.5169,
+      "stueck": 6,
+      "einsatz_eur": 1385.61,
+      "rang": 0.03543653657993617
+    },
+    {
+      "symbol": "ALGN",
+      "waehrung": "USD",
+      "schluss": 166.0,
+      "r_eur_effektiv": 71.02,
+      "atr": 5.9069,
+      "atr_pct": 0.0356,
+      "stop_vorschlag": 157.1396,
+      "stueck": 9,
+      "einsatz_eur": 1330.57,
+      "rang": 0.03558382061428018
+    },
+    {
+      "symbol": "NDX1.DE",
+      "waehrung": "EUR",
+      "schluss": 42.98,
+      "r_eur_effektiv": 73.59,
+      "atr": 1.8171,
+      "atr_pct": 0.0423,
+      "stop_vorschlag": 40.2544,
+      "stueck": 27,
+      "einsatz_eur": 1160.46,
+      "rang": 0.04227700040391537
+    }
+  ],
+  "sperre": null,
+  "stand": "2026-11-06",
+  "eurusd": 1.1228,
+  "aktualisiert": "2026-11-07T17:01+00:00"
+}
