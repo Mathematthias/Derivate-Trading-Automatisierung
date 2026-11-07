@@ -1,7 +1,8 @@
 # Kern-Rotation (Neuaufstellung A+, User-Entscheid 2026-11-07)
 # Signal auf US-ETFs mit langer Historie, Ausfuehrung im UCITS-Pendant.
 # Ethik: US-Industrie (XLI) und Deutschland (EWG, Rheinmetall im DAX) raus;
-# Japan raus (kein brauchbares SRI-Vehikel). Software: kein UCITS-Pendant zu IGV, daher Signal SKYY
+# Japan raus (kein brauchbares SRI-Vehikel). Gold raus (User 2026-11-07): Xetra-Gold faellt unter § 23 EStG,
+# Gewinne < 1 Jahr zum persoenlichen Satz und nicht mit dem Kapitalertrags-Verlusttopf verrechenbar. Software: kein UCITS-Pendant zu IGV, daher Signal SKYY
 # (ISE CTA Cloud Computing) mit dem First-Trust-UCITS als Vehikel (User 2026-11-07: Software soll rein).
 # Backtest 2008-2026 (research/backtest-2026-11-07): Top 4 + Absolutfilter ~13,6 % p. a., MaxDD -25,5 %.
 
@@ -27,6 +28,5 @@ universum:
   - {signal: IWM, name: "Amundi Russell 2000 UCITS ETF", isin: LU1681038672}
   - {signal: EFA, name: "iShares MSCI Europe SRI UCITS ETF", isin: IE00B52VJ196, hinweis: "Naeherung, EFA enthaelt auch Japan"}
   - {signal: EEM, name: "iShares MSCI EM SRI UCITS ETF", isin: IE00BYVJRP78, hinweis: "auch im Langfrist-Depot"}
-  - {signal: GLD, name: "Xetra-Gold", isin: DE000A0S9GB0, hinweis: "ISIN aus Bestand 4GLD.DE, nicht frisch geprueft"}
   - {signal: TLT, name: "iShares $ Treasury Bond 20+yr UCITS ETF (Dist)", isin: IE00BSKRJZ44}
   - {signal: IEF, name: "iShares $ Treasury Bond 7-10yr UCITS ETF (Acc)", isin: IE00B3VWN518}
