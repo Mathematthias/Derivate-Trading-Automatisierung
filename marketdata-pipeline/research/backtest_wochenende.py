@@ -88,6 +88,18 @@ def laden(symbole: list[str], cache: Path) -> dict[str, pd.DataFrame]:
     return data
 
 
+_ARR: dict = {}
+
+
+def _a(d):
+    """numpy-Spalten je DataFrame cachen (iloc in Schleifen ist ~50x langsamer)."""
+    k = id(d)
+    if k not in _ARR:
+        _ARR[k] = (d, d.Open.to_numpy(float), d.High.to_numpy(float), d.Low.to_numpy(float),
+                   d.Close.to_numpy(float), d.atr.to_numpy(float) if "atr" in d else None)
+    return _ARR[k][1:]
+
+
 # ---------------------------------------------------------------- Indikatoren
 def ind(d: pd.DataFrame) -> pd.DataFrame:
     d = d.copy()
@@ -175,41 +187,47 @@ def rotation(closes: pd.DataFrame, regime: pd.Series | None, n: int, score: str,
 
 # ---------------------------------------------------------------- Trade-Simulation
 def sim(d: pd.DataFrame, i: int, entry: float, stop: float, ziel: float | None, max_ht: int) -> tuple[float, int, str]:
+    O, H, Lo, C, _ = _a(d)
     risk = entry - stop
+    n = len(C)
     for k in range(1, max_ht + 1):
-        if i + k >= len(d):
-            return (d.Close.iloc[-1] - entry) / risk, k, "offen"
-        o, h, l = d.Open.iloc[i + k], d.High.iloc[i + k], d.Low.iloc[i + k]
+        if i + k >= n:
+            return (C[-1] - entry) / risk, k, "offen"
+        o, h, l = O[i + k], H[i + k], Lo[i + k]
         if l <= stop:
             return (min(o, stop) - entry) / risk, k, "stop"
         if ziel is not None and h >= ziel:
             return (max(o, ziel) - entry) / risk, k, "ziel"
-    return (d.Close.iloc[i + max_ht] - entry) / risk, max_ht, "zeit"
+    return (C[i + max_ht] - entry) / risk, max_ht, "zeit"
 
 
 def sim_trail(d: pd.DataFrame, i: int, entry: float, stop: float, mult: float = 3.0,
               max_ht: int = 60) -> tuple[float, int]:
     """Chandelier: Stop = max(Anfangsstop, hoechster Schluss seit Entry - mult*ATR)."""
+    O, H, Lo, C, A = _a(d)
     risk = entry - stop
     hoch = entry
+    n = len(C)
     for k in range(1, max_ht + 1):
-        if i + k >= len(d):
-            return (d.Close.iloc[-1] - entry) / risk, k
-        o, l, c = d.Open.iloc[i + k], d.Low.iloc[i + k], d.Close.iloc[i + k]
+        if i + k >= n:
+            return (C[-1] - entry) / risk, k
+        o, l, c = O[i + k], Lo[i + k], C[i + k]
         if l <= stop:
             return (min(o, stop) - entry) / risk, k
         hoch = max(hoch, c)
-        stop = max(stop, hoch - mult * d.atr.iloc[i + k])
-    return (d.Close.iloc[i + max_ht] - entry) / risk, max_ht
+        stop = max(stop, hoch - mult * A[i + k])
+    return (C[i + max_ht] - entry) / risk, max_ht
 
 
 def sim_dir(d, i, entry, stop, ziel, max_ht, rich=1):
     """rich=1 Long, -1 Short. Stop zuerst bei gleichem Tag."""
+    O, H, Lo, C, _ = _a(d)
     risk = (entry - stop) * rich
+    n = len(C)
     for k in range(1, max_ht + 1):
-        if i + k >= len(d):
-            return (d.Close.iloc[-1] - entry) * rich / risk, k
-        o, h, l = d.Open.iloc[i + k], d.High.iloc[i + k], d.Low.iloc[i + k]
+        if i + k >= n:
+            return (C[-1] - entry) * rich / risk, k
+        o, h, l = O[i + k], H[i + k], Lo[i + k]
         if rich == 1:
             if l <= stop:
                 return (min(o, stop) - entry) / risk, k
@@ -220,16 +238,18 @@ def sim_dir(d, i, entry, stop, ziel, max_ht, rich=1):
                 return (entry - max(o, stop)) / risk, k
             if ziel is not None and l <= ziel:
                 return (entry - min(o, ziel)) / risk, k
-    return (d.Close.iloc[i + max_ht] - entry) * rich / risk, max_ht
+    return (C[i + max_ht] - entry) * rich / risk, max_ht
 
 
 def trail_dir(d, i, entry, stop, mult=3.0, max_ht=60, rich=1):
+    O, H, Lo, C, A = _a(d)
     risk = (entry - stop) * rich
     ext = entry
+    n = len(C)
     for k in range(1, max_ht + 1):
-        if i + k >= len(d):
-            return (d.Close.iloc[-1] - entry) * rich / risk, k
-        o, h, l, c, a = d.Open.iloc[i + k], d.High.iloc[i + k], d.Low.iloc[i + k], d.Close.iloc[i + k], d.atr.iloc[i + k]
+        if i + k >= n:
+            return (C[-1] - entry) * rich / risk, k
+        o, h, l, c, a = O[i + k], H[i + k], Lo[i + k], C[i + k], A[i + k]
         if rich == 1:
             if l <= stop:
                 return (min(o, stop) - entry) / risk, k
@@ -238,7 +258,7 @@ def trail_dir(d, i, entry, stop, mult=3.0, max_ht=60, rich=1):
             if h >= stop:
                 return (entry - max(o, stop)) / risk, k
             ext = min(ext, c); stop = min(stop, ext + mult * a)
-    return (d.Close.iloc[i + max_ht] - entry) * rich / risk, max_ht
+    return (C[i + max_ht] - entry) * rich / risk, max_ht
 
 
 def zufall_dir(dd, rich, modus, anteil=0.03, seed=11):
