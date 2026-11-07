@@ -2,12 +2,18 @@
 
 Signale mit Filter EMA50 > EMA200: 8088, ab 2009, 398 Direktaktien EUR/USD. Absolute R mit rund +0,07 R Simulationsbias; Drawdown kumuliert nach Ausstiegsdatum.
 
-|  | Trades/Jahr | Trades/Jahr 5J | Wochen fuer 20 | Ø R | Ø R 5J | R/Jahr | max DD R | Pos max | Pos Ø | Risiko max R |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 2 Risiko-Plaetze, unbegrenzt | 39.5 | 45.2 | 26 | 0.45 | 0.35 | 17.9 | -34.0 | 8 | 3.3 | 2.0 |
-| 3 Risiko-Plaetze, unbegrenzt | 59.0 | 67.0 | 18 | 0.43 | 0.36 | 25.4 | -41.9 | 10 | 4.9 | 3.0 |
-| 4 Risiko-Plaetze, unbegrenzt | 77.7 | 89.0 | 13 | 0.39 | 0.30 | 30.1 | -53.1 | 13 | 6.5 | 4.0 |
-| Budget 2 R (aktueller Stop) | 42.2 | 48.0 | 25 | 0.43 | 0.36 | 18.2 | -29.4 | 8 | 3.5 | 2.0 |
-| Budget 3 R (aktueller Stop) | 63.3 | 69.6 | 16 | 0.41 | 0.37 | 25.9 | -42.6 | 11 | 5.2 | 3.0 |
-| Budget 4 R (aktueller Stop) | 84.2 | 95.0 | 12 | 0.41 | 0.33 | 34.5 | -48.9 | 14 | 7.1 | 4.0 |
+|  | Wochen fuer 20 | Ø R | Ø R 5J | EUR/Jahr | max DD EUR | max DD R | Pos Ø | Pos max | Kapital max |
+|---|---|---|---|---|---|---|---|---|---|
+| Budget 2 R a 75, ohne Kapitalgrenze | 25 | 0.43 | 0.36 | 1,364 | -2,204 | -29.4 | 3.5 | 8 | 14,984 |
+| Budget 3 R a 50, Kapital offen | 16 | 0.41 | 0.37 | 1,295 | -2,131 | -42.6 | 5.2 | 11 | 18,439 |
+| Budget 3 R a 50, Kapital 8.000 | 20 | 0.47 | 0.34 | 1,186 | -1,424 | -28.5 | 4.4 | 7 | 8,000 |
+| Budget 3 R a 50, Kapital 10.000 | 18 | 0.49 | 0.35 | 1,389 | -1,926 | -38.5 | 4.8 | 7 | 10,000 |
+| Budget 3 R a 50, Kapital 12.000 | 17 | 0.50 | 0.42 | 1,502 | -1,734 | -34.7 | 5.2 | 9 | 12,000 |
+| Budget 3 R a 50, Kapital 15.000 | 16 | 0.43 | 0.33 | 1,342 | -2,131 | -42.6 | 5.3 | 10 | 14,990 |
+| Budget 4 R a 75, Kapital offen | 12 | 0.41 | 0.33 | 2,585 | -3,669 | -48.9 | 7.1 | 14 | 28,000 |
+| Budget 4 R a 75, Kapital 8.000 | 22 | 0.43 | 0.16 | 1,527 | -2,151 | -28.7 | 4.0 | 7 | 8,000 |
+| Budget 4 R a 75, Kapital 10.000 | 18 | 0.40 | 0.07 | 1,733 | -3,383 | -45.1 | 4.9 | 7 | 10,000 |
+| Budget 4 R a 75, Kapital 12.000 | 16 | 0.45 | 0.25 | 2,206 | -2,989 | -39.8 | 5.6 | 8 | 12,000 |
+| Budget 4 R a 75, Kapital 15.000 | 14 | 0.39 | 0.29 | 2,211 | -3,078 | -41.0 | 6.3 | 9 | 14,993 |
+| 4 Risiko-Plaetze a 75, ohne Kapitalgrenze | 13 | 0.39 | 0.30 | 2,259 | -3,986 | -53.1 | 6.5 | 13 | 24,035 |
 
