@@ -145,6 +145,8 @@ def rotation(closes: pd.DataFrame, regime: pd.Series | None, n: int, score: str,
             continue
         if score == "12-1":
             s = row.iloc[-22] / row.iloc[-253] - 1
+        elif score == "52w":
+            s = row.iloc[-1] / row.iloc[-252:].max() - 1
         else:
             s = (row.iloc[-1] / row.iloc[-64] + row.iloc[-1] / row.iloc[-127]
                  + row.iloc[-1] / row.iloc[-253]) / 3 - 1
@@ -416,13 +418,73 @@ def s6_frueh(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 r_tr, ht = sim_trail(d, j, e, stop, 3.0, 60)
                 r13, _, _ = sim(d, j, e, stop, e + 1.3 * (e - stop), 15)
                 r20z, _, _ = sim(d, j, e, stop, None, 20)
+                vr = d.Volume.iloc[j] / d.Volume.iloc[max(0, j - 20):j].mean() if j >= 20 else np.nan
                 rec = {"Signal": name, "Symbol": s, "Datum": d.index[j], "R_trail3": r_tr, "HT_trail": ht,
+                       "ATRp": d.atrp.iloc[j], "Mom63": d.Close.iloc[j] / d.Close.iloc[j - 63] - 1,
+                       "Mom252": d.Close.iloc[j] / d.Close.iloc[j - 252] - 1 if j >= 252 else np.nan,
+                       "VolRatio": vr, "Dist200": d.dist200.iloc[j],
                        "R_1.3": r13, "R_zeit20": r20z, "Ext20": d.ext20.iloc[j], "Tech": s in TECH}
                 for h in (20, 60):
                     rec[f"fwd{h}"] = d.Close.iloc[j + h] / e - 1 if j + h < len(d) else np.nan
                 rows.append(rec)
                 frei = j + 10
     return pd.DataFrame(rows)
+
+
+def zufall_win(dd, rich, modus, start=None, anteil=0.03, seed=17):
+    """Nullprobe im Zeitfenster ab `start` (Chandelier 3 ATR oder Ziel 1,3 R)."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for d in dd.values():
+        n = len(d)
+        lo = 210 if start is None else max(210, int(d.index.searchsorted(pd.Timestamp(start))))
+        if lo >= n - 2:
+            continue
+        k = max(1, int((n - 1 - lo) * anteil))
+        for i in rng.choice(np.arange(lo, n - 1), size=min(k, n - 1 - lo), replace=False):
+            e, a = d.Close.iloc[i], d.atr.iloc[i]
+            if pd.isna(a) or not (0.005 <= a / e <= 0.08):
+                continue
+            st = e - rich * 1.5 * a
+            out.append(trail_dir(d, i, e, st, 3.0, 60, rich)[0] if modus == "tr3"
+                       else sim_dir(d, i, e, st, e + rich * 1.3 * 1.5 * a, 15, rich)[0])
+    return pd.Series(out)
+
+
+def s10_frueh_short(dd):
+    rows = []
+    for s, d in dd.items():
+        x = (d.ema20 < d.ema50) & (d.ema20.shift() >= d.ema50.shift()) & (d.Close < d.ema200) & (d.atrp <= 0.06) & (d.atrp >= 0.005)
+        frei = 0
+        for j in np.flatnonzero(x.values):
+            if j < frei or j < 210 or j >= len(d) - 2:
+                continue
+            e, a = d.Close.iloc[j], d.atr.iloc[j]
+            st = e + 1.5 * a
+            rows.append({"Symbol": s, "Datum": d.index[j], "R_tr3": trail_dir(d, j, e, st, 3.0, 60, -1)[0],
+                         "R_z13": sim_dir(d, j, e, st, e - 1.3 * 1.5 * a, 15, -1)[0]})
+            frei = j + 10
+    return pd.DataFrame(rows)
+
+
+def zufall_regime(dd, rich, modus, regime, ueber, anteil=0.03, seed=13):
+    """Nullprobe nur an Tagen mit gegebener Marktlage (SPY ueber/unter SMA200)."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for d in dd.values():
+        n = len(d)
+        reg = regime.reindex(d.index).ffill().fillna(True).values
+        kand = np.array([i for i in range(210, n - 1) if bool(reg[i]) == ueber])
+        if not len(kand):
+            continue
+        for i in rng.choice(kand, size=max(1, int(len(kand) * anteil)), replace=False):
+            e, a = d.Close.iloc[i], d.atr.iloc[i]
+            if pd.isna(a) or not (0.005 <= a / e <= 0.08):
+                continue
+            st = e - rich * 1.5 * a
+            out.append(trail_dir(d, i, e, st, 3.0, 60, rich)[0] if modus == "tr3"
+                       else sim_dir(d, i, e, st, e + rich * 1.3 * 1.5 * a, 15, rich)[0])
+    return pd.Series(out)
 
 
 def s3_rebound(dd: dict[str, pd.DataFrame], regime: pd.Series) -> pd.DataFrame:
@@ -780,12 +842,108 @@ def main() -> int:
     if len(r6):
         g6 = r6[r6.Signal.str.startswith("A ")]
         zeilen["Frueh-Stack A Long / Chandelier 3 ATR"] = {**rstat(g6.R_trail3), "Zufall Ø": nl["tr3"].mean()}
+    # Shorts und Marktlage (User 2026-11-07: spaete Bullenphase, Shorts in der Lern-Spur?)
+    r10 = s10_frueh_short(dd); r10.to_csv(out / "s10_frueh_short.csv", index=False)
+    rz = {}
+    for ueber in (True, False):
+        lab = "SPY ueber SMA200" if ueber else "SPY unter SMA200"
+        nul_s = zufall_regime(dd, -1, "tr3", regime, ueber)
+        nul_l = zufall_regime(dd, 1, "tr3", regime, ueber)
+        if len(r10):
+            g = r10[r10.Datum.map(lambda t: bool(regime.asof(t))) == ueber]
+            rz[f"Frueh-Stack Short / {lab}"] = {**rstat(g.R_tr3), "Zufall Ø": nul_s.mean()}
+        if len(r7):
+            g = r7[(r7.Richtung == "Short") & (r7.Datum.map(lambda t: bool(regime.asof(t))) == ueber)]
+            rz[f"Breakdown-Retest Short / {lab}"] = {**rstat(g.R_tr3), "Zufall Ø": nul_s.mean()}
+        if len(r6):
+            g = r6[r6.Signal.str.startswith("A ") & (r6.Datum.map(lambda t: bool(regime.asof(t))) == ueber)]
+            rz[f"Frueh-Stack Long / {lab}"] = {**rstat(g.R_trail3), "Zufall Ø": nul_l.mean()}
+    tr = pd.DataFrame(rz).T
+    tr["Vorsprung"] = tr["Ø"] - tr["Zufall Ø"]
+    tr.index.name = "Klasse / Marktlage (Chandelier 3 ATR)"
+    L += ["## Shorts und Marktlage (Chandelier 3 ATR, Nullprobe gleiche Richtung und Marktlage)\n", tab(tr, rf2), "\n"]
+
+    # Auswahlregel fuer die Lern-Spur: an Tagen mit >= 2 Fruehsignalen (A)
+    if len(r6):
+        g6 = r6[r6.Signal.str.startswith("A ")].copy()
+        tage = g6.groupby("Datum").filter(lambda x: len(x) >= 2)
+        krit = {"alle Signale (Mittel)": None,
+                "niedrigste ATR%": ("ATRp", True), "hoechste ATR%": ("ATRp", False),
+                "staerkstes 3M-Momentum": ("Mom63", False), "schwaechstes 3M-Momentum": ("Mom63", True),
+                "staerkstes 12M-Momentum": ("Mom252", False),
+                "naechst an EMA20 (kleinste Ext20)": ("Ext20", True),
+                "hoechstes Volumen-Verhaeltnis": ("VolRatio", False),
+                "naechst an EMA200 (kleinster Abstand)": ("Dist200", True)}
+        aw = {}
+        for lab, k in krit.items():
+            if k is None:
+                sel = tage
+            else:
+                col, asc = k
+                sel = tage.sort_values(col, ascending=asc).groupby("Datum").head(1)
+            st = rstat(sel.R_trail3)
+            p1 = sel[sel.Datum.dt.year < 2018].R_trail3.mean()
+            p2 = sel[sel.Datum.dt.year >= 2018].R_trail3.mean()
+            aw[lab] = {**st, "2009-2017": p1, "2018-2026": p2}
+        ta = pd.DataFrame(aw).T
+        ta.index.name = "Auswahl (je Tag 1 von >= 2 Signalen)"
+        L += [f"## Auswahlregel Lern-Spur: Tage mit mindestens zwei Frueh-Stack-Long-Signalen (n Tage = {tage.Datum.nunique()})\n",
+              tab(ta, rf2), "\n"]
+
     tz = pd.DataFrame(zeilen).T
     tz["Vorsprung"] = tz["Ø"] - tz["Zufall Ø"]
     tz.index.name = "Klasse / Ausstieg"
     L += ["## Uebersicht alle Skill-Klassen gegen Zufallseinstieg mit gleichem Ausstieg (R brutto)\n",
           "Tagesnaeherung: keine 4h-Bestaetigung, keine Earnings-Sperre, keine Kosten. Short-Nullprobe = zufaellige Shorts.\n",
           tab(tz, rf2), "\n"]
+
+    # Zeitfenster (User 2026-11-07: hat sich der Markt in den letzten Jahren veraendert?)
+    stand = max(d.index[-1] for d in dd.values())
+    fenster = {"gesamt": None, "5 J": stand - pd.DateOffset(years=5), "2 J": stand - pd.DateOffset(years=2)}
+    klassen = []
+    if len(r6):
+        klassen.append(("Frueh-Stack Long", r6[r6.Signal.str.startswith("A ")], "R_trail3", 1))
+    if len(r5):
+        klassen.append(("Trend-Pullback Long", r5, "R_trail3", 1))
+    if len(r7):
+        klassen.append(("Breakout-Retest Long", r7[r7.Richtung == "Long"], "R_tr3", 1))
+        klassen.append(("Breakdown-Retest Short", r7[r7.Richtung == "Short"], "R_tr3", -1))
+    if len(r9):
+        klassen.append(("Momentum-Continuation Long", r9, "R_tr3", 1))
+    if len(r10):
+        klassen.append(("Frueh-Stack Short", r10, "R_tr3", -1))
+    nulls = {(rich, f): zufall_win(dd, rich, "tr3", st).mean() for rich in (1, -1) for f, st in fenster.items()}
+    fz = {}
+    for name, df_, col, rich in klassen:
+        row = {}
+        for f, st in fenster.items():
+            g = df_ if st is None else df_[df_.Datum >= st]
+            row[f"n {f}"] = len(g)
+            row[f"Ø {f}"] = g[col].mean() if len(g) else np.nan
+            row[f"Vorsprung {f}"] = row[f"Ø {f}"] - nulls[(rich, f)]
+        fz[name] = row
+    fz["Zufall Long"] = {f"Ø {f}": nulls[(1, f)] for f in fenster}
+    fz["Zufall Short"] = {f"Ø {f}": nulls[(-1, f)] for f in fenster}
+    tf = pd.DataFrame(fz).T
+    tf = tf[[c for c in tf.columns if not c.startswith("n ")] + [c for c in tf.columns if c.startswith("n ")]]
+    tf.index.name = "Klasse (Chandelier 3 ATR)"
+    L += [f"## Zeitfenster: gesamt, letzte 5 Jahre (ab {fenster['5 J'].date()}), letzte 2 Jahre (ab {fenster['2 J'].date()})\n",
+          tab(tf), "\n"]
+
+    # 52-Wochen-Hoch-Momentum (George/Hwang 2004) als Aktien-Rotation, mit Fenstern
+    res52 = {}
+    c_all = closes.dropna(how="all")
+    for lab, sc_ in (("52W-Hoch-Naehe Top10", "52w"), ("12-1 Momentum Top10", "12-1")):
+        p, tu = rotation(c_all, None, 10, sc_, True, False)
+        for f, st in fenster.items():
+            res52[f"{lab} / {f}"] = kennz(p if st is None else p.loc[st:])
+    ew = c_all.pct_change(fill_method=None).loc["2010-01-01":].mean(axis=1)
+    for f, st in fenster.items():
+        res52[f"Universum gleichgewichtet / {f}"] = kennz(ew if st is None else ew.loc[st:])
+    t52 = pd.DataFrame(res52).T
+    t52.index.name = "Variante / Fenster"
+    L += ["## 52-Wochen-Hoch-Momentum gegen 12-1-Momentum (Aktien, Survivorship-Bias, nur relativ lesen)\n",
+          tab(t52, pct), "\n"]
 
     (out / "REPORT.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))
