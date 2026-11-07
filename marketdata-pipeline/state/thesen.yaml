@@ -467,4 +467,66 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
-updated: '2026-11-07T14:25:07+00:00'
+- id: TDIP
+  titel: Tech-Ruecksetzer (US-Tech-Sektor nach -20 %)
+  verdikt: spielen
+  korb_budget_pct: null
+  crowdedness_pp: -18.0
+  re_check: '2026-12-07'
+  falsifikat: 'Thesen-Falsifikat: ein Big-4-Hyperscaler (MSFT, GOOGL, AMZN, META) senkt die Capex-Guidance,
+    oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens. Preis-Falsifikat: XLK-Schluss unter Karten-Level
+    (35 % unter 52W-Hoch).'
+  ausdruecke:
+  - XLK
+  note: '2026-11-07 User: TDIP eintragen. Neue id statt der verworfenen TECH (Kill-Switch wird nach Treffer
+    nicht verlegt). Grundlage Backtest 2026-11-07 (Projekt-Doc trading/Backtest-Ergebnisse_2026-11-07.md,
+    Abschnitt 5) und Entwurf trading/Thesenkarte_TDIP_Entwurf_2026-11-07.md.'
+  historie:
+  - date: '2026-11-07'
+    verdikt: spielen
+    crowdedness_pp: -18.0
+    source: chat
+  spur: thesen
+  budget_r: 2
+  starter_anteil: 0.5
+  karte:
+    konsens: 'AI-Capex-Blase und Bewertung: Tech zu teuer, der Abverkauf seit dem Sommer ist der Anfang
+      einer laengeren Korrektur. Sektor-Linse 2026-11-06: Halbleiter median -40,7 % unter 52W-Hoch, Software
+      -27,4 %; XLK -18,4 %.'
+    abweichung: 'Bewertungskorrektur, kein Gewinneinbruch: kein Hyperscaler hat Capex gekuerzt (Thesen-Lauf
+      2026-11-07). Historisch XLK nach erstem Kreuzen von -20 % zum 52W-Hoch: 6 Episoden, Mittel 6M +19,1
+      %, 12M +16,9 % (4 von 6 positiv) gegen unbedingt 12M +12,8 % (Backtest 2026-11-07).'
+    katalysator:
+    - date: '2026-11-12'
+      ereignis: AMAT Q4
+    - date: '2026-11-17'
+      ereignis: NVDA Q3 (Hauptmesspunkt)
+    - date: '2026-11-18'
+      ereignis: PANW Q1
+    - date: '2026-12-01'
+      ereignis: CRWD Q3
+    thesen_falsifikat: Ein Big-4-Hyperscaler senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17
+      den Q4-Umsatz unter Konsens.
+    preis_falsifikat:
+      symbol: XLK
+      op: <
+      level: 131.2
+      text: XLK-Tagesschluss 35 % unter 52W-Hoch. VORLAEUFIG aus Hoch ~201,9 USD (rueckgerechnet aus Schluss
+        164,74 und -18,4 %); exakter Wert nach erstem Lauf thesen_preise. Pruefung am Schluss, Verkauf
+        naechster Handelstag. Nicht verhandelbar.
+    einstieg:
+      symbol: XLK
+      op: <
+      level: 161.5
+      text: Starter erst bei XLK-Tagesschluss 20 % unter 52W-Hoch. VORLAEUFIG wie oben. Erholt sich der
+        Sektor vorher, kein Trade.
+    horizont: '2027-05-07'
+    vehikel:
+    - SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
+    zweite_haelfte: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und Kurs ueber Preis-Falsifikat
+    ziel: 'Horizont-These: Erholung Richtung 52W-Hoch binnen 6 Monaten; kein festes Kursziel'
+    notiz: 'Budget 2 R = 300 EUR. Abstand Einstieg (-20 %) zu Falsifikat (-35 %) = 0,65/0,80 - 1 = -18,75
+      %. Volle Position 300 / 0,1875 = 1.600 EUR, Starter 1/2 = 800 EUR. Bewusst nicht Halbleiter (1.400
+      EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden, schlechtester 12M-Verlauf
+      -47 %; wettet gegen den aktuellen Kern (Rotation meidet Tech); USD-Risiko.'
+updated: '2026-11-07T17:15:00+00:00'

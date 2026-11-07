@@ -52,3 +52,18 @@ def test_config_ethik_und_isins():
     sig = [u["signal"] for u in cfg["universum"]]
     assert not {"XLI", "EWG"} & set(sig)
     assert len(sig) == len(set(sig)) and all(len(u["isin"]) == 12 for u in cfg["universum"])
+
+
+def test_thesen_preise_marken():
+    from src import thesen_preise as tp
+    idx = pd.bdate_range("2025-01-01", periods=300)
+    c = pd.Series(np.r_[np.linspace(100, 200, 250), np.linspace(200, 158, 50)], index=idx)
+    th = {"thesen": [{"id": "TDIP", "spur": "thesen", "verdikt": "spielen",
+                      "karte": {"preis_falsifikat": {"symbol": "XLK", "op": "<", "level": 130},
+                                "einstieg": {"symbol": "XLK", "op": "<", "level": 160}}},
+                     {"id": "ALT", "spur": "thesen", "verdikt": "verworfen", "karte": {}}]}
+    r = tp.pruefe(th, lambda s: c)
+    x = r["TDIP"]["XLK"]
+    assert x["einstieg"]["erreicht"] and not x["preis_falsifikat"]["erreicht"]
+    assert x["hoch_52w"] == 200.0 and x["abstand_hoch_pct"] == -21.0
+    assert "ALT" not in r
