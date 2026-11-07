@@ -326,6 +326,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     st["kandidaten"] = kand
     st["sperre"] = sperre(st, cfg)
     st["anzahl_zuege"] = zuege_markieren(kand, st["budget"]) if not st.get("sperre") else 0
+    st["version"] = cfg["version"]          # Regelwerk immer aus der Config, nicht aus dem alten Zustand
     st["stand"] = stand.isoformat()
     st["eurusd"] = round(fx_usd, 4)
     st["aktualisiert"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
