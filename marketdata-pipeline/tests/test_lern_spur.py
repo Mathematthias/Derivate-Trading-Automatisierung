@@ -128,3 +128,21 @@ def test_veto_papiertrade_wie_backtest():
     fertig = ls.papier_update(halb, d, CFG)
     assert fertig["grund_ausstieg"] == "stop" and fertig["r"] > 0
     assert ls.papier_update(fertig, d, CFG) == fertig
+
+
+def test_chf_waehrung_fx_und_deckel():
+    assert ls.waehrung("NESN.SW") == "CHF" and ls.waehrung("SAP.DE") == "EUR" and ls.waehrung("AMZN") == "USD"
+    fx = {"USD": 1.12, "CHF": 0.94}
+    assert ls.fx_kurs("CHF", fx) == 0.94 and ls.fx_kurs("EUR", fx) == 1.0 and ls.fx_kurs("USD", 1.12) == 1.12
+    # CHF-Position: Restrisiko in EUR
+    p = {"symbol": "NOVN.SW", "einstieg_kurs": 94.0, "stop_initial": 90.24, "stop": 90.24, "stueck": 10}
+    assert round(ls.rest_risiko_eur(p, CFG, fx), 2) == 40.0
+    bud = {"risiko_frei_eur": 150.0, "kapital_frei_eur": 12000.0}
+    kand = [{"symbol": "NESN.SW", "waehrung": "CHF", "stueck": 5, "r_eur_effektiv": 40, "einsatz_eur": 900},
+            {"symbol": "ROG.SW", "waehrung": "CHF", "stueck": 5, "r_eur_effektiv": 40, "einsatz_eur": 900},
+            {"symbol": "SAP.DE", "waehrung": "EUR", "stueck": 5, "r_eur_effektiv": 40, "einsatz_eur": 900}]
+    assert ls.zuege_markieren(kand, bud, [], CFG["max_je_waehrung"]) == 2
+    assert [c["zug"] for c in kand] == [True, False, True]
+    # schon eine CHF-Position offen: kein weiterer CHF-Zug
+    assert ls.zuege_markieren(kand, bud, [p], CFG["max_je_waehrung"]) == 1
+    assert [c["zug"] for c in kand] == [False, False, True]

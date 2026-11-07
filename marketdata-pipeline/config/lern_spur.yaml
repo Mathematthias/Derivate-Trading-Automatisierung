@@ -27,8 +27,13 @@ auswahl: {feld: atrp, absteigend: false}
 # Kapitalgrenze je Position; R sinkt dann unter r_eur, nie darueber.
 max_einsatz_eur: 2000
 
-# Nur Direktaktien in EUR oder USD (Gebuehrenfreiheit SB+, keine Pence-/Fremdwaehrungs-Fallen)
+# Nur Direktaktien in EUR, USD und CHF (gettex in EUR; keine Pence-Fallen, GBP und Nordics schwach im Backtest)
 suffixe_eur: [".DE", ".PA", ".AS", ".MI", ".MC", ".BR", ".HE", ".VI"]
+# Schweiz zusaetzlich (User 2026-11-07, LERNSPUR_REGIONEN.md: CHF +0,48 R, n = 437; GBP +0,01, Nordics um +0,1
+# bleiben draussen). Hoechstens eine CHF-Position gleichzeitig, weil die ATR-Rangfolge ruhige Schweizer
+# Werte bevorzugen wuerde und der CHF-Vorteil auf nur 18 Aktien beruht.
+weitere_suffixe: {".SW": "CHF"}
+max_je_waehrung: {CHF: 1}
 
 reviews: [5, 10, 15, 20]
 notbremse_r: -10         # User 2026-11-07: -6 R loeste in 23-26 % der 20er-Fenster aus (LERNSPUR_NOTBREMSE.md), -10 R in 9 %

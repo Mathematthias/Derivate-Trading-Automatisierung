@@ -13,6 +13,8 @@ FILTER_SEITWAERTS.md und LERNSPUR_SLOTS.md):
            Einstieg belegt sie nichts mehr (LS-2, Simulation LERNSPUR_BUDGET.md).
   Waehrung US-Werte handelt der User in EUR ueber gettex: Stops und Kurse zusaetzlich in EUR zum
            aktuellen EURUSD. Die Regel selbst rechnet in der Heimatwaehrung.
+  Schweiz  CHF-Werte (.SW) seit LS-2 erlaubt, hoechstens 1 Position gleichzeitig (User 2026-11-07,
+           LERNSPUR_REGIONEN.md: CHF +0,48 R bei n = 437; GBP und Nordics bleiben draussen).
   Veto     Der User darf ein Signal ablehnen. Abgelehnte Signale laufen als Papier-Trade mit
            denselben Regeln weiter (abgelehnt / abgelehnt_abgeschlossen), damit sich messen
            laesst, ob seine Vetos helfen. Sie zaehlen nicht zu den 20 Trades.
@@ -40,7 +42,7 @@ import yaml
 
 
 # ------------------------------------------------------------------ Universum
-def universum(cfg_dir: Path, suffixe_eur: list[str]) -> list[str]:
+def universum(cfg_dir: Path, suffixe_eur: list[str], weitere: dict | None = None) -> list[str]:
     a = yaml.safe_load((cfg_dir / "tickers_tier_a.yaml").read_text(encoding="utf-8"))
     ex = set(a.get("ethik_excluded") or [])
     out: list[str] = []
@@ -57,13 +59,30 @@ def universum(cfg_dir: Path, suffixe_eur: list[str]) -> list[str]:
     for s in dict.fromkeys(out):
         if not s or s in ex or s.startswith("^") or "=" in s or "-EUR" in s:
             continue
-        if "." not in s or any(s.endswith(x) for x in suffixe_eur):
+        if "." not in s or any(s.endswith(x) for x in suffixe_eur) or any(s.endswith(x) for x in (weitere or {})):
             ok.append(s)
     return ok
 
 
+WEITERE_WAEHRUNGEN = {".SW": "CHF"}
+
+
 def waehrung(sym: str) -> str:
-    return "USD" if "." not in sym else "EUR"
+    if "." not in sym:
+        return "USD"
+    for suf, w in WEITERE_WAEHRUNGEN.items():
+        if sym.endswith(suf):
+            return w
+    return "EUR"
+
+
+def fx_kurs(w: str, fx) -> float:
+    """Einheiten Fremdwaehrung je EUR. fx: dict {"USD": .., "CHF": ..} oder (alt) float = EURUSD."""
+    if w == "EUR":
+        return 1.0
+    if isinstance(fx, dict):
+        return float(fx.get(w, 1.0))
+    return float(fx) if w == "USD" else 1.0
 
 
 # ------------------------------------------------------------------ Indikatoren / Signal
@@ -105,8 +124,9 @@ def rangwert(d: pd.DataFrame, feld: str) -> float:
 
 def kandidat(sym: str, d: pd.DataFrame, cfg: dict, fx_usd: float) -> dict:
     x = d.iloc[-1]
-    kurs_eur = x.Close / fx_usd if waehrung(sym) == "USD" else x.Close
-    atr_eur = x.atr / fx_usd if waehrung(sym) == "USD" else x.atr
+    k = fx_kurs(waehrung(sym), fx_usd)
+    kurs_eur = x.Close / k
+    atr_eur = x.atr / k
     risiko_je_stk = cfg["stop_atr"] * atr_eur
     stueck = int(cfg["r_eur"] // risiko_je_stk) if risiko_je_stk > 0 else 0
     deckel = int(cfg.get("max_einsatz_eur", 1e12) // kurs_eur) if kurs_eur > 0 else 0
@@ -115,7 +135,7 @@ def kandidat(sym: str, d: pd.DataFrame, cfg: dict, fx_usd: float) -> dict:
             "r_eur_effektiv": round(stueck * risiko_je_stk, 2),
             "atr": round(float(x.atr), 4), "atr_pct": round(float(x.atrp), 4),
             "stop_vorschlag": round(float(x.Close - cfg["stop_atr"] * x.atr), 4),
-            "stop_vorschlag_eur": round(float(x.Close - cfg["stop_atr"] * x.atr) / (fx_usd if waehrung(sym) == "USD" else 1.0), 2),
+            "stop_vorschlag_eur": round(float(x.Close - cfg["stop_atr"] * x.atr) / k, 2),
             "schluss_eur": round(float(kurs_eur), 2),
             "stueck": stueck, "einsatz_eur": round(stueck * kurs_eur, 2),
             "ext20_atr": round(rangwert(d, "ext20"), 2),
@@ -146,8 +166,8 @@ def stop_nachziehen(pos: dict, d: pd.DataFrame, cfg: dict) -> dict:
     return p
 
 
-def _fx(p: dict, fx_usd: float) -> float:
-    return fx_usd if p.get("waehrung", waehrung(p.get("symbol", ""))) == "USD" else 1.0
+def _fx(p: dict, fx_usd) -> float:
+    return fx_kurs(p.get("waehrung", waehrung(p.get("symbol", ""))), fx_usd)
 
 
 def rest_risiko_eur(p: dict, cfg: dict, fx_usd: float) -> float:
@@ -178,13 +198,21 @@ def budget(pos: list[dict], cfg: dict, fx_usd: float) -> dict:
             "kapital_frei_eur": round(max(0.0, cfg["kapital_eur"] - kapital), 2)}
 
 
-def zuege_markieren(kand: list[dict], bud: dict) -> int:
-    """Kandidaten in Rangfolge markieren, solange Risiko- und Kapitalbudget reichen."""
+def zuege_markieren(kand: list[dict], bud: dict, pos: list[dict] | None = None, deckel: dict | None = None) -> int:
+    """Kandidaten in Rangfolge markieren, solange Risiko- und Kapitalbudget reichen und der
+    Waehrungsdeckel (z. B. {"CHF": 1} = hoechstens eine Schweizer Position) nicht voll ist."""
     r_frei, k_frei, n = bud["risiko_frei_eur"] + 0.01, bud["kapital_frei_eur"] + 0.01, 0
+    belegt: dict[str, int] = {}
+    for p in pos or []:
+        w = p.get("waehrung", waehrung(p.get("symbol", "")))
+        belegt[w] = belegt.get(w, 0) + 1
     for c in kand:
-        c["zug"] = bool(c["stueck"] > 0 and c["r_eur_effektiv"] <= r_frei and c["einsatz_eur"] <= k_frei)
+        w = c.get("waehrung", waehrung(c.get("symbol", "")))
+        voll = deckel is not None and w in deckel and belegt.get(w, 0) >= deckel[w]
+        c["zug"] = bool(c["stueck"] > 0 and not voll and c["r_eur_effektiv"] <= r_frei and c["einsatz_eur"] <= k_frei)
         if c["zug"]:
             r_frei -= c["r_eur_effektiv"]; k_frei -= c["einsatz_eur"]; n += 1
+            belegt[w] = belegt.get(w, 0) + 1
     return n
 
 
@@ -298,15 +326,17 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--md", default=None)
     a = ap.parse_args(argv)
     cfg = yaml.safe_load(Path(a.cfg).read_text(encoding="utf-8"))
-    syms = universum(Path(a.cfg_dir), cfg["suffixe_eur"])
+    syms = universum(Path(a.cfg_dir), cfg["suffixe_eur"], cfg.get("weitere_suffixe"))
     sp = Path(a.state_dir) / "lern_spur.json"
     st = json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else {
         "version": cfg["version"], "positionen": [], "abgeschlossen": [], "reviews": {}}
     pos_syms = [p["symbol"] for p in st.get("positionen", []) + st.get("abgelehnt", [])]
     daten = _lade(sorted(set(syms) | set(pos_syms)))
     import yfinance as yf
-    fx = yf.download("EURUSD=X", period="5d", progress=False)["Close"].dropna()
-    fx_usd = float(np.asarray(fx).ravel()[-1]) if len(fx) else 1.10
+    fx_usd: dict[str, float] = {}
+    for w, tick, ersatz in (("USD", "EURUSD=X", 1.10), ("CHF", "EURCHF=X", 0.94)):
+        f = yf.download(tick, period="5d", progress=False)["Close"].dropna()
+        fx_usd[w] = float(np.asarray(f).ravel()[-1]) if len(f) else ersatz
     dd = {s: ind(d) for s, d in daten.items()}
     stand = max(d.index[-1] for d in dd.values()).date()
     kand = [kandidat(s, d, cfg, fx_usd) for s, d in dd.items()
@@ -315,8 +345,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     st["positionen"] = [stop_nachziehen(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
                         for p in st.get("positionen", [])]
     for p in st["positionen"]:
-        if p.get("waehrung", waehrung(p["symbol"])) == "USD":
-            p["stop_eur"] = round(float(p["stop"]) / fx_usd, 2)
+        w = p.get("waehrung", waehrung(p["symbol"]))
+        if w != "EUR":
+            p["stop_eur"] = round(float(p["stop"]) / fx_kurs(w, fx_usd), 2)
     lauf, fertig = [], st.get("abgelehnt_abgeschlossen", [])
     for p in st.get("abgelehnt", []):
         q = papier_update(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
@@ -325,10 +356,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     st["budget"] = budget(st["positionen"], cfg, fx_usd)
     st["kandidaten"] = kand
     st["sperre"] = sperre(st, cfg)
-    st["anzahl_zuege"] = zuege_markieren(kand, st["budget"]) if not st.get("sperre") else 0
+    st["anzahl_zuege"] = (zuege_markieren(kand, st["budget"], st["positionen"], cfg.get("max_je_waehrung"))
+                          if not st.get("sperre") else 0)
     st["version"] = cfg["version"]          # Regelwerk immer aus der Config, nicht aus dem alten Zustand
     st["stand"] = stand.isoformat()
-    st["eurusd"] = round(fx_usd, 4)
+    st["eurusd"] = round(fx_usd["USD"], 4)
+    st["eurchf"] = round(fx_usd["CHF"], 4)
     st["aktualisiert"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
     sp.write_text(json.dumps(st, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     md = render(st, cfg)
