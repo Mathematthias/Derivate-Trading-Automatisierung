@@ -130,7 +130,8 @@ def kennz(r: pd.Series, per_jahr: int = 252) -> dict:
 # ---------------------------------------------------------------- S1/S2 Rotation
 def rotation(closes: pd.DataFrame, regime: pd.Series | None, n: int, score: str,
              trendfilter_einzel: bool, absolut: bool, start: str = "2010-01-01") -> tuple[pd.Series, float]:
-    rets = closes.pct_change()
+    closes = closes.ffill(limit=5)
+    rets = closes.pct_change(fill_method=None)
     me = closes.index.to_series().groupby(closes.index.to_period("M")).last()
     me = me[me >= start]
     sma200 = closes.rolling(200).mean()
@@ -182,6 +183,58 @@ def sim(d: pd.DataFrame, i: int, entry: float, stop: float, ziel: float | None, 
         if ziel is not None and h >= ziel:
             return (max(o, ziel) - entry) / risk, k, "ziel"
     return (d.Close.iloc[i + max_ht] - entry) / risk, max_ht, "zeit"
+
+
+def sim_trail(d: pd.DataFrame, i: int, entry: float, stop: float, mult: float = 3.0,
+              max_ht: int = 60) -> tuple[float, int]:
+    """Chandelier: Stop = max(Anfangsstop, hoechster Schluss seit Entry - mult*ATR)."""
+    risk = entry - stop
+    hoch = entry
+    for k in range(1, max_ht + 1):
+        if i + k >= len(d):
+            return (d.Close.iloc[-1] - entry) / risk, k
+        o, l, c = d.Open.iloc[i + k], d.Low.iloc[i + k], d.Close.iloc[i + k]
+        if l <= stop:
+            return (min(o, stop) - entry) / risk, k
+        hoch = max(hoch, c)
+        stop = max(stop, hoch - mult * d.atr.iloc[i + k])
+    return (d.Close.iloc[i + max_ht] - entry) / risk, max_ht
+
+
+def s6_frueh(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Fruehe Stack-Umordnung (User-Idee 2026-11-07, Anlass DB1): drei Ausloeser, Einstieg am Signalschluss."""
+    rows = []
+    for s, d in dd.items():
+        x2050 = (d.ema20 > d.ema50) & (d.ema20.shift() <= d.ema50.shift())
+        sig = {
+            "A EMA20 kreuzt EMA50, Schluss > EMA200": x2050 & (d.Close > d.ema200),
+            "B EMA20 kreuzt EMA50, EMA50 dreht hoch": x2050 & (d.ema50 > d.ema50.shift(5)),
+            "C Rueckeroberung EMA50 nach >= 20 HT darunter, EMA20 steigt":
+                (d.Close > d.ema50) & ((d.Close < d.ema50).shift().rolling(20).min() == 1)
+                & (d.ema20 > d.ema20.shift(3)),
+            "D EMA50 kreuzt EMA200 (Golden Cross)": (d.ema50 > d.ema200) & (d.ema50.shift() <= d.ema200.shift()),
+            "Spaet: Stack komplett (20>50>100>200) erstmals seit 60 HT":
+                (d.ema20 > d.ema50) & (d.ema50 > d.ema100) & (d.ema100 > d.ema200)
+                & ~(((d.ema20 > d.ema50) & (d.ema50 > d.ema100) & (d.ema100 > d.ema200)).shift().rolling(60).max().fillna(1).astype(bool)),
+        }
+        for name, m in sig.items():
+            m = m & (d.atrp <= 0.06) & (d.atrp >= 0.005)
+            frei = 0
+            for j in np.flatnonzero(m.values):
+                if j < frei or j < 210 or j >= len(d) - 2:
+                    continue
+                e, a = d.Close.iloc[j], d.atr.iloc[j]
+                stop = e - 1.5 * a
+                r_tr, ht = sim_trail(d, j, e, stop, 3.0, 60)
+                r13, _, _ = sim(d, j, e, stop, e + 1.3 * (e - stop), 15)
+                r20z, _, _ = sim(d, j, e, stop, None, 20)
+                rec = {"Signal": name, "Symbol": s, "Datum": d.index[j], "R_trail3": r_tr, "HT_trail": ht,
+                       "R_1.3": r13, "R_zeit20": r20z, "Ext20": d.ext20.iloc[j], "Tech": s in TECH}
+                for h in (20, 60):
+                    rec[f"fwd{h}"] = d.Close.iloc[j + h] / e - 1 if j + h < len(d) else np.nan
+                rows.append(rec)
+                frei = j + 10
+    return pd.DataFrame(rows)
 
 
 def s3_rebound(dd: dict[str, pd.DataFrame], regime: pd.Series) -> pd.DataFrame:
@@ -299,14 +352,15 @@ def s5_pullback(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
             r13, ht, _ = sim(d, ein, e, stop, e + 1.3 * (e - stop), 15)
             r20, _, _ = sim(d, ein, e, stop, e + 2.0 * (e - stop), 25)
             rz, _, _ = sim(d, ein, e, stop, None, 20)
-            rows.append({"Symbol": s, "Datum": d.index[ein], "R_1.3": r13, "R_2.0": r20, "R_zeit20": rz,
+            rtr, _ = sim_trail(d, ein, e, stop, 3.0, 60)
+            rows.append({"Symbol": s, "Datum": d.index[ein], "R_1.3": r13, "R_2.0": r20, "R_zeit20": rz, "R_trail3": rtr,
                          "Ext20": d.ext20.iloc[ein], "Tech": s in TECH})
             frei = ein + ht + 1
     return pd.DataFrame(rows)
 
 
 def zufall(dd: dict[str, pd.DataFrame], ziel_r: float | None, max_ht: int, anteil: float = 0.03,
-           seed: int = 7) -> pd.Series:
+           seed: int = 7, trail: bool = False) -> pd.Series:
     """Nullhypothese: Einstieg an zufaelligen Tagen, Stop 1,5 ATR, gleiches Ziel/Horizont."""
     rng = np.random.default_rng(seed)
     out = []
@@ -314,10 +368,13 @@ def zufall(dd: dict[str, pd.DataFrame], ziel_r: float | None, max_ht: int, antei
         n = len(d)
         for i in rng.choice(np.arange(210, n - 1), size=max(1, int((n - 211) * anteil)), replace=False):
             e, a = d.Close.iloc[i], d.atr.iloc[i]
-            if not a or pd.isna(a):
+            if pd.isna(a) or not (0.005 <= a / e <= 0.08):
                 continue
             stop = e - 1.5 * a
-            out.append(sim(d, i, e, stop, None if ziel_r is None else e + ziel_r * (e - stop), max_ht)[0])
+            if trail:
+                out.append(sim_trail(d, i, e, stop, 3.0, max_ht)[0])
+            else:
+                out.append(sim(d, i, e, stop, None if ziel_r is None else e + ziel_r * (e - stop), max_ht)[0])
     return pd.Series(out)
 
 
@@ -375,12 +432,13 @@ def main() -> int:
          f"Kosten in S1/S2 pauschal {COST:.2%} je Seite, Waehrungen nicht umgerechnet.\n"]
 
     # S1
-    closes = pd.DataFrame({s: d.Close for s, d in dd.items()})
+    closes = pd.DataFrame({s: d.Close for s, d in dd.items()}).ffill(limit=5)
     us = [s for s in closes if "." not in s]
     eu = [s for s in closes if "." in s]
     res = {}
     for name, cols in (("Alle", list(closes)), ("US", us), ("EU", eu)):
-        c = closes[cols]
+        c = closes[cols].dropna(how="all")
+        c = c[c.notna().sum(axis=1) >= 0.5 * c.notna().sum(axis=1).max()]
         ew = c.pct_change().loc["2010-01-01":].mean(axis=1)
         res[f"{name}: gleichgewichtet (Universum)"] = (kennz(ew), np.nan)
         for n in (5, 10, 15):
@@ -471,15 +529,37 @@ def main() -> int:
     r5.to_csv(out / "s5_pullback.csv", index=False)
     if len(r5):
         t5 = pd.DataFrame({"Ziel 1,3 R (15 HT)": rstat(r5["R_1.3"]), "Ziel 2,0 R (25 HT)": rstat(r5["R_2.0"]),
-                           "kein Ziel, 20 HT": rstat(r5["R_zeit20"])}).T
+                           "kein Ziel, 20 HT": rstat(r5["R_zeit20"]),
+                           "Chandelier 3 ATR, max 60 HT": rstat(r5["R_trail3"])}).T
         r5["Periode"] = np.where(r5.Datum.dt.year < 2018, "2009-2017", "2018-2026")
         L += ["## S5 Trend-Pullback-Naeherung (EMA20>50>200, EMA50 steigt, Tief an EMA20, Schluss >= EMA50, "
               "ATR% <= 5; Einstieg bullischer Tag ueber Vortageshoch binnen 3 HT; Stop 1,5 ATR; R brutto)\n",
               tab(t5, rf), "\n",
               "Nullprobe Zufallseinstieg, gleicher Stop/Ziel:\n",
               tab(pd.DataFrame({"Zufall 1,3 R / 15 HT": rstat(zufall(dd, 1.3, 15)),
-                                "Zufall kein Ziel / 20 HT": rstat(zufall(dd, None, 20))}).T, rf), "\n",
+                                "Zufall kein Ziel / 20 HT": rstat(zufall(dd, None, 20)),
+                                "Zufall Chandelier / 60 HT": rstat(zufall(dd, None, 60, trail=True))}).T, rf), "\n",
               "Nach Periode (Ziel 1,3 R):\n", tab(gruppen(r5, "Periode", "R_1.3"), rf), "\n"]
+
+    # S6
+    r6 = s6_frueh(dd)
+    r6.to_csv(out / "s6_frueh.csv", index=False)
+    if len(r6):
+        rows6 = {}
+        for name, g in r6.groupby("Signal"):
+            for col, lab in (("R_trail3", "Chandelier 3 ATR, max 60 HT"), ("R_1.3", "Ziel 1,3 R, 15 HT"), ("R_zeit20", "kein Ziel, 20 HT")):
+                rows6[f"{name} / {lab}"] = {**rstat(g[col]), "fwd60 Ø": g.fwd60.mean()}
+        t6 = pd.DataFrame(rows6).T
+        t6.index.name = "Signal / Ausstieg"
+        zt = zufall(dd, None, 60, trail=True)
+        L += ["## S6 Fruehe Stack-Umordnung (User-Idee 2026-11-07, Anlass DB1): Einstieg am Signalschluss, Stop 1,5 ATR, R brutto\n",
+              tab(t6, {"Treffer": "{:.0%}", "fwd60 Ø": "{:.1%}"}), "\n",
+              "Nullprobe Zufallseinstieg mit gleichem Chandelier-Ausstieg (Vergleich fuer die Chandelier-Zeilen):\n",
+              tab(pd.DataFrame({"Zufall Chandelier": rstat(zt)}).T, rf), "\n"]
+        r6["Periode"] = np.where(r6.Datum.dt.year < 2018, "2009-2017", "2018-2026")
+        g = r6.groupby(["Signal", "Periode"]).R_trail3.mean().unstack()
+        g.index.name = "Signal (Chandelier Ø R)"
+        L += ["Stabilitaet nach Periode:\n", tab(g), "\n"]
 
     (out / "REPORT.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))
