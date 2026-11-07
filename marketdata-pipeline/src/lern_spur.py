@@ -118,6 +118,7 @@ def kandidat(sym: str, d: pd.DataFrame, cfg: dict, fx_usd: float) -> dict:
             "stop_vorschlag_eur": round(float(x.Close - cfg["stop_atr"] * x.atr) / (fx_usd if waehrung(sym) == "USD" else 1.0), 2),
             "schluss_eur": round(float(kurs_eur), 2),
             "stueck": stueck, "einsatz_eur": round(stueck * kurs_eur, 2),
+            "ext20_atr": round(rangwert(d, "ext20"), 2),
             "rang": rangwert(d, cfg["auswahl"]["feld"])}
 
 
