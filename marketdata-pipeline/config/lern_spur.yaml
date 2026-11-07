@@ -1,0 +1,24 @@
+# Lern-Spur LS-1 (User-Entscheid 2026-11-07, Variante B): eingefroren bis Trade 20.
+# Bugfixes erlaubt, Regelaenderungen nur im Review. Backtest: research/backtest-2026-11-07 (S6 Variante A).
+
+version: "LS-1 2026-11-07"
+kapital_eur: 4000
+r_eur: 75
+max_parallel: 2
+
+signal:
+  # EMA20 kreuzt EMA50 nach oben (heute ueber, gestern nicht), Schluss ueber EMA200
+  atr_pct_min: 0.005
+  atr_pct_max: 0.06
+stop_atr: 1.5            # Anfangsstop = Einstieg - 1,5 ATR
+chandelier_atr: 3.0      # Stop = MAX(alter Stop ; hoechster Schluss seit Einstieg - 3 ATR)
+max_ht: 60               # Zeitausstieg
+
+# Rangfolge, wenn mehr Signale als freie Plaetze: Spalte und Richtung (aus dem Auswahl-Test).
+auswahl: {feld: mom252, absteigend: true}
+
+# Nur Direktaktien in EUR oder USD (Gebuehrenfreiheit SB+, keine Pence-/Fremdwaehrungs-Fallen)
+suffixe_eur: [".DE", ".PA", ".AS", ".MI", ".MC", ".BR", ".HE", ".VI"]
+
+reviews: [5, 10, 15, 20]
+notbremse_r: -6

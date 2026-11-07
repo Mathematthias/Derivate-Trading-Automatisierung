@@ -1,0 +1,65 @@
+name: Lern-Spur LS-1 (Frueh-Stack-Scanner + Chandelier-Stops)
+
+# Neuaufstellung A+ (User-Entscheid 2026-11-07, Variante B): Lern-Spur mit Direktaktien,
+# R = 75 EUR, max. 2 Positionen, Regeln eingefroren bis Trade 20 (Bugfixes erlaubt).
+# Laeuft Mo-Fr nach US-Schluss: Signale des Tages, neue Stops fuer offene Lern-Trades,
+# Review-Sperre. Regel: src/lern_spur.py, config/lern_spur.yaml. Zustand: state/lern_spur.json.
+
+on:
+  schedule:
+    - cron: '50 22 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-yaml
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Scannen
+        working-directory: marketdata-pipeline
+        env:
+          PYTHONPATH: ./src
+        run: |
+          mkdir -p work
+          STAMP=$(date +%Y%m%d-%H%M)
+          python src/lern_spur.py --state-dir state --md "work/LERN-SPUR-$STAMP.md"
+          cat work/LERN-SPUR-*.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/state/lern_spur.json
+          git commit -m "state: Lern-Spur ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Bericht in den Briefing-Ordner
+        working-directory: marketdata-pipeline
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          BRIEFING_FOLDER_ID: 1_oQBr6KH7u6FDCAUIs1liTnEFjn-b_Ht
+          PYTHONPATH: ./src
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from drive_writer import build_drive_service, write_markdown_file
+          svc = build_drive_service(); folder = os.environ["BRIEFING_FOLDER_ID"]
+          for p in sorted(pathlib.Path("work").glob("LERN-SPUR-*.md")):
+              write_markdown_file(svc, folder, p.name, p.read_text(encoding="utf-8"))
+          PY
