@@ -1,0 +1,44 @@
+name: Research-Backtest (Wochenende 2026-11-07)
+
+# Reine Messung (L24): Mehrjahres-Backtest fuer die Neuaufstellung des Trading-Topfs.
+# Laeuft bei Push auf research/**-Branches (damit kein Merge nach main noetig ist)
+# und schreibt den Bericht nach marketdata-pipeline/research/out/ auf denselben Branch.
+
+on:
+  push:
+    branches: ['research/**']
+    paths: ['marketdata-pipeline/research/*.py', '.github/workflows/backtest_research.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Backtest
+        working-directory: marketdata-pipeline
+        run: |
+          mkdir -p work research/out
+          python research/backtest_wochenende.py --cfg config --out research/out --cache work/bt_cache.pkl
+          cat research/out/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/research/out
+          git commit -m "research: Backtest-Ergebnis ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

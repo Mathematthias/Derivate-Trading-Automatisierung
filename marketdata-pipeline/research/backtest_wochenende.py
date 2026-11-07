@@ -1,0 +1,490 @@
+"""Mehrjahres-Backtest Wochenende 2026-11-07 (reine Messung, keine Regel).
+
+Fragen:
+  S1  Momentum-Rotation Aktien (Top-N nach 12-1-Momentum, monatlich, Trendfilter)
+  S2  Momentum-Rotation ETFs (Top-3 nach 3/6/12-Monats-Mittel, Absolutfilter)
+  S3  Kapitulations-Rebound Long (Entwurf Wochenend-Agenda Punkt 3, Tagesnaeherung)
+  S3b Weit unter EMA200 (-10/-20/-30 %): Vorwaertsrenditen 10/20/60 HT, schnell vs. langsam
+  S4  RSI(2)-Baseline (Connors) als bekannte Referenz fuer Kurzfrist-Umkehr
+  S5  Trend-Pullback-Naeherung (Stack, Ruecksetzer EMA20/50, 1,5-ATR-Stop) als Gegenprobe zur Live-Spur
+
+Grenzen (stehen auch im Bericht):
+  - Universum = heutige Indexmitglieder -> Survivorship-Bias nach oben. Darum wird S1 immer
+    gegen das gleichgewichtete Universum gemessen; der Abstand ist die belastbarere Zahl.
+  - Tagesdaten, keine 4h-Kerzen, keine Earnings-Termine historisch, keine Kosten ausser
+    pauschal 0,10 % je Seite in S1/S2. Waehrungen nicht umgerechnet.
+"""
+from __future__ import annotations
+
+import argparse
+import math
+import pickle
+import time
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import yaml
+
+START = "2008-01-01"
+ETFS = ["XLK", "XLF", "XLE", "XLV", "XLI", "XLY", "XLP", "XLU", "XLB", "SMH", "IGV",
+        "QQQ", "IWM", "EFA", "EEM", "EWG", "EWJ", "GLD", "TLT", "IEF"]
+BENCH = ["SPY", "URTH", "EXS1.DE"]
+TECH = {"AMD", "TSM", "AMAT", "LRCX", "KLAC", "IFX.DE", "ORCL", "CRWD", "NOW", "ADBE", "SAP.DE",
+        "DELL", "TSLA", "CRM", "ANET", "SNOW", "IBM", "ACN", "ASML", "ASML.AS", "NVDA", "MSFT",
+        "GOOGL", "META", "AMZN", "AAPL", "AVGO", "QCOM", "INTC", "MU", "TXN", "ADI", "MRVL", "NXPI",
+        "PANW", "FTNT", "ZS", "DDOG", "NET", "CDNS", "SNPS", "INTU", "WDAY", "TEAM", "PLTR", "ADSK",
+        "ASM.AS", "BESI.AS", "STMPA.PA", "DSY.PA", "CAP.PA", "AIXA.DE", "WAF.DE", "NBIS", "MDB", "TTD"}
+COST = 0.0010
+
+
+# ---------------------------------------------------------------- Daten
+def universum(cfg: Path) -> list[str]:
+    a = yaml.safe_load((cfg / "tickers_tier_a.yaml").read_text())
+    ex = set(a.get("ethik_excluded") or [])
+    out: list[str] = []
+    for k in ("thesen_koerbe", "tech_linse", "nebenwerte_de", "positionen"):
+        out += list((a.get(k) or {}).values())
+    for t in "bc":
+        d = yaml.safe_load((cfg / f"tickers_tier_{t}.yaml").read_text())
+        for v in (d.get("categories") or {}).values():
+            if isinstance(v, dict):
+                out += list(v.values())
+            elif isinstance(v, list):
+                out += [x if isinstance(x, str) else x.get("ticker") for x in v]
+    out = [s for s in dict.fromkeys(out) if s and s not in ex and not s.startswith("^")
+           and "=" not in s and "-EUR" not in s and s not in ("4GLD.DE", "XAD5.DE")]
+    return out
+
+
+def laden(symbole: list[str], cache: Path) -> dict[str, pd.DataFrame]:
+    if cache.exists():
+        return pickle.loads(cache.read_bytes())
+    import yfinance as yf
+    data: dict[str, pd.DataFrame] = {}
+
+    def hole(chunk):
+        df = yf.download(chunk, start=START, auto_adjust=True, group_by="ticker",
+                         threads=True, progress=False)
+        for s in chunk:
+            try:
+                d = df[s] if len(chunk) > 1 else df
+                if isinstance(d.columns, pd.MultiIndex):
+                    d.columns = d.columns.get_level_values(-1)
+                d = d[["Open", "High", "Low", "Close", "Volume"]].dropna(subset=["Close"])
+                if len(d) > 300:
+                    data[s] = d
+            except Exception:
+                pass
+
+    for i in range(0, len(symbole), 40):
+        hole(symbole[i:i + 40])
+        time.sleep(2)
+    fehlend = [s for s in symbole if s not in data]
+    for i in range(0, len(fehlend), 20):
+        hole(fehlend[i:i + 20])
+        time.sleep(3)
+    cache.write_bytes(pickle.dumps(data))
+    return data
+
+
+# ---------------------------------------------------------------- Indikatoren
+def ind(d: pd.DataFrame) -> pd.DataFrame:
+    d = d.copy()
+    c = d.Close
+    for n in (5, 20, 50, 100, 200):
+        d[f"ema{n}"] = c.ewm(span=n, adjust=False).mean()
+    d["sma5"] = c.rolling(5).mean()
+    d["sma200"] = c.rolling(200).mean()
+    pc = c.shift()
+    tr = pd.concat([d.High - d.Low, (d.High - pc).abs(), (d.Low - pc).abs()], axis=1).max(axis=1)
+    d["atr"] = tr.ewm(alpha=1 / 14, adjust=False).mean()
+    delta = c.diff()
+    for n in (2, 14):
+        up = delta.clip(lower=0).ewm(alpha=1 / n, adjust=False).mean()
+        dn = (-delta.clip(upper=0)).ewm(alpha=1 / n, adjust=False).mean()
+        d[f"rsi{n}"] = 100 - 100 / (1 + up / dn.replace(0, np.nan))
+    d["ext20"] = (c - d.ema20) / d.atr
+    d["dist200"] = c / d.ema200 - 1
+    d["ret30"] = c / c.shift(21) - 1
+    d["atrp"] = d.atr / c
+    return d
+
+
+def kennz(r: pd.Series, per_jahr: int = 252) -> dict:
+    r = r.dropna()
+    if len(r) < 20:
+        return {}
+    eq = (1 + r).cumprod()
+    jahre = len(r) / per_jahr
+    cagr = eq.iloc[-1] ** (1 / jahre) - 1
+    vol = r.std() * math.sqrt(per_jahr)
+    dd = (eq / eq.cummax() - 1).min()
+    m = (1 + r).groupby(r.index.to_period("M")).prod() - 1
+    return {"CAGR": cagr, "Vol": vol, "Sharpe": cagr / vol if vol else np.nan, "MaxDD": dd,
+            "SchlechtesterMonat": m.min(), "Monate_pos": (m > 0).mean(),
+            "2022": (1 + r[r.index.year == 2022]).prod() - 1,
+            "Letzte12M": (1 + r.iloc[-252:]).prod() - 1}
+
+
+# ---------------------------------------------------------------- S1/S2 Rotation
+def rotation(closes: pd.DataFrame, regime: pd.Series | None, n: int, score: str,
+             trendfilter_einzel: bool, absolut: bool, start: str = "2010-01-01") -> tuple[pd.Series, float]:
+    rets = closes.pct_change()
+    me = closes.index.to_series().groupby(closes.index.to_period("M")).last()
+    me = me[me >= start]
+    sma200 = closes.rolling(200).mean()
+    port = pd.Series(0.0, index=closes.index)
+    alt: set[str] = set()
+    turns = []
+    for i, t in enumerate(me.iloc[:-1]):
+        nxt = me.iloc[i + 1]
+        row = closes.loc[:t]
+        if len(row) < 260:
+            continue
+        if score == "12-1":
+            s = row.iloc[-22] / row.iloc[-253] - 1
+        else:
+            s = (row.iloc[-1] / row.iloc[-64] + row.iloc[-1] / row.iloc[-127]
+                 + row.iloc[-1] / row.iloc[-253]) / 3 - 1
+        s = s.dropna()
+        if trendfilter_einzel:
+            ok = row.iloc[-1] > sma200.loc[t]
+            s = s[ok.reindex(s.index).fillna(False)]
+        if absolut:
+            s = s[s > 0]
+        aus = regime is not None and not bool(regime.loc[:t].iloc[-1])
+        neu = set() if aus else set(s.sort_values(ascending=False).index[:n])
+        tu = len(neu ^ alt) / max(n, 1)
+        turns.append(tu)
+        seg = rets.loc[t:nxt].iloc[1:]
+        if neu:
+            pr = seg[list(neu)].fillna(0).mean(axis=1)
+        else:
+            pr = pd.Series(0.0, index=seg.index)
+        if len(pr):
+            pr.iloc[0] -= COST * tu
+        port.loc[pr.index] = pr
+        alt = neu
+    port = port.loc[me.iloc[0]:]
+    return port, float(np.mean(turns)) if turns else np.nan
+
+
+# ---------------------------------------------------------------- Trade-Simulation
+def sim(d: pd.DataFrame, i: int, entry: float, stop: float, ziel: float | None, max_ht: int) -> tuple[float, int, str]:
+    risk = entry - stop
+    for k in range(1, max_ht + 1):
+        if i + k >= len(d):
+            return (d.Close.iloc[-1] - entry) / risk, k, "offen"
+        o, h, l = d.Open.iloc[i + k], d.High.iloc[i + k], d.Low.iloc[i + k]
+        if l <= stop:
+            return (min(o, stop) - entry) / risk, k, "stop"
+        if ziel is not None and h >= ziel:
+            return (max(o, ziel) - entry) / risk, k, "ziel"
+    return (d.Close.iloc[i + max_ht] - entry) / risk, max_ht, "zeit"
+
+
+def s3_rebound(dd: dict[str, pd.DataFrame], regime: pd.Series) -> pd.DataFrame:
+    rows = []
+    for s, d in dd.items():
+        sig = (d.ext20 <= -3) & (d.rsi14 <= 30) & (d.atrp <= 0.08)
+        idx = np.flatnonzero(sig.values)
+        frei = 0
+        for j in idx:
+            if j < frei or j < 210:
+                continue
+            ein = None
+            for k in range(0, 6):
+                m = j + k
+                if m >= len(d) - 1:
+                    break
+                if d.Close.iloc[m] > d.Open.iloc[m] and d.Close.iloc[m] > d.Close.iloc[m - 1]:
+                    ein = m
+                    break
+            if ein is None:
+                frei = j + 6
+                continue
+            e = d.Close.iloc[ein]
+            a = d.atr.iloc[ein]
+            tief = d.Low.iloc[max(0, j - 10):ein + 1].min()
+            stop = min(e - 1.5 * a, tief - 0.3 * a)
+            ziel20 = d.ema20.iloc[ein]
+            if ziel20 <= e:
+                frei = ein + 1
+                continue
+            r, ht, wie = sim(d, ein, e, stop, ziel20, 10)
+            r200, ht2, wie2 = sim(d, ein, e, stop, max(d.ema200.iloc[ein], ziel20), 60)
+            fwd = {f"fwd{h}": d.Close.iloc[ein + h] / e - 1 if ein + h < len(d) else np.nan for h in (5, 10, 20)}
+            t = d.index[ein]
+            rows.append({"Symbol": s, "Datum": t, "R": r, "HT": ht, "Ausgang": wie,
+                         "R_ziel200_60": r200, "Ziel_R": (ziel20 - e) / (e - stop),
+                         "Risiko_pct": (e - stop) / e, "Regime_ueber200": bool(regime.asof(t)),
+                         "Dist200": d.dist200.iloc[ein], "Ret30": d.ret30.iloc[ein],
+                         "Tech": s in TECH, **fwd})
+            frei = ein + ht + 1
+    return pd.DataFrame(rows)
+
+
+def s3b_ema200(dd: dict[str, pd.DataFrame], regime: pd.Series) -> pd.DataFrame:
+    rows = []
+    for s, d in dd.items():
+        for schwelle in (-0.10, -0.20, -0.30):
+            unter = (d.dist200 <= schwelle).values
+            letzte = -999
+            for j in np.flatnonzero(unter):
+                if j < 210 or j - letzte <= 20:
+                    letzte = j
+                    continue
+                # Ereignis = erster Tag unter der Schwelle nach >= 20 HT darueber
+                if unter[j - 20:j].any():
+                    letzte = j
+                    continue
+                letzte = j
+                c = d.Close.iloc[j]
+                rec = {"Symbol": s, "Datum": d.index[j], "Schwelle": schwelle,
+                       "Schnell": d.ret30.iloc[j] <= -0.15, "Regime_ueber200": bool(regime.asof(d.index[j])),
+                       "Tech": s in TECH}
+                for h in (10, 20, 60):
+                    if j + h < len(d):
+                        rec[f"fwd{h}"] = d.Close.iloc[j + h] / c - 1
+                        w = d.iloc[j + 1:j + h + 1]
+                        rec[f"ema20_erreicht{h}"] = bool((w.High >= w.ema20).any())
+                        rec[f"ema200_erreicht{h}"] = bool((w.High >= w.ema200).any())
+                        rec[f"mae{h}"] = w.Low.min() / c - 1
+                rows.append(rec)
+    return pd.DataFrame(rows)
+
+
+def s4_rsi2(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    rows = []
+    for s, d in dd.items():
+        sig = (d.Close > d.sma200) & (d.rsi2 < 10)
+        frei = 0
+        for j in np.flatnonzero(sig.values):
+            if j < frei or j < 210 or j >= len(d) - 1:
+                continue
+            e = d.Close.iloc[j]
+            k = 1
+            while j + k < len(d) - 1 and k < 10 and d.Close.iloc[j + k] <= d.sma5.iloc[j + k]:
+                k += 1
+            x = d.Close.iloc[min(j + k, len(d) - 1)]
+            rows.append({"Symbol": s, "Datum": d.index[j], "Ret": x / e - 1, "HT": k, "Tech": s in TECH})
+            frei = j + k + 1
+    return pd.DataFrame(rows)
+
+
+def s5_pullback(dd: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    rows = []
+    for s, d in dd.items():
+        stack = (d.ema20 > d.ema50) & (d.ema50 > d.ema200) & (d.ema50 > d.ema50.shift(10))
+        rueck = (d.Low <= d.ema20) & (d.Close >= d.ema50) & (d.atrp <= 0.05)
+        sig = stack & rueck
+        frei = 0
+        for j in np.flatnonzero(sig.values):
+            if j < frei or j < 210:
+                continue
+            ein = None
+            for k in range(1, 4):
+                m = j + k
+                if m >= len(d) - 1:
+                    break
+                if d.Close.iloc[m] > d.Open.iloc[m] and d.Close.iloc[m] > d.High.iloc[m - 1]:
+                    ein = m
+                    break
+            if ein is None:
+                frei = j + 4
+                continue
+            e, a = d.Close.iloc[ein], d.atr.iloc[ein]
+            stop = e - 1.5 * a
+            r13, ht, _ = sim(d, ein, e, stop, e + 1.3 * (e - stop), 15)
+            r20, _, _ = sim(d, ein, e, stop, e + 2.0 * (e - stop), 25)
+            rz, _, _ = sim(d, ein, e, stop, None, 20)
+            rows.append({"Symbol": s, "Datum": d.index[ein], "R_1.3": r13, "R_2.0": r20, "R_zeit20": rz,
+                         "Ext20": d.ext20.iloc[ein], "Tech": s in TECH})
+            frei = ein + ht + 1
+    return pd.DataFrame(rows)
+
+
+def zufall(dd: dict[str, pd.DataFrame], ziel_r: float | None, max_ht: int, anteil: float = 0.03,
+           seed: int = 7) -> pd.Series:
+    """Nullhypothese: Einstieg an zufaelligen Tagen, Stop 1,5 ATR, gleiches Ziel/Horizont."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for d in dd.values():
+        n = len(d)
+        for i in rng.choice(np.arange(210, n - 1), size=max(1, int((n - 211) * anteil)), replace=False):
+            e, a = d.Close.iloc[i], d.atr.iloc[i]
+            if not a or pd.isna(a):
+                continue
+            stop = e - 1.5 * a
+            out.append(sim(d, i, e, stop, None if ziel_r is None else e + ziel_r * (e - stop), max_ht)[0])
+    return pd.Series(out)
+
+
+# ---------------------------------------------------------------- Bericht
+def rstat(x: pd.Series) -> dict:
+    x = x.dropna()
+    if not len(x):
+        return {"n": 0}
+    g, v = x[x > 0].sum(), -x[x < 0].sum()
+    return {"n": len(x), "Treffer": (x > 0).mean(), "Ø": x.mean(), "Median": x.median(),
+            "Summe": x.sum(), "PF": g / v if v else np.nan}
+
+
+def tab(df: pd.DataFrame, fmt: dict | None = None) -> str:
+    fmt = fmt or {}
+    cols = list(df.columns)
+    out = ["| " + " | ".join([df.index.name or ""] + cols) + " |", "|" + "---|" * (len(cols) + 1)]
+    for i, r in df.iterrows():
+        cells = []
+        for c in cols:
+            v = r[c]
+            f = fmt.get(c)
+            if c == "n" and isinstance(v, (int, float, np.integer, np.floating)) and not pd.isna(v):
+                cells.append(f"{int(v)}")
+            elif isinstance(v, (float, np.floating)):
+                cells.append("" if pd.isna(v) else (f.format(v) if f else f"{v:.2f}"))
+            else:
+                cells.append(str(v))
+        out.append("| " + " | ".join([str(i)] + cells) + " |")
+    return "\n".join(out)
+
+
+def gruppen(df: pd.DataFrame, by, col: str) -> pd.DataFrame:
+    g = df.groupby(by)[col].apply(lambda s: pd.Series(rstat(s))).unstack()
+    return g
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cfg", default="config")
+    ap.add_argument("--out", default="research/out")
+    ap.add_argument("--cache", default="work/bt_cache.pkl")
+    a = ap.parse_args()
+    out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    Path(a.cache).parent.mkdir(parents=True, exist_ok=True)
+
+    uni = universum(Path(a.cfg))
+    raw = laden(uni + ETFS + BENCH, Path(a.cache))
+    dd = {s: ind(d) for s, d in raw.items() if s in uni}
+    spy = ind(raw["SPY"])
+    regime = (spy.Close > spy.sma200)
+    L = [f"# Backtest Wochenende 2026-11-07\n",
+         f"Daten: Yahoo, Tagesbasis ab {START}, Stand {spy.index[-1].date()}. "
+         f"Universum: {len(dd)} von {len(uni)} Aktien geladen (heutige Mitglieder, Survivorship-Bias nach oben). "
+         f"Kosten in S1/S2 pauschal {COST:.2%} je Seite, Waehrungen nicht umgerechnet.\n"]
+
+    # S1
+    closes = pd.DataFrame({s: d.Close for s, d in dd.items()})
+    us = [s for s in closes if "." not in s]
+    eu = [s for s in closes if "." in s]
+    res = {}
+    for name, cols in (("Alle", list(closes)), ("US", us), ("EU", eu)):
+        c = closes[cols]
+        ew = c.pct_change().loc["2010-01-01":].mean(axis=1)
+        res[f"{name}: gleichgewichtet (Universum)"] = (kennz(ew), np.nan)
+        for n in (5, 10, 15):
+            for rg in (True, False):
+                p, tu = rotation(c, regime if rg else None, n, "12-1", True, False)
+                res[f"{name}: Top{n} 12-1{' + SPY>SMA200' if rg else ''}"] = (kennz(p), tu)
+    res["SPY Buy&Hold"] = (kennz(raw["SPY"].Close.pct_change().loc["2010-01-01":]), np.nan)
+    if "URTH" in raw:
+        res["MSCI World (URTH) B&H"] = (kennz(raw["URTH"].Close.pct_change().loc["2012-02-01":]), np.nan)
+    t1 = pd.DataFrame({k: {**v[0], "Umschlag/Monat": v[1]} for k, v in res.items()}).T
+    t1.index.name = "Variante"
+    pct = {c: "{:.1%}" for c in ("CAGR", "Vol", "MaxDD", "SchlechtesterMonat", "Monate_pos", "2022", "Letzte12M", "Umschlag/Monat")}
+    L += ["## S1 Momentum-Rotation Aktien (ab 2010)\n", tab(t1, pct), "\n"]
+    t1.to_csv(out / "s1_rotation.csv")
+
+    # S2
+    et = pd.DataFrame({s: raw[s].Close for s in ETFS if s in raw})
+    res2 = {}
+    for n in (2, 3, 4):
+        for ab in (True, False):
+            p, tu = rotation(et, None, n, "mix", False, ab, start="2008-06-01")
+            res2[f"Top{n} 3/6/12M{' + absolut>0' if ab else ''}"] = (kennz(p), tu)
+    res2["SPY B&H ab 2008-06"] = (kennz(raw["SPY"].Close.pct_change().loc["2008-06-01":]), np.nan)
+    t2 = pd.DataFrame({k: {**v[0], "Umschlag/Monat": v[1]} for k, v in res2.items()}).T
+    t2.index.name = "Variante"
+    L += ["## S2 Momentum-Rotation ETFs (20 US-ETFs, ab 2008)\n", tab(t2, pct), "\n"]
+    t2.to_csv(out / "s2_etf.csv")
+
+    # S3
+    r3 = s3_rebound(dd, regime)
+    r3.to_csv(out / "s3_rebound.csv", index=False)
+    rf = {"Treffer": "{:.0%}"}
+    if len(r3):
+        r3["Jahr"] = r3.Datum.dt.year
+        r3["Dist200_Bucket"] = pd.cut(r3.Dist200, [-9, -0.3, -0.2, -0.1, 0, 9],
+                                      labels=["< -30%", "-30..-20%", "-20..-10%", "-10..0%", "ueber EMA200"])
+        r3["Tempo"] = np.where(r3.Ret30 <= -0.20, "schnell (30T <= -20%)", "langsam")
+        L += ["## S3 Kapitulations-Rebound Long (Ziel EMA20, max 10 HT, R brutto)\n",
+              "Signal: Ext EMA20 <= -3 ATR, RSI14 <= 30, ATR% <= 8 %; Einstieg Schluss des ersten bullischen Tages "
+              "(Schluss > Eroeffnung und > Vortag) binnen 5 HT; Stop MIN(Entry - 1,5 ATR; Serientief - 0,3 ATR). "
+              "Gleicher Tag Stop und Ziel = Stop. Keine Earnings-Sperre (historisch nicht verfuegbar).\n",
+              tab(pd.DataFrame({"Alle": rstat(r3.R)}).T, rf), "\n",
+              "Nach Marktlage (SPY ueber SMA200):\n", tab(gruppen(r3, "Regime_ueber200", "R"), rf), "\n",
+              "Nach Abstand zur EMA200:\n", tab(gruppen(r3, "Dist200_Bucket", "R"), rf), "\n",
+              "Nach Tempo:\n", tab(gruppen(r3, "Tempo", "R"), rf), "\n",
+              "Tech-Werte:\n", tab(gruppen(r3, "Tech", "R"), rf), "\n",
+              "Nach Jahr:\n", tab(gruppen(r3, "Jahr", "R"), rf), "\n",
+              "Variante Ziel EMA200 (mind. EMA20), max 60 HT:\n", tab(pd.DataFrame({"Alle": rstat(r3.R_ziel200_60)}).T, rf), "\n",
+              f"Median Ziel-Abstand {r3.Ziel_R.median():.2f} R, Median Risiko {r3.Risiko_pct.median():.1%} vom Kurs.\n"]
+
+    if len(r3):
+        z = zufall(dd, round(float(r3.Ziel_R.median()), 2), 10)
+        L += [f"Nullprobe: Zufallseinstieg, Stop 1,5 ATR, Ziel {r3.Ziel_R.median():.2f} R, max 10 HT:\n",
+              tab(pd.DataFrame({"Zufall": rstat(z)}).T, rf), "\n"]
+
+    # S3b
+    r3b = s3b_ema200(dd, regime)
+    r3b.to_csv(out / "s3b_ema200.csv", index=False)
+    if len(r3b):
+        g = r3b.groupby(["Schwelle", "Schnell"]).agg(
+            n=("fwd20", "size"), fwd10=("fwd10", "mean"), fwd20=("fwd20", "mean"), fwd60=("fwd60", "mean"),
+            fwd60_med=("fwd60", "median"), pos60=("fwd60", lambda s: (s > 0).mean()),
+            ema20_in20=("ema20_erreicht20", "mean"), ema200_in60=("ema200_erreicht60", "mean"), mae60=("mae60", "median"))
+        g.index = [f"{int(a*100)}% / {'schnell' if b else 'langsam'}" for a, b in g.index]
+        g.index.name = "Schwelle / Tempo"
+        # Basis: unbedingte 60-HT-Rendite im Universum
+        base = pd.concat([d.Close.shift(-60) / d.Close - 1 for d in dd.values()]).dropna()
+        base20 = pd.concat([d.Close.shift(-20) / d.Close - 1 for d in dd.values()]).dropna()
+        L += ["## S3b Weit unter EMA200: Vorwaertsrenditen (Ereignis = erster Tag unter Schwelle nach >= 20 HT darueber)\n",
+              tab(g, {c: "{:.1%}" for c in g.columns if c != "n"}), "\n",
+              f"Vergleich unbedingt (alle Tage, alle Werte): 20 HT Ø {base20.mean():.1%}, 60 HT Ø {base.mean():.1%}, "
+              f"60 HT positiv {(base > 0).mean():.0%}.\n"]
+        g2 = r3b[r3b.Schwelle == -0.20].groupby("Regime_ueber200").agg(n=("fwd60", "size"), fwd60=("fwd60", "mean"),
+                                                                         pos60=("fwd60", lambda s: (s > 0).mean()))
+        L += ["-20 % nach Marktlage:\n", tab(g2, {"fwd60": "{:.1%}", "pos60": "{:.0%}"}), "\n"]
+
+    # S4
+    r4 = s4_rsi2(dd)
+    r4.to_csv(out / "s4_rsi2.csv", index=False)
+    if len(r4):
+        r4["Periode"] = np.where(r4.Datum.dt.year < 2018, "2009-2017", "2018-2026")
+        g = r4.groupby("Periode").Ret.agg(n="size", avg="mean", med="median", hit=lambda s: (s > 0).mean())
+        L += ["## S4 RSI(2)-Baseline (Close > SMA200, RSI2 < 10, Ausstieg Close > SMA5, max 10 HT; Rendite je Trade brutto)\n",
+              tab(g, {"avg": "{:.2%}", "med": "{:.2%}", "hit": "{:.0%}"}), "\n"]
+
+    # S5
+    r5 = s5_pullback(dd)
+    r5.to_csv(out / "s5_pullback.csv", index=False)
+    if len(r5):
+        t5 = pd.DataFrame({"Ziel 1,3 R (15 HT)": rstat(r5["R_1.3"]), "Ziel 2,0 R (25 HT)": rstat(r5["R_2.0"]),
+                           "kein Ziel, 20 HT": rstat(r5["R_zeit20"])}).T
+        r5["Periode"] = np.where(r5.Datum.dt.year < 2018, "2009-2017", "2018-2026")
+        L += ["## S5 Trend-Pullback-Naeherung (EMA20>50>200, EMA50 steigt, Tief an EMA20, Schluss >= EMA50, "
+              "ATR% <= 5; Einstieg bullischer Tag ueber Vortageshoch binnen 3 HT; Stop 1,5 ATR; R brutto)\n",
+              tab(t5, rf), "\n",
+              "Nullprobe Zufallseinstieg, gleicher Stop/Ziel:\n",
+              tab(pd.DataFrame({"Zufall 1,3 R / 15 HT": rstat(zufall(dd, 1.3, 15)),
+                                "Zufall kein Ziel / 20 HT": rstat(zufall(dd, None, 20))}).T, rf), "\n",
+              "Nach Periode (Ziel 1,3 R):\n", tab(gruppen(r5, "Periode", "R_1.3"), rf), "\n"]
+
+    (out / "REPORT.md").write_text("\n".join(L), encoding="utf-8")
+    print("\n".join(L))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
