@@ -65,10 +65,10 @@ def rest_am(p, tg):
     return float(s.iloc[-1]) if len(s) else 1.0
 
 
-def portfolio(t, plaetze=None, budget=None):
+def portfolio(t, plaetze=None, budget=None, r_eur=75.0, kapital=None, deckel=2000.0):
     tage = np.sort(t.Datum.unique())
     nach_tag = {k: g.sort_values("ATRp") for k, g in t.groupby("Datum")}
-    offen, genommen, bel, risk_max = [], [], [], 0.0
+    offen, genommen, bel, risk_max, kap_max = [], [], [], 0.0, 0.0
     for tg in tage:
         offen = [p for p in offen if p["Exit"] > tg]
         held = {p["Symbol"] for p in offen}
@@ -82,13 +82,20 @@ def portfolio(t, plaetze=None, budget=None):
                 break
             if c.Symbol in held:
                 continue
+            einsatz = min(deckel, r_eur / (1.5 * c.ATRp))
+            if kapital is not None and sum(q["einsatz"] for q in offen) + einsatz > kapital:
+                continue
             p = c.to_dict()
+            p["einsatz"] = einsatz
             offen.append(p); genommen.append(p); held.add(c.Symbol); belegt += 1
         bel.append(len(offen))
+        kap_max = max(kap_max, sum(q["einsatz"] for q in offen))
         risk_max = max(risk_max, sum(rest_am(p, tg) for p in offen))
     g = pd.DataFrame(genommen)
     kum = g.sort_values("Exit").R.cumsum()
     dd = float((kum - kum.cummax()).min())
+    g.attrs["kap_max"] = kap_max
+    g.attrs["kap_mittel"] = float(np.mean([0]))
     return g, max(bel), float(np.mean(bel)), dd, risk_max
 
 
@@ -109,28 +116,26 @@ def main() -> int:
     ende = t.Datum.max()
     jahre = (ende - pd.Timestamp("2009-01-01")).days / 365.25
     rows = {}
-    for name, kw in (("2 Risiko-Plaetze, max 3 gesamt (PR #64)", None),
-                     ("2 Risiko-Plaetze, unbegrenzt", {"plaetze": 2}),
-                     ("3 Risiko-Plaetze, unbegrenzt", {"plaetze": 3}),
-                     ("4 Risiko-Plaetze, unbegrenzt", {"plaetze": 4}),
-                     ("Budget 2 R (aktueller Stop)", {"budget": 2}),
-                     ("Budget 3 R (aktueller Stop)", {"budget": 3}),
-                     ("Budget 4 R (aktueller Stop)", {"budget": 4})):
-        if kw is None:
-            continue
+    varianten = [("Budget 2 R a 75, ohne Kapitalgrenze", {"budget": 2, "r_eur": 75})]
+    for b_r, r_eur in ((3, 50), (4, 75)):
+        for kap in (None, 8000, 10000, 12000, 15000):
+            varianten.append((f"Budget {b_r} R a {r_eur}, Kapital {'offen' if kap is None else f'{kap:,}'.replace(',', '.')}",
+                              {"budget": b_r, "r_eur": r_eur, "kapital": kap}))
+    varianten.append(("4 Risiko-Plaetze a 75, ohne Kapitalgrenze", {"plaetze": 4, "r_eur": 75}))
+    for name, kw in varianten:
         g, bmax, bmit, ddr, rmax = portfolio(t, **kw)
         g5 = g[g.Datum >= ende - pd.DateOffset(years=5)]
-        rows[name] = {"Trades/Jahr": len(g) / jahre, "Trades/Jahr 5J": len(g5) / 5,
-                      "Wochen fuer 20": 20 / (len(g) / jahre) * 52, "Ø R": g.R.mean(), "Ø R 5J": g5.R.mean(),
-                      "R/Jahr": g.R.sum() / jahre, "max DD R": ddr, "Pos max": bmax, "Pos Ø": bmit,
-                      "Risiko max R": rmax}
+        reur = kw["r_eur"]
+        rows[name] = {"Wochen fuer 20": 20 / (len(g) / jahre) * 52, "Ø R": g.R.mean(), "Ø R 5J": g5.R.mean(),
+                      "EUR/Jahr": g.R.sum() / jahre * reur, "max DD EUR": ddr * reur, "max DD R": ddr,
+                      "Pos Ø": bmit, "Pos max": bmax, "Kapital max": g.attrs["kap_max"]}
     df = pd.DataFrame(rows).T
     L = [f"# Lern-Spur: Plaetze gegen Risikobudget ({pd.Timestamp.utcnow():%Y-%m-%d})\n",
          f"Signale mit Filter EMA50 > EMA200: {len(t)}, ab 2009, {len(dd)} Direktaktien EUR/USD. "
          "Absolute R mit rund +0,07 R Simulationsbias; Drawdown kumuliert nach Ausstiegsdatum.\n",
          tab(df, {"Trades/Jahr": "{:.1f}", "Trades/Jahr 5J": "{:.1f}", "Wochen fuer 20": "{:.0f}",
-                  "R/Jahr": "{:.1f}", "max DD R": "{:.1f}", "Pos max": "{:.0f}", "Pos Ø": "{:.1f}",
-                  "Risiko max R": "{:.1f}"}), "\n"]
+                  "EUR/Jahr": "{:,.0f}", "max DD EUR": "{:,.0f}", "max DD R": "{:.1f}", "Pos max": "{:.0f}",
+                  "Pos Ø": "{:.1f}", "Kapital max": "{:,.0f}"}), "\n"]
     (out / "LERNSPUR_BUDGET.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))
     return 0
