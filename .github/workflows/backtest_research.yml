@@ -35,7 +35,7 @@ jobs:
           # 2026-11-07 abends: nur Seitwaerts-Filtertest; Hauptbericht liegt bereits in research/out.
           # Fuer einen Volllauf NUR_FILTER=0 setzen.
           if [ "${NUR_FILTER:-1}" = "1" ]; then
-            python research/regionen_ls2.py --cfg config --out research/out --cache work/bt_cache.pkl
+            python research/filter_ls2.py --cfg config --out research/out --cache work/bt_cache.pkl
           else
             [ "${NUR_ROTATION:-0}" = "1" ] || python research/backtest_wochenende.py --cfg config --out research/out --cache work/bt_cache.pkl
             PYTHONPATH=./src python research/check_scores.py | tee research/out/CHECK_SCORES.txt
