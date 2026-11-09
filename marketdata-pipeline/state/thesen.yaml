@@ -520,4 +520,52 @@ thesen:
     zweite_haelfte: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und Kurs ueber Preis-Falsifikat
     ziel: 'Horizont-These: Erholung Richtung 52W-Hoch binnen 6 Monaten; kein festes Kursziel'
     notiz: 'Budget 2 R = 300 EUR. Abstand Einstieg (-20 %) zu Falsifikat (-35 %) = 0,65/0,80 - 1 = -18,75 %. Volle Position 300 / 0,1875 = 1.600 EUR, Starter 1/2 = 800 EUR. Bewusst nicht Halbleiter (1.400 EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden, schlechtester 12M-Verlauf -47 %; wettet gegen den aktuellen Kern (Rotation meidet Tech); USD-Risiko.'
+    story: 'XLK fiel vom 52W-Hoch 202,00 USD auf 164,74 USD (Schluss 2026-11-06, -18,4 %), davon -4,9 % am 2026-10-30 und -8,0 % am 2026-11-05 (162,38 USD, -19,6 %, 0,78 USD ueber der Marke). Ausloeser laut Reuters/DJ: Midterm-Sieg der Demokraten und Sorge um neue Rechenzentren, schwache Ausblicke von Qualcomm und Arm, Zweifel an der Finanzierung des AI-Capex, zuletzt eine zu 78 % eingepreiste Zinserhoehung im Dezember. Die Gewinne brachen dabei nicht ein: S&P-IT Q3 94 % Beats und +69,2 % Gewinnwachstum, Forward-KGV 17,3 gegen 25-Jahres-Schnitt 20,0 (FactSet 2026-11-06). Es ist eine reine Tech-Korrektur: S&P 500 nur -5,6 % zum Hoch, XLK -12,3 % gegen SPY in 21 Tagen. Quellen: trading/TDIP_Einstieg_Analyse_2026-11-09.md.'
+    gegenthese: 'Staerkstes Gegenargument: Billig ist die Bewertung nur, wenn die Gewinnschaetzungen fuer 2027 halten; der Markt zweifelt genau daran (AI-Capex 2027 laut BofA 1,2 Bio. USD bei Free Cashflow -180 Mrd. USD, Rechenzentren-Politik, Zinsen). Historisch liefen reine Tech-Korrekturen klar schlechter als breite: bei -20 % ab 2003 im Mittel +8,7 % gegen +26,1 % nach 6 Monaten. Nach einem Erholungstag knapp vor -20 % kam -20 % in 19 von 25 Faellen doch noch. Teilweise eingepreist durch das tiefe Forward-KGV, aber nicht klar schwaecher als die These.'
+    szenarien:
+      bull:
+        text: AMAT und NVDA bestaetigen die Nachfrage, kein Hyperscaler kuerzt Capex; nach der Marke laeuft XLK Richtung 52W-Hoch binnen Horizont.
+        ausloeser: NVDA Q3 2026-11-17 mit Q4-Guidance ueber Konsens, XLK-Schluss zurueck ueber der SMA200.
+      base:
+        text: XLK pendelt seitwaerts zwischen rund 160 und 180 USD; ohne Fortschritt bis zum Horizont 2027-05-07 Entscheidung ueber Ausstieg.
+        ausloeser: Keine neuen Tiefs, Gewinnschaetzungen 2027 stabil, aber keine Rueckeroberung der SMA200 bis zum Re-Check.
+      bear:
+        text: Thesen-Falsifikat oder XLK-Schluss unter dem Preis-Falsifikat; Ausstieg am naechsten Handelstag.
+        ausloeser: Ein Big-4-Hyperscaler senkt die Capex-Guidance, NVDA guidet Q4 unter Konsens oder XLK schliesst unter 131,3 USD.
+      kein_trade:
+        text: XLK erholt sich vor der Marke, keine Position. Das ist laut Karte das Ergebnis, kein Fehler.
+        ausloeser: Einstiegsmarke bis zum Horizont nicht erreicht.
+    checkliste:
+      score: 6/7
+      datum: '2026-11-09'
+      gate: bestanden (mindestens 6/7, Pflichtpunkte 1, 3, 4 erfuellt)
+      punkte:
+      - nr: 1
+        punkt: Abweichung vom Konsens
+        status: ja
+        text: Bewertungskorrektur statt Gewinneinbruch.
+      - nr: 2
+        punkt: Katalysator binnen 6 Monaten
+        status: ja
+        text: AMAT 2026-11-12, NVDA 2026-11-17, PANW 2026-11-18, CRWD 2026-12-01.
+      - nr: 3
+        punkt: Thesen- und Preis-Falsifikat pruefbar
+        status: ja
+        text: Capex-Cut oder NVDA-Guidance, XLK-Schluss unter 131,3 USD.
+      - nr: 4
+        punkt: Crowdedness unter 20 PP
+        status: ja
+        text: -18,0 PP (Thesen-Lauf 2026-11-07).
+      - nr: 5
+        punkt: Counter-These schwaecher oder eingepreist
+        status: nein
+        text: Nur teilweise eingepreist, reine Tech-Korrekturen liefen historisch schlechter.
+      - nr: 6
+        punkt: Kein Klumpen mit Kern und anderer These
+        status: ja
+        text: 'Kern haelt XLV, XLE, XLP, XLB; keine andere These aktiv. Ausserhalb des Gates: Langfrist-Ebene enthaelt Tech und Halbleiter.'
+      - nr: 7
+        punkt: Vehikel handelbar und ethisch zulaessig
+        status: ja
+        text: SPDR Technology UCITS ETF, keine Einzelwerte mit Ruestungs-Kerngeschaeft. Handelbarkeit bei SB+ vor dem Starter pruefen.
 updated: '2026-11-07T17:15:00+00:00'
