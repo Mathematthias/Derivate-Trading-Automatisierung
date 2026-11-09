@@ -6,7 +6,7 @@ name: Messung LS-2 Einstieg T+1
 on:
   push:
     branches: ['messung/**']
-    paths: ['marketdata-pipeline/research/einstieg_t1.py', '.github/workflows/messung_einstieg_t1.yml']
+    paths: ['marketdata-pipeline/research/einstieg_t1*.py', '.github/workflows/messung_einstieg_t1.yml']
   workflow_dispatch:
 
 permissions:
@@ -31,12 +31,12 @@ jobs:
         working-directory: marketdata-pipeline
         run: |
           mkdir -p work research/out
-          python research/einstieg_t1.py --cfg config --out research/out --cache work/bt_cache.pkl
+          python research/einstieg_t1_zerlegung.py --cfg config --out research/out --cache work/bt_cache.pkl
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add marketdata-pipeline/research/out/LS2_EINSTIEG_T1.md
-          git commit -m "research: LS-2 Einstieg T+1 ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git add marketdata-pipeline/research/out/LS2_ZERLEGUNG.md
+          git commit -m "research: LS-2 Zerlegung ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
