@@ -15,7 +15,7 @@
         "score": "5/7",
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
-      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker zu setzen."
+      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker gesetzt (User 2026-11-09)."
     }
   ],
   "abgeschlossen": [],
@@ -58,7 +58,22 @@
   "stand": "2026-11-06",
   "eurusd": 1.1228,
   "aktualisiert": "2026-11-07T22:47+00:00",
-  "abgelehnt": [],
+  "abgelehnt": [
+    {
+      "symbol": "AMZN",
+      "waehrung": "USD",
+      "einstieg_datum": "2026-11-06",
+      "einstieg_kurs": 259.3,
+      "stop_initial": 245.5169,
+      "stop": 245.5169,
+      "grund": "Gap ueber 1 ATR, zur Eroeffnung sogar mehr",
+      "checkliste": {
+        "score": "5/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
+      },
+      "notiz": "Veto 2026-11-09 (User). Tagesdaten laut Chart: Eroeffnung 269,32 USD (+3,86 % bzw. 1,09 ATR ueber Signalschluss 259,30), Hoch 275,34, Kurs beim Veto 269,87. Papier-Trade startet regelgemaess ab Signalschluss, also rund 10 USD besser als ein realer Fill; beim Review beruecksichtigen."
+    }
+  ],
   "abgelehnt_abgeschlossen": [],
   "budget": {
     "budget_eur": 150,
