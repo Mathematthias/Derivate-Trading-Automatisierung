@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p work research/out
           # 2026-11-09: nur TDIP-Schwellentest, Hauptbericht liegt bereits in research/out.
-          python research/tdip_schwellen.py --out research/out
+          python research/tdip_firstpassage.py --out research/out
           exit 0
           # 2026-11-07 abends: nur Seitwaerts-Filtertest; Hauptbericht liegt bereits in research/out.
           # Fuer einen Volllauf NUR_FILTER=0 setzen.
