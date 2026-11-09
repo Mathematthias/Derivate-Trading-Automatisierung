@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -43,10 +44,22 @@ def main():
     ap.add_argument("--out", default="research/out")
     a = ap.parse_args()
     px = lade()
-    C = {t: px[t].dropna() for t in IDX + AKTIEN}
+    for _ in range(3):
+        fehlt = [t for t in IDX + AKTIEN if px[t].dropna().shape[0] < 300]
+        if not fehlt:
+            break
+        print("fehlt, neuer Versuch:", fehlt, flush=True)
+        time.sleep(30)
+        px = lade()
+    fehlt = [t for t in IDX + AKTIEN if px[t].dropna().shape[0] < 300]
+    if set(fehlt) & {"SPY", "XLK", "SMH"}:
+        raise SystemExit(f"Kernwerte fehlen: {fehlt}")
+    AKT = [t for t in AKTIEN if t not in fehlt]
+    ETFS = [t for t in ETF_TECH if t not in fehlt]
+    C = {t: px[t].dropna() for t in IDX + AKTIEN if t not in fehlt}
     DD = {t: dd_von(C[t])[0] for t in C}
     spy = DD["SPY"]
-    V = {t: vorlauf(C[t]) for t in AKTIEN}
+    V = {t: vorlauf(C[t]) for t in AKT}
 
     def ev(tickers, schw, r21, lauf=False, nur_tech=None):
         out = []
@@ -64,17 +77,18 @@ def main():
         return out
 
     GR = {
-        "Aktien −30 %, 21T ≤ −20 %": lambda: ev(AKTIEN, -0.30, -0.20),
-        "… nach Lauf ≥ +50 %": lambda: ev(AKTIEN, -0.30, -0.20, lauf=True),
-        "… nach Lauf, nur Tech (SPY besser −10 %)": lambda: ev(AKTIEN, -0.30, -0.20, lauf=True, nur_tech=True),
-        "… nach Lauf, breit (SPY −10 % oder tiefer)": lambda: ev(AKTIEN, -0.30, -0.20, lauf=True, nur_tech=False),
-        "Aktien −40 %, 21T ≤ −25 %, nach Lauf": lambda: ev(AKTIEN, -0.40, -0.25, lauf=True),
-        "Tech-ETFs −15 %, 21T ≤ −12 %": lambda: ev(ETF_TECH, -0.15, -0.12),
+        "Aktien −30 %, 21T ≤ −20 %": lambda: ev(AKT, -0.30, -0.20),
+        "… nach Lauf ≥ +50 %": lambda: ev(AKT, -0.30, -0.20, lauf=True),
+        "… nach Lauf, nur Tech (SPY besser −10 %)": lambda: ev(AKT, -0.30, -0.20, lauf=True, nur_tech=True),
+        "… nach Lauf, breit (SPY −10 % oder tiefer)": lambda: ev(AKT, -0.30, -0.20, lauf=True, nur_tech=False),
+        "Aktien −40 %, 21T ≤ −25 %, nach Lauf": lambda: ev(AKT, -0.40, -0.25, lauf=True),
+        "Tech-ETFs −15 %, 21T ≤ −12 %": lambda: ev(ETFS, -0.15, -0.12),
         "SMH −30 %, 21T ≤ −15 %": lambda: ev(["SMH"], -0.30, -0.15),
     }
     L = ["# Was kommt zuerst: weiter fallen oder steigen? (Messung 2026-11-09)\n",
          f"Daten bis {px.index[-1].date()}, Schlusskurse. Einzelaktien mit Survivorship-Bias: Die 32 Werte sind heutige Gewinner, echte Quoten eher schlechter. "
-         "Ereignisse ballen sich in wenigen Krisen, deshalb ist auch die Zahl der Quartale angegeben.\n"]
+         "Ereignisse ballen sich in wenigen Krisen, deshalb ist auch die Zahl der Quartale angegeben.\n",
+         f"Fehlende Werte im Lauf: {fehlt or 'keine'}.\n"]
     z1, z2, z3 = [], [], []
     PAARE = [(0.15, -0.15), (0.20, -0.20), (0.30, -0.15), (0.30, -0.30), (0.50, -0.25)]
     for nm, f in GR.items():
@@ -106,7 +120,7 @@ def main():
     L += ["## Was kam zuerst? (rauf / runter, Rest: keins binnen 126 Tagen)\n",
           tab(["Gruppe"] + [f"+{int(u * 100)} / {int(d * 100)} %" for u, d in PAARE], z3), "\n"]
     jetzt = []
-    for t in AKTIEN + ["SMH", "XLK"]:
+    for t in AKT + ["SMH", "XLK"]:
         c = C[t]
         r21 = c.iloc[-1] / c.iloc[-22] - 1
         jetzt.append([t, f"{c.iloc[-1]:.2f}", p(DD[t].iloc[-1]), p(r21), "ja" if DD[t].iloc[-1] <= -0.30 and r21 <= -0.20 else ""])
