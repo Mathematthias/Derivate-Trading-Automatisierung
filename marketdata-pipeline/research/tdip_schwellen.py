@@ -337,6 +337,79 @@ def main():
         for k, v in gr.items():
             z.append(zeile_fwd(f"{x * 100:.0f} %: {k}", v))
     L += [tab(KOPF_FWD, z), "\n"]
+    # 7 Robustheit (zweiter Lauf 2026-11-09)
+    L += ["## 7 Robustheit und aktuelle Lage\n", "### 7a Letzte Schlusskurse\n"]
+    z = []
+    for k in range(-10, 0):
+        d = C["XLK"].index[k]
+        z.append([d.date()] + [f"{C[t].loc[d]:.2f} ({p(DD[t][0].loc[d])})" for t in ("XLK", "QQQ", "SMH", "SPY")])
+    L += [tab(["Datum", "XLK (zum Hoch)", "QQQ", "SMH", "SPY"], z), "\n"]
+
+    L += ["### 7b Kontext ohne die Jahre 2000 bis 2002 und nach Etf\n"]
+
+    def kontext_ev(x, von_2003):
+        gr = {"nur Tech": [], "breit": [], "Rueckstand <= -8 %": [], "kein Rueckstand": []}
+        for t in ETF_TECH:
+            c = C[t]
+            arr = c.to_numpy()
+            rel = (c / c.shift(21)) / (C["SPY"].reindex(c.index) / C["SPY"].reindex(c.index).shift(21)) - 1
+            sd = spy_dd.reindex(c.index)
+            for i in ereignisse(DD[t][0], x):
+                if von_2003 and c.index[i] < pd.Timestamp("2003-01-01"):
+                    continue
+                gr["nur Tech" if sd.iloc[i] > -0.10 else "breit"].append((arr, i, t, c.index[i].date()))
+                gr["Rueckstand <= -8 %" if rel.iloc[i] <= -0.08 else "kein Rueckstand"].append((arr, i, t, c.index[i].date()))
+        return gr
+
+    for von in (False, True):
+        z = []
+        for x in (-0.15, -0.20):
+            for k, v in kontext_ev(x, von).items():
+                z.append(zeile_fwd(f"{x * 100:.0f} %: {k}", [(a2, i) for a2, i, _, _ in v]))
+        L += [("**ab 2003**\n" if von else "**alle Jahre**\n"), tab(KOPF_FWD, z), "\n"]
+    for k in ("nur Tech", "Rueckstand <= -8 %"):
+        v = sorted(kontext_ev(-0.20, False)[k], key=lambda e: e[3])
+        L += [f"Ereignisse −20 %, {k}:\n", tab(["Datum", "ETF", "6M", "12M"], [[d, t, p(fwd(a2, i, 126)), p(fwd(a2, i, 252))] for a2, i, t, d in v]), "\n"]
+
+    L += ["### 7c Erholungstag knapp vor der Marke\n",
+          "Episode hat −17 % bis −20 % erreicht, nie −20 %; heute Schluss mindestens +1 % über Vortag. Einmal je Episode, Kauf am Schluss des Erholungstags. Wie oft kam −20 % danach noch? Lage heute entspricht diesem Fall, wenn XLK im Tief knapp vor −20 % drehte.\n"]
+    z = []
+    allr = []
+    for t in ETF_TECH:
+        c = C[t]
+        arr = c.to_numpy()
+        dd = DD[t][0].to_numpy()
+        r1 = (c / c.shift(1) - 1).to_numpy()
+        ev = []
+        i = 0
+        while i < len(arr):
+            if not np.isnan(dd[i]) and dd[i] <= -0.17:
+                # Episode beginnt: laufe bis Erholung ueber -5 %
+                tief = dd[i]
+                k = i
+                done = False
+                while k < len(arr) and dd[k] <= -0.05:
+                    tief = min(tief, dd[k])
+                    if tief <= -0.20:
+                        break
+                    if not done and tief <= -0.17 and r1[k] >= 0.01:
+                        ev.append(k)
+                        done = True
+                    k += 1
+                while k < len(arr) and dd[k] <= -0.05:
+                    k += 1
+                i = k + 1
+            else:
+                i += 1
+        h20 = [any(dd[j] <= -0.20 for j in range(k + 1, min(k + 21, len(arr)))) for k in ev]
+        h60 = [any(dd[j] <= -0.20 for j in range(k + 1, min(k + 61, len(arr)))) for k in ev]
+        h126 = [any(dd[j] <= -0.20 for j in range(k + 1, min(k + 127, len(arr)))) for k in ev]
+        allr += [(arr, k, h126[n], t, c.index[k].date()) for n, k in enumerate(ev)]
+        z.append([t, len(ev), q(np.mean(h20) if ev else np.nan), q(np.mean(h60) if ev else np.nan), q(np.mean(h126) if ev else np.nan)])
+    L += [tab(["ETF", "n", "−20 % binnen 20 T", "binnen 60 T", "binnen 126 T"], z), "\n",
+          tab(KOPF_FWD, [zeile_fwd("Kauf am Erholungstag", [(a2, k) for a2, k, _, _, _ in allr]), zeile_fwd("davon −20 % kam noch", [(a2, k) for a2, k, h, _, _ in allr if h]),
+                         zeile_fwd("davon −20 % kam nicht", [(a2, k) for a2, k, h, _, _ in allr if not h])]), "\n",
+          tab(["Datum", "ETF", "−20 % kam noch", "6M", "12M"], [[d, t, "ja" if h else "nein", p(fwd(a2, k, 126)), p(fwd(a2, k, 252))] for a2, k, h, t, d in sorted(allr, key=lambda e: e[4])]), "\n"]
     Path(a.out).mkdir(parents=True, exist_ok=True)
     (Path(a.out) / "TDIP_SCHWELLEN.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L)[:600])
