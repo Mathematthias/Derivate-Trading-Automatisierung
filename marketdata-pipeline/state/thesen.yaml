@@ -80,6 +80,9 @@ thesen:
     zweite_haelfte: nach ENR.DE 2026-11-11 ohne Falsifikat, oder frueher bei 1D-Schluss des Vehikels ueber seiner EMA50
     ziel: Rueckkehr Richtung EMA100/EMA50 je Vehikel (PWR 638,81/635,53 · ABBN.SW 77,77/76,98 · PRY.MI 121,36/117,88); Teilgewinn an der ersten starken Marke
     notiz: 'ETN bis 2026-11-03 per Earnings-Disqualifier aus den Vehikeln heraus. KEIN benannter UCITS-Netz-/Elektrifizierungs-ETF - die Spur bevorzugt ETFs, hier bleiben es 3 Direktaktien, weil kein Produkt belegt benannt werden kann (nichts erfunden). KOPPLUNG: Falsifikat (a) ist identisch mit dem der These TECH; nach L7 sind A und TECH EIN Risikoblock. A und TECH zusammen fuellen die Spur vollstaendig (2 von 2 Thesen, 4 von 4 R) auf einem einzigen Treiber - ob beide einen Starter tragen, ist eine Entscheidung des Users, nicht dieses Laufs.'
+  nachruf:
+    datum: '2026-11-09'
+    text: 'Gedacht war, dass Hyperscaler-Capex die Elektrifizierung neu bewertet. PWR schloss am 2026-11-04 bei 580,44 unter 607,73, ohne Starter verworfen am 2026-11-05, 0 EUR. Gelernt: Inhaltlich blieb die These unwiderlegt, die Preismarke entschied, und das Warten kostete nichts.'
 - id: OEL
   titel: Oel/Hormus
   verdikt: beobachten
@@ -298,7 +301,7 @@ thesen:
   ausdruecke:
   - ASML.AS
   - NVDA
-  note: Preis-Falsifikat gebrochen, nach references/thesen-spur.md nicht verhandelbar - Verdikt verworfen, obwohl das Thesen-Falsifikat weiter widerlegt ist und NVDA Q3 am 2026-11-17 noch aussteht. Kein Starter eroeffnet, also kein Kapitalverlust; der am 2026-10-31 gerechnete Starter waere in BEIDEN Vehikeln ausgestoppt worden (ASML.AS 1.283,60 unter Stop 1.367,86 / NVDA 186,64 unter Stop 198,39). Ein Nachfolger mit weiter gelegtem Kill-Switch ist eine Entscheidung des Users und braucht eine NEUE id mit neuer Karte - das Kill-Switch einer getroffenen These nachtraeglich zu verlegen ist genau das Festhalten, das die Spur verbietet.
+  note: 'Preis-Falsifikat gebrochen, nach references/thesen-spur.md nicht verhandelbar - Verdikt verworfen, obwohl das Thesen-Falsifikat weiter widerlegt ist und NVDA Q3 am 2026-11-17 noch aussteht. KORREKTUR 2026-11-09 (Journal #18 AV, A-018): Starter ASML.AS 1 Stk am 2026-10-29 zu 1.505,00 EUR eroeffnet, am 2026-11-03 im Gap zu 1.367,20 EUR ausgestoppt, -137,80 EUR = -0,92 R; die fruehere Angabe, es sei kein Starter eroeffnet worden, war falsch. der am 2026-10-31 gerechnete Starter waere in BEIDEN Vehikeln ausgestoppt worden (ASML.AS 1.283,60 unter Stop 1.367,86 / NVDA 186,64 unter Stop 198,39). Ein Nachfolger mit weiter gelegtem Kill-Switch ist eine Entscheidung des Users und braucht eine NEUE id mit neuer Karte - das Kill-Switch einer getroffenen These nachtraeglich zu verlegen ist genau das Festhalten, das die Spur verbietet.'
   historie:
   - date: '2026-10-19'
     verdikt: spielen
@@ -344,6 +347,9 @@ thesen:
     zweite_haelfte: nach NVDA 2026-11-17 ohne Falsifikat, oder frueher bei 1D-Schluss des Vehikels ueber seiner EMA50
     ziel: Rueckkehr Richtung 52W-Hoch je Vehikel; Teilgewinn an der ersten starken Marke (sr-Zonen)
     notiz: 'Katalysator AMZN 2026-10-29 erledigt: kein Cut, Q3-Capex 77,3 Mrd. USD gegen 58,7 Mrd. Konsens, FY26 rund 220 Mrd. gehalten, 2027 ''meaningfully more'' - Falsifikat (a) damit an allen vier Big-5-Berichten widerlegt. STARTER-RECHNUNG 2026-10-31 (1 R = 150 EUR, je Vehikel 0,5 R): ASML.AS 1.412,80, Stop an EMA200-1D 1.367,86 = -3,18 % -> rund 2.358 EUR; NVDA 204,64, EMA200 205,79 ist bereits unterschritten (-0,56 %), naechste Struktur rc20-Untergrenze 198,39 = -3,05 % -> rund 2.456 EUR; Summe rund 4.814 EUR gegen Spur-Deckel 6.746 EUR (50 % von disponibel 13.492,24). Der Starter ist also sizebar - aber das Thesen-Kill-Switch liegt 0,53 ATR entfernt und NVDA hat seine eigene EMA200 schon verloren. Entscheidung des Users: Starter jetzt, Preis-Falsifikat an eine weiter entfernte Struktur legen (hoehere Verlusttoleranz der These), oder Abstand abwarten.'
+  nachruf:
+    datum: '2026-11-09'
+    text: 'Gedacht war, dass der AI-Capex nicht gekuerzt wird und die Zulieferer zu billig sind. Der ASML-Starter wurde ausgestoppt (-0,92 R), ^IXIC schloss am 2026-11-02 unter der EMA200, das Verdikt kam erst am 2026-11-07, das Thesen-Falsifikat trat nie ein. Gelernt: Ein Kill-Switch 0,5 ATR unter Kurs ist fuer eine Mehrmonats-These zu eng, und ein Preis-Falsifikat muss am selben Tag zum Verdikt fuehren.'
 - id: N7
   titel: US-Arzneimittelpreis-Pfad - Payer-Seite (Managed Care)
   verdikt: beobachten
@@ -473,14 +479,10 @@ thesen:
   korb_budget_pct: null
   crowdedness_pp: -18.0
   re_check: '2026-12-07'
-  falsifikat: 'Thesen-Falsifikat: ein Big-4-Hyperscaler (MSFT, GOOGL, AMZN, META) senkt die Capex-Guidance,
-    oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens. Preis-Falsifikat: XLK-Schluss unter Karten-Level
-    (35 % unter 52W-Hoch).'
+  falsifikat: 'Thesen-Falsifikat: ein Big-4-Hyperscaler (MSFT, GOOGL, AMZN, META) senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens. Preis-Falsifikat: XLK-Schluss unter Karten-Level (35 % unter 52W-Hoch).'
   ausdruecke:
   - XLK
-  note: '2026-11-07 User: TDIP eintragen. Neue id statt der verworfenen TECH (Kill-Switch wird nach Treffer
-    nicht verlegt). Grundlage Backtest 2026-11-07 (Projekt-Doc trading/Backtest-Ergebnisse_2026-11-07.md,
-    Abschnitt 5) und Entwurf trading/Thesenkarte_TDIP_Entwurf_2026-11-07.md.'
+  note: '2026-11-07 User: TDIP eintragen. Neue id statt der verworfenen TECH (Kill-Switch wird nach Treffer nicht verlegt). Grundlage Backtest 2026-11-07 (Projekt-Doc trading/Backtest-Ergebnisse_2026-11-07.md, Abschnitt 5) und Entwurf trading/Thesenkarte_TDIP_Entwurf_2026-11-07.md.'
   historie:
   - date: '2026-11-07'
     verdikt: spielen
@@ -490,12 +492,8 @@ thesen:
   budget_r: 2
   starter_anteil: 0.5
   karte:
-    konsens: 'AI-Capex-Blase und Bewertung: Tech zu teuer, der Abverkauf seit dem Sommer ist der Anfang
-      einer laengeren Korrektur. Sektor-Linse 2026-11-06: Halbleiter median -40,7 % unter 52W-Hoch, Software
-      -27,4 %; XLK -18,4 %.'
-    abweichung: 'Bewertungskorrektur, kein Gewinneinbruch: kein Hyperscaler hat Capex gekuerzt (Thesen-Lauf
-      2026-11-07). Historisch XLK nach erstem Kreuzen von -20 % zum 52W-Hoch: 6 Episoden, Mittel 6M +19,1
-      %, 12M +16,9 % (4 von 6 positiv) gegen unbedingt 12M +12,8 % (Backtest 2026-11-07).'
+    konsens: 'AI-Capex-Blase und Bewertung: Tech zu teuer, der Abverkauf seit dem Sommer ist der Anfang einer laengeren Korrektur. Sektor-Linse 2026-11-06: Halbleiter median -40,7 % unter 52W-Hoch, Software -27,4 %; XLK -18,4 %.'
+    abweichung: 'Bewertungskorrektur, kein Gewinneinbruch: kein Hyperscaler hat Capex gekuerzt (Thesen-Lauf 2026-11-07). Historisch XLK nach erstem Kreuzen von -20 % zum 52W-Hoch: 6 Episoden, Mittel 6M +19,1 %, 12M +16,9 % (4 von 6 positiv) gegen unbedingt 12M +12,8 % (Backtest 2026-11-07).'
     katalysator:
     - date: '2026-11-12'
       ereignis: AMAT Q4
@@ -505,28 +503,21 @@ thesen:
       ereignis: PANW Q1
     - date: '2026-12-01'
       ereignis: CRWD Q3
-    thesen_falsifikat: Ein Big-4-Hyperscaler senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17
-      den Q4-Umsatz unter Konsens.
+    thesen_falsifikat: Ein Big-4-Hyperscaler senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens.
     preis_falsifikat:
       symbol: XLK
       op: <
       level: 131.3
-      text: XLK-Tagesschluss 35 % unter 52W-Hoch (202,00 USD laut thesen_preise 2026-11-06, Schlusskurse
-        ohne Dividendenbereinigung). Pruefung am Schluss, Verkauf
-        naechster Handelstag. Nicht verhandelbar.
+      text: XLK-Tagesschluss 35 % unter 52W-Hoch (202,00 USD laut thesen_preise 2026-11-06, Schlusskurse ohne Dividendenbereinigung). Pruefung am Schluss, Verkauf naechster Handelstag. Nicht verhandelbar.
     einstieg:
       symbol: XLK
       op: <
       level: 161.6
-      text: Starter erst bei XLK-Tagesschluss 20 % unter 52W-Hoch (202,00 USD). Erholt sich der
-        Sektor vorher, kein Trade.
+      text: Starter erst bei XLK-Tagesschluss 20 % unter 52W-Hoch (202,00 USD). Erholt sich der Sektor vorher, kein Trade.
     horizont: '2027-05-07'
     vehikel:
     - SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
     zweite_haelfte: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und Kurs ueber Preis-Falsifikat
     ziel: 'Horizont-These: Erholung Richtung 52W-Hoch binnen 6 Monaten; kein festes Kursziel'
-    notiz: 'Budget 2 R = 300 EUR. Abstand Einstieg (-20 %) zu Falsifikat (-35 %) = 0,65/0,80 - 1 = -18,75
-      %. Volle Position 300 / 0,1875 = 1.600 EUR, Starter 1/2 = 800 EUR. Bewusst nicht Halbleiter (1.400
-      EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden, schlechtester 12M-Verlauf
-      -47 %; wettet gegen den aktuellen Kern (Rotation meidet Tech); USD-Risiko.'
+    notiz: 'Budget 2 R = 300 EUR. Abstand Einstieg (-20 %) zu Falsifikat (-35 %) = 0,65/0,80 - 1 = -18,75 %. Volle Position 300 / 0,1875 = 1.600 EUR, Starter 1/2 = 800 EUR. Bewusst nicht Halbleiter (1.400 EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden, schlechtester 12M-Verlauf -47 %; wettet gegen den aktuellen Kern (Rotation meidet Tech); USD-Risiko.'
 updated: '2026-11-07T17:15:00+00:00'
