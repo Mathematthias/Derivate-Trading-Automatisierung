@@ -1,6 +1,23 @@
 {
   "version": "LS-2 2026-11-07",
-  "positionen": [],
+  "positionen": [
+    {
+      "symbol": "NDX1.DE",
+      "waehrung": "EUR",
+      "einstieg_datum": "2026-11-09",
+      "einstieg_kurs": 43.08,
+      "einstieg_eur": 43.08,
+      "stueck": 18,
+      "einsatz_eur": 775.44,
+      "stop_initial": 40.2544,
+      "stop": 40.2544,
+      "checkliste": {
+        "score": "5/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
+      },
+      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker zu setzen."
+    }
+  ],
   "abgeschlossen": [],
   "reviews": {},
   "kandidaten": [
@@ -45,11 +62,11 @@
   "abgelehnt_abgeschlossen": [],
   "budget": {
     "budget_eur": 150,
-    "risiko_offen_eur": 0,
-    "risiko_frei_eur": 150,
+    "risiko_offen_eur": 50.86,
+    "risiko_frei_eur": 99.14,
     "kapital_eur": 12000,
-    "kapital_gebunden_eur": 0,
-    "kapital_frei_eur": 12000
+    "kapital_gebunden_eur": 775.44,
+    "kapital_frei_eur": 11224.56
   },
   "anzahl_zuege": 2,
   "eurchf": 0.9156
