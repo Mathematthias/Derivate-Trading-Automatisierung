@@ -14,7 +14,49 @@
         "XLP",
         "XLB"
       ],
-      "erzwungen": true
+      "erzwungen": true,
+      "fills": [
+        {
+          "signal": "XLB",
+          "isin": "IE00BWBXM831",
+          "stueck": 42,
+          "kurs_eur": 47.94,
+          "gebuehr_eur": 1.0,
+          "einsatz_eur": 2014.48,
+          "datum": "2026-11-09",
+          "broker": "Trade Republic"
+        },
+        {
+          "signal": "XLP",
+          "isin": "IE00BWBXM385",
+          "stueck": 45,
+          "kurs_eur": 44.695,
+          "gebuehr_eur": 1.0,
+          "einsatz_eur": 2012.28,
+          "datum": "2026-11-09",
+          "broker": "Trade Republic"
+        },
+        {
+          "signal": "XLE",
+          "isin": "IE00BWBXM492",
+          "stueck": 44,
+          "kurs_eur": 45.275,
+          "gebuehr_eur": 1.0,
+          "einsatz_eur": 1993.1,
+          "datum": "2026-11-09",
+          "broker": "Trade Republic"
+        },
+        {
+          "signal": "XLV",
+          "isin": "IE00BWBXM617",
+          "stueck": 38,
+          "kurs_eur": 52.24,
+          "gebuehr_eur": 1.0,
+          "einsatz_eur": 1986.12,
+          "datum": "2026-11-09",
+          "broker": "Trade Republic"
+        }
+      ]
     }
   ],
   "signal": {
@@ -49,7 +91,8 @@
         "isin": "IE00BWBXM831"
       }
     ],
-    "umgesetzt": false
+    "umgesetzt": true,
+    "umgesetzt_datum": "2026-11-09"
   },
   "vorschau": {
     "datum": "2026-11-06",
