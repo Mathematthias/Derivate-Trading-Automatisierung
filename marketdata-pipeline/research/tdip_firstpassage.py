@@ -61,6 +61,8 @@ def main():
     spy = DD["SPY"]
     V = {t: vorlauf(C[t]) for t in AKT}
 
+    min_h = 126
+
     def ev(tickers, schw, r21, lauf=False, nur_tech=None):
         out = []
         for t in tickers:
@@ -72,7 +74,7 @@ def main():
                 s = spy.reindex(c.index) > -0.10
                 bed = bed & (s if nur_tech else ~s)
             for i in ereignisse(DD[t], schw, bed):
-                if i + 126 < len(c):
+                if i + min_h < len(c):
                     out.append((c.to_numpy(), i, t, c.index[i]))
         return out
 
@@ -119,6 +121,30 @@ def main():
           tab(["Gruppe", "n", "median Hoch 20T", "median Hoch 126T", "≥ +20 %", "≥ +30 %", "≥ +50 %", "Rendite nach 126T (Median)", "pos."], z2), "\n"]
     L += ["## Was kam zuerst? (rauf / runter, Rest: keins binnen 126 Tagen)\n",
           tab(["Gruppe"] + [f"+{int(u * 100)} / {int(d * 100)} %" for u, d in PAARE], z3), "\n"]
+    # Ein Monat (21 Handelstage)
+    min_h = 21
+    z4, z5 = [], []
+    for nm, f in GR.items():
+        e = f()
+        for lab, ee in ((nm, e), (nm + " (ab 2003)", [x for x in e if x[3] >= pd.Timestamp("2003-01-01")])):
+            if not ee:
+                continue
+            qs = len({f"{d.year}Q{d.quarter}" for _, _, _, d in ee})
+            mae = np.array([c[i + 1:i + 22].min() / c[i] - 1 for c, i, _, _ in ee])
+            mfe = np.array([c[i + 1:i + 22].max() / c[i] - 1 for c, i, _, _ in ee])
+            end = np.array([c[i + 21] / c[i] - 1 for c, i, _, _ in ee])
+            z4.append([lab, len(ee), qs, p(float(np.median(end))), p(float(np.mean(end))), q(float((end > 0).mean())), q(float((end >= 0.10).mean())), q(float((end <= -0.10).mean())),
+                       q(float((mae <= -0.05).mean())), q(float((mae <= -0.10).mean())), q(float((mae <= -0.15).mean())), q(float((mae <= -0.20).mean())),
+                       q(float((mfe >= 0.05).mean())), q(float((mfe >= 0.10).mean())), q(float((mfe >= 0.15).mean())), q(float((mfe >= 0.20).mean()))])
+            row = [lab]
+            for up, dn in ((0.05, -0.05), (0.10, -0.10), (0.15, -0.15), (0.20, -0.20)):
+                r = [erst(c, i, up, dn, 21) for c, i, _, _ in ee]
+                row.append(f"{q(np.mean([x == 'up' for x in r]))} / {q(np.mean([x == 'dn' for x in r]))} / {q(np.mean([x == 'kein' for x in r]))}")
+            z5.append(row)
+    L += ["## Ein Monat (21 Handelstage)\n",
+          tab(["Gruppe", "n", "Quartale", "Median Ende", "Ø Ende", "pos.", "Ende ≥ +10 %", "Ende ≤ −10 %", "Tief ≤ −5 %", "≤ −10 %", "≤ −15 %", "≤ −20 %", "Hoch ≥ +5 %", "≥ +10 %", "≥ +15 %", "≥ +20 %"], z4), "\n",
+          "Was kam binnen 21 Tagen zuerst (rauf / runter / keins):\n",
+          tab(["Gruppe", "5 %", "10 %", "15 %", "20 %"], z5), "\n"]
     jetzt = []
     for t in AKT + ["SMH", "XLK"]:
         c = C[t]
