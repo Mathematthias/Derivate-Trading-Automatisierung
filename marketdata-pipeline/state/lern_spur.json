@@ -62,8 +62,10 @@
     {
       "symbol": "AMZN",
       "waehrung": "USD",
-      "einstieg_datum": "2026-11-06",
-      "einstieg_kurs": 259.3,
+      "signal_datum": "2026-11-06",
+      "signal_kurs": 259.3,
+      "einstieg_datum": "2026-11-09",
+      "einstieg_kurs": 269.32,
       "stop_initial": 245.5169,
       "stop": 245.5169,
       "grund": "Gap ueber 1 ATR, zur Eroeffnung sogar mehr",
@@ -71,7 +73,7 @@
         "score": "5/7",
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
-      "notiz": "Veto 2026-11-09 (User). Tagesdaten laut Chart: Eroeffnung 269,32 USD (+3,86 % bzw. 1,09 ATR ueber Signalschluss 259,30), Hoch 275,34, Kurs beim Veto 269,87. Papier-Trade startet regelgemaess ab Signalschluss, also rund 10 USD besser als ein realer Fill; beim Review beruecksichtigen."
+      "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87."
     }
   ],
   "abgelehnt_abgeschlossen": [],

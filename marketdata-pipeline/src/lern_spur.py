@@ -17,7 +17,9 @@ FILTER_SEITWAERTS.md und LERNSPUR_SLOTS.md):
            LERNSPUR_REGIONEN.md: CHF +0,48 R bei n = 437; GBP und Nordics bleiben draussen).
   Veto     Der User darf ein Signal ablehnen. Abgelehnte Signale laufen als Papier-Trade mit
            denselben Regeln weiter (abgelehnt / abgelehnt_abgeschlossen), damit sich messen
-           laesst, ob seine Vetos helfen. Sie zaehlen nicht zu den 20 Trades.
+           laesst, ob seine Vetos helfen. Sie zaehlen nicht zu den 20 Trades. Start wie ein realer
+           Fill: Einstieg Eroeffnung T+1, Stop vom Signalschluss, R auf das geplante Risiko
+           (User 2026-11-09, LS2_EINSTIEG_T1.md; Gap > 1 ATR: Papier +1,63 R gegen real +0,54 R).
   Auswahl  bei mehr Signalen als Plaetzen: niedrigste ATR% zuerst (Auswahl-Test 2026-11-07).
 
 Der Job laeuft nach US-Schluss und schreibt state/lern_spur.json:
@@ -218,16 +220,38 @@ def zuege_markieren(kand: list[dict], bud: dict, pos: list[dict] | None = None, 
 
 def papier_update(p: dict, d: pd.DataFrame, cfg: dict) -> dict:
     """Abgelehntes Signal mit denselben Regeln Tag fuer Tag weiterfuehren (wie der Backtest:
-    Stop zuerst, dann Chandelier auf Schlusskurs, Zeitausstieg am Schluss von Tag max_ht)."""
+    Stop zuerst, dann Chandelier auf Schlusskurs, Zeitausstieg am Schluss von Tag max_ht).
+
+    Mit signal_datum startet der Papier-Trade wie ein realer Fill: Einstieg zur Eroeffnung des
+    Folgetags (fehlt einstieg_kurs, traegt der Job ihn ein), Stop bleibt vom Signalschluss, der
+    Einstiegstag zaehlt als Handelstag 0 und sein Tief gilt schon gegen den Stop. R bezieht sich
+    auf das geplante Risiko (signal_kurs - stop_initial), weil die Stueckzahl am Signal haengt.
+    Eroeffnung schon unter dem Stop: kein Trade, r = 0. Neue Vetos legt der Chat mit Signaltag und
+    Signalschluss in einstieg_datum/einstieg_kurs an; sie werden beim ersten Lauf umgesetzt. Bereits
+    laufende Eintraege (geprueft_bis gesetzt) bleiben unveraendert."""
+    roh = p
     p = dict(p)
     if p.get("ausstieg_datum"):
         return p
-    e, s0 = float(p["einstieg_kurs"]), float(p["stop_initial"])
-    risk = e - s0
+    s0 = float(p["stop_initial"])
+    if not p.get("signal_datum") and not p.get("geprueft_bis") and not p.get("handelstage"):
+        p.update(signal_datum=p["einstieg_datum"], signal_kurs=float(p["einstieg_kurs"]), einstieg_kurs=None)
+    if p.get("signal_datum") and p.get("einstieg_kurs") is None:
+        t1 = d.loc[d.index > pd.Timestamp(p["signal_datum"])]
+        if t1.empty:
+            return dict(roh)
+        o = float(t1.Open.iloc[0])
+        tag = t1.index[0].date().isoformat()
+        p.update(einstieg_datum=tag, einstieg_kurs=round(o, 4))
+        if o <= s0:
+            p.update(ausstieg_datum=tag, ausstieg_kurs=round(o, 4), grund_ausstieg="kein_trade_eroeffnung_unter_stop", r=0.0)
+            return p
+    e = float(p["einstieg_kurs"])
+    risk = float(p.get("signal_kurs", e)) - s0
     stop = float(p.get("stop", s0))
     hoch = float(p.get("hoechster_schluss", e))
-    zuletzt = pd.Timestamp(p.get("geprueft_bis") or p["einstieg_datum"])
-    ht = int(p.get("handelstage", 0))
+    zuletzt = pd.Timestamp(p.get("geprueft_bis") or p.get("signal_datum") or p["einstieg_datum"])
+    ht = int(p.get("handelstage", -1 if p.get("signal_datum") else 0))
     for ts, row in d.loc[d.index > zuletzt].iterrows():
         ht += 1
         if row.Low <= stop:

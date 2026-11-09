@@ -146,3 +146,66 @@ def test_chf_waehrung_fx_und_deckel():
     # schon eine CHF-Position offen: kein weiterer CHF-Zug
     assert ls.zuege_markieren(kand, bud, [p], CFG["max_je_waehrung"]) == 1
     assert [c["zug"] for c in kand] == [False, False, True]
+
+
+# ------------------------------------------------------------------ Papier-Start T+1 (2026-11-09)
+def _papier_df():
+    idx = pd.to_datetime(["2026-11-06", "2026-11-09", "2026-11-10"])
+    return pd.DataFrame({"Open": [100.0, 110.0, 112.0], "High": [101.0, 112.0, 113.0], "Low": [99.0, 108.0, 110.0],
+                         "Close": [100.0, 111.0, 112.0], "Volume": [1, 1, 1], "atr": [4.0, 4.0, 4.0]}, index=idx)
+
+
+def _papier_veto(**kw):
+    p = {"symbol": "X", "signal_datum": "2026-11-06", "signal_kurs": 100.0, "stop_initial": 94.0, "stop": 94.0}
+    p.update(kw)
+    return p
+
+
+def test_papier_start_traegt_eroeffnung_t1_ein():
+    cfg = {"chandelier_atr": 3.0, "max_ht": 60}
+    q = ls.papier_update(_papier_veto(), _papier_df(), cfg)
+    assert q["einstieg_datum"] == "2026-11-09"
+    assert q["einstieg_kurs"] == 110.0
+    assert q["handelstage"] == 1              # Einstiegstag = Tag 0
+    assert "ausstieg_datum" not in q
+
+
+def test_papier_start_r_auf_geplantes_risiko():
+    cfg = {"chandelier_atr": 3.0, "max_ht": 60}
+    d = _papier_df()
+    d.loc["2026-11-10", "Low"] = 90.0         # Stop 94 gerissen (Chandelier von Tag 0: 111 - 12 = 99)
+    q = ls.papier_update(_papier_veto(), d, cfg)
+    assert q["ausstieg_kurs"] == 99.0
+    assert q["r"] == round((99.0 - 110.0) / 6.0, 2)
+
+
+def test_papier_start_eroeffnung_unter_stop_kein_trade():
+    cfg = {"chandelier_atr": 3.0, "max_ht": 60}
+    d = _papier_df()
+    d.loc["2026-11-09", ["Open", "Low"]] = [93.0, 92.0]
+    q = ls.papier_update(_papier_veto(), d, cfg)
+    assert q["grund_ausstieg"] == "kein_trade_eroeffnung_unter_stop"
+    assert q["r"] == 0.0
+
+
+def test_papier_chat_format_wird_auf_t1_umgesetzt():
+    cfg = {"chandelier_atr": 3.0, "max_ht": 60}
+    p = {"symbol": "X", "einstieg_datum": "2026-11-06", "einstieg_kurs": 100.0, "stop_initial": 94.0, "stop": 94.0}
+    q = ls.papier_update(p, _papier_df(), cfg)
+    assert (q["signal_datum"], q["signal_kurs"]) == ("2026-11-06", 100.0)
+    assert (q["einstieg_datum"], q["einstieg_kurs"]) == ("2026-11-09", 110.0)
+    assert q["handelstage"] == 1
+
+
+def test_papier_ohne_folgetag_bleibt_unveraendert():
+    cfg = {"chandelier_atr": 3.0, "max_ht": 60}
+    p = {"symbol": "X", "einstieg_datum": "2026-11-06", "einstieg_kurs": 100.0, "stop_initial": 94.0, "stop": 94.0}
+    assert ls.papier_update(p, _papier_df().iloc[:1], cfg) == p
+
+
+def test_papier_laufender_alteintrag_unveraendert():
+    cfg = {"chandelier_atr": 3.0, "max_ht": 60}
+    p = {"symbol": "X", "einstieg_datum": "2026-11-06", "einstieg_kurs": 100.0, "stop_initial": 94.0, "stop": 94.0,
+         "geprueft_bis": "2026-11-06", "handelstage": 0}
+    q = ls.papier_update(p, _papier_df(), cfg)
+    assert q["einstieg_kurs"] == 100.0 and q["handelstage"] == 2 and "signal_datum" not in q

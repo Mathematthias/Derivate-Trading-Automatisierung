@@ -6,6 +6,7 @@
 # Simulation 2009-2026 (LERNSPUR_BUDGET.md): 20 Trades in ~17 statt ~44 Wochen, Ø R etwa gleich.
 # US-Werte handelt der User in EUR ueber gettex: Stops zusaetzlich in EUR.
 # Vetos des Users laufen als Papier-Trades mit (Feld abgelehnt), zaehlen nicht zu den 20 Trades.
+# Papier-Start seit 2026-11-09 wie ein realer Fill: Eroeffnung T+1, Stop vom Signalschluss, R auf das geplante Risiko.
 
 version: "LS-2 2026-11-07"
 kapital_eur: 12000
