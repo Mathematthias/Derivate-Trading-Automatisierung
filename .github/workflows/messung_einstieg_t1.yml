@@ -1,0 +1,42 @@
+name: Messung LS-2 Einstieg T+1
+
+# Reine Messung: Backtest-Einstieg Schluss T gegen Live-Einstieg Eroeffnung T+1.
+# Laeuft nur auf messung/**-Branches und schreibt den Bericht auf denselben Branch.
+
+on:
+  push:
+    branches: ['messung/**']
+    paths: ['marketdata-pipeline/research/einstieg_t1.py', '.github/workflows/messung_einstieg_t1.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  messung:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Messung
+        working-directory: marketdata-pipeline
+        run: |
+          mkdir -p work research/out
+          python research/einstieg_t1.py --cfg config --out research/out --cache work/bt_cache.pkl
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/research/out/LS2_EINSTIEG_T1.md
+          git commit -m "research: LS-2 Einstieg T+1 ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
