@@ -22,42 +22,26 @@
   "reviews": {},
   "kandidaten": [
     {
-      "symbol": "AMZN",
+      "symbol": "WFC",
       "waehrung": "USD",
-      "schluss": 259.3,
-      "r_eur_effektiv": 49.1,
-      "atr": 9.1887,
-      "atr_pct": 0.0354,
-      "stop_vorschlag": 245.5169,
-      "stop_vorschlag_eur": 218.66,
-      "schluss_eur": 230.94,
-      "stueck": 4,
-      "einsatz_eur": 923.74,
-      "ext20_atr": 0.57,
-      "rang": 0.03543653657993617,
-      "zug": true
-    },
-    {
-      "symbol": "NDX1.DE",
-      "waehrung": "EUR",
-      "schluss": 42.98,
-      "r_eur_effektiv": 49.06,
-      "atr": 1.8171,
-      "atr_pct": 0.0423,
-      "stop_vorschlag": 40.2544,
-      "stop_vorschlag_eur": 40.25,
-      "schluss_eur": 42.98,
-      "stueck": 18,
-      "einsatz_eur": 773.64,
-      "ext20_atr": 2.34,
-      "rang": 0.04227700040391537,
+      "schluss": 85.49,
+      "r_eur_effektiv": 49.62,
+      "atr": 2.184,
+      "atr_pct": 0.0255,
+      "stop_vorschlag": 82.2139,
+      "stop_vorschlag_eur": 73.24,
+      "schluss_eur": 76.16,
+      "stueck": 17,
+      "einsatz_eur": 1294.77,
+      "ext20_atr": 0.83,
+      "rang": 0.025547223046003296,
       "zug": true
     }
   ],
   "sperre": null,
-  "stand": "2026-11-06",
-  "eurusd": 1.1228,
-  "aktualisiert": "2026-11-07T22:47+00:00",
+  "stand": "2026-11-09",
+  "eurusd": 1.1225,
+  "aktualisiert": "2026-11-10T04:23+00:00",
   "abgelehnt": [
     {
       "symbol": "AMZN",
@@ -73,7 +57,10 @@
         "score": "5/7",
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
-      "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87."
+      "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
+      "geprueft_bis": "2026-11-09",
+      "hoechster_schluss": 269.32,
+      "handelstage": 0
     }
   ],
   "abgelehnt_abgeschlossen": [],
@@ -85,6 +72,6 @@
     "kapital_gebunden_eur": 775.44,
     "kapital_frei_eur": 11224.56
   },
-  "anzahl_zuege": 2,
-  "eurchf": 0.9156
+  "anzahl_zuege": 1,
+  "eurchf": 0.9197
 }
