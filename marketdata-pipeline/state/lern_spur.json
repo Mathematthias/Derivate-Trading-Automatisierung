@@ -16,6 +16,23 @@
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
       "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker gesetzt (User 2026-11-09)."
+    },
+    {
+      "symbol": "WFC",
+      "waehrung": "USD",
+      "einstieg_datum": "2026-11-10",
+      "einstieg_kurs": 86.0434,
+      "einstieg_eur": 76.9,
+      "stueck": 16,
+      "einsatz_eur": 1230.4,
+      "stop_initial": 82.2139,
+      "stop": 82.2139,
+      "stop_eur": 73.48,
+      "checkliste": {
+        "score": "6/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-10.md"
+      },
+      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker zu setzen."
     }
   ],
   "abgeschlossen": [],
@@ -66,11 +83,11 @@
   "abgelehnt_abgeschlossen": [],
   "budget": {
     "budget_eur": 150,
-    "risiko_offen_eur": 50.86,
-    "risiko_frei_eur": 99.14,
+    "risiko_offen_eur": 105.62,
+    "risiko_frei_eur": 44.38,
     "kapital_eur": 12000,
-    "kapital_gebunden_eur": 775.44,
-    "kapital_frei_eur": 11224.56
+    "kapital_gebunden_eur": 2005.84,
+    "kapital_frei_eur": 9994.16
   },
   "anzahl_zuege": 1,
   "eurchf": 0.9197
