@@ -482,9 +482,13 @@ thesen:
   falsifikat: 'Thesen-Falsifikat: ein Big-4-Hyperscaler (MSFT, GOOGL, AMZN, META) senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens. Preis-Falsifikat: XLK-Schluss unter Karten-Level (35 % unter 52W-Hoch).'
   ausdruecke:
   - XLK
-  note: '2026-11-07 User: TDIP eintragen. Neue id statt der verworfenen TECH (Kill-Switch wird nach Treffer nicht verlegt). Grundlage Backtest 2026-11-07 (Projekt-Doc trading/Backtest-Ergebnisse_2026-11-07.md, Abschnitt 5) und Entwurf trading/Thesenkarte_TDIP_Entwurf_2026-11-07.md.'
+  note: '2026-11-07 User: TDIP eintragen. Neue id statt der verworfenen TECH (Kill-Switch wird nach Treffer nicht verlegt). Grundlage Backtest 2026-11-07 (Projekt-Doc trading/Backtest-Ergebnisse_2026-11-07.md, Abschnitt 5) und Entwurf trading/Thesenkarte_TDIP_Entwurf_2026-11-07.md. | 2026-11-11 User: Option 2, Vorab-Tranche 400 EUR sofort, Marke 161,60 bleibt fuer den Starter.'
   historie:
   - date: '2026-11-07'
+    verdikt: spielen
+    crowdedness_pp: -18.0
+    source: chat
+  - date: '2026-11-11'
     verdikt: spielen
     crowdedness_pp: -18.0
     source: chat
@@ -517,9 +521,10 @@ thesen:
     horizont: '2027-05-07'
     vehikel:
     - SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
-    zweite_haelfte: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und Kurs ueber Preis-Falsifikat
+    zweite_haelfte: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat, nur wenn der Starter an der Marke (Tranche 2) gefuellt ist, Kurs ueber Preis-Falsifikat
     ziel: 'Horizont-These: Erholung Richtung 52W-Hoch binnen 6 Monaten; kein festes Kursziel'
-    notiz: 'Budget 2 R = 300 EUR. Abstand Einstieg (-20 %) zu Falsifikat (-35 %) = 0,65/0,80 - 1 = -18,75 %. Volle Position 300 / 0,1875 = 1.600 EUR, Starter 1/2 = 800 EUR. Bewusst nicht Halbleiter (1.400 EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden, schlechtester 12M-Verlauf -47 %; wettet gegen den aktuellen Kern (Rotation meidet Tech); USD-Risiko.'
+    notiz: 'Kartenaenderung 2026-11-11 (User, Option 2 im Chat: XLK erholte sich vor der Marke, "wuerde meine Ungeduld lindern"). Budget unveraendert 2 R = 300 EUR Gesamtrisiko bis Preis-Falsifikat. Drei Tranchen: (1) VORAB 400 EUR SPDR Technology UCITS ETF sofort nach Freigabe (Merge), Risiko bei XLK 168,91 = 400 x 22,3 % = 89 EUR; wird in karte.vorab eingetragen, NICHT in karte.position, damit die Einstiegsmarke scharf bleibt. (2) STARTER bei XLK-Schluss < 161,60 (-20 %, Marke unveraendert): Restrisiko-Haelfte; bei 211 EUR Restrisiko und 18,75 % Abstand = rund 560 EUR. (3) ZWEITE HAELFTE nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und nur, wenn (2) gefuellt ist: rund 565 EUR. Restrisiko fuer (2)+(3) = 300 EUR minus tatsaechliches Risiko von (1) zum Fill-Kurs. Wird die Marke bis zum Horizont nicht erreicht, bleibt es bei (1). Begruendung (1): Messung 2026-11-09, Tech-ETFs bei -15 %: 6M Median +21,1 %, nur 18 % fielen noch 20 % tiefer (n 39). Bewusst nicht Halbleiter (1.400 EUR bereits
+      auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden im Haupt-Backtest, reine Tech-Korrekturen liefen schlechter als breite, wettet gegen den Kern (Rotation meidet Tech), USD-Risiko.'
     story: 'XLK fiel vom 52W-Hoch 202,00 USD auf 164,74 USD (Schluss 2026-11-06, -18,4 %), davon -4,9 % am 2026-10-30 und -8,0 % am 2026-11-05 (162,38 USD, -19,6 %, 0,78 USD ueber der Marke). Ausloeser laut Reuters/DJ: Midterm-Sieg der Demokraten und Sorge um neue Rechenzentren, schwache Ausblicke von Qualcomm und Arm, Zweifel an der Finanzierung des AI-Capex, zuletzt eine zu 78 % eingepreiste Zinserhoehung im Dezember. Die Gewinne brachen dabei nicht ein: S&P-IT Q3 94 % Beats und +69,2 % Gewinnwachstum, Forward-KGV 17,3 gegen 25-Jahres-Schnitt 20,0 (FactSet 2026-11-06). Es ist eine reine Tech-Korrektur: S&P 500 nur -5,6 % zum Hoch, XLK -12,3 % gegen SPY in 21 Tagen. Quellen: trading/TDIP_Einstieg_Analyse_2026-11-09.md.'
     gegenthese: 'Staerkstes Gegenargument: Billig ist die Bewertung nur, wenn die Gewinnschaetzungen fuer 2027 halten; der Markt zweifelt genau daran (AI-Capex 2027 laut BofA 1,2 Bio. USD bei Free Cashflow -180 Mrd. USD, Rechenzentren-Politik, Zinsen). Historisch liefen reine Tech-Korrekturen klar schlechter als breite: bei -20 % ab 2003 im Mittel +8,7 % gegen +26,1 % nach 6 Monaten. Nach einem Erholungstag knapp vor -20 % kam -20 % in 19 von 25 Faellen doch noch. Teilweise eingepreist durch das tiefe Forward-KGV, aber nicht klar schwaecher als die These.'
     szenarien:
@@ -568,4 +573,11 @@ thesen:
         punkt: Vehikel handelbar und ethisch zulaessig
         status: ja
         text: SPDR Technology UCITS ETF, keine Einzelwerte mit Ruestungs-Kerngeschaeft. Handelbarkeit bei SB+ vor dem Starter pruefen.
-updated: '2026-11-07T17:15:00+00:00'
+      aenderung_2026-11-11: Vorab-Tranche ohne Marke. Gate unveraendert 6/7 (Pflichtpunkte 1, 3, 4 erfuellt); Punkt 5 bleibt nein. Die Vorab-Tranche hat keinen Backtest-Beleg aus der Karte selbst, nur die ETF-Zeile der Messung 2026-11-09.
+    vorab:
+      freigabe: '2026-11-11'
+      betrag_eur: 400
+      vehikel: SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
+      status: offen
+      fill: null
+updated: '2026-11-11T13:02:08+00:00'
