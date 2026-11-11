@@ -2,29 +2,6 @@
   "version": "LS-2 2026-11-07",
   "positionen": [
     {
-      "symbol": "NDX1.DE",
-      "waehrung": "EUR",
-      "einstieg_datum": "2026-11-09",
-      "einstieg_kurs": 43.08,
-      "einstieg_eur": 43.08,
-      "stueck": 18,
-      "einsatz_eur": 775.44,
-      "stop_initial": 40.2544,
-      "stop": 40.2544,
-      "checkliste": {
-        "score": "5/7",
-        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
-      },
-      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker gesetzt (User 2026-11-09).",
-      "stop_beruehrt": false,
-      "hoechster_schluss": 43.08,
-      "handelstage": 0,
-      "zeitausstieg_faellig": false,
-      "r_offen": -0.04,
-      "geprueft_bis": "2026-11-09",
-      "abgesichert": false
-    },
-    {
       "symbol": "WFC",
       "waehrung": "USD",
       "einstieg_datum": "2026-11-10",
@@ -39,7 +16,7 @@
         "score": "6/7",
         "doc": "trading/Lern-Kandidaten_2026-11-10.md"
       },
-      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker zu setzen.",
+      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung.",
       "stop_beruehrt": false,
       "hoechster_schluss": 86.0434,
       "handelstage": 0,
@@ -49,7 +26,36 @@
       "abgesichert": false
     }
   ],
-  "abgeschlossen": [],
+  "abgeschlossen": [
+    {
+      "symbol": "NDX1.DE",
+      "waehrung": "EUR",
+      "einstieg_datum": "2026-11-09",
+      "einstieg_kurs": 43.08,
+      "einstieg_eur": 43.08,
+      "stueck": 18,
+      "einsatz_eur": 775.44,
+      "stop_initial": 40.2544,
+      "stop": 40.2544,
+      "checkliste": {
+        "score": "5/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
+      },
+      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker gesetzt (User 2026-11-09). STOP-OUT 2026-11-11 (User): 18 x 39,82 EUR auf gettex, Gebuehr 0,00, Journal #22 AV geschlossen. Stop 40,25 auf gettex vor der Xetra-Eroeffnung ausgeloest (L&S 07:55 40,20, Xetra-Schluss 10.11. 41,52); auf Xetra nicht beruehrt (11.11. O 41,10, L 40,78, 12:24 41,94 laut User-Chart). Regelgemaess (Xetra-Tagesdaten) waere die Position offen, daher grund_ausstieg fehler (Ausfuehrung/Handelsplatz). G/V (39,82 - 43,08) x 18 = -58,68 EUR / Anfangsrisiko 50,86 EUR = -1,15 R, davon Gap-Slippage 7,74 EUR = 0,15 R. Der Job hatte den 10.11. fuer NDX1.DE nicht gelesen (geprueft_bis 2026-11-09).",
+      "stop_beruehrt": false,
+      "hoechster_schluss": 43.08,
+      "handelstage": 0,
+      "zeitausstieg_faellig": false,
+      "r_offen": -0.04,
+      "geprueft_bis": "2026-11-09",
+      "abgesichert": false,
+      "ausstieg_datum": "2026-11-11",
+      "ausstieg_kurs": 39.82,
+      "ausstieg_eur": 39.82,
+      "grund_ausstieg": "fehler",
+      "r": -1.15
+    }
+  ],
   "reviews": {},
   "kandidaten": [
     {
@@ -97,11 +103,11 @@
   "abgelehnt_abgeschlossen": [],
   "budget": {
     "budget_eur": 150,
-    "risiko_offen_eur": 105.72,
-    "risiko_frei_eur": 44.28,
+    "risiko_offen_eur": 54.86,
+    "risiko_frei_eur": 95.14,
     "kapital_eur": 12000,
-    "kapital_gebunden_eur": 2005.84,
-    "kapital_frei_eur": 9994.16
+    "kapital_gebunden_eur": 1230.4,
+    "kapital_frei_eur": 10769.6
   },
   "anzahl_zuege": 0,
   "eurchf": 0.9219
