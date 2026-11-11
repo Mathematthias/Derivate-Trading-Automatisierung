@@ -24,6 +24,30 @@
       "r_offen": -0.07,
       "geprueft_bis": "2026-11-10",
       "abgesichert": false
+    },
+    {
+      "symbol": "NDX1.DE",
+      "waehrung": "EUR",
+      "einstieg_datum": "2026-11-09",
+      "fill_datum": "2026-11-11",
+      "einstieg_kurs": 42.16,
+      "einstieg_eur": 42.16,
+      "stueck": 18,
+      "einsatz_eur": 758.88,
+      "stop_initial": 40.2544,
+      "stop": 40.2544,
+      "checkliste": {
+        "score": "5/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
+      },
+      "notiz": "WIEDERHERSTELLUNG des Regel-Trades #22 nach Ausfuehrungsfehler (gettex-Stop vorboerslich 2026-11-11, auf Xetra nicht beruehrt), User 2026-11-11: Kauf 18 x 42,16 EUR, gettex, Gebuehr 0,00 (Annahme, Volumen >= 500 EUR), Journal #24 AV. Regeldaten von #22 unveraendert: 18 Stk, Stop 40,25 EUR (1,5 ATR unter Signalschluss 42,98), 60-Handelstage-Uhr ab 2026-11-09 (einstieg_datum), Chandelier ab hoechstem Schluss seit 2026-11-09. Stop auf Xetra (User 2026-11-11), nach dem ersten Nachzug auf gettex. R dieser Position bezieht sich auf 42,16 - 40,2544 = 1,9056 EUR/Stk = 34,30 EUR; #22 bleibt mit -1,15 R (fehler) abgeschlossen.",
+      "stop_beruehrt": false,
+      "hoechster_schluss": 43.08,
+      "handelstage": 0,
+      "zeitausstieg_faellig": false,
+      "geprueft_bis": "2026-11-11",
+      "abgesichert": false,
+      "stop_platz": "Xetra"
     }
   ],
   "abgeschlossen": [
@@ -102,12 +126,15 @@
   ],
   "abgelehnt_abgeschlossen": [],
   "budget": {
-    "budget_eur": 150,
-    "risiko_offen_eur": 54.86,
-    "risiko_frei_eur": 95.14,
+    "budget_r": 3.0,
+    "risiko_offen_r": 2.0,
+    "risiko_frei_r": 1.0,
+    "budget_eur": 150.0,
+    "risiko_offen_eur": 89.16,
+    "risiko_frei_eur": 50.0,
     "kapital_eur": 12000,
-    "kapital_gebunden_eur": 1230.4,
-    "kapital_frei_eur": 10769.6
+    "kapital_gebunden_eur": 1989.28,
+    "kapital_frei_eur": 10010.72
   },
   "anzahl_zuege": 0,
   "eurchf": 0.9219
