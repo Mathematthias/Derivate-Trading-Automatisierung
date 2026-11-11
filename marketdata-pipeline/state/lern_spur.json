@@ -122,6 +122,20 @@
       "geprueft_bis": "2026-11-10",
       "hoechster_schluss": 270.87,
       "handelstage": 1
+    },
+    {
+      "symbol": "NEM",
+      "waehrung": "USD",
+      "einstieg_datum": "2026-11-10",
+      "einstieg_kurs": 119.96,
+      "stop_initial": 112.6615,
+      "stop": 112.6615,
+      "grund": "Schattenwertung nur 4/7 (u. a. Klumpen mit Kern-XLB, Sektor-Rueckenwind unklar); Budget lieber fuer bessere Signale freihalten",
+      "checkliste": {
+        "score": "4/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-11.md"
+      },
+      "notiz": "Veto 2026-11-11 (User). Signal 2026-11-10 lief im Job-Lauf noch als zug=false (Budget in EUR); nach Bugfix PR #76 waere NEM handelbar gewesen. Papier-Start wie realer Fill: Eroeffnung 2026-11-11 traegt der Job ein, Stop vom Signalschluss, R auf das geplante Risiko 7,30 USD."
     }
   ],
   "abgelehnt_abgeschlossen": [],
