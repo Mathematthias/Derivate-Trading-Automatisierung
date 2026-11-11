@@ -15,7 +15,14 @@
         "score": "5/7",
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
-      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker gesetzt (User 2026-11-09)."
+      "notiz": "Fill 18 x 43,08 EUR (User 2026-11-09), ISIN DE000A0D6554, Journal #22 AV. Stop 40,25 EUR im Broker gesetzt (User 2026-11-09).",
+      "stop_beruehrt": false,
+      "hoechster_schluss": 43.08,
+      "handelstage": 0,
+      "zeitausstieg_faellig": false,
+      "r_offen": -0.04,
+      "geprueft_bis": "2026-11-09",
+      "abgesichert": false
     },
     {
       "symbol": "WFC",
@@ -27,38 +34,45 @@
       "einsatz_eur": 1230.4,
       "stop_initial": 82.2139,
       "stop": 82.2139,
-      "stop_eur": 73.48,
+      "stop_eur": 73.61,
       "checkliste": {
         "score": "6/7",
         "doc": "trading/Lern-Kandidaten_2026-11-10.md"
       },
-      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker zu setzen."
+      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker zu setzen.",
+      "stop_beruehrt": false,
+      "hoechster_schluss": 86.0434,
+      "handelstage": 0,
+      "zeitausstieg_faellig": false,
+      "r_offen": -0.07,
+      "geprueft_bis": "2026-11-10",
+      "abgesichert": false
     }
   ],
   "abgeschlossen": [],
   "reviews": {},
   "kandidaten": [
     {
-      "symbol": "WFC",
+      "symbol": "NEM",
       "waehrung": "USD",
-      "schluss": 85.49,
-      "r_eur_effektiv": 49.62,
-      "atr": 2.184,
-      "atr_pct": 0.0255,
-      "stop_vorschlag": 82.2139,
-      "stop_vorschlag_eur": 73.24,
-      "schluss_eur": 76.16,
-      "stueck": 17,
-      "einsatz_eur": 1294.77,
-      "ext20_atr": 0.83,
-      "rang": 0.025547223046003296,
-      "zug": true
+      "schluss": 119.96,
+      "r_eur_effektiv": 45.74,
+      "atr": 4.8656,
+      "atr_pct": 0.0406,
+      "stop_vorschlag": 112.6615,
+      "stop_vorschlag_eur": 100.87,
+      "schluss_eur": 107.4,
+      "stueck": 7,
+      "einsatz_eur": 751.8,
+      "ext20_atr": 0.77,
+      "rang": 0.04056046421942863,
+      "zug": false
     }
   ],
   "sperre": null,
-  "stand": "2026-11-09",
-  "eurusd": 1.1225,
-  "aktualisiert": "2026-11-10T04:23+00:00",
+  "stand": "2026-11-10",
+  "eurusd": 1.1169,
+  "aktualisiert": "2026-11-11T02:18+00:00",
   "abgelehnt": [
     {
       "symbol": "AMZN",
@@ -75,20 +89,20 @@
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
       "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
-      "geprueft_bis": "2026-11-09",
-      "hoechster_schluss": 269.32,
-      "handelstage": 0
+      "geprueft_bis": "2026-11-10",
+      "hoechster_schluss": 270.87,
+      "handelstage": 1
     }
   ],
   "abgelehnt_abgeschlossen": [],
   "budget": {
     "budget_eur": 150,
-    "risiko_offen_eur": 105.62,
-    "risiko_frei_eur": 44.38,
+    "risiko_offen_eur": 105.72,
+    "risiko_frei_eur": 44.28,
     "kapital_eur": 12000,
     "kapital_gebunden_eur": 2005.84,
     "kapital_frei_eur": 9994.16
   },
-  "anzahl_zuege": 1,
-  "eurchf": 0.9197
+  "anzahl_zuege": 0,
+  "eurchf": 0.9219
 }
