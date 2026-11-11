@@ -523,8 +523,8 @@ thesen:
     - SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
     zweite_haelfte: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat, nur wenn der Starter an der Marke (Tranche 2) gefuellt ist, Kurs ueber Preis-Falsifikat
     ziel: 'Horizont-These: Erholung Richtung 52W-Hoch binnen 6 Monaten; kein festes Kursziel'
-    notiz: 'Kartenaenderung 2026-11-11 (User, Option 2 im Chat: XLK erholte sich vor der Marke, "wuerde meine Ungeduld lindern"). Budget unveraendert 2 R = 300 EUR Gesamtrisiko bis Preis-Falsifikat. Drei Tranchen: (1) VORAB 400 EUR SPDR Technology UCITS ETF sofort nach Freigabe (Merge), Risiko bei XLK 168,91 = 400 x 22,3 % = 89 EUR; wird in karte.vorab eingetragen, NICHT in karte.position, damit die Einstiegsmarke scharf bleibt. (2) STARTER bei XLK-Schluss < 161,60 (-20 %, Marke unveraendert): Restrisiko-Haelfte; bei 211 EUR Restrisiko und 18,75 % Abstand = rund 560 EUR. (3) ZWEITE HAELFTE nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und nur, wenn (2) gefuellt ist: rund 565 EUR. Restrisiko fuer (2)+(3) = 300 EUR minus tatsaechliches Risiko von (1) zum Fill-Kurs. Wird die Marke bis zum Horizont nicht erreicht, bleibt es bei (1). Begruendung (1): Messung 2026-11-09, Tech-ETFs bei -15 %: 6M Median +21,1 %, nur 18 % fielen noch 20 % tiefer (n 39). Bewusst nicht Halbleiter (1.400 EUR bereits
-      auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden im Haupt-Backtest, reine Tech-Korrekturen liefen schlechter als breite, wettet gegen den Kern (Rotation meidet Tech), USD-Risiko.'
+    notiz: 'Kartenaenderung 2026-11-11 (User, Option 2 im Chat: XLK erholte sich vor der Marke, "wuerde meine Ungeduld lindern"). Budget unveraendert 2 R = 300 EUR Gesamtrisiko bis Preis-Falsifikat. Drei Tranchen: (1) VORAB 400 EUR SPDR Technology UCITS ETF sofort nach Freigabe (Merge), Risiko bei XLK 168,91 = 400 x 22,3 % = 89 EUR; wird in karte.vorab eingetragen, NICHT in karte.position, damit die Einstiegsmarke scharf bleibt. (2) STARTER bei XLK-Schluss < 161,60 (-20 %, Marke unveraendert): Restrisiko-Haelfte; nach Fill (1) = 476,70 EUR mit ~106 EUR Risiko bleiben 194 EUR, bei 18,75 % Abstand rund 517 EUR. (3) ZWEITE HAELFTE nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und nur, wenn (2) gefuellt ist: rund 518 EUR. Restrisiko fuer (2)+(3) = 300 EUR minus tatsaechliches Risiko von (1) zum Fill-Kurs. Wird die Marke bis zum Horizont nicht erreicht, bleibt es bei (1). Begruendung (1): Messung 2026-11-09, Tech-ETFs bei -15 %: 6M Median +21,1 %, nur 18 % fielen noch 20 % tiefer (n 39). Bewusst
+      nicht Halbleiter (1.400 EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden im Haupt-Backtest, reine Tech-Korrekturen liefen schlechter als breite, wettet gegen den Kern (Rotation meidet Tech), USD-Risiko. FILL (1) 2026-11-11 (User): 3 x 158,90 EUR = 476,70 EUR, Gebuehr 0,00, Journal #114.'
     story: 'XLK fiel vom 52W-Hoch 202,00 USD auf 164,74 USD (Schluss 2026-11-06, -18,4 %), davon -4,9 % am 2026-10-30 und -8,0 % am 2026-11-05 (162,38 USD, -19,6 %, 0,78 USD ueber der Marke). Ausloeser laut Reuters/DJ: Midterm-Sieg der Demokraten und Sorge um neue Rechenzentren, schwache Ausblicke von Qualcomm und Arm, Zweifel an der Finanzierung des AI-Capex, zuletzt eine zu 78 % eingepreiste Zinserhoehung im Dezember. Die Gewinne brachen dabei nicht ein: S&P-IT Q3 94 % Beats und +69,2 % Gewinnwachstum, Forward-KGV 17,3 gegen 25-Jahres-Schnitt 20,0 (FactSet 2026-11-06). Es ist eine reine Tech-Korrektur: S&P 500 nur -5,6 % zum Hoch, XLK -12,3 % gegen SPY in 21 Tagen. Quellen: trading/TDIP_Einstieg_Analyse_2026-11-09.md.'
     gegenthese: 'Staerkstes Gegenargument: Billig ist die Bewertung nur, wenn die Gewinnschaetzungen fuer 2027 halten; der Markt zweifelt genau daran (AI-Capex 2027 laut BofA 1,2 Bio. USD bei Free Cashflow -180 Mrd. USD, Rechenzentren-Politik, Zinsen). Historisch liefen reine Tech-Korrekturen klar schlechter als breite: bei -20 % ab 2003 im Mittel +8,7 % gegen +26,1 % nach 6 Monaten. Nach einem Erholungstag knapp vor -20 % kam -20 % in 19 von 25 Faellen doch noch. Teilweise eingepreist durch das tiefe Forward-KGV, aber nicht klar schwaecher als die These.'
     szenarien:
@@ -578,6 +578,14 @@ thesen:
       freigabe: '2026-11-11'
       betrag_eur: 400
       vehikel: SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
-      status: offen
-      fill: null
-updated: '2026-11-11T13:02:08+00:00'
+      status: gefuellt
+      fill:
+        datum: '2026-11-11'
+        stueck: 3
+        kurs_eur: 158.9
+        betrag_eur: 476.7
+        gebuehr_eur: 0.0
+        journal: '#114'
+        risiko_eur: 106.0
+        risiko_annahme: XLK ~168,91 USD beim Fill (Schluss 2026-11-10), Abstand zum Preis-Falsifikat 22,3 %
+updated: '2026-11-11T23:15:53+00:00'
