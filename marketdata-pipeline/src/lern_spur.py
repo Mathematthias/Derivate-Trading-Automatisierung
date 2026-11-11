@@ -191,19 +191,40 @@ def einsatz_eur(p: dict, cfg: dict, fx_usd: float) -> float:
     return float(cfg.get("max_einsatz_eur", 0))
 
 
+def rest_risiko_r(p: dict) -> float:
+    """Restrisiko in R wie im Backtest (slots_risikobudget.rest_am): Abstand Einstieg zu aktuellem
+    Stop relativ zum Anfangsrisiko derselben Position, hoechstens 1 R, 0 sobald Stop >= Einstieg.
+    Ein Fill ueber dem Signalschluss oder ein Waehrungseffekt macht eine Position in EUR teurer,
+    in R zaehlt sie trotzdem 1 (Bugfix 2026-11-11, User: NEM fehlte 1,46 EUR, weil der Job in EUR zaehlte)."""
+    e, stop = float(p["einstieg_kurs"]), float(p["stop"])
+    if stop >= e:
+        return 0.0
+    anfang = e - float(p.get("stop_initial", stop))
+    return min(1.0, (e - stop) / anfang) if anfang > 0 else 1.0
+
+
 def budget(pos: list[dict], cfg: dict, fx_usd: float) -> dict:
+    """Risikobudget in R (massgeblich, wie der Backtest) plus EUR-Werte zur Information.
+    risiko_frei_eur = risiko_frei_r x r_eur, also die freie Kapazitaet in EUR-Gegenwert;
+    risiko_offen_eur ist das tatsaechliche Restrisiko in EUR und kann ueber budget_eur liegen."""
     risiko = sum(rest_risiko_eur(p, cfg, fx_usd) for p in pos)
+    offen_r = sum(rest_risiko_r(p) for p in pos)
     kapital = sum(einsatz_eur(p, cfg, fx_usd) for p in pos)
-    b = cfg["risiko_budget_r"] * cfg["r_eur"]
-    return {"budget_eur": round(b, 2), "risiko_offen_eur": round(risiko, 2), "risiko_frei_eur": round(max(0.0, b - risiko), 2),
+    b_r = float(cfg["risiko_budget_r"])
+    frei_r = max(0.0, b_r - offen_r)
+    return {"budget_r": b_r, "risiko_offen_r": round(offen_r, 2), "risiko_frei_r": round(frei_r, 2),
+            "budget_eur": round(b_r * cfg["r_eur"], 2), "risiko_offen_eur": round(risiko, 2),
+            "risiko_frei_eur": round(frei_r * cfg["r_eur"], 2),
             "kapital_eur": cfg["kapital_eur"], "kapital_gebunden_eur": round(kapital, 2),
             "kapital_frei_eur": round(max(0.0, cfg["kapital_eur"] - kapital), 2)}
 
 
 def zuege_markieren(kand: list[dict], bud: dict, pos: list[dict] | None = None, deckel: dict | None = None) -> int:
     """Kandidaten in Rangfolge markieren, solange Risiko- und Kapitalbudget reichen und der
-    Waehrungsdeckel (z. B. {"CHF": 1} = hoechstens eine Schweizer Position) nicht voll ist."""
-    r_frei, k_frei, n = bud["risiko_frei_eur"] + 0.01, bud["kapital_frei_eur"] + 0.01, 0
+    Waehrungsdeckel (z. B. {"CHF": 1} = hoechstens eine Schweizer Position) nicht voll ist.
+    Jeder neue Kandidat belegt 1 R, wie im Backtest (belegt + 1 <= Budget). Ohne Zug traegt der
+    Kandidat den Grund in `grund` (Reihenfolge: 0 Stueck, CHF-Deckel, Budget, Kapital)."""
+    r_frei, k_frei, n = bud["risiko_frei_r"] + 1e-6, bud["kapital_frei_eur"] + 0.01, 0
     belegt: dict[str, int] = {}
     for p in pos or []:
         w = p.get("waehrung", waehrung(p.get("symbol", "")))
@@ -211,9 +232,14 @@ def zuege_markieren(kand: list[dict], bud: dict, pos: list[dict] | None = None, 
     for c in kand:
         w = c.get("waehrung", waehrung(c.get("symbol", "")))
         voll = deckel is not None and w in deckel and belegt.get(w, 0) >= deckel[w]
-        c["zug"] = bool(c["stueck"] > 0 and not voll and c["r_eur_effektiv"] <= r_frei and c["einsatz_eur"] <= k_frei)
-        if c["zug"]:
-            r_frei -= c["r_eur_effektiv"]; k_frei -= c["einsatz_eur"]; n += 1
+        grund = ("0 Stueck" if c["stueck"] <= 0 else f"{w}-Deckel" if voll else "Budget" if r_frei < 1.0
+                 else "Kapital" if c["einsatz_eur"] > k_frei else None)
+        c["zug"] = grund is None
+        if grund:
+            c["grund"] = grund
+        else:
+            c.pop("grund", None)
+            r_frei -= 1.0; k_frei -= c["einsatz_eur"]; n += 1
             belegt[w] = belegt.get(w, 0) + 1
     return n
 
@@ -300,7 +326,8 @@ def render(st: dict, cfg: dict) -> str:
     b = st.get("budget") or {}
     k = st.get("kandidaten", [])
     if b:
-        L.append(f"Risiko offen {b['risiko_offen_eur']:.0f} von {b['budget_eur']:.0f} €, Kapital gebunden "
+        L.append(f"Risiko offen {b.get('risiko_offen_r', 0):.2f} von {b.get('budget_r', 0):.0f} R "
+                 f"({b['risiko_offen_eur']:.0f} €), Kapital gebunden "
                  f"{b['kapital_gebunden_eur']:.0f} von {b['kapital_eur']:.0f} €.")
     if k:
         n = sum(1 for c in k if c.get("zug"))

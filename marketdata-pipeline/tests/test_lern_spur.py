@@ -95,14 +95,34 @@ def test_ls2_risikobudget_und_kapital():
     halb = dict(voll, stop=97.5)
     sicher = dict(voll, stop=100)
     b = ls.budget([voll, halb, sicher], cfg, 1.1)
-    assert b["risiko_offen_eur"] == 75.0 and b["risiko_frei_eur"] == 75.0
+    assert b["risiko_offen_eur"] == 75.0 and b["risiko_offen_r"] == 1.5 and b["risiko_frei_r"] == 1.5
+    assert b["risiko_frei_eur"] == 75.0
     assert b["kapital_gebunden_eur"] == 3000.0
     kand = [{"stueck": 5, "r_eur_effektiv": 50, "einsatz_eur": 1800},
             {"stueck": 5, "r_eur_effektiv": 50, "einsatz_eur": 1800},
             {"stueck": 5, "r_eur_effektiv": 20, "einsatz_eur": 900}]
-    assert ls.zuege_markieren(kand, b) == 2 and [c["zug"] for c in kand] == [True, False, True]
+    # jeder neue Kandidat belegt 1 R (wie Backtest): bei 1,5 R frei passt genau einer
+    assert ls.zuege_markieren(kand, b) == 1 and [c["zug"] for c in kand] == [True, False, False]
+    assert kand[1]["grund"] == "Budget"
     eng = dict(b, kapital_frei_eur=1000.0)
     assert ls.zuege_markieren(kand, eng) == 1 and [c["zug"] for c in kand] == [False, False, True]
+    assert kand[0]["grund"] == "Kapital"
+
+
+def test_budget_in_r_wie_backtest_fill_ueber_signal():
+    # Fall 2026-11-10: zwei Fills ueber dem Signalschluss kosten in EUR 50,86 + 54,86 = 105,72 > 2 R.
+    # In R zaehlen sie je 1, also passt ein dritter Kandidat (NEM) noch.
+    cfg = dict(CFG)
+    ndx1 = {"symbol": "NDX1.DE", "einstieg_kurs": 43.08, "stop_initial": 40.2544, "stop": 40.2544, "stueck": 18}
+    wfc = {"symbol": "WFC", "einstieg_kurs": 86.0434, "stop_initial": 82.2139, "stop": 82.2139, "stueck": 16}
+    b = ls.budget([ndx1, wfc], cfg, 1.1169)
+    assert b["risiko_offen_r"] == 2.0 and b["risiko_frei_r"] == 1.0
+    assert b["risiko_offen_eur"] > 100
+    nem = [{"symbol": "NEM", "stueck": 7, "r_eur_effektiv": 45.74, "einsatz_eur": 751.8}]
+    assert ls.zuege_markieren(nem, b, [ndx1, wfc], cfg.get("max_je_waehrung")) == 1 and nem[0]["zug"]
+    # nachgezogener Stop senkt das Restrisiko in R, abgesichert = 0
+    assert round(ls.rest_risiko_r(dict(ndx1, stop=41.667)), 3) == 0.5
+    assert ls.rest_risiko_r(dict(ndx1, stop=43.08)) == 0.0
     # USD-Position: Risiko in EUR umgerechnet
     usd = {"symbol": "ALGN", "einstieg_kurs": 110, "stop_initial": 100, "stop": 100, "stueck": 5}
     assert round(ls.rest_risiko_eur(usd, cfg, 1.25), 2) == 40.0
@@ -137,7 +157,7 @@ def test_chf_waehrung_fx_und_deckel():
     # CHF-Position: Restrisiko in EUR
     p = {"symbol": "NOVN.SW", "einstieg_kurs": 94.0, "stop_initial": 90.24, "stop": 90.24, "stueck": 10}
     assert round(ls.rest_risiko_eur(p, CFG, fx), 2) == 40.0
-    bud = {"risiko_frei_eur": 150.0, "kapital_frei_eur": 12000.0}
+    bud = {"risiko_frei_r": 3.0, "risiko_frei_eur": 150.0, "kapital_frei_eur": 12000.0}
     kand = [{"symbol": "NESN.SW", "waehrung": "CHF", "stueck": 5, "r_eur_effektiv": 40, "einsatz_eur": 900},
             {"symbol": "ROG.SW", "waehrung": "CHF", "stueck": 5, "r_eur_effektiv": 40, "einsatz_eur": 900},
             {"symbol": "SAP.DE", "waehrung": "EUR", "stueck": 5, "r_eur_effektiv": 40, "einsatz_eur": 900}]

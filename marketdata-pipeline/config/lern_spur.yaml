@@ -12,6 +12,12 @@ version: "LS-2 2026-11-07"
 kapital_eur: 12000
 r_eur: 50
 risiko_budget_r: 3       # Summe Restrisiko aller offenen Lern-Positionen, in R
+# Bugfix 2026-11-11 (User): gezaehlt wird in R wie im Backtest (slots_risikobudget.rest_am), nicht in EUR.
+# Jede offene Position belegt hoechstens 1 R (Abstand Einstieg-Stop relativ zum eigenen Anfangsrisiko),
+# jeder neue Kandidat belegt 1 R. Fills ueber dem Signalschluss und FX machen eine Position in EUR teurer,
+# blockieren aber keinen Platz mehr. Das EUR-Restrisiko bleibt als Information im State.
+# Stops (User 2026-11-11): EUR-Werte initial auf Xetra (Stop greift erst ab 09:00), nach dem ersten Nachzug
+# auf gettex. US-Werte: kein Handelsplatz bei SB+ handelt nur zu NYSE-Zeiten, Stop bleibt auf gettex.
 
 signal:
   # EMA20 kreuzt EMA50 nach oben (heute ueber, gestern nicht), Schluss ueber EMA200
