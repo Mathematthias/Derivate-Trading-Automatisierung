@@ -40,11 +40,15 @@ jobs:
         run: |
           python research/krypto_lernspur/krypto_lernspur.py
           cat research/krypto_lernspur/out/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Setups
+        run: |
+          python research/krypto_lernspur/krypto_setups.py
+          cat research/krypto_lernspur/out/SETUPS.md >> "$GITHUB_STEP_SUMMARY"
       - name: Commit Bericht
         working-directory: .
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add marketdata-pipeline/research/krypto_lernspur/out/REPORT.md
+          git add marketdata-pipeline/research/krypto_lernspur/out/
           git commit -m "research: Krypto-Lern-Spur Bericht [skip ci]" || exit 0
           git push origin HEAD:research/krypto-lernspur-2026-11-12
