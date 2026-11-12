@@ -150,4 +150,12 @@ Stand SOL-EUR: 74.83 EUR, -41 % zum 365-Tage-Hoch, -71 % zum Allzeithoch.
 Stand ETH-EUR: 1,841.20 EUR, -36 % zum 365-Tage-Hoch, -56 % zum Allzeithoch.
 Stand BTC-EUR: 66,144.82 EUR, -23 % zum 365-Tage-Hoch, -38 % zum Allzeithoch.
 
+## Signal heute
+
+| Coin | Schluss | SMA50 | SMA200 | T50 | T200 | 90-T-Rendite (M90) |
+|---|---|---|---|---|---|---|
+| BTC-EUR | 66,144.82 | 72,072.37 | 63,745.84 | Cash | drin | +21 % |
+| ETH-EUR | 1,841.20 | 2,163.92 | 1,874.51 | Cash | Cash | +13 % |
+| SOL-EUR | 74.83 | 93.21 | 77.61 | Cash | Cash | +15 % |
+
 Grenzen: wenige Zyklen (BTC etwa 3 grosse Baerenmaerkte), Coins mit heutigem Erfolg (Survivorship), keine Zinsen auf Cash, Steuer nur als Anteil ausgewiesen.
