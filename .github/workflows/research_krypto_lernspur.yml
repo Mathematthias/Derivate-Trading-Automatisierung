@@ -1,0 +1,50 @@
+name: Research Krypto Lern-Spur 2026-11-12
+
+# User-Frage 2026-11-12: Lern-Spur-Regeln fuer frisches Krypto-Kapital, mit Steuermodell.
+# Reine Messung, aendert keine Regel und keinen State. Nur auf dem Research-Branch.
+
+on:
+  push:
+    branches: [research/krypto-lernspur-2026-11-12]
+    paths:
+      - 'marketdata-pipeline/research/krypto_lernspur/*.py'
+      - '.github/workflows/research_krypto_lernspur.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: marketdata-pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Daten-Cache
+        uses: actions/cache@v4
+        with:
+          path: marketdata-pipeline/work/krypto_lernspur.pkl
+          key: krypto-lernspur-2026-11-12-v1
+      - name: Backtest
+        run: |
+          python research/krypto_lernspur/krypto_lernspur.py
+          cat research/krypto_lernspur/out/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit Bericht
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/research/krypto_lernspur/out/REPORT.md
+          git commit -m "research: Krypto-Lern-Spur Bericht [skip ci]" || exit 0
+          git push origin HEAD:research/krypto-lernspur-2026-11-12
