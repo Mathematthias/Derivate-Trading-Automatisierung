@@ -1,0 +1,59 @@
+name: Research Ideen 2026-11-12 (PEAD, Kern-Crashschutz, Saisonalitaet, Krypto)
+
+# User-Auftrag 2026-11-12: vier Ideen messen. Reine Messung, aendert keine Regel und keinen State.
+# Laeuft nur auf dem Research-Branch und schreibt die Berichte dorthin zurueck.
+
+on:
+  push:
+    branches: [research/ideen-2026-11-12]
+    paths:
+      - 'marketdata-pipeline/research/ideen/*.py'
+      - '.github/workflows/research_ideen.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    defaults:
+      run:
+        working-directory: marketdata-pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Daten-Cache
+        uses: actions/cache@v4
+        with:
+          path: marketdata-pipeline/work/ideen_cache.pkl
+          key: ideen-cache-2026-11-12-v1
+      - name: Daten laden
+        run: python research/ideen/daten.py
+      - name: 1 PEAD
+        run: python research/ideen/pead.py || echo "PEAD fehlgeschlagen" >> research/ideen/FEHLER.txt
+      - name: 2 Kern-Crashschutz
+        run: python research/ideen/kern_crash.py || echo "Kern fehlgeschlagen" >> research/ideen/FEHLER.txt
+      - name: 3 Saisonalitaet
+        run: python research/ideen/saison.py || echo "Saison fehlgeschlagen" >> research/ideen/FEHLER.txt
+      - name: 4 Krypto
+        run: python research/ideen/krypto.py || echo "Krypto fehlgeschlagen" >> research/ideen/FEHLER.txt
+      - name: Zusammenfassung
+        run: cat research/ideen/out/*.md >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Commit Berichte
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/research/ideen/out/ marketdata-pipeline/research/ideen/FEHLER.txt 2>/dev/null || true
+          git add marketdata-pipeline/research/ideen/out/
+          git commit -m "research: Ideen-Backtests Berichte [skip ci]" || exit 0
+          git push origin HEAD:research/ideen-2026-11-12
