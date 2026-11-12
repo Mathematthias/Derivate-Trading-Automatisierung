@@ -34,6 +34,7 @@ import yaml
 START = "2007-01-01"
 COST = 0.0010
 STOP_ATR = 1.5
+MIN_RISIKO = 0.005  # 1,5 ATR unter 0,5 % des Kurses = Datenfehler (z. B. Kursluecken bei Yahoo)
 INDIZES = ["^GSPC", "^NDX", "^GDAXI", "^MDAXI", "^STOXX50E"]
 ETFS = ["SPY", "QQQ", "IWM", "EXS1.DE", "URTH", "XLK", "XLF", "XLE", "XLV", "XLI", "XLY",
         "XLP", "XLU", "XLB", "SMH", "GLD", "TLT"]
@@ -156,6 +157,9 @@ def trades_fuer(sym: str, a: dict, richtung: str, filt: bool, mit_stop: bool,
             aus_idx, aus = simuliere(o, l, ein_idx, e, stop)
             ret = aus / ein - 1 - 2 * COST
             risiko = STOP_ATR * atr[t] / ein
+            if not (np.isfinite(risiko) and np.isfinite(ret) and risiko >= MIN_RISIKO):
+                t = e
+                continue
             out.append({
                 "sym": sym, "datum": pd.Timestamp(a["dates"][t]), "tage": aus_idx - ein_idx,
                 "ret": ret, "R": ret / risiko,
@@ -190,7 +194,9 @@ def zufall(trades: list[dict], A: dict[str, dict], mit_stop: bool, ab: str,
             stop = c[s] - STOP_ATR * atr[s] if mit_stop else None
             aus_idx, aus = simuliere(o, l, ein_idx, ein_idx + dauer - 1, stop)
             ret = aus / ein - 1 - 2 * COST
-            res.append((ret, ret / (STOP_ATR * atr[s] / ein)))
+            risiko = STOP_ATR * atr[s] / ein
+            if np.isfinite(risiko) and np.isfinite(ret) and risiko >= MIN_RISIKO:
+                res.append((ret, ret / risiko))
     return np.array(res) if res else np.zeros((0, 2))
 
 
@@ -233,7 +239,9 @@ def zufall_ausstieg(trades: list[dict], A: dict[str, dict], richtung: str, filt:
             stop = c[s] - STOP_ATR * atr[s] if mit_stop else None
             aus_idx, aus = simuliere(o, l, ein_idx, e, stop)
             ret = aus / ein - 1 - 2 * COST
-            res.append((ret, ret / (STOP_ATR * atr[s] / ein)))
+            risiko = STOP_ATR * atr[s] / ein
+            if np.isfinite(risiko) and np.isfinite(ret) and risiko >= MIN_RISIKO:
+                res.append((ret, ret / risiko))
     return np.array(res) if res else np.zeros((0, 2))
 
 
