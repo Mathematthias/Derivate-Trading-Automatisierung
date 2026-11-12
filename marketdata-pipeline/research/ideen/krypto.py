@@ -246,6 +246,14 @@ def main():
             h = c.rolling(365, min_periods=200).max()
             L.append(f"Stand {s}: {c.iloc[-1]:,.2f} EUR, {(c.iloc[-1] / h.iloc[-1] - 1) * 100:+.0f} % zum 365-Tage-Hoch, "
                      f"{(c.iloc[-1] / c.max() - 1) * 100:+.0f} % zum Allzeithoch.")
+    L.append("\n## Signal heute\n")
+    L.append("| Coin | Schluss | SMA50 | SMA200 | T50 | T200 | 90-T-Rendite (M90) |")
+    L.append("|---|---|---|---|---|---|---|")
+    for s, c in C.items():
+        s50, s200 = c.rolling(50).mean().iloc[-1], c.rolling(200).mean().iloc[-1]
+        m90 = c.iloc[-1] / c.iloc[-91] - 1
+        L.append(f"| {s} | {c.iloc[-1]:,.2f} | {s50:,.2f} | {s200:,.2f} | {'drin' if c.iloc[-1] > s50 else 'Cash'} | "
+                 f"{'drin' if c.iloc[-1] > s200 else 'Cash'} | {m90 * 100:+.0f} % |")
     L.append("\nGrenzen: wenige Zyklen (BTC etwa 3 grosse Baerenmaerkte), Coins mit heutigem Erfolg "
              "(Survivorship), keine Zinsen auf Cash, Steuer nur als Anteil ausgewiesen.\n")
     (out / "4_Krypto.md").write_text("\n".join(L), encoding="utf-8")

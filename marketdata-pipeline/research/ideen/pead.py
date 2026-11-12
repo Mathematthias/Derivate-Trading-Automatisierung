@@ -120,8 +120,10 @@ def main():
              "Zufall A = gleicher Wert, gleiches Fenster, gleiche Haltedauer und gleicher Stop, beliebiger Tag.\n")
     L.append("- P1: Luecke >= 1 ATR, Volumen >= 2x Schnitt\n- P2: P1 + Schluss >= Eroeffnung\n"
              "- P3: P2 + Luecke >= 2 ATR\n- PE: P2 an einem Earnings-Reaktionstag (nur US mit Terminen)\n")
-    L.append("| Variante | Fenster | Trades | Trades/Jahr | Treffer | Ø Trade | Median | Ø R | Zufall Ø R | Vorsprung R |")
-    L.append("|---|---|---|---|---|---|---|---|---|---|")
+    L.append("Hinweis: Der Vorsprung in Prozent ist die belastbarere Zahl. R teilt durch die ATR am Signaltag, "
+             "die durch die Luecke selbst aufgeblaeht ist; das drueckt das R der echten Trades gegenueber Zufall.\n")
+    L.append("| Variante | Fenster | Trades | Trades/Jahr | Treffer | Ø Trade | Median | Ø R | Zufall Ø Trade | Vorsprung % | Zufall Ø R | Vorsprung R |")
+    L.append("|---|---|---|---|---|---|---|---|---|---|---|---|")
     region_rows = []
     for var, H, st in varianten:
         name = f"{var} H{H}{' +Stop' if st else ''}"
@@ -156,12 +158,13 @@ def main():
                 for _ in range(3 * len(grp)):
                     r = trade(a, int(rng.integers(lo, hi)), H, st)
                     if r is not None:
-                        Z.append(r[1])
-            zr = float(np.mean(Z)) if Z else float("nan")
+                        Z.append((r[0], r[1]))
+            Z = np.array(Z) if Z else np.full((1, 2), np.nan)
+            zp, zr = float(Z[:, 0].mean()), float(Z[:, 1].mean())
             jahre = max((min(pd.Timestamp(bis), letzter) - pd.Timestamp(ab)).days / 365.25, 0.5)
             L.append(f"| {name} | {fname} | {len(sub)} | {len(sub) / jahre:.0f} | {(sub.ret > 0).mean() * 100:.0f} % | "
                      f"{sub.ret.mean() * 100:+.2f} % | {sub.ret.median() * 100:+.2f} % | {sub.R.mean():+.2f} | "
-                     f"{zr:+.2f} | {sub.R.mean() - zr:+.2f} |")
+                     f"{zp * 100:+.2f} % | {(sub.ret.mean() - zp) * 100:+.2f} % | {zr:+.2f} | {sub.R.mean() - zr:+.2f} |")
         if (var, H, st) == ("P2", 60, False):
             df["region"] = np.where(df.sym.str.contains(r"\."), "EU", "US")
             for rg, sub in df.groupby("region"):
