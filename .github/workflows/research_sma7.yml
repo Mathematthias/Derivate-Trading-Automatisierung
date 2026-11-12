@@ -1,0 +1,45 @@
+name: Research SMA7/EMA20-Kreuzung (einmalig, nur Branch research/sma7-ema20)
+
+# User-Frage 2026-11-12: Wie schneidet "Einstieg beim Kreuz EMA20/SMA7, Ausstieg beim
+# Gegenkreuz" ab? Reine Messung, aendert keine Regel und keinen State.
+# Laeuft nur auf dem Research-Branch und schreibt den Bericht dorthin zurueck.
+
+on:
+  push:
+    branches: [research/sma7-ema20]
+    paths:
+      - 'marketdata-pipeline/research/sma7_ema20.py'
+      - '.github/workflows/research_sma7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        working-directory: marketdata-pipeline
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Backtest
+        working-directory: marketdata-pipeline
+        run: |
+          mkdir -p work
+          python research/sma7_ema20.py --cfg config --cache work/sma7_cache.pkl --out research/out_sma7
+          cat research/out_sma7/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit Bericht
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/research/out_sma7/REPORT.md
+          git commit -m "research: SMA7/EMA20-Backtest Bericht [skip ci]" || exit 0
+          git push origin HEAD:research/sma7-ema20
