@@ -11,7 +11,7 @@
       "einsatz_eur": 1230.4,
       "stop_initial": 82.2139,
       "stop": 82.2139,
-      "stop_eur": 73.61,
+      "stop_eur": 74.21,
       "checkliste": {
         "score": "6/7",
         "doc": "trading/Lern-Kandidaten_2026-11-10.md"
@@ -19,10 +19,10 @@
       "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung.",
       "stop_beruehrt": false,
       "hoechster_schluss": 86.0434,
-      "handelstage": 0,
+      "handelstage": 1,
       "zeitausstieg_faellig": false,
-      "r_offen": -0.07,
-      "geprueft_bis": "2026-11-10",
+      "r_offen": -0.06,
+      "geprueft_bis": "2026-11-11",
       "abgesichert": false
     },
     {
@@ -42,12 +42,13 @@
       },
       "notiz": "WIEDERHERSTELLUNG des Regel-Trades #22 nach Ausfuehrungsfehler (gettex-Stop vorboerslich 2026-11-11, auf Xetra nicht beruehrt), User 2026-11-11: Kauf 18 x 42,16 EUR, gettex, Gebuehr 0,00 (Annahme, Volumen >= 500 EUR), Journal #24 AV. Regeldaten von #22 unveraendert: 18 Stk, Stop 40,25 EUR (1,5 ATR unter Signalschluss 42,98), 60-Handelstage-Uhr ab 2026-11-09 (einstieg_datum), Chandelier ab hoechstem Schluss seit 2026-11-09. Stop auf Xetra (User 2026-11-11), nach dem ersten Nachzug auf gettex. R dieser Position bezieht sich auf 42,16 - 40,2544 = 1,9056 EUR/Stk = 34,30 EUR; #22 bleibt mit -1,15 R (fehler) abgeschlossen. Stop 40,25 EUR auf Xetra im Broker scharf (User 2026-11-11).",
       "stop_beruehrt": false,
-      "hoechster_schluss": 43.08,
-      "handelstage": 0,
+      "hoechster_schluss": 42.96,
+      "handelstage": 1,
       "zeitausstieg_faellig": false,
-      "geprueft_bis": "2026-11-11",
+      "geprueft_bis": "2026-11-10",
       "abgesichert": false,
-      "stop_platz": "Xetra"
+      "stop_platz": "Xetra",
+      "r_offen": -0.34
     }
   ],
   "abgeschlossen": [
@@ -81,28 +82,11 @@
     }
   ],
   "reviews": {},
-  "kandidaten": [
-    {
-      "symbol": "NEM",
-      "waehrung": "USD",
-      "schluss": 119.96,
-      "r_eur_effektiv": 45.74,
-      "atr": 4.8656,
-      "atr_pct": 0.0406,
-      "stop_vorschlag": 112.6615,
-      "stop_vorschlag_eur": 100.87,
-      "schluss_eur": 107.4,
-      "stueck": 7,
-      "einsatz_eur": 751.8,
-      "ext20_atr": 0.77,
-      "rang": 0.04056046421942863,
-      "zug": false
-    }
-  ],
+  "kandidaten": [],
   "sperre": null,
-  "stand": "2026-11-10",
-  "eurusd": 1.1169,
-  "aktualisiert": "2026-11-11T02:18+00:00",
+  "stand": "2026-11-11",
+  "eurusd": 1.1078,
+  "aktualisiert": "2026-11-12T03:26+00:00",
   "abgelehnt": [
     {
       "symbol": "AMZN",
@@ -119,15 +103,15 @@
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
       "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
-      "geprueft_bis": "2026-11-10",
+      "geprueft_bis": "2026-11-11",
       "hoechster_schluss": 270.87,
-      "handelstage": 1
+      "handelstage": 2
     },
     {
       "symbol": "NEM",
       "waehrung": "USD",
-      "einstieg_datum": "2026-11-10",
-      "einstieg_kurs": 119.96,
+      "einstieg_datum": "2026-11-11",
+      "einstieg_kurs": 119.97,
       "stop_initial": 112.6615,
       "stop": 112.6615,
       "grund": "Schattenwertung nur 4/7 (u. a. Klumpen mit Kern-XLB, Sektor-Rueckenwind unklar); Budget lieber fuer bessere Signale freihalten",
@@ -135,7 +119,12 @@
         "score": "4/7",
         "doc": "trading/Lern-Kandidaten_2026-11-11.md"
       },
-      "notiz": "Veto 2026-11-11 (User). Signal 2026-11-10 lief im Job-Lauf noch als zug=false (Budget in EUR); nach Bugfix PR #76 waere NEM handelbar gewesen. Papier-Start wie realer Fill: Eroeffnung 2026-11-11 traegt der Job ein, Stop vom Signalschluss, R auf das geplante Risiko 7,30 USD."
+      "notiz": "Veto 2026-11-11 (User). Signal 2026-11-10 lief im Job-Lauf noch als zug=false (Budget in EUR); nach Bugfix PR #76 waere NEM handelbar gewesen. Papier-Start wie realer Fill: Eroeffnung 2026-11-11 traegt der Job ein, Stop vom Signalschluss, R auf das geplante Risiko 7,30 USD.",
+      "signal_datum": "2026-11-10",
+      "signal_kurs": 119.96,
+      "geprueft_bis": "2026-11-11",
+      "hoechster_schluss": 119.97,
+      "handelstage": 0
     }
   ],
   "abgelehnt_abgeschlossen": [],
@@ -144,12 +133,12 @@
     "risiko_offen_r": 2.0,
     "risiko_frei_r": 1.0,
     "budget_eur": 150.0,
-    "risiko_offen_eur": 89.16,
+    "risiko_offen_eur": 89.61,
     "risiko_frei_eur": 50.0,
     "kapital_eur": 12000,
     "kapital_gebunden_eur": 1989.28,
     "kapital_frei_eur": 10010.72
   },
   "anzahl_zuege": 0,
-  "eurchf": 0.9219
+  "eurchf": 0.9226
 }
