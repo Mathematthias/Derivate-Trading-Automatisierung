@@ -1,24 +1,24 @@
 {
-  "aktualisiert": "2026-11-12T03:18+00:00",
+  "aktualisiert": "2026-11-13T02:52+00:00",
   "thesen": {
     "TDIP": {
       "XLK": {
-        "datum": "2026-11-11",
-        "schluss": 174.36,
+        "datum": "2026-11-12",
+        "schluss": 173.77,
         "hoch_52w": 202.0,
-        "abstand_hoch_pct": -13.68,
+        "abstand_hoch_pct": -13.98,
         "preis_falsifikat": {
           "op": "<",
           "level": 131.3,
           "erreicht": false,
-          "abstand_pct": 32.8,
+          "abstand_pct": 32.35,
           "erstmals": null
         },
         "einstieg": {
           "op": "<",
           "level": 161.6,
           "erreicht": false,
-          "abstand_pct": 7.9,
+          "abstand_pct": 7.53,
           "erstmals": null
         }
       }
