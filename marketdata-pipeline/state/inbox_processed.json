@@ -416,11 +416,27 @@
   "status": "ok",
   "verworfen": 0
  },
+ "1gFGGvsHkyruD7uIFsWaIip1TivInfn0W": {
+  "actions": 3,
+  "at": "2026-11-14T14:34:24+00:00",
+  "name": "INBOX-thesen-lauf-20261114-1226.json",
+  "source": "thesen-lauf",
+  "status": "ok",
+  "verworfen": 0
+ },
  "1jops68W7UyQIpO3iHaHg4sNgZ4T9Rnm-": {
   "actions": 4,
   "at": "2026-11-06T14:35:41+00:00",
   "name": "INBOX-morning-check-20261106-0824.json",
   "source": "morning-check",
+  "status": "ok",
+  "verworfen": 0
+ },
+ "1k-4t0fCcLQZoIAH5V4WNMHeRWPI722gh": {
+  "actions": 17,
+  "at": "2026-11-14T14:34:24+00:00",
+  "name": "INBOX-thesen-lauf-20261114-0921.json",
+  "source": "thesen-lauf",
   "status": "ok",
   "verworfen": 0
  },

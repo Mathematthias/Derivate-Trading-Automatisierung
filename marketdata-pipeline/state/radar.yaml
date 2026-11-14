@@ -1009,4 +1009,31 @@ rows:
   id: Z134
   status: offen
   added: '2026-11-07'
-updated: '2026-11-07T14:25:07+00:00'
+- date: '2026-12-29'
+  kat: 2
+  ereignis: 'Zweiter gesetzlicher Gebotstermin StromVKG Langzeitkapazitaeten, 24 Uhr. Ausschreibungsvolumen rund 3.840,031 rMW: 4.500 rMW minus der nach § 48 Abs. 4 Satz 1 ueber das Volumen der ersten Runde hinaus bezuschlagten Menge (Runde 1 ergab 5.159,969 rMW). Hoechstwert 244.000 EUR je rMW und Jahr, Verpflichtung 15 Jahre. Bleiben danach mindestens 100 MW offen, folgt ein dritter Gebotstermin. ERSETZT inhaltlich die Zeile ''2026-12-08 Zweite Kapazitaetsmarkt-Auktion, weitere 4.500 MW'' (dort Datum UND Volumen falsch, Zeile steht auf status=verworfen).'
+  werte: ENR.DE, RWE.DE, UN01.DE, GEV
+  wirkung: 'Mengensignal ohne Preis: der Zuschlag begruendet 15-jaehrige Kapazitaetsvertraege ab 2031 und legt damit die naechste Tranche der Gasturbinen-Bestellmenge in Deutschland fest. Richtung fuer die Lieferkette positiv bei hohem Zuschlagsvolumen, aber mit unbestimmtem Bestellzeitpunkt - eine Inbetriebnahmefrist ist weiter nicht publiziert.'
+  quelle: '§ 4 Abs. 1 und Abs. 4 StromVKG (konsolidierte Fassung zu BGBl. 2026 I Nr. 210a via buzer.de); Termin bestaetigt von BDEW 2026-11-04; Volumenrechnung 3.840,031 rMW von wirtschaftsjournal.com 2026-11-12 (Sekundaerquelle, amtliche Bekanntmachung der BNetzA in diesem Lauf nicht gefunden). Abruf 2026-11-14, confidence: Termin hoch (Gesetzestext), Volumen mittel.'
+  id: Z135
+  status: offen
+  added: '2026-11-14'
+- date: '2027-01-09'
+  kat: 1
+  ereignis: 'Ablauf der von der USTR am 2026-11-10 finalisierten zweimonatigen Verlaengerung: Aussetzung der Section-301-Hafengebuehren auf China-Tonnage (Annexe I, II, III der Bekanntmachung vom 2025-04-23) und der Zoelle auf STS-Kraene und sonstiges Cargo-Handling-Equipment (Annex V.A der Bekanntmachung vom 2025-10-16) endet am 2027-01-09 23:59 ET; die HTS-Positionen 9903.91.12 bis 9903.91.16 sind auf 2027-01-10 umgeschrieben. Im selben Paket verlaengert bis 2027-01-09: die 178 Section-301-Produktausnahmen einschliesslich der 14 Positionen fuer Solarfertigungs-Equipment. Hier starben die Thesen N8 und N10 am 2026-11-14 - dies ist der verschobene Treiber.'
+  werte: SBLK, MAERSK-B.CO, Solarzellen-Fertiger USA
+  wirkung: 'Kostenseitig und datiert: laeuft die Aussetzung diesmal aus, werden die Gebuehren auf chinesisch gebaute Tonnage und die Zoelle auf Verladegeraet wieder scharf. Achtung Dublette: Hafengebuehren und Produktausnahmen haengen an EINER Frist derselben Behoerde und sind als EIN Ereignis zu fuehren, nicht als zwei Thesen. Dieselbe Frist liegt einen Tag nach dem Ende der US-China-Truce (2027-01-10).'
+  quelle: Holland & Knight Alert 2026-11-09 (Federal-Register-Public-Inspection 2026-22867); gcaptain.com 2026-11-10; Shanghai Metals Market und Mohawk Global zu den 178 Ausnahmen; EY Tax News 2026-2411. Abruf 2026-11-14, confidence hoch fuer die Verlaengerung, mittel fuer das genaue Enddatum (Quellen weichen zwischen 2027-01-09 und 2027-01-10 ab).
+  id: Z136
+  status: offen
+  added: '2026-11-14'
+- date: '2027-01-10'
+  kat: 1
+  ereignis: 'Ablauf der am 2026-11-09 verlaengerten chinesischen Aussetzung der Exportkontrollen (MOFCOM-Bekanntmachung, laut Sekundaerquelle Announcement 58/2026): Aussetzung von Announcement 70/2025 gilt vom 2026-11-11 bis 2027-01-10 und erfasst die Announcements 55, 56, 57, 58 (2025) sowie 61 und 62 (2025) - darunter die 0,1-%-Regel fuer Magnete (61) und die Seltenerd-Technologiekontrollen (62), dazu Lithium-Batterien ab 300 Wh/kg, LFP-Kathoden, NCM/NCA-Precursor, Graphit-Anodenmaterial und Industriediamanten. Derselbe Tag ist das Ende der US-China-Truce. Hier starb die These N6 am 2026-11-14. Offen: ob Announcement 72/2025 (Gallium, Germanium, Antimon, Graphit, Aussetzung bis 2026-11-27) mitverlaengert ist - These N11.'
+  werte: MP, IFX.DE, Magnet- und Batterie-Lieferkette ausserhalb Chinas
+  wirkung: 'Kostenseitig und datiert, aber mit zweiseitiger Richtung: laeuft die Aussetzung diesmal aus, gilt fuer auslaendische Abnehmer wieder Lizenzpflicht ab 0,1 % chinesischem Seltenerd-Wertanteil. ACHTUNG MUSTER (dreimal gemessen in der Woche vom 2026-11-09): Fristen, die an der Truce haengen, werden mitgezogen statt auslaufen zu lassen. Eine These auf das Auslaufen ist eine Wette auf eine politische Entscheidung, nicht auf eine Fehlbewertung - Gate 1 faellt damit. Dieser Termin ist als Radar-Zeile zu fuehren, nicht als These.'
+  quelle: news.metal.com (Shanghai Metals Market) 'China Extends Suspension of Rare Earth Export Controls Until January 2027', 2026-11-09 16:43 GMT+8; techtimes.com 2026-11-10 05:44 EST, gestuetzt auf Reuters. Abruf 2026-11-14. confidence hoch fuer Verlaengerung und Enddatum, mittel fuer die Bekanntmachungsnummer - der chinesische Originaltext ist nicht gelesen.
+  id: Z137
+  status: offen
+  added: '2026-11-14'
+updated: '2026-11-14T14:34:24+00:00'
