@@ -46,7 +46,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add marketdata-pipeline/research/out/STRUKTUR_FLAG.md marketdata-pipeline/research/out/struktur_flag_aktien.csv
+          git add marketdata-pipeline/research/out/STRUKTUR_FLAG.md
           git commit -m "research: Struktur-Flag Bericht ($(date -u +%Y-%m-%dT%H:%MZ)) [skip ci]" || exit 0
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
