@@ -1,0 +1,52 @@
+name: Research Struktur-Flag 2026-11-14
+
+# User-Frage 2026-11-14: Treppen-Flag (Swing-Struktur) und Strukturstop fuer LS-2 und Krypto.
+# Reine Messung, aendert keine Regel und keinen State. Nur auf messung/struktur-flag-**.
+
+on:
+  push:
+    branches: ['messung/struktur-flag-**']
+    paths: ['marketdata-pipeline/research/struktur_flag.py', '.github/workflows/research_struktur_flag.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  messung:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: marketdata-pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Daten-Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            marketdata-pipeline/work/bt_cache.pkl
+            marketdata-pipeline/work/krypto_lernspur.pkl
+          key: struktur-flag-2026-11-14-v1
+      - name: Messung
+        run: |
+          mkdir -p work research/out
+          python research/struktur_flag.py --cfg config --out research/out
+          cat research/out/STRUKTUR_FLAG.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add marketdata-pipeline/research/out/STRUKTUR_FLAG.md marketdata-pipeline/research/out/struktur_flag_aktien.csv
+          git commit -m "research: Struktur-Flag Bericht ($(date -u +%Y-%m-%dT%H:%MZ)) [skip ci]" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
