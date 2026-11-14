@@ -11,18 +11,18 @@
       "einsatz_eur": 1230.4,
       "stop_initial": 82.2139,
       "stop": 82.2139,
-      "stop_eur": 74.31,
+      "stop_eur": 74.4,
       "checkliste": {
         "score": "6/7",
         "doc": "trading/Lern-Kandidaten_2026-11-10.md"
       },
       "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung.",
       "stop_beruehrt": false,
-      "hoechster_schluss": 86.0434,
-      "handelstage": 2,
+      "hoechster_schluss": 86.05,
+      "handelstage": 3,
       "zeitausstieg_faellig": false,
-      "r_offen": -0.07,
-      "geprueft_bis": "2026-11-12",
+      "r_offen": 0.0,
+      "geprueft_bis": "2026-11-13",
       "abgesichert": false
     },
     {
@@ -43,12 +43,12 @@
       "notiz": "WIEDERHERSTELLUNG des Regel-Trades #22 nach Ausfuehrungsfehler (gettex-Stop vorboerslich 2026-11-11, auf Xetra nicht beruehrt), User 2026-11-11: Kauf 18 x 42,16 EUR, gettex, Gebuehr 0,00 (Annahme, Volumen >= 500 EUR), Journal #24 AV. Regeldaten von #22 unveraendert: 18 Stk, Stop 40,25 EUR (1,5 ATR unter Signalschluss 42,98), 60-Handelstage-Uhr ab 2026-11-09 (einstieg_datum), Chandelier ab hoechstem Schluss seit 2026-11-09. Stop auf Xetra (User 2026-11-11), nach dem ersten Nachzug auf gettex. R dieser Position bezieht sich auf 42,16 - 40,2544 = 1,9056 EUR/Stk = 34,30 EUR; #22 bleibt mit -1,15 R (fehler) abgeschlossen. Stop 40,25 EUR auf Xetra im Broker scharf (User 2026-11-11).",
       "stop_beruehrt": false,
       "hoechster_schluss": 42.96,
-      "handelstage": 2,
+      "handelstage": 3,
       "zeitausstieg_faellig": false,
-      "geprueft_bis": "2026-11-11",
+      "geprueft_bis": "2026-11-12",
       "abgesichert": false,
       "stop_platz": "Xetra",
-      "r_offen": -0.16
+      "r_offen": -0.09
     }
   ],
   "abgeschlossen": [
@@ -82,11 +82,28 @@
     }
   ],
   "reviews": {},
-  "kandidaten": [],
+  "kandidaten": [
+    {
+      "symbol": "JPM",
+      "waehrung": "USD",
+      "schluss": 346.19,
+      "r_eur_effektiv": 48.24,
+      "atr": 7.1072,
+      "atr_pct": 0.0205,
+      "stop_vorschlag": 335.5292,
+      "stop_vorschlag_eur": 303.64,
+      "schluss_eur": 313.29,
+      "stueck": 5,
+      "einsatz_eur": 1566.44,
+      "ext20_atr": 0.84,
+      "rang": 0.02052978622157129,
+      "zug": true
+    }
+  ],
   "sperre": null,
-  "stand": "2026-11-12",
-  "eurusd": 1.1063,
-  "aktualisiert": "2026-11-13T02:58+00:00",
+  "stand": "2026-11-13",
+  "eurusd": 1.105,
+  "aktualisiert": "2026-11-14T02:44+00:00",
   "abgelehnt": [
     {
       "symbol": "AMZN",
@@ -103,9 +120,9 @@
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
       "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
-      "geprueft_bis": "2026-11-12",
+      "geprueft_bis": "2026-11-13",
       "hoechster_schluss": 270.87,
-      "handelstage": 3
+      "handelstage": 4
     }
   ],
   "abgelehnt_abgeschlossen": [
@@ -138,12 +155,12 @@
     "risiko_offen_r": 2.0,
     "risiko_frei_r": 1.0,
     "budget_eur": 150.0,
-    "risiko_offen_eur": 89.68,
+    "risiko_offen_eur": 89.75,
     "risiko_frei_eur": 50.0,
     "kapital_eur": 12000,
     "kapital_gebunden_eur": 1989.28,
     "kapital_frei_eur": 10010.72
   },
-  "anzahl_zuege": 0,
-  "eurchf": 0.9239
+  "anzahl_zuege": 1,
+  "eurchf": 0.9237
 }
