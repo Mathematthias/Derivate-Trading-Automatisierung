@@ -1,0 +1,52 @@
+# Crowdedness der Thesen-Spur: Benchmark-Zuordnung und Messfenster.
+#
+# Hintergrund (2026-11-14): Der Samstags-Thesen-Lauf konnte die Crowdedness nicht mehr selbst
+# rechnen, weil in seiner Umgebung keine Kursquelle erreichbar ist (Agent-Proxy weist Yahoo und
+# sechs weitere Endpunkte mit HTTP 403 ab). Gate 4 der Thesen-Checkliste ist aber ein
+# Pflichtpunkt. Deshalb rechnet der Abendjob den Wert vor, genauso wie er die Kursmarken der
+# Karten vorrechnet (src/thesen_preise.py), und schreibt ihn nach state/thesen_crowdedness.json.
+#
+# Zweiter Befund desselben Tages: Die Laeufe vom 2026-10-12 bis 2026-11-07 haben unter dem
+# Etikett "Sektor minus Index" den REINEN MITTELWERT der 30-Tage-Bewegungen der Ausdruecke
+# berichtet, ohne den Index abzuziehen. Probe am Lauf 2026-11-07, These OEL: VLO -16,94 /
+# MPC -14,55 / XOM +3,44 / PSX -7,74 ergibt als Mittelwert -8,95 — exakt die berichtete Zahl;
+# relativ zu ^GSPC -5,00 waeren es -3,95 PP. Seit dem 2026-11-14 (User-Entscheid) entscheidet
+# die RELATIVE Zahl das Gate; der alte Mittelwert wird weiter mitgeschrieben, damit die Reihe
+# lesbar bleibt und der Sprung sichtbar ist.
+
+# Messfenster der Gate-Zahl in Kalendertagen. 30 Tage, weil die Reihe damit von Woche zu Woche
+# vergleichbar bleibt (User-Entscheid 2026-11-14). Zusaetzlich schreibt der Job den Wert seit
+# dem letzten VERGANGENEN Katalysator-Datum der Karte, wo eines vorliegt — das ist die
+# Definition, die in der Thesen-Regel steht, und sie steht damit ab jetzt belegt daneben.
+fenster_tage: 30
+
+# Welches Feld die Gate-Zahl ist. rel_index_pp = Ausdruck minus eigene Benchmark, gemittelt.
+# mittelwert_pp waere die alte Rechnung. Der Thesen-Lauf liest dieses Feld, damit ein Wechsel
+# eine Config-Zeile ist und keine Prompt-Aenderung.
+gate_feld: rel_index_pp
+
+# Schwelle der Checkliste, Punkt 4, in Prozentpunkten. Nur zur Dokumentation im JSON; die
+# Entscheidung trifft der Thesen-Lauf.
+schwelle_pp: 20
+
+# Benchmark nach Ticker-Suffix. Laengstes passendes Suffix gewinnt.
+default_index: "^GSPC"
+suffix_index:
+  ".DE": "^GDAXI"
+  ".AS": "^STOXX50E"
+  ".VI": "^STOXX50E"
+  ".PA": "^STOXX50E"
+  ".MI": "^STOXX50E"
+  ".BR": "^STOXX50E"
+  ".CO": "^STOXX50E"
+  ".HE": "^STOXX50E"
+  ".SW": "^STOXX50E"
+  ".L": "^FTSE"
+  ".HK": "^HSI"
+
+# Ausnahmen je Symbol, falls das Suffix in die Irre fuehrt. Schlaegt suffix_index.
+# ^STOXX50E ist fuer MAERSK-B.CO, MT.AS und VOE.VI ein Proxy und kein Heimatindex — die
+# Annahme steht so seit dem Lauf 2026-10-12 und bleibt hier bewusst stehen, damit die
+# Reihe nicht bricht. Wer sie aendert, bricht die Vergleichbarkeit und sollte das im
+# Thesen-Lauf nennen.
+symbol_index: {}
