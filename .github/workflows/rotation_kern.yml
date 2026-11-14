@@ -50,11 +50,22 @@ jobs:
           cat work/KERN-ROTATION-*.md >> "$GITHUB_STEP_SUMMARY"
           # Thesen-Spur: Kursmarken (Einstieg, Preis-Falsifikat) am Tagesschluss pruefen
           python src/thesen_preise.py --state-dir state || echo "::warning::thesen_preise fehlgeschlagen"
+          # Thesen-Spur: Crowdedness vorrechnen. Der Samstags-Thesen-Lauf hat in seiner
+          # Umgebung keine Kursquelle (Proxy weist Yahoo mit HTTP 403 ab, Befund 2026-11-14),
+          # Gate 4 der Checkliste ist aber ein Pflichtpunkt. Deshalb hier, wo die Kurse sind.
+          python src/thesen_crowdedness.py --state-dir state --config config/thesen_crowdedness.yaml \
+            || echo "::warning::thesen_crowdedness fehlgeschlagen"
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add marketdata-pipeline/state/rotation_kern.json marketdata-pipeline/state/thesen_preise.json
+          # Nur vorhandene Dateien adden. Der Step laeuft mit `bash -e`: ein `git add` auf eine
+          # fehlende Datei bricht ihn ab und haette dann AUCH den Rotations-Commit verschluckt.
+          # Genau das passiert beim ersten Lauf, wenn thesen_crowdedness.py scheitert — dessen
+          # Fehler ist per ::warning:: absichtlich nicht fatal (2026-11-14).
+          for f in rotation_kern.json thesen_preise.json thesen_crowdedness.json; do
+            [ -f "marketdata-pipeline/state/$f" ] && git add "marketdata-pipeline/state/$f"
+          done
           git commit -m "state: Kern-Rotation ($(date -u +%Y-%m-%dT%H:%MZ))" || exit 0
           git pull --rebase origin main
           git push origin HEAD:main
