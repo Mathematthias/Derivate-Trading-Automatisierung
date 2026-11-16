@@ -123,6 +123,20 @@
       "geprueft_bis": "2026-11-13",
       "hoechster_schluss": 270.87,
       "handelstage": 4
+    },
+    {
+      "symbol": "JPM",
+      "waehrung": "USD",
+      "einstieg_datum": "2026-11-13",
+      "einstieg_kurs": 346.19,
+      "stop_initial": 335.5292,
+      "stop": 335.5292,
+      "grund": "Klumpen mit offener Lern-Position WFC (US-Grossbank, Financials) und Gegenthese (Q3-Gewinnverfehlung 13.10., Regulierungsrisiko nach Midterms)",
+      "checkliste": {
+        "score": "4/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-16.md"
+      },
+      "notiz": "Veto 2026-11-16 (User). Signal 2026-11-13, Job-Vorschlag 5 Stk, Stop 335,53 USD = 303,64 EUR. Papier-Start: Eroeffnung 2026-11-16 traegt der Job ein, Stop vom Signalschluss, R auf das geplante Risiko."
     }
   ],
   "abgelehnt_abgeschlossen": [
