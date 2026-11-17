@@ -1,0 +1,269 @@
+{
+  "aktualisiert": "2026-11-17T04:45+00:00",
+  "basis": {
+    "fenster_tage": 30,
+    "gate_feld": "rel_index_pp",
+    "schwelle_pp": 20,
+    "hinweis": "gate_pp ist das Feld, das gate_feld nennt. mittelwert_pp ist die Rechnung der Laeufe bis 2026-11-07 (Index NICHT abgezogen), rel_index_pp die Definition der Regel."
+  },
+  "thesen": {
+    "OEL": {
+      "rel_index_pp": -9.48,
+      "mittelwert_pp": -12.65,
+      "n": 4,
+      "n_rel": 4,
+      "ausdruecke": [
+        {
+          "symbol": "VLO",
+          "index": "^GSPC",
+          "move_pct": -16.86,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": -13.69
+        },
+        {
+          "symbol": "MPC",
+          "index": "^GSPC",
+          "move_pct": -15.87,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": -12.7
+        },
+        {
+          "symbol": "XOM",
+          "index": "^GSPC",
+          "move_pct": -6.77,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": -3.6
+        },
+        {
+          "symbol": "PSX",
+          "index": "^GSPC",
+          "move_pct": -11.1,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": -7.93
+        }
+      ],
+      "fehler": [],
+      "gate_pp": -9.48,
+      "seit_katalysator": null
+    },
+    "STAHL": {
+      "rel_index_pp": -7.3,
+      "mittelwert_pp": -4.49,
+      "n": 3,
+      "n_rel": 3,
+      "ausdruecke": [
+        {
+          "symbol": "SZG.DE",
+          "index": "^GDAXI",
+          "move_pct": 2.4,
+          "von": "2026-10-14",
+          "bis": "2026-11-13",
+          "index_move_pct": 3.81,
+          "rel_pp": -1.41
+        },
+        {
+          "symbol": "MT.AS",
+          "index": "^STOXX50E",
+          "move_pct": 1.35,
+          "von": "2026-10-14",
+          "bis": "2026-11-13",
+          "index_move_pct": 2.32,
+          "rel_pp": -0.97
+        },
+        {
+          "symbol": "VOE.VI",
+          "index": "^STOXX50E",
+          "move_pct": -17.21,
+          "von": "2026-10-14",
+          "bis": "2026-11-13",
+          "index_move_pct": 2.32,
+          "rel_pp": -19.53
+        }
+      ],
+      "fehler": [],
+      "gate_pp": -7.3,
+      "seit_katalysator": null
+    },
+    "N2": {
+      "rel_index_pp": 2.35,
+      "mittelwert_pp": 2.35,
+      "n": 1,
+      "n_rel": 1,
+      "ausdruecke": [
+        {
+          "symbol": "PSN.L",
+          "index": "^FTSE",
+          "move_pct": 2.35,
+          "von": "2026-10-14",
+          "bis": "2026-11-13",
+          "index_move_pct": -0.0,
+          "rel_pp": 2.35
+        }
+      ],
+      "fehler": [],
+      "gate_pp": 2.35,
+      "seit_katalysator": null
+    },
+    "N3": {
+      "rel_index_pp": -7.65,
+      "mittelwert_pp": -6.16,
+      "n": 3,
+      "n_rel": 3,
+      "ausdruecke": [
+        {
+          "symbol": "ENR.DE",
+          "index": "^GDAXI",
+          "move_pct": -2.96,
+          "von": "2026-10-14",
+          "bis": "2026-11-13",
+          "index_move_pct": 3.81,
+          "rel_pp": -6.77
+        },
+        {
+          "symbol": "SIE.DE",
+          "index": "^GDAXI",
+          "move_pct": 1.58,
+          "von": "2026-10-14",
+          "bis": "2026-11-13",
+          "index_move_pct": 3.81,
+          "rel_pp": -2.23
+        },
+        {
+          "symbol": "GEV",
+          "index": "^GSPC",
+          "move_pct": -17.11,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": -13.94
+        }
+      ],
+      "fehler": [],
+      "gate_pp": -7.65,
+      "seit_katalysator": null
+    },
+    "N4": {
+      "gate_pp": null,
+      "rel_index_pp": null,
+      "mittelwert_pp": null,
+      "n": 0,
+      "n_rel": 0,
+      "ausdruecke": [],
+      "seit_katalysator": null,
+      "fehler": [
+        "keine Ausdruecke"
+      ]
+    },
+    "N5": {
+      "gate_pp": null,
+      "rel_index_pp": null,
+      "mittelwert_pp": null,
+      "n": 0,
+      "n_rel": 0,
+      "ausdruecke": [],
+      "seit_katalysator": null,
+      "fehler": [
+        "keine Ausdruecke"
+      ]
+    },
+    "N7": {
+      "rel_index_pp": 6.59,
+      "mittelwert_pp": 3.42,
+      "n": 2,
+      "n_rel": 2,
+      "ausdruecke": [
+        {
+          "symbol": "UNH",
+          "index": "^GSPC",
+          "move_pct": 2.64,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": 5.81
+        },
+        {
+          "symbol": "ELV",
+          "index": "^GSPC",
+          "move_pct": 4.21,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": 7.38
+        }
+      ],
+      "fehler": [],
+      "gate_pp": 6.59,
+      "seit_katalysator": null
+    },
+    "N9": {
+      "gate_pp": null,
+      "rel_index_pp": null,
+      "mittelwert_pp": null,
+      "n": 0,
+      "n_rel": 0,
+      "ausdruecke": [],
+      "seit_katalysator": null,
+      "fehler": [
+        "keine Ausdruecke"
+      ]
+    },
+    "N11": {
+      "gate_pp": null,
+      "rel_index_pp": null,
+      "mittelwert_pp": null,
+      "n": 0,
+      "n_rel": 0,
+      "ausdruecke": [],
+      "seit_katalysator": null,
+      "fehler": [
+        "keine Ausdruecke"
+      ]
+    },
+    "N12": {
+      "gate_pp": null,
+      "rel_index_pp": null,
+      "mittelwert_pp": null,
+      "n": 0,
+      "n_rel": 0,
+      "ausdruecke": [],
+      "seit_katalysator": null,
+      "fehler": [
+        "keine Ausdruecke"
+      ]
+    },
+    "TDIP": {
+      "rel_index_pp": -7.03,
+      "mittelwert_pp": -10.2,
+      "n": 1,
+      "n_rel": 1,
+      "ausdruecke": [
+        {
+          "symbol": "XLK",
+          "index": "^GSPC",
+          "move_pct": -10.2,
+          "von": "2026-10-16",
+          "bis": "2026-11-16",
+          "index_move_pct": -3.17,
+          "rel_pp": -7.03
+        }
+      ],
+      "fehler": [],
+      "gate_pp": -7.03,
+      "seit_katalysator": {
+        "datum": "2026-11-12",
+        "ereignis": "AMAT Q4",
+        "rel_index_pp": -2.87,
+        "mittelwert_pp": -5.19,
+        "n": 1
+      }
+    }
+  }
+}
