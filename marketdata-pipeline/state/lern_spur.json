@@ -1,31 +1,6 @@
 {
   "version": "LS-2 2026-11-07",
-  "positionen": [
-    {
-      "symbol": "WFC",
-      "waehrung": "USD",
-      "einstieg_datum": "2026-11-10",
-      "einstieg_kurs": 86.0434,
-      "einstieg_eur": 76.9,
-      "stueck": 16,
-      "einsatz_eur": 1230.4,
-      "stop_initial": 82.2139,
-      "stop": 82.2139,
-      "stop_eur": 74.77,
-      "checkliste": {
-        "score": "6/7",
-        "doc": "trading/Lern-Kandidaten_2026-11-10.md"
-      },
-      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung. BEWUSSTE ABWEICHUNG 2026-11-18 (User): Broker-Stop bleibt 73,48 EUR (= Anfangsstop in EUR, Verlust am Stop 54,72 EUR), obwohl der Job-Stop durch den staerkeren USD auf 74,77 EUR gestiegen ist (82,2139 / 1,0995); 73,48 EUR entsprechen bei EURUSD 1,0966 rund 80,58 USD, 2 % unter dem Regel-Stop. Begruendung User: Stop-Out-Risiko im Rauschen zu hoch. Folge: Schliesst bzw. handelt WFC unter 82,21 USD, verbucht die Regel -1 R, die reale Position laeuft weiter; Klassifikation des Abschlusses dann im Review klaeren (Vergleich NDX1 #22).",
-      "stop_beruehrt": false,
-      "hoechster_schluss": 86.05,
-      "handelstage": 5,
-      "zeitausstieg_faellig": false,
-      "r_offen": -0.88,
-      "geprueft_bis": "2026-11-17",
-      "abgesichert": false
-    }
-  ],
+  "positionen": [],
   "abgeschlossen": [
     {
       "symbol": "NDX1.DE",
@@ -84,6 +59,35 @@
       "ausstieg_eur": 39.74,
       "grund_ausstieg": "stop",
       "r": -1.43
+    },
+    {
+      "symbol": "WFC",
+      "waehrung": "USD",
+      "einstieg_datum": "2026-11-10",
+      "einstieg_kurs": 86.0434,
+      "einstieg_eur": 76.9,
+      "stueck": 16,
+      "einsatz_eur": 1230.4,
+      "stop_initial": 82.2139,
+      "stop": 82.2139,
+      "stop_eur": 74.77,
+      "checkliste": {
+        "score": "6/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-10.md"
+      },
+      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung. BEWUSSTE ABWEICHUNG 2026-11-18 (User): Broker-Stop bleibt 73,48 EUR (= Anfangsstop in EUR, Verlust am Stop 54,72 EUR), obwohl der Job-Stop durch den staerkeren USD auf 74,77 EUR gestiegen ist (82,2139 / 1,0995); 73,48 EUR entsprechen bei EURUSD 1,0966 rund 80,58 USD, 2 % unter dem Regel-Stop. Begruendung User: Stop-Out-Risiko im Rauschen zu hoch. Folge: Schliesst bzw. handelt WFC unter 82,21 USD, verbucht die Regel -1 R, die reale Position laeuft weiter; Klassifikation des Abschlusses dann im Review klaeren (Vergleich NDX1 #22). VERKAUF 2026-11-18 (User): 16 x 73,97 EUR auf Xetra, Gebuehr 5,50 EUR, Erloes netto 1.178,02 EUR, Journal #23 AV geschlossen. Grund (User): Regel-Stop 82,21 USD in EUR umgerechnet, also trotz Broker-Stop 73,48 regelkonform von Hand; 73,97 x EURUSD 1,0966 (TradingView 13:15, Annahme) = ~81,11 USD. G/V 1.178,02 - 1.230,40 = -52,38 EUR / Anfangsrisiko (86,0434 - 82,2139) x 16 / 1,1189 = 54,77 EUR = -0,96 R, davon Gebuehr 0,10 R.",
+      "stop_beruehrt": false,
+      "hoechster_schluss": 86.05,
+      "handelstage": 5,
+      "zeitausstieg_faellig": false,
+      "r_offen": -0.88,
+      "geprueft_bis": "2026-11-17",
+      "abgesichert": false,
+      "ausstieg_datum": "2026-11-18",
+      "ausstieg_kurs": 81.11,
+      "ausstieg_eur": 73.97,
+      "grund_ausstieg": "stop",
+      "r": -0.96
     }
   ],
   "reviews": {},
@@ -163,14 +167,14 @@
   ],
   "budget": {
     "budget_r": 3.0,
-    "risiko_offen_r": 1.0,
-    "risiko_frei_r": 2.0,
+    "risiko_offen_r": 0.0,
+    "risiko_frei_r": 3.0,
     "budget_eur": 150.0,
-    "risiko_offen_eur": 55.73,
-    "risiko_frei_eur": 100.0,
+    "risiko_offen_eur": 0.0,
+    "risiko_frei_eur": 150.0,
     "kapital_eur": 12000,
-    "kapital_gebunden_eur": 1230.4,
-    "kapital_frei_eur": 10769.6
+    "kapital_gebunden_eur": 0.0,
+    "kapital_frei_eur": 12000.0
   },
   "anzahl_zuege": 0,
   "eurchf": 0.9238
