@@ -16,7 +16,7 @@
         "score": "6/7",
         "doc": "trading/Lern-Kandidaten_2026-11-10.md"
       },
-      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung.",
+      "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung. BEWUSSTE ABWEICHUNG 2026-11-18 (User): Broker-Stop bleibt 73,48 EUR (= Anfangsstop in EUR, Verlust am Stop 54,72 EUR), obwohl der Job-Stop durch den staerkeren USD auf 74,77 EUR gestiegen ist (82,2139 / 1,0995); 73,48 EUR entsprechen bei EURUSD 1,0966 rund 80,58 USD, 2 % unter dem Regel-Stop. Begruendung User: Stop-Out-Risiko im Rauschen zu hoch. Folge: Schliesst bzw. handelt WFC unter 82,21 USD, verbucht die Regel -1 R, die reale Position laeuft weiter; Klassifikation des Abschlusses dann im Review klaeren (Vergleich NDX1 #22).",
       "stop_beruehrt": false,
       "hoechster_schluss": 86.05,
       "handelstage": 5,
