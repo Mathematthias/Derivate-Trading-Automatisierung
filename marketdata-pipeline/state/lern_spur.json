@@ -11,7 +11,7 @@
       "einsatz_eur": 1230.4,
       "stop_initial": 82.2139,
       "stop": 82.2139,
-      "stop_eur": 74.69,
+      "stop_eur": 74.77,
       "checkliste": {
         "score": "6/7",
         "doc": "trading/Lern-Kandidaten_2026-11-10.md"
@@ -19,10 +19,10 @@
       "notiz": "Fill 16 x 76,90 EUR auf gettex, Gebuehr 0,00 (User 2026-11-10), ISIN US9497461015, Journal #23 AV. Job-Vorschlag 17 Stk. einstieg_kurs = 76,90 x EURUSD 1,1189 (Digest 2026-11-10 15:03, Annahme). Stop 73,48 EUR im Broker gesetzt (User 2026-11-11); Job-Wert 2026-11-11 73,61 EUR, Abweichung 0,18 % < 0,3 %, keine Anpassung.",
       "stop_beruehrt": false,
       "hoechster_schluss": 86.05,
-      "handelstage": 4,
+      "handelstage": 5,
       "zeitausstieg_faellig": false,
-      "r_offen": -0.31,
-      "geprueft_bis": "2026-11-16",
+      "r_offen": -0.88,
+      "geprueft_bis": "2026-11-17",
       "abgesichert": false
     }
   ],
@@ -89,9 +89,9 @@
   "reviews": {},
   "kandidaten": [],
   "sperre": null,
-  "stand": "2026-11-16",
-  "eurusd": 1.1007,
-  "aktualisiert": "2026-11-17T04:49+00:00",
+  "stand": "2026-11-17",
+  "eurusd": 1.0995,
+  "aktualisiert": "2026-11-18T03:55+00:00",
   "abgelehnt": [
     {
       "symbol": "AMZN",
@@ -108,28 +108,9 @@
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
       "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
-      "geprueft_bis": "2026-11-16",
+      "geprueft_bis": "2026-11-17",
       "hoechster_schluss": 270.87,
-      "handelstage": 5
-    },
-    {
-      "symbol": "JPM",
-      "waehrung": "USD",
-      "einstieg_datum": "2026-11-16",
-      "einstieg_kurs": 345.57,
-      "stop_initial": 335.5292,
-      "stop": 335.5292,
-      "grund": "Klumpen mit offener Lern-Position WFC (US-Grossbank, Financials) und Gegenthese (Q3-Gewinnverfehlung 13.10., Regulierungsrisiko nach Midterms)",
-      "checkliste": {
-        "score": "4/7",
-        "doc": "trading/Lern-Kandidaten_2026-11-16.md"
-      },
-      "notiz": "Veto 2026-11-16 (User). Signal 2026-11-13, Job-Vorschlag 5 Stk, Stop 335,53 USD = 303,64 EUR. Papier-Start: Eroeffnung 2026-11-16 traegt der Job ein, Stop vom Signalschluss, R auf das geplante Risiko.",
-      "signal_datum": "2026-11-13",
-      "signal_kurs": 346.19,
-      "geprueft_bis": "2026-11-16",
-      "hoechster_schluss": 345.57,
-      "handelstage": 0
+      "handelstage": 6
     }
   ],
   "abgelehnt_abgeschlossen": [
@@ -155,6 +136,29 @@
       "ausstieg_kurs": 112.6615,
       "grund_ausstieg": "stop",
       "r": -1.0
+    },
+    {
+      "symbol": "JPM",
+      "waehrung": "USD",
+      "einstieg_datum": "2026-11-16",
+      "einstieg_kurs": 345.57,
+      "stop_initial": 335.5292,
+      "stop": 335.5292,
+      "grund": "Klumpen mit offener Lern-Position WFC (US-Grossbank, Financials) und Gegenthese (Q3-Gewinnverfehlung 13.10., Regulierungsrisiko nach Midterms)",
+      "checkliste": {
+        "score": "4/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-16.md"
+      },
+      "notiz": "Veto 2026-11-16 (User). Signal 2026-11-13, Job-Vorschlag 5 Stk, Stop 335,53 USD = 303,64 EUR. Papier-Start: Eroeffnung 2026-11-16 traegt der Job ein, Stop vom Signalschluss, R auf das geplante Risiko.",
+      "signal_datum": "2026-11-13",
+      "signal_kurs": 346.19,
+      "geprueft_bis": "2026-11-16",
+      "hoechster_schluss": 345.57,
+      "handelstage": 1,
+      "ausstieg_datum": "2026-11-17",
+      "ausstieg_kurs": 333.57,
+      "grund_ausstieg": "stop",
+      "r": -1.13
     }
   ],
   "budget": {
@@ -162,12 +166,12 @@
     "risiko_offen_r": 1.0,
     "risiko_frei_r": 2.0,
     "budget_eur": 150.0,
-    "risiko_offen_eur": 55.67,
+    "risiko_offen_eur": 55.73,
     "risiko_frei_eur": 100.0,
     "kapital_eur": 12000,
     "kapital_gebunden_eur": 1230.4,
     "kapital_frei_eur": 10769.6
   },
   "anzahl_zuege": 0,
-  "eurchf": 0.924
+  "eurchf": 0.9238
 }
