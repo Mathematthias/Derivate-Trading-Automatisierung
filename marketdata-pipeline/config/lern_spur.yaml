@@ -44,3 +44,12 @@ max_je_waehrung: {CHF: 1}
 
 reviews: [5, 10, 15, 20]
 notbremse_r: -10         # User 2026-11-07: -6 R loeste in 23-26 % der 20er-Fenster aus (LERNSPUR_NOTBREMSE.md), -10 R in 9 %
+
+# Papier-Sonderspur Hoch-ATR (User 2026-11-19, ANET/NET fielen durch die 6-%-Grenze, die nie gemessen wurde):
+# Der Job legt Signale, die LS-2 nur wegen atr_pct_max verlieren, als Papier-Trade unter `hoch_atr` an
+# (Regeln wie Vetos: Eroeffnung T+1, Stop 1,5 ATR vom Signalschluss, Chandelier 3 ATR, 60 HT). Dazu Signale
+# der zusatz_symbole, die nicht im Lern-Universum stehen, egal welche ATR%. Aendert LS-2 NICHT, zaehlt nicht
+# zu den 20 Trades, kein Geld. Auswertung beim Review nach Trade 20, Messung research/hoch-atr-2026-11-19.
+hoch_atr_papier:
+  aktiv: true
+  zusatz_symbole: [NET]

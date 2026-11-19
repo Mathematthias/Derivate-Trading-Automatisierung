@@ -99,16 +99,33 @@ def ind(d: pd.DataFrame) -> pd.DataFrame:
     return d
 
 
-def signal_heute(d: pd.DataFrame, cfg: dict) -> bool:
+def kreuz_heute(d: pd.DataFrame, cfg: dict) -> bool:
+    """Signal ohne ATR%-Obergrenze: EMA20 kreuzt EMA50 nach oben, Schluss > EMA200, ggf. EMA50 > EMA200,
+    ATR% >= Untergrenze."""
     if len(d) < 210:
         return False
     x, y = d.iloc[-1], d.iloc[-2]
     s = cfg["signal"]
-    ok = (x.ema20 > x.ema50 and y.ema20 <= y.ema50 and x.Close > x.ema200
-          and s["atr_pct_min"] <= x.atrp <= s["atr_pct_max"])
+    ok = (x.ema20 > x.ema50 and y.ema20 <= y.ema50 and x.Close > x.ema200 and x.atrp >= s["atr_pct_min"])
     if s.get("ema50_ueber_ema200"):
         ok = ok and x.ema50 > x.ema200
     return bool(ok)
+
+
+def signal_heute(d: pd.DataFrame, cfg: dict) -> bool:
+    return kreuz_heute(d, cfg) and float(d.atrp.iloc[-1]) <= cfg["signal"]["atr_pct_max"]
+
+
+def hoch_atr_art(sym: str, d: pd.DataFrame, cfg: dict, syms: set) -> Optional[str]:
+    """Papier-Sonderspur (User 2026-11-19): Signal, das LS-2 nur wegen der ATR%-Obergrenze verliert
+    ("atr_ueber_grenze"), oder Signal eines Zusatz-Symbols ausserhalb des Lern-Universums
+    ("zusatz_universum"). Aendert LS-2 nicht; die Eintraege zaehlen nicht zu den 20 Trades."""
+    hz = cfg.get("hoch_atr_papier") or {}
+    if not hz.get("aktiv") or not kreuz_heute(d, cfg):
+        return None
+    if sym in syms:
+        return "atr_ueber_grenze" if float(d.atrp.iloc[-1]) > cfg["signal"]["atr_pct_max"] else None
+    return "zusatz_universum" if sym in set(hz.get("zusatz_symbole") or []) else None
 
 
 def rangwert(d: pd.DataFrame, feld: str) -> float:
@@ -343,11 +360,40 @@ def render(st: dict, cfg: dict) -> str:
     zu = st.get("abgeschlossen", [])
     if zu:
         L += ["", f"Abgeschlossen: {len(zu)} Trades, Summe {sum(float(t.get('r', 0)) for t in zu):+.2f} R."]
+    ha, hab = st.get("hoch_atr", []), st.get("hoch_atr_abgeschlossen", [])
+    if ha or hab:
+        L += [f"Hoch-ATR (Papier): {len(ha)} laufen ({', '.join(p['symbol'] for p in ha) or '–'}), "
+              f"{len(hab)} abgeschlossen" + (f", Summe {sum(float(t.get('r', 0)) for t in hab):+.2f} R." if hab else ".")]
     ab = st.get("abgelehnt_abgeschlossen", [])
     if st.get("abgelehnt") or ab:
         L += [f"Vetos: {len(st.get('abgelehnt', []))} laufen als Papier-Trade, {len(ab)} abgeschlossen"
               + (f", Summe {sum(float(t.get('r', 0)) for t in ab):+.2f} R." if ab else ".")]
     return "\n".join(L) + "\n"
+
+
+def hoch_atr_lauf(st: dict, dd: dict, cfg: dict, syms: set, pos_syms: list, stand, fx_usd) -> tuple[list, list]:
+    """Laufende Hoch-ATR-Papier-Trades fortschreiben (wie Vetos: Einstieg Eroeffnung T+1, Stop vom
+    Signalschluss, R auf das geplante Risiko) und neue Signale des Tages anlegen."""
+    lauf, fertig = [], list(st.get("hoch_atr_abgeschlossen", []))
+    for p in st.get("hoch_atr", []):
+        q = papier_update(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
+        (fertig if q.get("ausstieg_datum") else lauf).append(q)
+    if not (cfg.get("hoch_atr_papier") or {}).get("aktiv"):
+        return lauf, fertig
+    belegt = {p["symbol"] for p in lauf} | set(pos_syms)
+    for s, d in sorted(dd.items()):
+        if s in belegt or d.index[-1].date() != stand:
+            continue
+        art = hoch_atr_art(s, d, cfg, syms)
+        if not art:
+            continue
+        k = kandidat(s, d, cfg, fx_usd)
+        lauf.append({"symbol": s, "waehrung": k["waehrung"], "art": art, "signal_datum": stand.isoformat(),
+                     "signal_kurs": k["schluss"], "einstieg_datum": stand.isoformat(), "einstieg_kurs": None,
+                     "stop_initial": k["stop_vorschlag"], "stop": k["stop_vorschlag"],
+                     "stop_vorschlag_eur": k["stop_vorschlag_eur"], "atr_pct": k["atr_pct"],
+                     "ext20_atr": k["ext20_atr"], "stueck_waere": k["stueck"], "einsatz_eur_waere": k["einsatz_eur"]})
+    return lauf, fertig
 
 
 # ------------------------------------------------------------------ main
@@ -382,7 +428,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     st = json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else {
         "version": cfg["version"], "positionen": [], "abgeschlossen": [], "reviews": {}}
     pos_syms = [p["symbol"] for p in st.get("positionen", []) + st.get("abgelehnt", [])]
-    daten = _lade(sorted(set(syms) | set(pos_syms)))
+    hz = cfg.get("hoch_atr_papier") or {}
+    zusatz = list(hz.get("zusatz_symbole") or []) if hz.get("aktiv") else []
+    ha_syms = [p["symbol"] for p in st.get("hoch_atr", [])]
+    daten = _lade(sorted(set(syms) | set(pos_syms) | set(zusatz) | set(ha_syms)))
     import yfinance as yf
     fx_usd: dict[str, float] = {}
     for w, tick, ersatz in (("USD", "EURUSD=X", 1.10), ("CHF", "EURCHF=X", 0.94)):
@@ -404,6 +453,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         q = papier_update(p, dd[p["symbol"]], cfg) if p["symbol"] in dd else p
         (fertig if q.get("ausstieg_datum") else lauf).append(q)
     st["abgelehnt"], st["abgelehnt_abgeschlossen"] = lauf, fertig
+    st["hoch_atr"], st["hoch_atr_abgeschlossen"] = hoch_atr_lauf(st, dd, cfg, set(syms), pos_syms, stand, fx_usd)
     st["budget"] = budget(st["positionen"], cfg, fx_usd)
     st["kandidaten"] = kand
     st["sperre"] = sperre(st, cfg)
