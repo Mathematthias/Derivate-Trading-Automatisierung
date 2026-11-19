@@ -1,4 +1,4 @@
-name: Research-Backtest (Wochenende 2026-11-07)
+name: Research-Backtest (Hoch-ATR 2026-11-19)
 
 # Reine Messung (L24): Mehrjahres-Backtest fuer die Neuaufstellung des Trading-Topfs.
 # Laeuft bei Push auf research/**-Branches (damit kein Merge nach main noetig ist)
@@ -32,16 +32,8 @@ jobs:
         working-directory: marketdata-pipeline
         run: |
           mkdir -p work research/out
-          # 2026-11-07 abends: nur Seitwaerts-Filtertest; Hauptbericht liegt bereits in research/out.
-          # Fuer einen Volllauf NUR_FILTER=0 setzen.
-          if [ "${NUR_FILTER:-1}" = "1" ]; then
-            python research/filter_ls2.py --cfg config --out research/out --cache work/bt_cache.pkl
-          else
-            [ "${NUR_ROTATION:-0}" = "1" ] || python research/backtest_wochenende.py --cfg config --out research/out --cache work/bt_cache.pkl
-            PYTHONPATH=./src python research/check_scores.py | tee research/out/CHECK_SCORES.txt
-            python research/strategien.py
-            for v in rotation_kern rotation_kern_ohne_gold rotation_kern_ohne_software; do echo "=== $v"; PYTHONPATH=./src python src/rotation_kern.py --cfg config/$v.yaml --backtest; done | tee research/out/ROTATION_KERN_BACKTEST.txt
-          fi
+          # 2026-11-19: Hoch-ATR-Messung LS-2 (User-Frage ANET/NET). Fruehere Laeufe siehe Git-Historie.
+          python research/atr_ls2.py --cfg config --out research/out --cache work/bt_cache_atr.pkl
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
