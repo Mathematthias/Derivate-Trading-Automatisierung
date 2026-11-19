@@ -390,11 +390,11 @@ thesen:
   re_check: '2026-12-01'
   crowdedness_pp: 11.21
   korb_budget_pct: 0
-  falsifikat: CMS verschiebt oder entschaerft den Wirksamkeitstermin der Medicare-Verhandlungspreise Runde 2 (2027-01-01), ODER UNH bzw. ELV nennen in den Q4-Guidances eine Medical-Loss-Ratio, die den Arzneimittelkosten-Entlastungseffekt ausdruecklich nicht enthaelt -> verworfen
+  falsifikat: CMS verschiebt oder entschaerft den Wirksamkeitstermin der Medicare-Verhandlungspreise Runde 2 (2027-01-01), ODER UNH bzw. ELV nennen in den Q4-Guidances eine Medical-Loss-Ratio, die den Arzneimittelkosten-Entlastungseffekt ausdruecklich nicht enthaelt, ODER (CRUSH, Chat 2026-11-19) UNH bzw. ELV beziffern die Rueckforderung aus der CMS-Regel CRUSH (Medicare-Advantage-Risikoausgleich, Hochrechnung bis Zahlungsjahr 2018) auf mehr als einen Jahresgewinn, ODER UNH nennt im Ausblick 2027 ein bereinigtes EPS unter 21,00 USD (mehr als 10 % unter Konsens 23,33 USD laut TIKR 2026-11-17), ODER der Break Up Big Medicine Act (Warren/Hawley) kommt in einem Senatsausschuss voran -> verworfen
   ausdruecke:
   - UNH
   - ELV
-  note: 'THESEN-LAUF 2026-11-14: Re-Check 2026-12-01 nicht faellig, keine Verdiktaenderung. Der Messkalender steht: CMS-Frist fuer die Hoechstpreise des dritten Verhandlungszyklus am 2026-11-30 (Z96) und GLOBE-Modell am selben Tag (Z114, Primaerquelle weiter nicht gegengelesen); Crowdedness nicht messbar, letzter belegter Wert +11,21 PP vom 2026-11-07, Zone 10-20.'
+  note: 'CHAT 2026-11-19 (User: ''N7 um CRUSH ergaenzen''): CRUSH-Risiko aufgenommen, Falsifikat um drei Bedingungen erweitert (CRUSH-Bezifferung, Ausblick-EPS, Zerschlagungsgesetz), Verdikt unveraendert beobachten, re_check unveraendert 2026-12-01. ANLASS: CMS schlug am 2026-11-16 die Regel CRUSH vor: Medicare-Advantage-Ueberzahlungen bis Zahlungsjahr 2018 zurueckholen, Ergebnisse von Stichproben-Pruefungen des Risikoausgleichs auf ganze Vertraege hochrechnen, CMS-Schaetzung ca. 9 Mrd. USD je Zahlungsjahr fuer die Branche; UNH hat den eigenen Anteil nicht beziffert; CMS-Praemien = 44 % des UNH-Umsatzes 2025; UNH -5 %, HUM -4 %, CVS -3 % (TIKR 2026-11-17). Kommentarfrist bis 2027-01-19. Am 2026-11-18 UNH -10,21 % auf 349,91 USD (Tief 342,46, Volumen 17,39 Mio. gegen 30-Tage-Schnitt 6,26 Mio.), laut TradingView-Key-Facts nach Warren-Aufruf zur Zerschlagung grosser Gesundheitskonzerne und strengeren Betrugsregeln der Bundesbehoerden (nicht gegengeprueft). Break Up Big Medicine Act (Warren/Hawley, Versicherer/PBM und Leistungserbringer trennen, betroffen Optum) seit Februar ohne Fortschritt, Veto Trump erwartet; Demokraten seit 2026-11-03 mit Mehrheit in beiden Kammern (TIKR 2026-11-06). STAND Digest 2026-11-19: 52W-Hoch 461,62 (-24,2 %), EMA200 381,37, RSI 28,5, ATR 14,16; Zonen darunter 335,19-348,95 / 319,6-327,5 / 302,92, darueber 352,61-366,00; Earnings 2027-01-12; KGV auf Konsens-EPS 2027 (23,33 USD) rund 15 gegen 5-Jahres-Schnitt 19. MESSKALENDER ERGAENZT: UNH-Ausblick 2027 vor Jahresende 2026 (Termin offen), Q4 2027-01-12, CRUSH-Kommentarfrist 2027-01-19. KARTENENTWURF IM CHAT (nur Diskussion, keine Karte, keine Freigabe): Einstieg erst Tagesschluss ueber 366 oder nach dem Ausblick ohne Falsifikat; Preis-Falsifikat Schluss < 302,92; Checkliste 5/7 (Punkt 5 nein: Hoehe der Rueckforderung unbekannt; Punkt 6 nein: Klumpen mit Kern-XLV) - Gate nicht bestanden. SPANNUNG ZUR URSPRUNGSTHESE: N7 setzt auf Kostenentlastung der Payer durch Arzneimittelpreise, CRUSH ist ein Erloesrisiko derselben Payer. OFFEN FUER DEN RE-CHECK 2026-12-01: Rechtslage CRUSH pruefen (wurden fruehere Hochrechnungsregeln zum Risikoausgleich gerichtlich gekippt?), Primaerquelle im Federal Register gegenlesen, Crowdedness neu messen (UNH 30 Tage -16,5 %). || THESEN-LAUF 2026-11-14: Re-Check 2026-12-01 nicht faellig, keine Verdiktaenderung. Der Messkalender steht: CMS-Frist fuer die Hoechstpreise des dritten Verhandlungszyklus am 2026-11-30 (Z96) und GLOBE-Modell am selben Tag (Z114, Primaerquelle weiter nicht gegengelesen); Crowdedness nicht messbar, letzter belegter Wert +11,21 PP vom 2026-11-07, Zone 10-20.'
   historie:
   - date: '2026-10-26'
     verdikt: beobachten
@@ -412,6 +412,10 @@ thesen:
     verdikt: beobachten
     crowdedness_pp: null
     source: thesen-lauf
+  - date: '2026-11-19'
+    verdikt: beobachten
+    crowdedness_pp: null
+    source: chat
 - id: N8
   titel: US-Hafengebuehren auf China-Tonnage - Ablauf der Aussetzung 2026-11-10
   verdikt: verworfen
