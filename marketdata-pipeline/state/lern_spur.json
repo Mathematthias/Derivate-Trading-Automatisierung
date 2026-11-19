@@ -93,9 +93,9 @@
   "reviews": {},
   "kandidaten": [],
   "sperre": null,
-  "stand": "2026-11-17",
-  "eurusd": 1.0995,
-  "aktualisiert": "2026-11-18T03:55+00:00",
+  "stand": "2026-11-18",
+  "eurusd": 1.096,
+  "aktualisiert": "2026-11-19T03:53+00:00",
   "abgelehnt": [
     {
       "symbol": "AMZN",
@@ -112,9 +112,9 @@
         "doc": "trading/Lern-Kandidaten_2026-11-09.md"
       },
       "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
-      "geprueft_bis": "2026-11-17",
+      "geprueft_bis": "2026-11-18",
       "hoechster_schluss": 270.87,
-      "handelstage": 6
+      "handelstage": 7
     }
   ],
   "abgelehnt_abgeschlossen": [
@@ -167,15 +167,15 @@
   ],
   "budget": {
     "budget_r": 3.0,
-    "risiko_offen_r": 0.0,
+    "risiko_offen_r": 0,
     "risiko_frei_r": 3.0,
     "budget_eur": 150.0,
-    "risiko_offen_eur": 0.0,
+    "risiko_offen_eur": 0,
     "risiko_frei_eur": 150.0,
     "kapital_eur": 12000,
-    "kapital_gebunden_eur": 0.0,
-    "kapital_frei_eur": 12000.0
+    "kapital_gebunden_eur": 0,
+    "kapital_frei_eur": 12000
   },
   "anzahl_zuege": 0,
-  "eurchf": 0.9238
+  "eurchf": 0.925
 }
