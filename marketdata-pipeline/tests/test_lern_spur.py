@@ -229,3 +229,53 @@ def test_papier_laufender_alteintrag_unveraendert():
          "geprueft_bis": "2026-11-06", "handelstage": 0}
     q = ls.papier_update(p, _papier_df(), cfg)
     assert q["einstieg_kurs"] == 100.0 and q["handelstage"] == 2 and "signal_datum" not in q
+
+
+# ------------------------------------------------------------ Hoch-ATR-Papier (User 2026-11-19)
+def _df_vol(close, spanne):
+    idx = pd.bdate_range("2025-01-01", periods=len(close))
+    c = np.asarray(close, dtype=float)
+    return ls.ind(pd.DataFrame({"Open": c, "High": c * (1 + spanne), "Low": c * (1 - spanne), "Close": c,
+                                "Volume": 1e6}, index=idx))
+
+
+def _erstes_kreuz(d):
+    for k in range(215, len(d)):
+        if ls.kreuz_heute(d.iloc[:k + 1], CFG):
+            return k
+    return None
+
+
+def test_hoch_atr_nur_ueber_grenze_und_ls2_unveraendert():
+    base = list(np.linspace(50, 100, 220)) + list(np.linspace(100, 92, 25)) + list(np.linspace(92, 104, 30))
+    ruhig, wild = _df_vol(base, 0.01), _df_vol(base, 0.06)
+    kr, kw = _erstes_kreuz(ruhig), _erstes_kreuz(wild)
+    assert kr is not None and kw is not None
+    r, w = ruhig.iloc[:kr + 1], wild.iloc[:kw + 1]
+    assert ls.signal_heute(r, CFG) and ls.hoch_atr_art("X", r, CFG, {"X"}) is None
+    assert float(w.atrp.iloc[-1]) > CFG["signal"]["atr_pct_max"]
+    assert not ls.signal_heute(w, CFG)                                  # LS-2 bleibt bei 6 %
+    assert ls.hoch_atr_art("X", w, CFG, {"X"}) == "atr_ueber_grenze"
+    assert ls.hoch_atr_art("NET", r, CFG, {"X"}) == "zusatz_universum"  # Zusatz-Symbol, egal welche ATR
+    assert ls.hoch_atr_art("ZZZ", r, CFG, {"X"}) is None                # weder Universum noch Zusatz
+    aus = {**CFG, "hoch_atr_papier": {"aktiv": False, "zusatz_symbole": ["NET"]}}
+    assert ls.hoch_atr_art("X", w, aus, {"X"}) is None
+
+
+def test_hoch_atr_lauf_legt_an_und_fuellt_t1():
+    base = list(np.linspace(50, 100, 220)) + list(np.linspace(100, 92, 25)) + list(np.linspace(92, 104, 30))
+    wild = _df_vol(base, 0.06)
+    k = _erstes_kreuz(wild)
+    d0 = wild.iloc[:k + 1]
+    stand = d0.index[-1].date()
+    lauf, fertig = ls.hoch_atr_lauf({}, {"X": d0}, CFG, {"X"}, [], stand, {"USD": 1.1, "CHF": 0.94})
+    assert len(lauf) == 1 and not fertig
+    p = lauf[0]
+    assert p["art"] == "atr_ueber_grenze" and p["einstieg_kurs"] is None and p["signal_datum"] == stand.isoformat()
+    # naechster Lauf: Einstieg zur Eroeffnung T+1, kein Doppel-Eintrag
+    d1 = wild.iloc[:k + 2]
+    lauf2, _ = ls.hoch_atr_lauf({"hoch_atr": lauf}, {"X": d1}, CFG, {"X"}, [], d1.index[-1].date(), {"USD": 1.1})
+    assert len(lauf2) == 1 and lauf2[0]["einstieg_kurs"] == round(float(d1.Open.iloc[-1]), 4)
+    # belegte Lern-Position blockiert neuen Papier-Eintrag
+    l3, _ = ls.hoch_atr_lauf({}, {"X": d0}, CFG, {"X"}, ["X"], stand, {"USD": 1.1})
+    assert l3 == []
