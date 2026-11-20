@@ -681,7 +681,7 @@ thesen:
         risiko_eur: 106.0
         risiko_annahme: XLK ~168,91 USD beim Fill (Schluss 2026-11-10), Abstand zum Preis-Falsifikat 22,3 %
 - id: KZT
-  titel: Krypto-Zyklustief (Korb BTC, ETH, HYPE, AAVE)
+  titel: Krypto-Zyklustief (Korb BTC, ETH, HYPE, AAVE), getrennte Krypto-Karte
   verdikt: beobachten
   korb_budget_pct: null
   crowdedness_pp: null
@@ -692,14 +692,15 @@ thesen:
   - ETH-EUR
   - HYPE32196-USD
   - AAVE-USD
-  note: 'User-Idee 2026-11-20 (Chat): "Kryptos sollten einen zyklischen Tiefpunkt ungefaehr jetzt erreicht haben", Karte auf Auftrag des Users gebaut ("Bau mal die Thesenkarte", Korb nicht nur BTC: ETH und HYPE gewuenscht, SOL ausdruecklich nicht, weil schon zu viel gehalten und gestaked; ein vierter Coin, den der User nicht auf dem Schirm hat). Verdikt beobachten statt freigabe: Gate 4 braucht laut Regel 2026-11-14 eine Pipeline-Zahl und eine Woche Messung; die eigene Vorschau-Rechnung -20,7 PP (30 T gegen ^GSPC, Yahoo bis 2026-11-20) ersetzt sie nicht. Fruehestens kartenfaehig im Thesen-Lauf 2026-11-28, ausser der User gibt vorher ausdruecklich frei. Belege: research/krypto_zyklus/out/ZYKLUS.md (Branch research/krypto-zyklus-2026-11-20) und Projekt-Doc trading/Thesenkarte_KZT_Entwurf_2026-11-20.md.'
+  note: 'User-Idee 2026-11-20 (Chat): "Kryptos sollten einen zyklischen Tiefpunkt ungefaehr jetzt erreicht haben", Karte auf Auftrag des Users gebaut ("Bau mal die Thesenkarte", Korb nicht nur BTC: ETH und HYPE gewuenscht, SOL ausdruecklich nicht, weil schon zu viel gehalten und gestaked; ein vierter Coin, den der User nicht auf dem Schirm hat). GETRENNTE KRYPTO-KARTE (User 2026-11-20): "Es soll eine getrennt laufende Kryptokarte werden. Mit Thesenregeln aber viel hoeherem R. Die muss heute noch nicht scharf werden." spur=krypto: gleiche Regeln wie die Thesen-Spur (Karte, Gate 7/7, Falsifikate, Starter 50 %), zaehlt aber nicht zu den hoechstens 2 Thesen und nicht zum Thesen-Budget von 2 R a 150 EUR. Groesse (User-Auswahl): 2 R a 1.000 EUR = 2.000 EUR Gesamtrisiko bis Preis-Falsifikat; Kapital aus getaetigten Kryptoverkaeufen. Verdikt beobachten statt freigabe: Gate 4 braucht laut Regel 2026-11-14 eine Pipeline-Zahl und eine Woche Messung; die eigene Vorschau-Rechnung -20,7 PP (30 T gegen ^GSPC, Yahoo bis 2026-11-20) ersetzt sie nicht. Fruehestens kartenfaehig im Thesen-Lauf 2026-11-28, ausser der User gibt vorher ausdruecklich frei. Belege: research/krypto_zyklus/out/ZYKLUS.md (Branch research/krypto-zyklus-2026-11-20) und Projekt-Doc trading/Thesenkarte_KZT_Entwurf_2026-11-20.md.'
   historie:
   - date: '2026-11-20'
     verdikt: beobachten
     crowdedness_pp: null
     source: chat
-  spur: thesen
+  spur: krypto
   budget_r: 2
+  r_eur: 1000
   starter_anteil: 0.5
   karte:
     konsens: 'Wiederholung von 2022: Baerenmarkt bis ins Jahr 2027, BTC-Boden erst bei 40.000-45.000 USD (Willy Woo laut Cointelegraph). Stimmung: Fear & Greed 12 am 2026-11-19, Spot-BTC-ETFs im November bis 2026-11-16 rund -2,1 Mrd. USD, am 2026-11-19 BTC/ETH/SOL-ETFs zusammen -715 Mio. USD.'
@@ -731,7 +732,7 @@ thesen:
     - 'Kraken Spot: BTC/EUR, ETH/EUR, AAVE/EUR; HYPE (bei Kraken seit 2026-01-27, EUR-Paar vor dem Kauf pruefen, sonst HYPE/USD)'
     zweite_haelfte: 'Tranche 2 erst bei Bestaetigung: BTC-EUR-Tagesschluss ueber seiner SMA200 (2026-11-20: 63.423 EUR, fallend), ohne Thesen-Falsifikat. Groesse mit dem Restrisiko bis 46.000 EUR rechnen (Messung 2026-11-12: Trendregel SMA200 war seit 2022 die beste gemessene BTC-Regel nach Steuer).'
     ziel: 'Horizont-These: Erholung im Zyklus binnen 12 Monaten, kein festes Kursziel. Haltedauer ueber 1 Jahr macht Gewinne nach § 23 EStG steuerfrei (keine Steuerberatung).'
-    notiz: 'Budget 2 R = 300 EUR Gesamtrisiko bis Preis-Falsifikat. Gewichte: BTC 40 %, ETH 25 %, HYPE 20 %, AAVE 15 %. Korbverlust bis 46.000 EUR geschaetzt rund 23 % (BTC -17,7 %, Beta konservativ ETH 1,3, HYPE und AAVE 1,5, plus Kosten und Slippage). Tranche 1 = 150 EUR Risiko / 23 % = rund 650 EUR: BTC 260, ETH 163, HYPE 130, AAVE 97. Tranche 2 laut zweite_haelfte, 150 EUR Risiko zum dann gueltigen Abstand. Fill in karte.position eintragen. Der Korb ist klein, weil das Risiko an der Marke haengt; frisches Kapital darueber hinaus gehoert in den Krypto-Topf (Sparplan nur ueber SMA200 oder Trendregel, offen seit 2026-11-12), nicht in diese Karte. Ausserhalb des Gates: SOL-Altbestand (gestaked) korreliert mit BTC 0,84, das gesamte Krypto-Exposure steigt.'
+    notiz: 'Budget (User 2026-11-20): 2 R a 1.000 EUR = 2.000 EUR Gesamtrisiko bis Preis-Falsifikat, getrennte Krypto-Karte, Kapital aus Kryptoverkaeufen. Gewichte: BTC 40 %, ETH 25 %, HYPE 20 %, AAVE 15 %. Korbverlust bis 46.000 EUR geschaetzt rund 23 % (BTC -17,7 %, Beta konservativ ETH 1,3, HYPE und AAVE 1,5, plus Kosten und Slippage). Tranche 1 = 1.000 EUR Risiko / 23 % = rund 4.350 EUR: BTC 1.740, ETH 1.090, HYPE 870, AAVE 650 (Stand 2026-11-20, bei Freigabe mit dem dann gueltigen Abstand neu rechnen). Tranche 2 laut zweite_haelfte, 1.000 EUR Risiko zum dann gueltigen Abstand. Voller Korb bei heutigem Abstand rund 8.700 EUR. Fill in karte.position eintragen (je Coin Stueck, Kurs EUR, Gebuehr). Ausserhalb des Gates: SOL-Altbestand (gestaked) korreliert mit BTC 0,84, das gesamte Krypto-Exposure steigt.'
     story: 'BTC fiel vom Hoch 124.753 USD (2025-10-06) bis 2026-06-30 auf 58.559 USD (-53,1 %), erholte sich bis Anfang Oktober (Wochenschluss 76.833 EUR am 2026-10-04) und faellt seit Mitte Oktober wieder: -26,9 % in 30 Tagen auf 61.455 USD bzw. 55.888 EUR am 2026-11-20, 4,9 % ueber dem Juni-Tief (Retest). Ausloeser: Spot-ETF-Abfluesse, Risk-off nach dem Anthropic-Boersengang und Zweifeln an KI-Investitionen, US-10J-Rendite 5,07 %, eingepreiste Fed-Erhoehung im Dezember. ETH -64 % vom Hoch 4.831 USD (2025-08-22), Glamsterdam auf fruehestens Mitte Januar 2027 verschoben. HYPE verdreifachte sich im Baerenmarkt vom Januar-Tief 20,97 auf 97,18 USD (2026-09-22) und liegt seither -36 %; Umsatz rund 69 Mio. USD in 30 Tagen, fast vollstaendig fuer Rueckkaeufe. AAVE -50 % vom 52W-Hoch, 180 Tage +38 PP besser als BTC, automatische Rueckkaeufe seit Aavenomics 3.0 (Juni 2026). Quellen: trading/Thesenkarte_KZT_Entwurf_2026-11-20.md.'
     gegenthese: 'Staerkstes Gegenargument: Retests eines Zwischentiefs im Baerenmarkt brachen in 5 von 7 Faellen um mehr als 10 % nach unten (Messung C), 2018 lag das finale Tief 51 % unter dem ersten Zwischentief, 2022 16 % (Messung D). Bei der Tiefe frueherer Zyklen (-77 bis -83 %) laege BTC bei 21.000-29.000 USD. Makro gegen Krypto: Zinsen steigen, Krypto faellt mit Tech. HYPE: Team-Unlocks im November geschaetzt 9,9 Mio. HYPE gegen Rueckkaeufe von rund 73 Mio. USD in 30 Tagen, also netto Verwaesserung. AAVE: Lending-Gebuehren Jan 2026 rund -41 % gegen Vorjahr. Nur teilweise eingepreist.'
     szenarien:
@@ -742,7 +743,7 @@ thesen:
         text: BTC-EUR pendelt zwischen 50.000 und 65.000 EUR bis ins Fruehjahr; nur Tranche 1 bleibt, Re-Check monatlich.
         ausloeser: Kein Schluss unter 46.000 und keiner ueber der SMA200 bis zum Re-Check.
       bear:
-        text: Der Retest scheitert, Tagesschluss unter 46.000 EUR; ganzer Korb raus am naechsten Tag (-1 R mit Tranche 1, bis -2 R mit beiden).
+        text: Der Retest scheitert, Tagesschluss unter 46.000 EUR; ganzer Korb raus am naechsten Tag (-1 R = -1.000 EUR mit Tranche 1, bis -2 R = -2.000 EUR mit beiden).
         ausloeser: Tagesschluss BTC-EUR unter dem Juni-Tief 51.308 als Vorwarnung, dann unter 46.000.
     checkliste:
       score: 6/7
@@ -772,7 +773,7 @@ thesen:
       - nr: 6
         punkt: Kein Klumpen mit Kern und anderer These
         status: ja
-        text: 'Kern haelt XLV, XLE, XLP, XLB; TDIP ist Tech, kein Krypto. Ausserhalb des Gates: Krypto faellt derzeit mit Tech, SOL-Altbestand korreliert 0,84 mit BTC.'
+        text: 'Kern haelt XLV, XLE, XLP, XLB; TDIP ist Tech, kein Krypto. Getrennte Krypto-Karte, zaehlt nicht zu den 2 Thesen. Ausserhalb des Gates: Krypto faellt derzeit mit Tech, SOL-Altbestand korreliert 0,84 mit BTC.'
       - nr: 7
         punkt: Vehikel handelbar und ethisch zulaessig
         status: ja

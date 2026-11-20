@@ -307,7 +307,7 @@ def export_thesen(wb, state: dict, state_dir: Optional[Path]) -> dict:
     """Schreibt die Blaetter nur, wenn es etwas zu zeigen gibt — ohne Thesen-Spur
     bleibt das Journal unveraendert (kein leeres Blatt, keine neuen Zaehler)."""
     counts: dict = {}
-    thesen = [t for t in ((state.get("thesen") or {}).get("thesen") or []) if t.get("spur") == "thesen"]
+    thesen = [t for t in ((state.get("thesen") or {}).get("thesen") or []) if t.get("spur") in ("thesen", "krypto")]
     p = Path(state_dir) / "thesen_audit.csv" if state_dir else None
     if not thesen and (p is None or not p.exists()):
         return counts
