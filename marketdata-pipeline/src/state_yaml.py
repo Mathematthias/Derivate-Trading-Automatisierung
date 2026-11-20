@@ -716,7 +716,7 @@ def thesen_aktiv(block: dict, today: date) -> list[dict]:
             "spur": t.get("spur"),
             "budget_r": t.get("budget_r"),
             "starter_anteil": t.get("starter_anteil"),
-            "karte_fehlt": karte_fehlt(t) if t.get("spur") == "thesen" else None,
+            "karte_fehlt": karte_fehlt(t) if t.get("spur") in ("thesen", "krypto") else None,
             "preis_falsifikat": k.get("preis_falsifikat"),
             "thesen_falsifikat": k.get("thesen_falsifikat"),
             "katalysator": kats,

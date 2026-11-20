@@ -1,7 +1,8 @@
 """Kursmarken der Thesen-Spur taeglich pruefen (Neuaufstellung A+, 2026-11-07).
 
 Der Morning Check hat fuer ETFs wie XLK keine Kurse (nicht im Pipeline-Universum). Dieser Job
-liest state/thesen.yaml, nimmt jede These mit spur=thesen und Verdikt spielen/beobachten, und
+liest state/thesen.yaml, nimmt jede These mit spur=thesen oder spur=krypto (getrennte Krypto-Karte,
+User 2026-11-20) und Verdikt spielen/beobachten/freigabe, und
 prueft am Tagesschluss die Marken der Karte:
   karte.preis_falsifikat {symbol, op, level}  -> gebrochen ja/nein
   karte.einstieg         {symbol, op, level}  -> ausgeloest ja/nein (optional)
@@ -35,13 +36,16 @@ def marke(m: Optional[dict], schluss: float) -> Optional[dict]:
 
 
 AKTIV = ("spielen", "beobachten", "freigabe")
+# Spuren mit Karte und Kursmarken. "krypto" = getrennte Krypto-Karte mit Thesenregeln und eigenem R
+# (User 2026-11-20), zaehlt nicht zu den hoechstens 2 Thesen.
+SPUREN = ("thesen", "krypto")
 
 
 def pruefe(thesen: dict, kurse: Callable[[str], Optional[pd.Series]], vorher: Optional[dict] = None) -> dict:
     vorher = vorher or {}
     out = {}
     for t in thesen.get("thesen", []):
-        if t.get("spur") != "thesen" or t.get("verdikt") not in AKTIV:
+        if t.get("spur") not in SPUREN or t.get("verdikt") not in AKTIV:
             continue
         k = t.get("karte") or {}
         syms = {m.get("symbol") for m in (k.get("preis_falsifikat"), k.get("einstieg")) if isinstance(m, dict)}
