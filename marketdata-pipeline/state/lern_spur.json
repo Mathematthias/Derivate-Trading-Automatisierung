@@ -93,30 +93,10 @@
   "reviews": {},
   "kandidaten": [],
   "sperre": null,
-  "stand": "2026-11-19",
-  "eurusd": 1.0978,
-  "aktualisiert": "2026-11-20T03:45+00:00",
-  "abgelehnt": [
-    {
-      "symbol": "AMZN",
-      "waehrung": "USD",
-      "signal_datum": "2026-11-06",
-      "signal_kurs": 259.3,
-      "einstieg_datum": "2026-11-09",
-      "einstieg_kurs": 269.32,
-      "stop_initial": 245.5169,
-      "stop": 245.5169,
-      "grund": "Gap ueber 1 ATR, zur Eroeffnung sogar mehr",
-      "checkliste": {
-        "score": "5/7",
-        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
-      },
-      "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
-      "geprueft_bis": "2026-11-19",
-      "hoechster_schluss": 270.87,
-      "handelstage": 8
-    }
-  ],
+  "stand": "2026-11-20",
+  "eurusd": 1.097,
+  "aktualisiert": "2026-11-21T03:32+00:00",
+  "abgelehnt": [],
   "abgelehnt_abgeschlossen": [
     {
       "symbol": "NEM",
@@ -163,6 +143,29 @@
       "ausstieg_kurs": 333.57,
       "grund_ausstieg": "stop",
       "r": -1.13
+    },
+    {
+      "symbol": "AMZN",
+      "waehrung": "USD",
+      "signal_datum": "2026-11-06",
+      "signal_kurs": 259.3,
+      "einstieg_datum": "2026-11-09",
+      "einstieg_kurs": 269.32,
+      "stop_initial": 245.5169,
+      "stop": 245.5169,
+      "grund": "Gap ueber 1 ATR, zur Eroeffnung sogar mehr",
+      "checkliste": {
+        "score": "5/7",
+        "doc": "trading/Lern-Kandidaten_2026-11-09.md"
+      },
+      "notiz": "Veto 2026-11-09 (User). Papier-Start umgestellt 2026-11-09 (User): Einstieg Eroeffnung T+1 269,32 USD laut Chart, Stop vom Signalschluss 259,30, R auf das geplante Risiko 13,78 USD. Tagesdaten: Eroeffnung +1,09 ATR ueber Signalschluss, Hoch 275,34, Kurs beim Veto 269,87.",
+      "geprueft_bis": "2026-11-19",
+      "hoechster_schluss": 270.87,
+      "handelstage": 9,
+      "ausstieg_datum": "2026-11-20",
+      "ausstieg_kurs": 245.5169,
+      "grund_ausstieg": "stop",
+      "r": -1.73
     }
   ],
   "budget": {
@@ -177,5 +180,5 @@
     "kapital_frei_eur": 12000
   },
   "anzahl_zuege": 0,
-  "eurchf": 0.9248
+  "eurchf": 0.9259
 }
