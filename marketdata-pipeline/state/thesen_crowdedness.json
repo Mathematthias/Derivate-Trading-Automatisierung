@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-11-20T03:41+00:00",
+  "aktualisiert": "2026-11-21T03:25+00:00",
   "basis": {
     "fenster_tage": 30,
     "gate_feld": "rel_index_pp",
@@ -8,146 +8,146 @@
   },
   "thesen": {
     "OEL": {
-      "rel_index_pp": -10.75,
-      "mittelwert_pp": -17.71,
+      "rel_index_pp": -7.25,
+      "mittelwert_pp": -18.17,
       "n": 4,
       "n_rel": 4,
       "ausdruecke": [
         {
           "symbol": "VLO",
           "index": "^GSPC",
-          "move_pct": -21.91,
-          "von": "2026-10-20",
-          "bis": "2026-11-19",
-          "index_move_pct": -6.96,
-          "rel_pp": -14.95
+          "move_pct": -23.48,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": -12.56
         },
         {
           "symbol": "MPC",
           "index": "^GSPC",
-          "move_pct": -22.55,
-          "von": "2026-10-20",
-          "bis": "2026-11-19",
-          "index_move_pct": -6.96,
-          "rel_pp": -15.59
+          "move_pct": -21.54,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": -10.62
         },
         {
           "symbol": "XOM",
           "index": "^GSPC",
-          "move_pct": -10.64,
-          "von": "2026-10-20",
-          "bis": "2026-11-19",
-          "index_move_pct": -6.96,
-          "rel_pp": -3.68
+          "move_pct": -10.16,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": 0.76
         },
         {
           "symbol": "PSX",
           "index": "^GSPC",
-          "move_pct": -15.74,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": -6.96,
-          "rel_pp": -8.78
+          "move_pct": -17.49,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": -6.57
         }
       ],
       "fehler": [],
-      "gate_pp": -10.75,
+      "gate_pp": -7.25,
       "seit_katalysator": null
     },
     "STAHL": {
-      "rel_index_pp": -9.06,
-      "mittelwert_pp": -8.94,
+      "rel_index_pp": -4.95,
+      "mittelwert_pp": -8.9,
       "n": 3,
       "n_rel": 3,
       "ausdruecke": [
         {
           "symbol": "SZG.DE",
           "index": "^GDAXI",
-          "move_pct": -3.12,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": 0.63,
-          "rel_pp": -3.75
+          "move_pct": -1.72,
+          "von": "2026-10-20",
+          "bis": "2026-11-19",
+          "index_move_pct": -3.28,
+          "rel_pp": 1.56
         },
         {
           "symbol": "MT.AS",
           "index": "^STOXX50E",
-          "move_pct": -2.65,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": -0.13,
-          "rel_pp": -2.52
+          "move_pct": -2.28,
+          "von": "2026-10-20",
+          "bis": "2026-11-19",
+          "index_move_pct": -4.28,
+          "rel_pp": 2.0
         },
         {
           "symbol": "VOE.VI",
           "index": "^STOXX50E",
-          "move_pct": -21.04,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": -0.13,
-          "rel_pp": -20.91
+          "move_pct": -22.7,
+          "von": "2026-10-20",
+          "bis": "2026-11-19",
+          "index_move_pct": -4.28,
+          "rel_pp": -18.42
         }
       ],
       "fehler": [],
-      "gate_pp": -9.06,
+      "gate_pp": -4.95,
       "seit_katalysator": null
     },
     "N2": {
-      "rel_index_pp": 5.87,
-      "mittelwert_pp": 3.26,
+      "rel_index_pp": 3.38,
+      "mittelwert_pp": -0.4,
       "n": 1,
       "n_rel": 1,
       "ausdruecke": [
         {
           "symbol": "PSN.L",
           "index": "^FTSE",
-          "move_pct": 3.26,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": -2.61,
-          "rel_pp": 5.87
+          "move_pct": -0.4,
+          "von": "2026-10-20",
+          "bis": "2026-11-19",
+          "index_move_pct": -3.78,
+          "rel_pp": 3.38
         }
       ],
       "fehler": [],
-      "gate_pp": 5.87,
+      "gate_pp": 3.38,
       "seit_katalysator": null
     },
     "N3": {
-      "rel_index_pp": -4.75,
-      "mittelwert_pp": -6.65,
+      "rel_index_pp": -2.4,
+      "mittelwert_pp": -8.23,
       "n": 3,
       "n_rel": 3,
       "ausdruecke": [
         {
           "symbol": "ENR.DE",
           "index": "^GDAXI",
-          "move_pct": -4.87,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": 0.63,
-          "rel_pp": -5.5
+          "move_pct": -2.78,
+          "von": "2026-10-20",
+          "bis": "2026-11-19",
+          "index_move_pct": -3.28,
+          "rel_pp": 0.5
         },
         {
           "symbol": "SIE.DE",
           "index": "^GDAXI",
-          "move_pct": -0.08,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": 0.63,
-          "rel_pp": -0.71
+          "move_pct": 2.56,
+          "von": "2026-10-20",
+          "bis": "2026-11-19",
+          "index_move_pct": -3.28,
+          "rel_pp": 5.84
         },
         {
           "symbol": "GEV",
           "index": "^GSPC",
-          "move_pct": -14.99,
-          "von": "2026-10-19",
-          "bis": "2026-11-18",
-          "index_move_pct": -6.96,
-          "rel_pp": -8.03
+          "move_pct": -24.47,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": -13.55
         }
       ],
       "fehler": [],
-      "gate_pp": -4.75,
+      "gate_pp": -2.4,
       "seit_katalysator": null
     },
     "N4": {
@@ -175,32 +175,32 @@
       ]
     },
     "N7": {
-      "rel_index_pp": -9.31,
-      "mittelwert_pp": -16.27,
+      "rel_index_pp": -2.9,
+      "mittelwert_pp": -13.82,
       "n": 2,
       "n_rel": 2,
       "ausdruecke": [
         {
           "symbol": "UNH",
           "index": "^GSPC",
-          "move_pct": -21.18,
-          "von": "2026-10-20",
-          "bis": "2026-11-19",
-          "index_move_pct": -6.96,
-          "rel_pp": -14.22
+          "move_pct": -18.5,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": -7.58
         },
         {
           "symbol": "ELV",
           "index": "^GSPC",
-          "move_pct": -11.36,
-          "von": "2026-10-20",
-          "bis": "2026-11-19",
-          "index_move_pct": -6.96,
-          "rel_pp": -4.4
+          "move_pct": -9.13,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": 1.79
         }
       ],
       "fehler": [],
-      "gate_pp": -9.31,
+      "gate_pp": -2.9,
       "seit_katalysator": null
     },
     "N9": {
@@ -240,30 +240,77 @@
       ]
     },
     "TDIP": {
-      "rel_index_pp": -6.39,
-      "mittelwert_pp": -13.35,
+      "rel_index_pp": -10.05,
+      "mittelwert_pp": -20.97,
       "n": 1,
       "n_rel": 1,
       "ausdruecke": [
         {
           "symbol": "XLK",
           "index": "^GSPC",
-          "move_pct": -13.35,
-          "von": "2026-10-20",
-          "bis": "2026-11-19",
-          "index_move_pct": -6.96,
-          "rel_pp": -6.39
+          "move_pct": -20.97,
+          "von": "2026-10-21",
+          "bis": "2026-11-20",
+          "index_move_pct": -10.92,
+          "rel_pp": -10.05
         }
       ],
       "fehler": [],
-      "gate_pp": -6.39,
+      "gate_pp": -10.05,
       "seit_katalysator": {
         "datum": "2026-11-18",
         "ereignis": "PANW Q1",
-        "rel_index_pp": 0.12,
-        "mittelwert_pp": -1.9,
+        "rel_index_pp": -3.39,
+        "mittelwert_pp": -9.03,
         "n": 1
       }
+    },
+    "KZT": {
+      "rel_index_pp": -18.04,
+      "mittelwert_pp": -28.96,
+      "n": 4,
+      "n_rel": 4,
+      "ausdruecke": [
+        {
+          "symbol": "BTC-EUR",
+          "index": "^GSPC",
+          "move_pct": -26.54,
+          "von": "2026-10-22",
+          "bis": "2026-11-21",
+          "index_move_pct": -10.92,
+          "rel_pp": -15.62
+        },
+        {
+          "symbol": "ETH-EUR",
+          "index": "^GSPC",
+          "move_pct": -30.91,
+          "von": "2026-10-22",
+          "bis": "2026-11-21",
+          "index_move_pct": -10.92,
+          "rel_pp": -19.99
+        },
+        {
+          "symbol": "HYPE32196-USD",
+          "index": "^GSPC",
+          "move_pct": -24.09,
+          "von": "2026-10-22",
+          "bis": "2026-11-21",
+          "index_move_pct": -10.92,
+          "rel_pp": -13.17
+        },
+        {
+          "symbol": "AAVE-USD",
+          "index": "^GSPC",
+          "move_pct": -34.29,
+          "von": "2026-10-22",
+          "bis": "2026-11-21",
+          "index_move_pct": -10.92,
+          "rel_pp": -23.37
+        }
+      ],
+      "fehler": [],
+      "gate_pp": -18.04,
+      "seit_katalysator": null
     }
   }
 }
