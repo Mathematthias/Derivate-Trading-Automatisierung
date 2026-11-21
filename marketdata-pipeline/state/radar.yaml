@@ -1036,4 +1036,31 @@ rows:
   id: Z137
   status: offen
   added: '2026-11-14'
-updated: '2026-11-14T14:34:24+00:00'
+- date: '2026-11-30'
+  kat: 3
+  ereignis: 'Lockup-Cluster aus dem IPO-Tag 2026-06-03: INIO, QNT, LFTO und SSMR laufen am selben Tag aus 180-Tage-Lockups (Datum von tickerlaunch.com aus dem Prospekt gerechnet, keine bestaetigte Freigabe)'
+  werte: INIO, QNT, LFTO, SSMR
+  wirkung: Angebotsueberhang; nach der CBRS-Messung vom 2026-11-21 liegt der Abverkauf aber VOR dem Datum - Testpunkt fuer den Kandidaten LUABS
+  quelle: tickerlaunch.com/ipo-lockups/2026-11/, Abruf 2026-11-21
+  id: Z138
+  status: offen
+  added: '2026-11-21'
+- date: '2026-12-10'
+  kat: 2
+  ereignis: Niederlande, Bewerbungsfenster Offshore-Wind IJmuiden Ver Gamma-A und Gamma-B (2 GW) schliesst
+  werte: VWS.CO, PRY.MI, NEX.PA, ORSTED.CO, ENR.DE
+  wirkung: 'Nachfrageseitig: Zuschlag begruendet Bestellmengen fuer Turbinen, Seekabel und Installation; Kandidat NLOW'
+  quelle: Termin-Radar-Zeile 2026-11-26 (Bewerbungsfenster 26.11.-10.12.2026), ergaenzt im Thesen-Lauf 2026-11-21
+  id: Z139
+  status: offen
+  added: '2026-11-21'
+- date: '2026-12-21'
+  kat: 4
+  ereignis: Nasdaq-100 Jahres-Rekonstitution wirksam zur Eroeffnung; Bekanntgabe nach Schluss 2026-12-11, Reference Date 2026-11-30 (Methodik indexes.nasdaqomx.com/docs/methodology_NDX.pdf, Praezedenz PM 2025-12-12 fuer den 2025-12-22). Zusaetzlich moegliche Fast-Entry-Aufnahme von ANT nach der Top-40-Regel am siebten Handelstag
+  werte: QQQ, NDX-Auf- und Absteiger, ANT
+  wirkung: 'Passive Umschichtung; Praezedenz Dezember 2025 rund 50 Mrd. USD Zwei-Weg-Umsatz bei >11 % Turnover (Nasdaq Index Research). Konkrete Auf- und Absteiger sind vor dem Reference Date 2026-11-30 nicht prognostiziert. Fast-Entry-Flow fuer ANT: rund 4,6 Mrd. USD (Bloomberg Intelligence), index-uebergreifend rund 19 Mrd. USD (Berenberg). HINWEIS DES LAUFS: aus ANT wird bewusst KEIN Thesen-Kandidat gebaut - Anthropic ist der Hersteller des analysierenden Modells, das ist ein Interessenkonflikt. Nur als Termin gefuehrt'
+  quelle: indexes.nasdaqomx.com/docs/methodology_NDX.pdf, ir.nasdaq.com PM 2025-12-12, techtimes.com 2026-11-18, tradingkey.com 2026-11-17, Abruf 2026-11-21
+  id: Z140
+  status: offen
+  added: '2026-11-21'
+updated: '2026-11-21T15:40:27+00:00'
