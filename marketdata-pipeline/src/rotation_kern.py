@@ -128,16 +128,55 @@ def render(stichtag: date, sc: pd.Series, neu: list[str], aktionen: Optional[lis
 
 
 # ------------------------------------------------------------------ Daten / main
-def _lade(symbole: list[str], period: str = "2y") -> pd.DataFrame:
-    import yfinance as yf
-    df = yf.download(symbole, period=period, auto_adjust=True, group_by="ticker", progress=False, threads=True)
+def _closes_aus(df: pd.DataFrame, symbole: list[str]) -> dict[str, pd.Series]:
     out = {}
     for s in symbole:
-        try:
-            out[s] = (df[s] if len(symbole) > 1 else df)["Close"].dropna()
+        try:  # group_by="ticker": MultiIndex (Ticker, Feld); aeltere yfinance bei 1 Symbol flach
+            c = (df[s] if isinstance(df.columns, pd.MultiIndex) else df)["Close"]
+            if isinstance(c, pd.DataFrame):
+                c = c.iloc[:, 0]
+            c = c.dropna()
         except Exception:
-            pass
+            continue
+        if len(c):
+            out[s] = c
+    return out
+
+
+def _lade(symbole: list[str], period: str = "2y", download=None, versuche: int = 3,
+          pause_s: float = 2.0) -> pd.DataFrame:
+    """Schlusskurse laden. Fehlende Symbole werden einzeln und ohne Threads nachgeladen.
+
+    Hintergrund (Lauf 2026-11-21): yfinance mit threads=True meldete fuer XLB
+    `OperationalError('database is locked')` (Zeitzonen-Cache), XLB fiel still aus der
+    Rangliste. Am Monatsletzten haette das einen Verkauf ausgeloest.
+    """
+    import time
+    if download is None:
+        import yfinance as yf
+        download = yf.download
+    df = download(symbole, period=period, auto_adjust=True, group_by="ticker", progress=False, threads=True)
+    out = _closes_aus(df, symbole)
+    for _ in range(versuche):
+        fehlend = [s for s in symbole if s not in out]
+        if not fehlend:
+            break
+        time.sleep(pause_s)
+        for s in fehlend:
+            try:
+                d = download([s], period=period, auto_adjust=True, group_by="ticker", progress=False, threads=False)
+                out.update(_closes_aus(d, [s]))
+            except Exception:
+                pass
     return pd.DataFrame(out)
+
+
+def fehlende_daten(closes: pd.DataFrame, symbole: list[str]) -> list[str]:
+    """Symbole ohne Kurs am Stichtag (Spalte fehlt oder letzter gemeinsamer Tag ist NaN)."""
+    if closes.empty:
+        return list(symbole)
+    tag = closes.dropna(how="all").index[-1]
+    return [s for s in symbole if s not in closes.columns or pd.isna(closes.loc[tag, s])]
 
 
 def main(argv: Optional[list[str]] = None) -> int:
@@ -177,6 +216,15 @@ def main(argv: Optional[list[str]] = None) -> int:
     sp = Path(a.state_dir) / "rotation_kern.json"
     st = json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else {"bestand": [], "historie": []}
     signal = a.force or ist_monatsletzter(stichtag)
+    fehlend = fehlende_daten(closes, syms)
+    if fehlend:
+        print(f"::warning::Kern-Rotation: keine Kurse fuer {', '.join(fehlend)} am {stichtag}")
+    if signal and fehlend:
+        # Kein Signal auf unvollstaendiger Rangliste: ein fehlender ETF wuerde sonst verkauft
+        # bzw. nie gekauft. Der Lauf scheitert sichtbar; nachholen per workflow_dispatch mit force.
+        print(f"::error::Kern-Rotation: Signal am {stichtag} NICHT geschrieben, Daten fehlen fuer "
+              f"{', '.join(fehlend)}. Lauf wiederholen (workflow_dispatch, force=true).")
+        return 1
     aktionen = None
     if signal:
         aktionen = plan(st.get("bestand", []), neu, cfg["kapital_eur"], n, meta)
@@ -185,7 +233,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         st["bestand"] = neu
         st["signal"] = {"datum": stichtag.isoformat(), "aktionen": aktionen, "umgesetzt": False}
     st["vorschau"] = {"datum": stichtag.isoformat(), "auswahl": neu,
-                      "scores": {s: (None if math.isnan(v) else round(v, 4)) for s, v in sc.items()}}
+                      "scores": {s: (None if math.isnan(v) else round(v, 4)) for s, v in sc.items()},
+                      "daten_fehlen": fehlend}
     st["aktualisiert"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
     sp.write_text(json.dumps(st, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     md = render(stichtag, sc, neu, aktionen, cfg, meta, signal)
