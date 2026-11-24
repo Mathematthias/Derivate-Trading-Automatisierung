@@ -94,3 +94,51 @@ def test_thesen_preise_klebrig_und_freigabe():
     th["thesen"][1]["karte"]["einstieg"] = {"symbol": "XLK", "op": "<", "level": 150}
     r4 = tp.pruefe(th, lambda s: erholt, r2)
     assert r4["V"]["XLK"]["einstieg"]["erstmals"] is None
+
+
+def _fake_download(fehler_bulk: set, fehler_einzeln: dict):
+    """Bulk-Download liefert Symbole aus fehler_bulk nicht; Einzelversuche scheitern
+    fehler_einzeln[s]-mal, danach kommen Daten."""
+    idx = pd.bdate_range("2025-01-01", periods=300)
+    zaehler = {}
+
+    def dl(symbole, **kw):
+        if len(symbole) == 1:
+            s = symbole[0]
+            zaehler[s] = zaehler.get(s, 0) + 1
+            if zaehler[s] <= fehler_einzeln.get(s, 0):
+                return pd.DataFrame()
+            ok = [s]
+        else:
+            ok = [s for s in symbole if s not in fehler_bulk]
+        cols = pd.MultiIndex.from_product([ok, ["Close"]])
+        return pd.DataFrame(np.full((len(idx), len(ok)), 100.0), index=idx, columns=cols)
+    return dl
+
+
+def test_lade_holt_fehlende_symbole_einzeln_nach():
+    dl = _fake_download({"XLB"}, {"XLB": 1})
+    closes = rk._lade(["XLV", "XLB", "XLF"], download=dl, pause_s=0)
+    assert set(closes.columns) == {"XLV", "XLB", "XLF"}
+    assert rk.fehlende_daten(closes, ["XLV", "XLB", "XLF"]) == []
+
+
+def test_lade_meldet_dauerhaft_fehlende():
+    dl = _fake_download({"XLB"}, {"XLB": 99})
+    closes = rk._lade(["XLV", "XLB", "XLF"], download=dl, pause_s=0)
+    assert rk.fehlende_daten(closes, ["XLV", "XLB", "XLF"]) == ["XLB"]
+
+
+def test_kein_signal_bei_fehlenden_daten(tmp_path, monkeypatch):
+    closes = _closes(drifts={"XLV": 0.002, "XLF": 0.001})
+    monkeypatch.setattr(rk, "_lade", lambda syms, **kw: closes)
+    st = tmp_path / "rotation_kern.json"
+    st.write_text('{"bestand": ["XLV", "XLB"], "historie": []}', encoding="utf-8")
+    cfg = tmp_path / "cfg.yaml"
+    cfg.write_text(yaml.safe_dump({"top_n": 2, "absolutfilter": True, "lookbacks_ht": [63, 126, 252],
+                                   "kapital_eur": 4000, "kosten_je_seite": 0.001,
+                                   "universum": [{"signal": s, "name": s, "isin": "X"} for s in ("XLV", "XLF", "XLB")]}),
+                   encoding="utf-8")
+    assert rk.main(["--cfg", str(cfg), "--state-dir", str(tmp_path), "--force"]) == 1
+    assert '"bestand": ["XLV", "XLB"]' in st.read_text(encoding="utf-8")   # unveraendert
+    assert rk.main(["--cfg", str(cfg), "--state-dir", str(tmp_path)]) in (0, 1)
