@@ -596,7 +596,7 @@ thesen:
   korb_budget_pct: null
   crowdedness_pp: -10.05
   re_check: '2026-12-07'
-  falsifikat: 'Thesen-Falsifikat: ein Big-4-Hyperscaler (MSFT, GOOGL, AMZN, META) senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens. Preis-Falsifikat: XLK-Schluss unter Karten-Level (35 % unter 52W-Hoch).'
+  falsifikat: 'Thesen-Falsifikat: ein Big-4-Hyperscaler (MSFT, GOOGL, AMZN, META) senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens, oder NVDA bestaetigt (8-K, 10-Q oder Pressemitteilung) eine SEC-Untersuchung mit Bezug auf Umsatzrealisierung bzw. Restatement oder kuendigt eine Korrektur veroeffentlichter Umsaetze an (ergaenzt 2026-11-23, User). Preis-Falsifikat: XLK-Schluss unter Karten-Level (35 % unter 52W-Hoch).'
   ausdruecke:
   - XLK
   note: 'THESEN-LAUF 2026-11-21: BEIDE FALSIFIKATE GEPRUEFT UND NICHT EINGETRETEN, ABER DIE WOCHE WAR BRUTAL. (1) Preis-Falsifikat: XLK-Schluss 149,01 USD am 2026-11-20 gegen Level 131,30 = +13,49 % ueber dem Level, erreicht=false, erstmals=null (state/thesen_preise.json, Lauf 2026-11-21T03:25Z). Vorwoche war der Puffer +29,69 % (XLK 170,28 am 2026-11-13) - er hat sich in einer Woche mehr als halbiert. XLK steht jetzt 26,23 % unter dem 52W-Hoch 202,00, also deutlich unter der Einstiegsmarke -20 % und auf dem Weg zum Falsifikat bei -35 %. Von hier braucht es noch -11,89 % auf XLK. (2) Thesen-Falsifikat: KEIN Big-4-Capex-Cut in den gelesenen Quellen zum Abverkauf (Yahoo-Liveticker, TradingKey, Forbes, alle 2026-11-20, Abruf 2026-11-21); MSFT, GOOGL, AMZN und META kommen dort nicht mit einer gesenkten Guidance vor, der einzige Capex-Bezug ist ein koreanischer Bericht, Google kaufe HBM fuer TPUs direkt ein (Bernstein-Schaetzung rund 50 Mrd. USD Ersparnis ueber den Produktlebenszyklus) - das
@@ -624,6 +624,10 @@ thesen:
     verdikt: spielen
     crowdedness_pp: -10.05
     source: thesen-lauf
+  - date: '2026-11-23'
+    verdikt: spielen
+    crowdedness_pp: -10.05
+    source: chat
   spur: thesen
   budget_r: 2
   starter_anteil: 0.5
@@ -639,7 +643,7 @@ thesen:
       ereignis: PANW Q1 - Ergebnis im Lauf 2026-11-21 nicht geprueft, offen
     - date: '2026-12-01'
       ereignis: CRWD Q3 - naechster Messpunkt
-    thesen_falsifikat: Ein Big-4-Hyperscaler senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens.
+    thesen_falsifikat: Ein Big-4-Hyperscaler senkt die Capex-Guidance, oder NVDA guidet am 2026-11-17 den Q4-Umsatz unter Konsens, oder NVDA bestaetigt (8-K, 10-Q oder Pressemitteilung) eine SEC-Untersuchung mit Bezug auf Umsatzrealisierung bzw. Restatement oder kuendigt eine Korrektur veroeffentlichter Umsaetze an (dritter Teil ergaenzt 2026-11-23, User; Verschaerfung, Preis-Falsifikat unveraendert).
     preis_falsifikat:
       symbol: XLK
       op: <
@@ -655,7 +659,7 @@ thesen:
     - SPDR S&P U.S. Technology Select Sector UCITS ETF (IE00BWBXM948)
     zweite_haelfte: 'Kartenaenderung 2026-11-18 (User): Tranche 2 und 3 zusammen sofort, Einstiegsmarke gilt als erreicht. Vorher: nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat, nur wenn der Starter an der Marke (Tranche 2) gefuellt ist, Kurs ueber Preis-Falsifikat'
     ziel: 'Horizont-These: Erholung Richtung 52W-Hoch binnen 6 Monaten; kein festes Kursziel'
-    notiz: 'KARTENAENDERUNG 2026-11-18 (User, Chat-Auswahl "Beide Tranchen jetzt"): Einstiegsmarke 161,60 gilt als erreicht, Tranche 2 und 3 werden zusammen sofort gekauft. Begruendung User: NVDA hat geliefert, der Sektor reagiert positiv, die Marke (XLK-Schluss 17.11. 163,26 USD, 1,03 % darueber) wird vermutlich nicht mehr erreicht. Gegenargumente Claude (im Chat genannt): zweite Kartenaenderung binnen einer Woche aus demselben Motiv; die Karte nennt Erholung vor der Marke ausdruecklich ein Ergebnis, keinen Fehler (szenarien.kein_trade); laut Gegenthese erreichte XLK nach einem Erholungstag knapp vor -20 % die Marke in 19 von 25 Faellen doch noch; 1 % Abstand ist weniger als eine Tages-ATR. Fuer den User spricht: -19,2 % und -20 % sind statistisch kaum unterscheidbar (Messung 2026-11-09 bei -15 %: 6M Median +21,1 %). Groesse: Gesamtrisiko bis Preis-Falsifikat bleibt 2 R = 300 EUR; Restrisiko 300 - 106 (Vorab) = 194 EUR; Einsatz hoechstens 194 / ((XLK - 131,30) / XLK), bei XLK 163,26 = 19,58
+    notiz: 'KARTENAENDERUNG 2026-11-23 (User, Morning Check, Antwort "Uebernehmen"): Thesen-Falsifikat um einen dritten Teil ergaenzt - NVDA bestaetigt eine SEC-Untersuchung mit Bezug auf Umsatzrealisierung bzw. Restatement oder kuendigt eine Korrektur veroeffentlichter Umsaetze an. Anlass: Reuters 2026-11-20, SEC-Enforcement prueft Bilanzierungsfragen bei Nvidia (WSJ zuerst 2026-11-17), unbestaetigt. Ein Medienbericht allein loest NICHT aus, erst eine Bestaetigung durch NVDA oder SEC. Verschaerfung, keine Lockerung; Preis-Falsifikat 131,30 und Einstiegsmarke unveraendert. || KARTENAENDERUNG 2026-11-18 (User, Chat-Auswahl "Beide Tranchen jetzt"): Einstiegsmarke 161,60 gilt als erreicht, Tranche 2 und 3 werden zusammen sofort gekauft. Begruendung User: NVDA hat geliefert, der Sektor reagiert positiv, die Marke (XLK-Schluss 17.11. 163,26 USD, 1,03 % darueber) wird vermutlich nicht mehr erreicht. Gegenargumente Claude (im Chat genannt): zweite Kartenaenderung binnen einer Woche aus demselben Motiv; die Karte nennt Erholung vor der Marke ausdruecklich ein Ergebnis, keinen Fehler (szenarien.kein_trade); laut Gegenthese erreichte XLK nach einem Erholungstag knapp vor -20 % die Marke in 19 von 25 Faellen doch noch; 1 % Abstand ist weniger als eine Tages-ATR. Fuer den User spricht: -19,2 % und -20 % sind statistisch kaum unterscheidbar (Messung 2026-11-09 bei -15 %: 6M Median +21,1 %). Groesse: Gesamtrisiko bis Preis-Falsifikat bleibt 2 R = 300 EUR; Restrisiko 300 - 106 (Vorab) = 194 EUR; Einsatz hoechstens 194 / ((XLK - 131,30) / XLK), bei XLK 163,26 = 19,58
       % Abstand rund 990 EUR, beim geschaetzten ETF-Kurs ~155 EUR 6 Stueck (~930 EUR, ~182 EUR Risiko). Fill in karte.position eintragen. einstieg.level bleibt unveraendert, damit die Abweichung im Audit sichtbar bleibt. || Kartenaenderung 2026-11-11 (User, Option 2 im Chat: XLK erholte sich vor der Marke, "wuerde meine Ungeduld lindern"). Budget unveraendert 2 R = 300 EUR Gesamtrisiko bis Preis-Falsifikat. Drei Tranchen: (1) VORAB 400 EUR SPDR Technology UCITS ETF sofort nach Freigabe (Merge), Risiko bei XLK 168,91 = 400 x 22,3 % = 89 EUR; wird in karte.vorab eingetragen, NICHT in karte.position, damit die Einstiegsmarke scharf bleibt. (2) STARTER bei XLK-Schluss < 161,60 (-20 %, Marke unveraendert): Restrisiko-Haelfte; nach Fill (1) = 476,70 EUR mit ~106 EUR Risiko bleiben 194 EUR, bei 18,75 % Abstand rund 517 EUR. (3) ZWEITE HAELFTE nach NVDA Q3 (2026-11-17) ohne Thesen-Falsifikat und nur, wenn (2) gefuellt ist: rund 518 EUR. Restrisiko fuer (2)+(3) = 300 EUR minus tatsaechliches Risiko
       von (1) zum Fill-Kurs. Wird die Marke bis zum Horizont nicht erreicht, bleibt es bei (1). Begruendung (1): Messung 2026-11-09, Tech-ETFs bei -15 %: 6M Median +21,1 %, nur 18 % fielen noch 20 % tiefer (n 39). Bewusst nicht Halbleiter (1.400 EUR bereits auf der Langfrist-Ebene). Gegenargumente: nur 6 Episoden im Haupt-Backtest, reine Tech-Korrekturen liefen schlechter als breite, wettet gegen den Kern (Rotation meidet Tech), USD-Risiko. FILL (1) 2026-11-11 (User): 3 x 158,90 EUR = 476,70 EUR, Gebuehr 0,00, Journal #114.'
     story: 'XLK fiel vom 52W-Hoch 202,00 USD auf 164,74 USD (Schluss 2026-11-06, -18,4 %), davon -4,9 % am 2026-10-30 und -8,0 % am 2026-11-05 (162,38 USD, -19,6 %, 0,78 USD ueber der Marke). Ausloeser laut Reuters/DJ: Midterm-Sieg der Demokraten und Sorge um neue Rechenzentren, schwache Ausblicke von Qualcomm und Arm, Zweifel an der Finanzierung des AI-Capex, zuletzt eine zu 78 % eingepreiste Zinserhoehung im Dezember. Die Gewinne brachen dabei nicht ein: S&P-IT Q3 94 % Beats und +69,2 % Gewinnwachstum, Forward-KGV 17,3 gegen 25-Jahres-Schnitt 20,0 (FactSet 2026-11-06). Es ist eine reine Tech-Korrektur: S&P 500 nur -5,6 % zum Hoch, XLK -12,3 % gegen SPY in 21 Tagen. Quellen: trading/TDIP_Einstieg_Analyse_2026-11-09.md.'
@@ -669,7 +673,7 @@ thesen:
         ausloeser: Keine neuen Tiefs, Gewinnschaetzungen 2027 stabil, aber keine Rueckeroberung der SMA200 bis zum Re-Check.
       bear:
         text: Thesen-Falsifikat oder XLK-Schluss unter dem Preis-Falsifikat; Ausstieg am naechsten Handelstag.
-        ausloeser: Ein Big-4-Hyperscaler senkt die Capex-Guidance, NVDA guidet Q4 unter Konsens oder XLK schliesst unter 131,3 USD.
+        ausloeser: Ein Big-4-Hyperscaler senkt die Capex-Guidance, NVDA guidet Q4 unter Konsens, NVDA bestaetigt eine SEC-Untersuchung mit Restatement-Bezug bzw. korrigiert Umsaetze, oder XLK schliesst unter 131,3 USD.
       kein_trade:
         text: XLK erholt sich vor der Marke, keine Position. Das ist laut Karte das Ergebnis, kein Fehler.
         ausloeser: Einstiegsmarke bis zum Horizont nicht erreicht.
@@ -689,7 +693,7 @@ thesen:
       - nr: 3
         punkt: Thesen- und Preis-Falsifikat pruefbar
         status: ja
-        text: Capex-Cut oder NVDA-Guidance, XLK-Schluss unter 131,3 USD.
+        text: Capex-Cut, NVDA-Guidance oder bestaetigte SEC-Untersuchung/Umsatzkorrektur bei NVDA (ab 2026-11-23), XLK-Schluss unter 131,3 USD.
       - nr: 4
         punkt: Crowdedness unter 20 PP
         status: ja
