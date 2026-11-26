@@ -93,9 +93,9 @@
   "reviews": {},
   "kandidaten": [],
   "sperre": null,
-  "stand": "2026-11-24",
-  "eurusd": 1.0948,
-  "aktualisiert": "2026-11-25T05:04+00:00",
+  "stand": "2026-11-25",
+  "eurusd": 1.0964,
+  "aktualisiert": "2026-11-26T04:30+00:00",
   "abgelehnt": [],
   "abgelehnt_abgeschlossen": [
     {
@@ -180,5 +180,5 @@
     "kapital_frei_eur": 12000
   },
   "anzahl_zuege": 0,
-  "eurchf": 0.9153
+  "eurchf": 0.9117
 }
