@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-11-26T04:19+00:00",
+  "aktualisiert": "2026-11-27T04:29+00:00",
   "thesen": {
     "TDIP": {
       "XLK": {
@@ -25,22 +25,22 @@
     },
     "KZT": {
       "BTC-EUR": {
-        "datum": "2026-11-26",
-        "schluss": 55548.0586,
+        "datum": "2026-11-27",
+        "schluss": 55940.6406,
         "hoch_52w": 76833.4297,
-        "abstand_hoch_pct": -27.7,
+        "abstand_hoch_pct": -27.19,
         "preis_falsifikat": {
           "op": "<",
           "level": 46000.0,
           "erreicht": false,
-          "abstand_pct": 20.76,
+          "abstand_pct": 21.61,
           "erstmals": null
         },
         "einstieg": {
           "op": "<",
           "level": 60000.0,
           "erreicht": true,
-          "abstand_pct": -7.42,
+          "abstand_pct": -6.77,
           "erstmals": "2026-11-21"
         }
       }
